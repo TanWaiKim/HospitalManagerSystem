@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.dgut.mapper.TDiagnosisMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TDiagnosis" >
+    <id column="diagnosis_id" property="diagnosisId" jdbcType="BIGINT" />
+    <result column="symptom" property="symptom" jdbcType="VARCHAR" />
+    <result column="doctor_id" property="doctorId" jdbcType="VARCHAR" />
+    <result column="patient_id" property="patientId" jdbcType="VARCHAR" />
+    <result column="disease" property="disease" jdbcType="VARCHAR" />
+    <result column="body_status" property="bodyStatus" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+     <!-- 嵌套结果 -->
+	<association property="patient" column="patient_id" resultMap="cn.edu.dgut.mapper.TPatientMapper.BaseResultMap" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    diagnosis_id, symptom, doctor_id, patient_id, disease, body_status, created, updated
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TDiagnosisExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_diagnosis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_diagnosis
+    where diagnosis_id = #{diagnosisId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_diagnosis
+    where diagnosis_id = #{diagnosisId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.edu.dgut.pojo.TDiagnosisExample" >
+    delete from t_diagnosis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.edu.dgut.pojo.TDiagnosis" >
+    insert into t_diagnosis (diagnosis_id, symptom, doctor_id, 
+      patient_id, disease, body_status, 
+      created, updated)
+    values (#{diagnosisId,jdbcType=BIGINT}, #{symptom,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, 
+      #{patientId,jdbcType=VARCHAR}, #{disease,jdbcType=VARCHAR}, #{bodyStatus,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TDiagnosis" >
+    insert into t_diagnosis
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="diagnosisId != null" >
+        diagnosis_id,
+      </if>
+      <if test="symptom != null" >
+        symptom,
+      </if>
+      <if test="doctorId != null" >
+        doctor_id,
+      </if>
+      <if test="patientId != null" >
+        patient_id,
+      </if>
+      <if test="disease != null" >
+        disease,
+      </if>
+      <if test="bodyStatus != null" >
+        body_status,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="diagnosisId != null" >
+        #{diagnosisId,jdbcType=BIGINT},
+      </if>
+      <if test="symptom != null" >
+        #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null" >
+        #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null" >
+        #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="disease != null" >
+        #{disease,jdbcType=VARCHAR},
+      </if>
+      <if test="bodyStatus != null" >
+        #{bodyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.edu.dgut.pojo.TDiagnosisExample" resultType="java.lang.Integer" >
+    select count(*) from t_diagnosis
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_diagnosis
+    <set >
+      <if test="record.diagnosisId != null" >
+        diagnosis_id = #{record.diagnosisId,jdbcType=BIGINT},
+      </if>
+      <if test="record.symptom != null" >
+        symptom = #{record.symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doctorId != null" >
+        doctor_id = #{record.doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patientId != null" >
+        patient_id = #{record.patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disease != null" >
+        disease = #{record.disease,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bodyStatus != null" >
+        body_status = #{record.bodyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_diagnosis
+    set diagnosis_id = #{record.diagnosisId,jdbcType=BIGINT},
+      symptom = #{record.symptom,jdbcType=VARCHAR},
+      doctor_id = #{record.doctorId,jdbcType=VARCHAR},
+      patient_id = #{record.patientId,jdbcType=VARCHAR},
+      disease = #{record.disease,jdbcType=VARCHAR},
+      body_status = #{record.bodyStatus,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.dgut.pojo.TDiagnosis" >
+    update t_diagnosis
+    <set >
+      <if test="symptom != null" >
+        symptom = #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorId != null" >
+        doctor_id = #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null" >
+        patient_id = #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="disease != null" >
+        disease = #{disease,jdbcType=VARCHAR},
+      </if>
+      <if test="bodyStatus != null" >
+        body_status = #{bodyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where diagnosis_id = #{diagnosisId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TDiagnosis" >
+    update t_diagnosis
+    set symptom = #{symptom,jdbcType=VARCHAR},
+      doctor_id = #{doctorId,jdbcType=VARCHAR},
+      patient_id = #{patientId,jdbcType=VARCHAR},
+      disease = #{disease,jdbcType=VARCHAR},
+      body_status = #{bodyStatus,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where diagnosis_id = #{diagnosisId,jdbcType=BIGINT}
+  </update>
+  <select id="countByCondition" parameterType="java.util.Map"
+		resultType="int">
+		select count(*) from t_diagnosis d,t_patient p
+		<where>
+			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+				and p.name = #{name}
+			</if>
+			<if test="symptom!=null and !&quot;&quot;.equals(symptom.trim())">
+				and d.symptom like '%' #{symptom} '%'
+			</if>
+			and d.patient_id = p.patient_id
+		</where>
+	</select>
+	<select id="pageByCondition" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select * from t_diagnosis d,t_patient p
+		<where>
+			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+				and p.name = #{name}
+			</if>
+			<if test="symptom!=null and !&quot;&quot;.equals(symptom.trim())">
+				and d.symptom like '%' #{symptom} '%'
+			</if>
+			and d.patient_id = p.patient_id
+		</where>
+
+		order by d.diagnosis_id limit #{pageIndex} ,#{pageSize}
+	</select>
+	
+	<select id="selectByDidAndPName" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from t_diagnosis d,t_patient p
+				where d.diagnosis_id = #{diagnosisId}
+				and p.name = #{patientName} 
+				and d.patient_id = p.patient_id
+	</select>
+</mapper>
