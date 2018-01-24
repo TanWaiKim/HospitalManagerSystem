@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -102,8 +103,8 @@
 						<td>${patient.phone }</td>
 						<td>${patient.mcName }</td>
 						<td>${patient.isFinished }</td>
-						<td>${patient.created }</td>
-						<td>${patient.updated }</td>
+						<td><fmt:formatDate type="date" value="${patient.created }"/></td>
+						<td><fmt:formatDate type="date" value="${patient.updated }"/></td>
 						
 						<td><div class="button-group">
 								<a class="button border-main"
