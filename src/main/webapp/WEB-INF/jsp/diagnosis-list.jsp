@@ -71,7 +71,7 @@
 					items="${diagnosisList}" var="diagnosis" varStatus="status">
 					<tr>
 						<td style="text-align: left; padding-left: 20px;"><input
-							type="checkbox" name="id[]" value="${diagnosis.diagnosisId}" /><span>${status.count}</span>
+							type="checkbox" name="id[]" value="${diagnosis.diagnosisId}" /><span>${(page.currentPage-1)*3+status.count}</span>
 						</td>
 						
 						<td>${diagnosis.patient.patientId}</td>
@@ -81,7 +81,7 @@
 						<td>${diagnosis.bodyStatus }</td>
 						<td>${diagnosis.doctorId }</td>
 						<td><fmt:formatDate type="date" value="${diagnosis.created }"/></td>
-						<td><fmt:formatDate type="date" value="${diagnosis.created }"/></td>
+						<td><fmt:formatDate type="date" value="${diagnosis.updated }"/></td>
 						
 						<td><div class="button-group">
 								<a class="button border-main"

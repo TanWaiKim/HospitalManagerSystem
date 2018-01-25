@@ -92,7 +92,7 @@
 					items="${patientList}" var="patient"  varStatus="status">
 					<tr>
 						<td style="text-align: left; padding-left: 20px;"><input
-							type="checkbox" name="id[]" value="${patient.id}" /><span>${status.count}</span>
+							type="checkbox" name="id[]" value="${patient.id}" /><span>${(page.currentPage-1)*3+status.count}</span>
 						</td>
 
 						<td>${patient.name }</td>
