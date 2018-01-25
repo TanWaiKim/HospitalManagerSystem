@@ -39,4 +39,6 @@ public interface TPatientMapper {
 	void insertInfoBatch(List<TPatient> patientList);
 
 	TPatient selectLastRecord();
+
+	List<TPatient> selectAllPatient();
 }

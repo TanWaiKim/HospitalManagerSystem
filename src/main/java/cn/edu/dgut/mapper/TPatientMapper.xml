@@ -420,4 +420,8 @@
       )
     </foreach>  
 </insert>  
+<!-- 查询所有记录 -->
+  <select id="selectAllPatient"  resultMap="BaseResultMap">
+  	select * from  t_patient
+  </select>
 </mapper>

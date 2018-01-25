@@ -384,6 +384,20 @@ public class PatientServiceImpl implements PatientService {
 	    patientMapper.insertInfoBatch(patientList);
 	    
 	}
+
+	@Override
+	public List<String> selectAllPatientIds() {
+		List<TPatient> patientList = patientMapper.selectAllPatient();
+		if(patientList.size()>0){
+			List<String> ids = new ArrayList<String>();
+			for (TPatient patient : patientList) {
+				ids.add(patient.getPatientId());
+			}
+			return ids;
+			
+		}
+		return null;
+	}
 	
 	
 

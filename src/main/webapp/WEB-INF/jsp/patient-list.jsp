@@ -122,7 +122,7 @@
 						href="javascript:deleteBatch()"
 						class="button border-red icon-trash-o" style="padding: 5px 15px;" >
 							删除</a></td>
-					<td colspan="4" style="text-align: left; padding-left: 20px;">
+					<td colspan="3" style="text-align: left; padding-left: 20px;">
 							<input type="file" class="input"  name="uploadFile" id="uploadFile"/>
 					</td>
 					<td colspan="7" style="text-align: left; padding-left: 20px;">

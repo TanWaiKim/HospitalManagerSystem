@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 				//对输入的密码进行验证
 				if(doctorList.get(0).getLoginPassword().equals(password)){
 					//密码相同
-					request.getSession().setAttribute("doctorLoginName", username);
+					request.getSession().setAttribute("doctorInfo", doctorList.get(0));
 					return HmsResult.build(200, "医生登录成功");
 				}else{
 					//密码不相等

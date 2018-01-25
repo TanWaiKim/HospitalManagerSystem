@@ -19,4 +19,5 @@ public interface PatientService {
 	boolean isSimpleLoginName(String loginName);
 	void export(String[] idArray);
 	void importExcelInfo(MultipartFile file) throws Exception;
+	List<String> selectAllPatientIds();
 }

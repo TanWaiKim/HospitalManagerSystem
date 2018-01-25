@@ -1,5 +1,6 @@
 package cn.edu.dgut.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,19 +62,25 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 		return diagnosisMapper.updateByPrimaryKey(diagnosis);
 	}
 
+	//增加诊断信息
 	public int addDiagnosisByTDiagnosis(TDiagnosis diagnosis) {
-		
-		return 0;
+		diagnosis.setPatientId(diagnosis.getPatient().getPatientId());
+		Date date = new Date();
+		diagnosis.setCreated(date);
+		diagnosis.setUpdated(date);
+		return diagnosisMapper.insert(diagnosis);
 	}
 
 	public int deleteDiagnosisByDId(long diagnosisId) {
-		
-		return 0;
+		return diagnosisMapper.deleteByPrimaryKey(diagnosisId);
 	}
 
 	public int deleteDiagnosisByDIds(String[] dIds) {
-		
-		return 0;
+		List<Long> list = new ArrayList<Long>();
+		for (String id : dIds) {
+			list.add(Long.valueOf(id).longValue());
+		}
+		return diagnosisMapper.deleteBatch(list);
 	}
 
 	public boolean isSimpleLoginName(String loginName) {

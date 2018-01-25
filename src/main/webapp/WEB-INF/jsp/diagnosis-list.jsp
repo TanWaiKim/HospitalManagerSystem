@@ -62,15 +62,16 @@
 					<th width="200" >病人症状</th>
 					<th width="250" >诊断疾病</th>
 					<th width="150" >病人身体情况</th>
+					<th width="150" >诊断医生编号</th>
 					<th width="150" >创建时间</th>
 					<th width="150" >更新时间</th>
 					<th width="270">操作</th>
 				</tr>
-				<volist name="list" id="vo"> <c:forEach
+				 <c:forEach
 					items="${diagnosisList}" var="diagnosis" varStatus="status">
 					<tr>
 						<td style="text-align: left; padding-left: 20px;"><input
-							type="checkbox" name="id[]" value="${status.count}" /><span>${status.count}</span>
+							type="checkbox" name="id[]" value="${diagnosis.diagnosisId}" /><span>${status.count}</span>
 						</td>
 						
 						<td>${diagnosis.patient.patientId}</td>
@@ -78,6 +79,7 @@
 						<td>${diagnosis.symptom }</td>
 						<td>${diagnosis.disease }</td>
 						<td>${diagnosis.bodyStatus }</td>
+						<td>${diagnosis.doctorId }</td>
 						<td><fmt:formatDate type="date" value="${diagnosis.created }"/></td>
 						<td><fmt:formatDate type="date" value="${diagnosis.created }"/></td>
 						
@@ -85,7 +87,7 @@
 								<a class="button border-main"
 									href="${pageContext.request.contextPath }/diagnosis/findById/${diagnosis.diagnosisId }/${diagnosis.patient.name }"><span
 									class="icon-edit"></span> 修改</a> <a class="button border-red"
-									href="javascript:judgeDelete(1)"><span
+									href="javascript:judgeDelete('${diagnosis.diagnosisId}')"><span
 									class="icon-trash-o"></span> 删除</a>
 							</div></td>
 					</tr>
@@ -144,14 +146,14 @@
 			
 			if (confirm("确定要删除id为" + id + "的记录吗？")) {
 				var params = {"id":id};
-				$.post("${pageContext.request.contextPath }/patient/deleteOne",params ,function(data){
+				$.post("${pageContext.request.contextPath }/diagnosis/deleteOne",params ,function(data){
         			if(data.status == 200){
         				alert('删除成功!');
-        				location.href = "${pageContext.request.contextPath }/patient/list";
+        				location.href = "${pageContext.request.contextPath }/diagnosis/list";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/patient/list";
+        				location.href = "${pageContext.request.contextPath }/diagnosis/list";
         			}
         		});
 				//window.location.href = "${pageContext.request.contextPath }/patient/deleteOne?id="+ id;
@@ -190,14 +192,14 @@
 				}
 				var ids = getSelectionsIds();
 				var params = {"ids":ids};
-				$.post("${pageContext.request.contextPath }/patient/deleteBatch",params ,function(data){
+				$.post("${pageContext.request.contextPath }/diagnosis/deleteBatch",params ,function(data){
         			if(data.status == 200){
-        				alert('删除病人记录成功!');
-        				location.href = "${pageContext.request.contextPath }/patient/list";
+        				alert('删除成功!');
+        				location.href = "${pageContext.request.contextPath }/diagnosis/list";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/patient/list";
+        				location.href = "${pageContext.request.contextPath }/diagnosis/list";
         			}
         		});
 				//$('#listform').attr("action","${pageContext.request.contextPath }/patient/deleteBatch");
@@ -208,72 +210,7 @@
 			}
 		}
 		
-		//批量导出数据
-		function exportByBatch(){
-			var Checkbox = false;
-			$("input[name='id[]']").each(function() {
-				if (this.checked == true) {
-					Checkbox = true;
-				}
-			});
-			if (Checkbox) {
-				var t = confirm("您确认要导出选中的内容吗？");
-				if (t == false){
-					return false;
-				}
-				var ids = getSelectionsIds();
-				var params = {"ids":ids};
-				$.post("${pageContext.request.contextPath }/patient/export",params ,function(data){
-        			if(data.status == 200){
-        				alert('导出病人记录成功!');
-        				location.href = "${pageContext.request.contextPath }/patient/list";
-        			}if(data.status == 500){
-        				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/patient/list";
-        			}
-        		});
-				//$('#listform').attr("action","${pageContext.request.contextPath }/patient/exportByBatch");
-				//$("#listform").submit();
-			} else {
-				alert("请选择您要导出内容的ID!");
-				return false;
-			}
-		}
-		
-		function ajaxFileUploadForType(){
-		    if($('input[type="file"]').val()!=""){
-		         var extend=$('input[type="file"]').val().substr($('input[type="file"]').val().lastIndexOf(".")+1);
-		         if("xls|xlsx".indexOf(extend+"|")==-1){
-		             flagPic=false;
-		             alert("选择的文件必须是EXCEL文件,请确认！");
-		         }else{
-		             $.ajaxFileUpload
-		                (
-		                    {
-		                        url: '${pageContext.request.contextPath }/patient/import', //用于文件上传的服务器端请求地址
-		                        secureuri: false, //是否需要安全协议，一般设置为false
-		                        fileElementId: 'uploadFile', //文件上传域的ID
-		                        dataType: 'json', //返回值类型 一般设置为json
-		                        success: function (data)  //服务器成功响应处理函数
-		                        {   
-		                            if(data.status == "200"){
-		                                alert('导入成功！');
-		                                location.href = "${pageContext.request.contextPath }/patient/list";
-		                            }else if(data.status == "500"){
-		                                alert('导入失败！');
-		                            }
-		                        },
-		                        error: function (data, status, e)//服务器响应失败处理函数
-		                        {
-		                           alert('导入失败！');
-		                        }
-		                    }
-		                )
-		         }
-		    }else{
-		         alert("请选EXCEL文件！");
-		    }
-		}
+	
 	</script>
 </body>
 </html>

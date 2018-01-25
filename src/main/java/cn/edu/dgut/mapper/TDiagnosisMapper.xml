@@ -292,4 +292,13 @@
 				and p.name = #{patientName} 
 				and d.patient_id = p.patient_id
 	</select>
+	
+	<!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from t_diagnosis where diagnosis_id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
 </mapper>

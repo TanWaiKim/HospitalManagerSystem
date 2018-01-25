@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 
+import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TDiagnosis;
+import cn.edu.dgut.pojo.TDoctor;
 import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.service.DiagnosisService;
 import cn.edu.dgut.service.PatientService;
@@ -95,29 +97,21 @@ public class DiagnosisController {
 	}
 
 	@RequestMapping("/skipToAdd")
-	public String skipToAdd() {
+	public String skipToAdd(Model model) {
+		//跳转到添加诊断信息界面并查询所有记录的病人编号
+		List<String> patientIds = patientService.selectAllPatientIds();
+		model.addAttribute("patientIds", patientIds);
 		return "diagnosis-add";
 	}
 
 	@RequestMapping("/add")
 	@ResponseBody()
-	public HmsResult addPatientByTPatient(TPatient patient, Model model) {
+	public HmsResult addDiagnosisByTDiagnosis(TDiagnosis diagnosis, HttpServletRequest request,Model model) {
 		try {
-			// System.out.println("Patient=" + patient);
-			if (patient.getPhone() == null) {
-				return HmsResult.build(505, "手机号码不能为空！");
-			}
-			if (patient.getPhone() != null && patient.getPhone().length() != 11) {
-				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
-			}
-			if (patientService.getPatientByPhone(patient.getPhone()) != null) {
-				return HmsResult.build(505, "手机号码已存在！");
-			}
-
-			if (patientService.isSimpleLoginName(patient.getLoginName())) {
-				return HmsResult.build(505, "病人登录账号已存在,请重新输入!");
-			}
-			if (patientService.addPatientByTPatient(patient) > 0) {
+			TDoctor doctor = (TDoctor) request.getSession().getAttribute("doctorInfo");
+			diagnosis.setDoctorId(doctor.getDoctorId());
+			System.out.println("diagnosis="+diagnosis.toString());
+			if (diagnosisService.addDiagnosisByTDiagnosis(diagnosis) > 0) {
 				return HmsResult.ok();
 			}
 
@@ -130,11 +124,9 @@ public class DiagnosisController {
 
 	@RequestMapping("/deleteOne")
 	@ResponseBody
-	public HmsResult deletePatientById(String id) {
-		System.out.println("id=" + id);
+	public HmsResult deleteDiagnosisById(String id) {
 		try {
-			if (patientService.deletePatientById(Long.valueOf(id).longValue()) > 0) {
-
+			if (diagnosisService.deleteDiagnosisByDId(Long.valueOf(id).longValue()) > 0) {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
@@ -148,18 +140,18 @@ public class DiagnosisController {
 
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
 	@ResponseBody
-	public HmsResult deletePatientByIds(String ids) {
+	public HmsResult deletDiagnosisByIds(String ids) {
 		String[] idArray = ids.split(",");
 
 		try {
-			if (patientService.deletePatientByIds(idArray) > 0) {
+			if (diagnosisService.deleteDiagnosisByDIds(idArray) > 0) {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除病人记录失败！");
+			return HmsResult.build(500, "删除失败！");
 		}
-		return HmsResult.build(500, "删除病人记录失败！");
+		return HmsResult.build(500, "删除失败！");
 		
 
 	}

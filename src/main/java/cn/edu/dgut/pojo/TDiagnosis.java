@@ -92,4 +92,11 @@ public class TDiagnosis {
     public void setUpdated(Date updated) {
         this.updated = updated;
     }
+
+	@Override
+	public String toString() {
+		return "TDiagnosis [diagnosisId=" + diagnosisId + ", symptom=" + symptom + ", doctorId=" + doctorId
+				+ ", patientId=" + patientId + ", disease=" + disease + ", bodyStatus=" + bodyStatus + ", created="
+				+ created + ", updated=" + updated + ", patient=" + patient + "]";
+	}
 }
