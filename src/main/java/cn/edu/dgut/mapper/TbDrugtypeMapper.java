@@ -12,7 +12,7 @@ public interface TbDrugtypeMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(TbDrugtype record);
+    int insert(TbDrugtype drugtype);
 
     int insertSelective(TbDrugtype record);
 
@@ -27,4 +27,7 @@ public interface TbDrugtypeMapper {
     int updateByPrimaryKeySelective(TbDrugtype record);
 
     int updateByPrimaryKey(TbDrugtype record);
+    
+    TbDrugtype selectLastRecord();
+    
 }

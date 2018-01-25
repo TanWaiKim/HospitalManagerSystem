@@ -103,7 +103,7 @@
     insert into tb_drugtype (id, drugtype_name, remarks, 
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{drugtypeName,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbDrugtype" >
     insert into tb_drugtype
@@ -135,10 +135,10 @@
         #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
     </trim>
   </insert>
@@ -177,7 +177,7 @@
       drugtype_name = #{record.drugtypeName,jdbcType=VARCHAR},
       remarks = #{record.remarks,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -195,7 +195,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -205,7 +205,14 @@
     set drugtype_name = #{drugtypeName,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+ 
+  <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_drugtype order by id desc limit 1
+  </select>
+  
+  
 </mapper>
