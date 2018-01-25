@@ -14,14 +14,11 @@ import cn.edu.dgut.pojo.TbDrugtype;
  */
 public interface DrugtypeService {
 	List<TbDrugtype> getAllDrugtype(Page page);
-	List<TbDrugtype> pageByCondition(String drugtypeId, String name, String mcName, String keywords, Page page);
-	TbDrugtype getDrugtypeById(String drugtypeId);
-	TbDrugtype getDrugtypeByPhone(String phone);
+	List<TbDrugtype> pageByCondition(String drugtypeName, String keywords, Page page);
+	TbDrugtype getDrugtypeById(Integer id);
 	int updateDrugtypeByTbDrugtype(TbDrugtype drugtype);
 	int addDrugtypeByTbDrugtype(TbDrugtype drugtype);
-	int deleteDrugtypeById(long id);
+	int deleteDrugtypeById(Integer id);
 	int deleteDrugtypeByIds(String[] ids);
 	boolean isSimpleLoginName(String loginName);
-	void export(String[] idArray);
-	void importExcelInfo(MultipartFile file) throws Exception;
 }

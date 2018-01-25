@@ -1,14 +1,22 @@
 package cn.edu.dgut.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.edu.dgut.mapper.TbAdminMapper;
 import cn.edu.dgut.mapper.TbDrugtypeMapper;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
+import cn.edu.dgut.pojo.TPatientExample;
+import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbAdminExample;
 import cn.edu.dgut.pojo.TbDrugtype;
 import cn.edu.dgut.service.DrugtypeService;
 
@@ -23,37 +31,61 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	@Autowired
 	private TbDrugtypeMapper drugtypeMapper;
 	
+	@Autowired
+	private TbAdminMapper adminMapper;
+	
+	
+	/**
+	 * 分页查询医药种类信息
+	 */
 	@Override
 	public List<TbDrugtype> getAllDrugtype(Page page) {
-		
-		return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		// 根据条件查询总数
+		int totalNum = drugtypeMapper.countByCondition(map);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		return drugtypeMapper.pageByCondition(map);
 	}
 
+	/**
+	 * 添加分页查询医药种类信息
+	 */
 	@Override
-	public List<TbDrugtype> pageByCondition(String drugtypeId, String name, String mcName, String keywords, Page page) {
-		
-		return null;
+	public List<TbDrugtype> pageByCondition(String drugtypeName, String keywords, Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("drugtypeName", drugtypeName);
+		map.put("keywords", keywords);
+		// 根据条件查询总数
+		int totalNum = drugtypeMapper.countByCondition(map);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		return drugtypeMapper.pageByCondition(map);
 	}
 
-
+	/**
+	 * 根据id查询医药种类信息
+	 */
 	@Override
-	public TbDrugtype getDrugtypeById(String drugtypeId) {
-		
+	public TbDrugtype getDrugtypeById(Integer id) {
+		TbDrugtype drugtype = drugtypeMapper.selectByPrimaryKey(id);
+		if (drugtype!=null) {
+			return drugtype;
+		}
 		return null;
 	}
 
-
-	@Override
-	public TbDrugtype getDrugtypeByPhone(String phone) {
-		
-		return null;
-	}
-
-
+	/**
+	 * 修改医药种类信息
+	 */
 	@Override
 	public int updateDrugtypeByTbDrugtype(TbDrugtype drugtype) {
-		
-		return 0;
+		int count = drugtypeMapper.updateByPrimaryKey(drugtype);
+		return count;
 	}
 
 	/**
@@ -84,38 +116,43 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 		return count;
 	}
 
-
+	/**
+	 * 根据id删除单个医药种类信息
+	 */
 	@Override
-	public int deleteDrugtypeById(long id) {
-		
-		return 0;
+	public int deleteDrugtypeById(Integer id) {
+		return drugtypeMapper.deleteByPrimaryKey(id);
 	}
 
-
+	/**
+	 * 批量删除医药种类信息
+	 */
 	@Override
 	public int deleteDrugtypeByIds(String[] ids) {
-		
-		return 0;
+		List<Long> list = new ArrayList<Long>();
+		for (String id : ids) {
+			list.add(Long.valueOf(id).longValue());
+		}
+		return drugtypeMapper.deleteBatch(list);
 	}
 
-
+	/*
+	 * 判断数据库中是否存在该登录账号所对应的记录
+	 * 如果找到该记录，则返回true
+	 * 否则返回false
+	 */
 	@Override
-	public boolean isSimpleLoginName(String loginName) {
-		
+	public boolean isSimpleLoginName(String username) {
+		//根据loginName条件查询
+		TbAdminExample example = new TbAdminExample();
+		example.createCriteria().andUsernameEqualTo(username);
+		List<TbAdmin> adminList = adminMapper.selectByExample(example);
+		if(adminList.size()>0){
+			return true;
+		}
 		return false;
 	}
 
-	@Override
-	public void export(String[] idArray) {
-		
 
-	}
-
-
-	@Override
-	public void importExcelInfo(MultipartFile file) throws Exception {
-		
-
-	}
 
 }

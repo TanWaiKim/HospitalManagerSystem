@@ -204,7 +204,6 @@
     update tb_drugtype
     set drugtype_name = #{drugtypeName,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -214,5 +213,39 @@
   	select * from  tb_drugtype order by id desc limit 1
   </select>
   
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_drugtype dt
+  		<where>
+  			<if test="drugtypeName!=null and !&quot;&quot;.equals(drugtypeName.trim())">
+  				and dt.drugtype_name like '%' #{drugtypeName} '%'
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				or dt.remarks like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  </select>
   
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select * from tb_drugtype dt
+  		<where>
+  			<if test="drugtypeName!=null and !&quot;&quot;.equals(drugtypeName.trim())">
+  				and dt.drugtype_name like '%' #{drugtypeName} '%'
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				or dt.remarks like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  		order by dt.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from tb_drugtype where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
 </mapper>

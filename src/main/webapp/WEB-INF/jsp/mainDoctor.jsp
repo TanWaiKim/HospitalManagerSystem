@@ -110,8 +110,6 @@
 			<li><a href="info.html" target="right"><span
 					class="icon-caret-right"></span>供药商管理</a></li>
 					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>客户管理</a></li>
-					<li><a href="info.html" target="right"><span
 					class="icon-caret-right"></span>仓库管理</a></li>
 		</ul>
 		
@@ -133,7 +131,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="patient/list" target="right">
+						<a href="drugtype/list" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>管理医药种类
 						</a>

@@ -3,6 +3,8 @@ package cn.edu.dgut.mapper;
 import cn.edu.dgut.pojo.TbDrugtype;
 import cn.edu.dgut.pojo.TbDrugtypeExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbDrugtypeMapper {
@@ -29,5 +31,11 @@ public interface TbDrugtypeMapper {
     int updateByPrimaryKey(TbDrugtype record);
     
     TbDrugtype selectLastRecord();
+    
+	int countByCondition(Map<String, Object> map);
+
+	List<TbDrugtype> pageByCondition(Map<String, Object> map);
+
+	int deleteBatch(List<Long> list);
     
 }
