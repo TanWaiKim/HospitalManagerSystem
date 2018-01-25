@@ -56,9 +56,6 @@ public class DrugtypeControlller {
 				return HmsResult.build(505, "医药种类简介不能为空！");
 			}
 			
-			System.out.println("种类名字："+drugtype.getDrugtypeName());
-			System.out.println("种类简介："+drugtype.getRemarks());
-			
 			if (drugtypeService.addDrugtypeByTbDrugtype(drugtype) > 0) {
 				return HmsResult.ok();
 			}

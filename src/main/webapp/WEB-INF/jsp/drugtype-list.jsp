@@ -74,8 +74,11 @@
 				</tr>
 				<c:forEach items="${drugtypeList}" var="drugtype"  varStatus="status">
 					<tr>
-						<td style="text-align: left; padding-left: 20px;"><input
-							type="checkbox" name="id[]" value="${drugtype.id}" /><span>${status.count}</span>
+						<td style="text-align: left; padding-left: 20px;">
+							<input type="checkbox" name="id[]" value="${drugtype.id}" />
+								<span>
+									${(page.currentPage-1)*3+status.count}
+								</span>
 						</td>
 
 						<td>${drugtype.drugtypeName }</td>
