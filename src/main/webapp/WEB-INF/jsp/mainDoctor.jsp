@@ -120,11 +120,50 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>医药种类管理</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>医药信息管理</a></li>
+			<li>
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>医药种类管理
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/drugtype/skipToAdd" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加医药种类
+						</a>
+					</li>
+					<li>
+						<a href="patient/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理医药种类
+						</a>
+					</li>
+				</ul>
+			</li>
+					
+					
+			<li>
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>医药信息管理
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/drugtype/skipToAdd" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加医药信息
+						</a>
+					</li>
+					<li>
+						<a href="patient/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理医药信息
+						</a>
+					</li>
+				</ul>
+			</li>
 		</ul>
+		
 		<h2>
 			<span class="icon-hospital-o"></span>采药管理
 		</h2>
@@ -203,6 +242,26 @@
 	<script type="text/javascript">
 		$(function() {
 			$(".leftnav h2").click(function() {
+				$("#a_leader_txt").text("");
+				$(this).next().slideToggle(200);
+				$(this).toggleClass("on");
+				$("#a_leader").text($(this).text());
+				$(this).addClass("on");
+				$(".leftnav ul li a").click(function() {
+					$("#a_leader_txt").text($(this).text());
+					$(".leftnav ul li a").removeClass("on");
+					$(this).addClass("on");
+				})
+				
+			})
+			
+
+			
+			
+		});
+	
+		$(function() {
+			$(".leftnav h5").click(function() {
 				$("#a_leader_txt").text("");
 				$(this).next().slideToggle(200);
 				$(this).toggleClass("on");
