@@ -3,6 +3,8 @@ package cn.edu.dgut.mapper;
 import cn.edu.dgut.pojo.TPrescription;
 import cn.edu.dgut.pojo.TPrescriptionExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TPrescriptionMapper {
@@ -27,4 +29,8 @@ public interface TPrescriptionMapper {
     int updateByPrimaryKeySelective(TPrescription record);
 
     int updateByPrimaryKey(TPrescription record);
+
+	int countByCondition(Map<String, Object> map);
+
+	List<TPrescription> pageByCondition(Map<String, Object> map);
 }

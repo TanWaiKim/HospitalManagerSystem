@@ -49,11 +49,8 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 	}
 
 	//多表条件查询单条记录
-	public TDiagnosis getDiagnosisByDId(long diagnosisId, String patientName) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("diagnosisId", diagnosisId);
-		map.put("patientName", patientName);
-		return diagnosisMapper.selectByDidAndPName(map);
+	public TDiagnosis getDiagnosisByDId(long diagnosisId) {
+		return diagnosisMapper.selectByDid(diagnosisId);
 	}
 
 	//更新诊断信息
@@ -81,21 +78,6 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 			list.add(Long.valueOf(id).longValue());
 		}
 		return diagnosisMapper.deleteBatch(list);
-	}
-
-	public boolean isSimpleLoginName(String loginName) {
-		
-		return false;
-	}
-
-	public void export(String[] idArray) {
-		
-
-	}
-
-	public void importExcelInfo(MultipartFile file) throws Exception {
-		
-
 	}
 
 }

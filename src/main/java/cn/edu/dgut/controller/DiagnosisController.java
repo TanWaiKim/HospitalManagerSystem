@@ -75,9 +75,9 @@ public class DiagnosisController {
 		return "diagnosis-list";
 	}
 
-	@RequestMapping("/findById/{diagnosisId}/{patientName}")
-	public String getDiagnosisById(@PathVariable("diagnosisId") long diagnosisId, @PathVariable(value = "patientName") String patientName, Model model) {
-		TDiagnosis diagnosis = diagnosisService.getDiagnosisByDId(diagnosisId,patientName);
+	@RequestMapping("/findById/{diagnosisId}")
+	public String getDiagnosisById(@PathVariable("diagnosisId") long diagnosisId, Model model) {
+		TDiagnosis diagnosis = diagnosisService.getDiagnosisByDId(diagnosisId);
 		model.addAttribute("diagnosis", diagnosis);
 		return "diagnosis-update";
 	}

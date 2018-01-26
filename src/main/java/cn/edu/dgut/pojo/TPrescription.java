@@ -17,7 +17,17 @@ public class TPrescription {
 
     private String doctorId;
 
-    public Integer getId() {
+    private TPatient patient;
+    
+    public TPatient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(TPatient patient) {
+		this.patient = patient;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -72,4 +82,11 @@ public class TPrescription {
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId == null ? null : doctorId.trim();
     }
+
+	@Override
+	public String toString() {
+		return "TPrescription [id=" + id + ", prescriptionId=" + prescriptionId + ", drugData=" + drugData
+				+ ", created=" + created + ", updated=" + updated + ", patientId=" + patientId + ", doctorId="
+				+ doctorId + ", patient=" + patient + "]";
+	}
 }

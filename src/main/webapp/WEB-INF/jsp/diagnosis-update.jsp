@@ -36,7 +36,7 @@
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${diagnosis.patient.name } " readonly="readonly"
-							name="name" data-validate="required:请输入病人名字" />
+							name="name"  />
 						<div class="tips"></div>
 					</div>
 				</div>

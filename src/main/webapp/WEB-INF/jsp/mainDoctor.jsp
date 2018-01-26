@@ -80,9 +80,9 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
+			<li><a href="prescription/skipToAdd" target="right"><span
 					class="icon-caret-right"></span>添加处方信息</a></li>
-			<li><a href="pass.html" target="right"><span
+			<li><a href="prescription/list" target="right"><span
 					class="icon-caret-right"></span>管理处方信息</a></li>
 		</ul>
 		<h2>

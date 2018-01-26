@@ -39,4 +39,6 @@ public interface TDiagnosisMapper {
 	TDiagnosis selectByDidAndPName(Map<String, Object> map);
 
 	int deleteBatch(List<Long> list);
+
+	TDiagnosis selectByDid(long diagnosisId);
 }

@@ -85,7 +85,7 @@
 						
 						<td><div class="button-group">
 								<a class="button border-main"
-									href="${pageContext.request.contextPath }/diagnosis/findById/${diagnosis.diagnosisId }/${diagnosis.patient.name }"><span
+									href="${pageContext.request.contextPath }/diagnosis/findById/${diagnosis.diagnosisId }"><span
 									class="icon-edit"></span> 修改</a> <a class="button border-red"
 									href="javascript:judgeDelete('${diagnosis.diagnosisId}')"><span
 									class="icon-trash-o"></span> 删除</a>
