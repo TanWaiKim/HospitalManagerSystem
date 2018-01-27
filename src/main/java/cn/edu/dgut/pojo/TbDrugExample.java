@@ -305,52 +305,62 @@ public class TbDrugExample {
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoEqualTo(Long value) {
+        public Criteria andDrugNoEqualTo(String value) {
             addCriterion("drug_no =", value, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoNotEqualTo(Long value) {
+        public Criteria andDrugNoNotEqualTo(String value) {
             addCriterion("drug_no <>", value, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoGreaterThan(Long value) {
+        public Criteria andDrugNoGreaterThan(String value) {
             addCriterion("drug_no >", value, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoGreaterThanOrEqualTo(Long value) {
+        public Criteria andDrugNoGreaterThanOrEqualTo(String value) {
             addCriterion("drug_no >=", value, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoLessThan(Long value) {
+        public Criteria andDrugNoLessThan(String value) {
             addCriterion("drug_no <", value, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoLessThanOrEqualTo(Long value) {
+        public Criteria andDrugNoLessThanOrEqualTo(String value) {
             addCriterion("drug_no <=", value, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoIn(List<Long> values) {
+        public Criteria andDrugNoLike(String value) {
+            addCriterion("drug_no like", value, "drugNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrugNoNotLike(String value) {
+            addCriterion("drug_no not like", value, "drugNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDrugNoIn(List<String> values) {
             addCriterion("drug_no in", values, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoNotIn(List<Long> values) {
+        public Criteria andDrugNoNotIn(List<String> values) {
             addCriterion("drug_no not in", values, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoBetween(Long value1, Long value2) {
+        public Criteria andDrugNoBetween(String value1, String value2) {
             addCriterion("drug_no between", value1, value2, "drugNo");
             return (Criteria) this;
         }
 
-        public Criteria andDrugNoNotBetween(Long value1, Long value2) {
+        public Criteria andDrugNoNotBetween(String value1, String value2) {
             addCriterion("drug_no not between", value1, value2, "drugNo");
             return (Criteria) this;
         }

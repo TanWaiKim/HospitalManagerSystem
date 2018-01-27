@@ -106,7 +106,7 @@
 
 				</tr>
 				<tr>
-					<td colspan="8">
+					<td colspan="4">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

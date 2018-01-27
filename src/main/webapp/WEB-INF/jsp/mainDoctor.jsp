@@ -147,13 +147,13 @@
 		
 				<ul style="display: none">
 					<li>
-						<a href="${pageContext.request.contextPath }/drugtype/skipToAdd" target="right">
+						<a href="${pageContext.request.contextPath }/drug/skipToAdd" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>添加医药信息
 						</a>
 					</li>
 					<li>
-						<a href="patient/list" target="right">
+						<a href="drug/list" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>管理医药信息
 						</a>

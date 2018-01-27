@@ -21,4 +21,5 @@ public interface DrugtypeService {
 	int deleteDrugtypeById(Integer id);
 	int deleteDrugtypeByIds(String[] ids);
 	boolean isSimpleLoginName(String loginName);
+	List<TbDrugtype> selectAllDrugtype();
 }

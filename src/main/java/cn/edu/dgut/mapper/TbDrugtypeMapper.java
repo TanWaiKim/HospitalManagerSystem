@@ -37,5 +37,7 @@ public interface TbDrugtypeMapper {
 	List<TbDrugtype> pageByCondition(Map<String, Object> map);
 
 	int deleteBatch(List<Long> list);
+	
+	List<TbDrugtype> selectAllDrugtype();
     
 }

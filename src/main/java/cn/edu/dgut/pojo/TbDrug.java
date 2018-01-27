@@ -9,7 +9,7 @@ public class TbDrug {
 
     private String drugName;
 
-    private Long drugNo;
+    private String drugNo;
 
     private String purpose;
 
@@ -17,16 +17,18 @@ public class TbDrug {
 
     private String unit;
 
-    private String usage;
+    private String howuse;
 
-    private Date producedTime;
+    private String producedTime;
 
-    private Date validTime;
+    private String validTime;
 
     private Date createTime;
 
     private Date updateTime;
-
+    
+    private TbDrugtype drugtype;
+    
     public Integer getId() {
         return id;
     }
@@ -51,11 +53,11 @@ public class TbDrug {
         this.drugName = drugName == null ? null : drugName.trim();
     }
 
-    public Long getDrugNo() {
+    public String getDrugNo() {
         return drugNo;
     }
 
-    public void setDrugNo(Long drugNo) {
+    public void setDrugNo(String drugNo) {
         this.drugNo = drugNo;
     }
 
@@ -83,27 +85,27 @@ public class TbDrug {
         this.unit = unit == null ? null : unit.trim();
     }
 
-    public String getUsage() {
-        return usage;
+    public String getHowuse() {
+        return howuse;
     }
 
-    public void setUsage(String usage) {
-        this.usage = usage == null ? null : usage.trim();
+    public void setHowuse(String howuse) {
+        this.howuse = howuse == null ? null : howuse.trim();
     }
 
-    public Date getProducedTime() {
+    public String getProducedTime() {
         return producedTime;
     }
 
-    public void setProducedTime(Date producedTime) {
+    public void setProducedTime(String producedTime) {
         this.producedTime = producedTime;
     }
 
-    public Date getValidTime() {
+    public String getValidTime() {
         return validTime;
     }
 
-    public void setValidTime(Date validTime) {
+    public void setValidTime(String validTime) {
         this.validTime = validTime;
     }
 
@@ -122,4 +124,13 @@ public class TbDrug {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public TbDrugtype getDrugtype() {
+		return drugtype;
+	}
+
+	public void setDrugtype(TbDrugtype drugtype) {
+		this.drugtype = drugtype;
+	}
+
 }

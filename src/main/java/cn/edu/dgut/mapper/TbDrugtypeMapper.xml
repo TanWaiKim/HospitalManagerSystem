@@ -248,4 +248,9 @@
 			#{id}
 		</foreach>
   </delete>
+  
+  <!-- 查询所有记录 -->
+  <select id="selectAllDrugtype"  resultMap="BaseResultMap">
+  	select * from  tb_drugtype
+  </select>
 </mapper>

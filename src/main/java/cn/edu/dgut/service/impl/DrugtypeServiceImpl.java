@@ -36,7 +36,7 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	
 	
 	/**
-	 * 分页查询医药种类信息
+	 * 分页查询所有医药种类信息，刚进来的页面
 	 */
 	@Override
 	public List<TbDrugtype> getAllDrugtype(Page page) {
@@ -51,7 +51,7 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	}
 
 	/**
-	 * 添加分页查询医药种类信息
+	 * 分页条件查询医药种类信息，
 	 */
 	@Override
 	public List<TbDrugtype> pageByCondition(String drugtypeName, String keywords, Page page) {
@@ -151,6 +151,18 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * 查询所有的医药种类信息，不分页显示
+	 */
+	@Override
+	public List<TbDrugtype> selectAllDrugtype() {
+		List<TbDrugtype> drugtypeList = drugtypeMapper.selectAllDrugtype();
+		if (drugtypeList.size() > 0) {
+			return drugtypeList;
+		}
+		return null;
 	}
 
 
