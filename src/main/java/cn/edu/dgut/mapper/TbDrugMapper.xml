@@ -360,9 +360,8 @@
  
   <!-- 统计记录数 -->
   <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
-  	select count(*) from tb_drug d,tb_drugtype dt 
+  	select count(*) from tb_drug d
   		<where>
-  			d.drugtype_id = dt.id
   			<if test="drugtypeId != null">
   				and d.drugtype_id =  #{drugtypeId} 
   			</if>
@@ -373,9 +372,7 @@
   				and d.drug_no like '%' #{drugNo} '%'
   			</if>
   			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				or d.purpose like '%' #{keywords} '%'
-  				or d.howuse like '%' #{keywords} '%'
-  				or d.spec like '%' #{keywords} '%'
+  				and d.purpose like '%' #{keywords} '%'
   			</if>
   		</where>
   </select>
@@ -397,9 +394,7 @@
   				and d.drug_no like '%' #{drugNo} '%'
   			</if>
   			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				or d.purpose like '%' #{keywords} '%'
-  				or d.howuse like '%' #{keywords} '%'
-  				or d.spec like '%' #{keywords} '%'
+  				and d.purpose like '%' #{keywords} '%'
   			</if>
   		</where>
   		order by d.id limit #{pageIndex} ,#{pageSize}
