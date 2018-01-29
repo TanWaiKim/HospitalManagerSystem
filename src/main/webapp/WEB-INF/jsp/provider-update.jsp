@@ -21,31 +21,64 @@
 <body>
 	<div class="panel admin-panel">
 		<div class="panel-head" id="add">
-			<strong><span class="icon-pencil-square-o"></span>修改医药种类</strong>
+			<strong><span class="icon-pencil-square-o"></span>修改供药商信息</strong>
 		</div>
 		<div class="body-content">
-			<form method="post" id="drugtypeUpdateForm" class="form-x"
+			<form method="post" id="providerUpdateForm" class="form-x"
 				onsubmit="return false;">
-				<input type="hidden" id="id" name="id" value="${drugtype.id }" />
-				<input type="hidden" id="createTime" name="createTime" value="${drugtype.createTime }" />
+				<input type="hidden" id="id" name="id" value="${provider.id }" />
+				<input type="hidden" id="createTime" name="createTime" value="${provider.createTime }" />
 				
 				<div class="form-group">
 					<div class="label">
-						<label>医药种类名称：</label>
+						<label>供药商名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${drugtype.drugtypeName}" name="drugtypeName"
-							data-validate="required:请输入医药种类名称" />
+						<input type="text" class="input w50" value="${provider.providerName}" name="providerName"
+							data-validate="required:请输入供药商名称" />
 						<div class="tips"></div>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="label">
-						<label>医药种类简介：</label>
+						<label>公司地址：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w60" value="${drugtype.remarks}" name="remarks" data-validate="required:请输入医药种类简介"/>
+						<input type="text" class="input w50" value="${provider.address}" name="address"
+							data-validate="required:请输入公司地址" />
+						<div class="tips"></div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>联络人：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${provider.contact}" name="contact"
+							data-validate="required:请输入联络人" />
+						<div class="tips"></div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>联络人电话：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${provider.phone}" name="phone"
+							data-validate="required:请输入联络人电话" />
+						<div class="tips"></div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="label">
+						<label>备注：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${provider.remarks}" name="remarks" data-validate="required:请输入备注"/>
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -66,12 +99,12 @@
 		function updateForm() {
 			//ajax的post方式提交表单
 			//$("#patientUpdateForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/drugtype/update",
-							$("#drugtypeUpdateForm").serialize(),
+			$.post("${pageContext.request.contextPath }/provider/update",
+							$("#providerUpdateForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
 									alert("修改成功!");
-									location.href = "${pageContext.request.contextPath }/drugtype/list";
+									location.href = "${pageContext.request.contextPath }/provider/list";
 								} else if (data.status == 500) {
 									alert("修改失败!");
 								} else if (data.status == 505) {

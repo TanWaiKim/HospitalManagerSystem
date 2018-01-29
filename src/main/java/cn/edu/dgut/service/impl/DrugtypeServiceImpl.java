@@ -61,7 +61,7 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 		// 根据条件查询总数
 		int totalNum = drugtypeMapper.countByCondition(map);
 		page.setTotalNumber(totalNum);
-		// 组织分页查询总数数
+		// 组织分页查询总数
 		map.put("pageIndex", page.getDbIndex());
 		map.put("pageSize", page.getDbNumber());
 		return drugtypeMapper.pageByCondition(map);

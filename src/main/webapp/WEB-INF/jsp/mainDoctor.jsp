@@ -107,10 +107,48 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>供药商管理</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>仓库管理</a></li>
+			<li>
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>供药商管理
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/provider/skipToAdd" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加供药商信息
+						</a>
+					</li>
+					<li>
+						<a href="provider/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理供药商信息
+						</a>
+					</li>
+				</ul>
+			</li>
+					
+					
+			<li>
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>仓库管理
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/warehouse/skipToAdd" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加仓库信息
+						</a>
+					</li>
+					<li>
+						<a href="warehouse/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理仓库信息
+						</a>
+					</li>
+				</ul>
+			</li>
 		</ul>
 		
 		<h2>

@@ -127,7 +127,7 @@ public class DrugtypeControlller {
 	@RequestMapping("/findById")
 	public String getDrugtypeById(@RequestParam(value = "id") Integer id, Model model) {
 		TbDrugtype drugtype = drugtypeService.getDrugtypeById(id);
-		model.addAttribute("drugType", drugtype);
+		model.addAttribute("drugtype", drugtype);
 		return "drugtype-update";
 	}
 	
