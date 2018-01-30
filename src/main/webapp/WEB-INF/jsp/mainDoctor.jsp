@@ -152,7 +152,7 @@
 		</ul>
 		
 		<h2>
-			<span class="icon-hospital-o"></span>医药管理
+			<span class="icon-medkit"></span>医药管理
 		</h2>
 		
 		<ul style="display: none">

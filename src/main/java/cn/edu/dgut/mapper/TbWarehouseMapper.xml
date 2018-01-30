@@ -3,11 +3,11 @@
 <mapper namespace="cn.edu.dgut.mapper.TbWarehouseMapper" >
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbWarehouse" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="warehouse_no" property="warehouseNo" jdbcType="BIGINT" />
+    <result column="warehouse_no" property="warehouseNo" jdbcType="VARCHAR" />
     <result column="warehouse_name" property="warehouseName" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="manager" property="manager" jdbcType="VARCHAR" />
-    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, warehouse_no, warehouse_name, location, manager, operator, create_time, update_time
+    id, warehouse_no, warehouse_name, location, manager, phone, create_time, update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbWarehouseExample" >
     select
@@ -104,11 +104,11 @@
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbWarehouse" >
     insert into tb_warehouse (id, warehouse_no, warehouse_name, 
-      location, manager, operator, 
+      location, manager, phone, 
       create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{warehouseNo,jdbcType=BIGINT}, #{warehouseName,jdbcType=VARCHAR}, 
-      #{location,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    values (#{id,jdbcType=INTEGER}, #{warehouseNo,jdbcType=VARCHAR}, #{warehouseName,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbWarehouse" >
     insert into tb_warehouse
@@ -128,8 +128,8 @@
       <if test="manager != null" >
         manager,
       </if>
-      <if test="operator != null" >
-        operator,
+      <if test="phone != null" >
+        phone,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -143,7 +143,7 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="warehouseNo != null" >
-        #{warehouseNo,jdbcType=BIGINT},
+        #{warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="warehouseName != null" >
         #{warehouseName,jdbcType=VARCHAR},
@@ -154,14 +154,14 @@
       <if test="manager != null" >
         #{manager,jdbcType=VARCHAR},
       </if>
-      <if test="operator != null" >
-        #{operator,jdbcType=VARCHAR},
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
     </trim>
   </insert>
@@ -178,7 +178,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.warehouseNo != null" >
-        warehouse_no = #{record.warehouseNo,jdbcType=BIGINT},
+        warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="record.warehouseName != null" >
         warehouse_name = #{record.warehouseName,jdbcType=VARCHAR},
@@ -189,14 +189,14 @@
       <if test="record.manager != null" >
         manager = #{record.manager,jdbcType=VARCHAR},
       </if>
-      <if test="record.operator != null" >
-        operator = #{record.operator,jdbcType=VARCHAR},
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     <if test="_parameter != null" >
@@ -206,13 +206,13 @@
   <update id="updateByExample" parameterType="map" >
     update tb_warehouse
     set id = #{record.id,jdbcType=INTEGER},
-      warehouse_no = #{record.warehouseNo,jdbcType=BIGINT},
+      warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
       warehouse_name = #{record.warehouseName,jdbcType=VARCHAR},
       location = #{record.location,jdbcType=VARCHAR},
       manager = #{record.manager,jdbcType=VARCHAR},
-      operator = #{record.operator,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -221,7 +221,7 @@
     update tb_warehouse
     <set >
       <if test="warehouseNo != null" >
-        warehouse_no = #{warehouseNo,jdbcType=BIGINT},
+        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="warehouseName != null" >
         warehouse_name = #{warehouseName,jdbcType=VARCHAR},
@@ -232,27 +232,88 @@
       <if test="manager != null" >
         manager = #{manager,jdbcType=VARCHAR},
       </if>
-      <if test="operator != null" >
-        operator = #{operator,jdbcType=VARCHAR},
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbWarehouse" >
     update tb_warehouse
-    set warehouse_no = #{warehouseNo,jdbcType=BIGINT},
+    set warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
       warehouse_name = #{warehouseName,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       manager = #{manager,jdbcType=VARCHAR},
-      operator = #{operator,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_warehouse order by id desc limit 1
+  </select>
+ 
+ 
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_warehouse w
+  		<where>
+  			<if test="warehouseNo != null and !&quot;&quot;.equals(warehouseNo.trim())">
+  				and w.warehouse_no =  #{warehouseNo} 
+  			</if>
+  			<if test="warehouseName!=null and !&quot;&quot;.equals(warehouseName.trim())">
+  				and w.warehouse_name like '%' #{warehouseName} '%'
+  			</if>
+  			<if test="manager and !&quot;&quot;.equals(manager.trim())">
+  				and w.manager like '%' #{manager} '%'
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				and w.location like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select *
+  	from tb_warehouse w
+  		<where>
+  			<if test="warehouseNo != null and !&quot;&quot;.equals(warehouseNo.trim())">
+  				and w.warehouse_no =  #{warehouseNo} 
+  			</if>
+  			<if test="warehouseName!=null and !&quot;&quot;.equals(warehouseName.trim())">
+  				and w.warehouse_name like '%' #{warehouseName} '%'
+  			</if>
+  			<if test="manager and !&quot;&quot;.equals(manager.trim())">
+  				and w.manager like '%' #{manager} '%'
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				and w.location like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  		order by w.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from tb_warehouse where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
+  
+  <!-- 查询所有记录 -->
+  <select id="selectAllWarehouse"  resultMap="BaseResultMap">
+  	select * from  tb_warehouse
+  </select>
+  
 </mapper>

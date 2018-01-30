@@ -5,7 +5,7 @@ import java.util.Date;
 public class TbWarehouse {
     private Integer id;
 
-    private Long warehouseNo;
+    private String warehouseNo;
 
     private String warehouseName;
 
@@ -13,7 +13,7 @@ public class TbWarehouse {
 
     private String manager;
 
-    private String operator;
+    private String phone;
 
     private Date createTime;
 
@@ -27,11 +27,11 @@ public class TbWarehouse {
         this.id = id;
     }
 
-    public Long getWarehouseNo() {
+    public String getWarehouseNo() {
         return warehouseNo;
     }
 
-    public void setWarehouseNo(Long warehouseNo) {
+    public void setWarehouseNo(String warehouseNo) {
         this.warehouseNo = warehouseNo;
     }
 
@@ -59,12 +59,12 @@ public class TbWarehouse {
         this.manager = manager == null ? null : manager.trim();
     }
 
-    public String getOperator() {
-        return operator;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
     }
 
     public Date getCreateTime() {

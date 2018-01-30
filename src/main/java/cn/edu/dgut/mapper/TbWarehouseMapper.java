@@ -3,6 +3,8 @@ package cn.edu.dgut.mapper;
 import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.pojo.TbWarehouseExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbWarehouseMapper {
@@ -27,4 +29,17 @@ public interface TbWarehouseMapper {
     int updateByPrimaryKeySelective(TbWarehouse record);
 
     int updateByPrimaryKey(TbWarehouse record);
+    
+	int countByCondition(Map<String, Object> map);
+
+	List<TbWarehouse> pageByCondition(Map<String, Object> map);
+
+	int deleteBatch(List<Long> list);
+
+	void insertInfoBatch(List<TbWarehouse> warehouseList);
+
+	TbWarehouse selectLastRecord();
+
+	List<TbWarehouse> selectAllWarehouse();
+    
 }
