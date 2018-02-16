@@ -23,7 +23,7 @@
 		</div>
 		<div class="head-l">
 			<a class="button button-little bg-green" href="" target="_blank"><span
-				class="icon-home"></span> 登录用户：admin</a> &nbsp;&nbsp;<a href="##"
+				class="icon-home"></span> 登录用户：${currentUser.username }</a> &nbsp;&nbsp;<a href="##"
 				class="button button-little bg-blue"><span class="icon-user"></span>
 				用户角色:医生</a> &nbsp;&nbsp;<a class="button button-little bg-red"
 				href="login.html"><span class="icon-power-off"></span> 退出登录</a>
@@ -205,23 +205,75 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>采药单管理</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>退药单管理</a></li>
+			<li>
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>采药单管理
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/purchase/skipToAdd" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加采药单
+						</a>
+					</li>
+					<li>
+						<a href="purchase/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理采药单
+						</a>
+					</li>
+				</ul>
+			</li>
+					
+					
+			<li>
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>退药单管理
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/drug/skipToAdd" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加退药单
+						</a>
+					</li>
+					<li>
+						<a href="drug/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理退药单
+						</a>
+					</li>
+				</ul>
+			</li>
 		</ul>
+		
 		<h2>
 			<span class="icon-hospital-o"></span>库存管理
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-			
-					class="icon-caret-right"></span>入库单管理</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>库存下限预警</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>医药有效期预警</a></li>
+			<li>
+				<a href="stock/list" target="right">
+					<span class="icon-caret-right"></span>查看库存
+				</a>
+			</li>
+			<li>
+				<a href="stock/limtList" target="right">
+					<span class="icon-caret-right"></span>限制库存
+				</a>
+			</li>
+			<li>
+				<a href="stock/quantityWaring" target="right">
+					<span class="icon-caret-right"></span>库存上下限预警
+				</a>
+			</li>
+			<li>
+				<a href="stock/validWaring" target="right">
+					<span class="icon-caret-right"></span>医药有效期预警
+				</a>
+			</li>
 		</ul>
 		<h2>
 			<span class="icon-hospital-o"></span>销药管理

@@ -27,4 +27,6 @@ public interface TbAdminMapper {
     int updateByPrimaryKeySelective(TbAdmin record);
 
     int updateByPrimaryKey(TbAdmin record);
+    
+    TbAdmin selectLogin(@Param("username") String username, @Param("password") String password);
 }

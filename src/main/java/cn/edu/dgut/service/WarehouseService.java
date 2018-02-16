@@ -14,6 +14,7 @@ public interface WarehouseService {
 	List<TbWarehouse> getAllWarehouse(Page page);
 	List<TbWarehouse> pageByCondition(String warehouseNo, String warehouseName, String manager, String keywords, Page page);
 	TbWarehouse getWarehouseById(Integer id);
+	TbWarehouse getWarehouseByNo(String warehouseNo);
 	TbWarehouse getWarehouseByPhone(String phone);
 	int updateWarehouseByTbWarehouse(TbWarehouse warehouse);
 	int addWarehouseByTbWarehouse(TbWarehouse warehouse);

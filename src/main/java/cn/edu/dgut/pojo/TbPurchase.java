@@ -6,9 +6,9 @@ import java.util.Date;
 public class TbPurchase {
     private Integer id;
 
-    private Long purchaseNo;
+    private String purchaseNo;
 
-    private Integer warehouseId;
+    private String warehouseNo;
 
     private Integer providerId;
 
@@ -23,6 +23,10 @@ public class TbPurchase {
     private Date createTime;
 
     private Date updateTime;
+    
+    private TbProvider provider;
+    
+    private TbWarehouse warehouse;
 
     public Integer getId() {
         return id;
@@ -32,20 +36,20 @@ public class TbPurchase {
         this.id = id;
     }
 
-    public Long getPurchaseNo() {
+    public String getPurchaseNo() {
         return purchaseNo;
     }
 
-    public void setPurchaseNo(Long purchaseNo) {
+    public void setPurchaseNo(String purchaseNo) {
         this.purchaseNo = purchaseNo;
     }
 
-    public Integer getWarehouseId() {
-        return warehouseId;
+    public String getWarehouseNo() {
+        return warehouseNo;
     }
 
-    public void setWarehouseId(Integer warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setWarehouseNo(String warehouseNo) {
+        this.warehouseNo = warehouseNo;
     }
 
     public Integer getProviderId() {
@@ -103,4 +107,20 @@ public class TbPurchase {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public TbProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(TbProvider provider) {
+		this.provider = provider;
+	}
+
+	public TbWarehouse getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(TbWarehouse warehouse) {
+		this.warehouse = warehouse;
+	}
 }

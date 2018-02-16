@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.common.util.IDUtils;
 import cn.edu.dgut.mapper.TbAdminMapper;
@@ -162,6 +161,27 @@ public class DrugServiceImpl implements DrugService {
 		List<TbDrug> drugList = drugMapper.selectAllDrug();
 		if (drugList.size() > 0) {
 			return drugList;
+		}
+		return null;
+	}
+
+	@Override
+	public TbDrug getDrugByNo(String drugNo) {
+		TbDrug drug = drugMapper.selectByDrugNo(drugNo);
+		if (drug!=null) {
+			return drug;
+		}
+		return null;
+	}
+
+	/**
+	 * 根据名称查询
+	 */
+	@Override
+	public TbDrug getDrugByName(String drugName) {
+		TbDrug drug = drugMapper.selectByDrugName(drugName);
+		if (drug!=null) {
+			return drug;
 		}
 		return null;
 	}

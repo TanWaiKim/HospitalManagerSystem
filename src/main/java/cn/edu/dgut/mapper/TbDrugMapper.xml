@@ -14,6 +14,9 @@
     <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   
   <resultMap id="BaseResultMap1" type="cn.edu.dgut.pojo.TbDrug" >
@@ -29,6 +32,9 @@
     <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <association property="drugtype" javaType="cn.edu.dgut.pojo.TbDrugtype">
     	<id property="id" column="id"/>
     	<result property="drugtypeName" column="drugtype_name"/>
@@ -98,7 +104,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, date_format(produced_time,"%Y-%m-%d") as produced_time, date_format(valid_time,"%Y-%m-%d") as valid_time, create_time, update_time
+    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, date_format(produced_time,"%Y-%m-%d") as produced_time, date_format(valid_time,"%Y-%m-%d") as valid_time, create_time, update_time, purchase_price, sale_price, remark
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbDrugExample" >
@@ -118,7 +124,7 @@
   
   
   <sql id="Base_Column_List1" >
-    d.id as id , drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, date_format(produced_time,"%Y-%m-%d") as produced_time, date_format(valid_time,"%Y-%m-%d") as valid_time, d.create_time as create_time, d.update_time as update_time,drugtype_name
+    d.id as id , drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, date_format(produced_time,"%Y-%m-%d") as produced_time, date_format(valid_time,"%Y-%m-%d") as valid_time, d.create_time as create_time, d.update_time as update_time, purchase_price, sale_price, remark, drugtype_name
   </sql>
   
   <!-- 实现tb_drug和tb_drugtype关联 -->
@@ -127,6 +133,20 @@
     <include refid="Base_Column_List1" />
     from tb_drug d,tb_drugtype dt
     where d.drugtype_id = dt.id and d.id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 实现tb_drug和tb_drugtype关联 -->
+  <select id="selectByDrugNo" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List1" />
+    from tb_drug d,tb_drugtype dt
+    where d.drugtype_id = dt.id and d.drug_no = #{drugNo,jdbcType=VARCHAR}
+  </select>
+  <!-- 实现tb_drug和tb_drugtype关联 -->
+  <select id="selectByDrugName" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List1" />
+    from tb_drug d,tb_drugtype dt
+    where d.drugtype_id = dt.id and d.drug_name = #{drugName,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_drug
@@ -142,12 +162,12 @@
     insert into tb_drug (id, drugtype_id, drug_name, 
       drug_no, purpose, spec, 
       unit, howuse, produced_time, 
-      valid_time, create_time, update_time
+      valid_time, create_time, update_time, purchase_price, sale_price, remark
       )
     values (#{id,jdbcType=INTEGER}, #{drugtypeId,jdbcType=INTEGER}, #{drugName,jdbcType=VARCHAR}, 
       #{drugNo,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
       #{unit,jdbcType=CHAR}, #{howuse,jdbcType=VARCHAR}, str_to_date(#{producedTime},"%Y-%m-%d"), 
-      str_to_date(#{validTime},"%Y-%m-%d"), now(), now()
+      str_to_date(#{validTime},"%Y-%m-%d"), now(), now(), #{purchasePrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbDrug" >
@@ -189,6 +209,15 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="purchasePrice != null" >
+        purchase_price,
+      </if>
+      <if test="salePrice != null" >
+        sale_price,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -226,6 +255,15 @@
       </if>
       <if test="updateTime != null" >
         now(),
+      </if>
+      <if test="purchasePrice != null" >
+        #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -274,6 +312,15 @@
       <if test="record.updateTime != null" >
         update_time = now(),
       </if>
+      <if test="record.purchasePrice != null" >
+        purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -292,7 +339,10 @@
       produced_time = str_to_date(#{record.producedTime},"%Y-%m-%d"),
       valid_time = str_to_date(#{record.validTime},"%Y-%m-%d"),
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      update_time = now(),
+      purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
+      sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -333,6 +383,15 @@
       <if test="updateTime != null" >
         update_time = now(),
       </if>
+      <if test="purchasePrice != null" >
+        purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -348,7 +407,10 @@
       produced_time = str_to_date(#{producedTime},"%Y-%m-%d"),
       valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      update_time = now(),
+      purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   
@@ -379,7 +441,7 @@
   
   <!-- 条件查询 -->
   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap1">
-  	select d.id as id,d.drugtype_id as drugtype_id,drug_name, drug_no,purpose,spec,unit,howuse,date_format(produced_time,"%Y-%m-%d") as produced_time,date_format(valid_time,"%Y-%m-%d") as valid_time,drugtype_name 
+  	select d.id as id,d.drugtype_id as drugtype_id,drug_name, drug_no,purpose,spec,unit,howuse,date_format(produced_time,"%Y-%m-%d") as produced_time,date_format(valid_time,"%Y-%m-%d") as valid_time, purchase_price, sale_price, drugtype_name 
   	from tb_drug d,tb_drugtype dt
   	
   		<where>

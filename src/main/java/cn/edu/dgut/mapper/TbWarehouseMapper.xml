@@ -92,6 +92,12 @@
     from tb_warehouse
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="selectByWarehouseNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_warehouse
+    where warehouse_no = #{warehouseNo,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_warehouse
     where id = #{id,jdbcType=INTEGER}

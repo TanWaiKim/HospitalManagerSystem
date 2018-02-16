@@ -1,6 +1,7 @@
 package cn.edu.dgut.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +24,8 @@ public class UserController {
 	
 	@RequestMapping("/login")
 	@ResponseBody()
-	public HmsResult login(String username, String password, String postOffice,HttpServletRequest request){
+	public HmsResult login(String username, String password, String postOffice,HttpServletRequest request, HttpSession session){
 		//System.out.println("username:"+username+"\n password:"+password+"\n postOffice:"+postOffice);
-		return userService.login(username, password, postOffice, request);
+		return userService.login(username, password, postOffice, request, session);
 	}
 }

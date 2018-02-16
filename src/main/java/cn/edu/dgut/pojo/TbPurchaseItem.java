@@ -6,7 +6,7 @@ import java.util.Date;
 public class TbPurchaseItem {
     private Integer id;
 
-    private Long purchaseNo;
+    private String purchaseNo;
 
     private Integer drugId;
 
@@ -23,6 +23,8 @@ public class TbPurchaseItem {
     private Date createTime;
 
     private Date updateTime;
+    
+    private String status;
 
     public Integer getId() {
         return id;
@@ -32,11 +34,11 @@ public class TbPurchaseItem {
         this.id = id;
     }
 
-    public Long getPurchaseNo() {
+    public String getPurchaseNo() {
         return purchaseNo;
     }
 
-    public void setPurchaseNo(Long purchaseNo) {
+    public void setPurchaseNo(String purchaseNo) {
         this.purchaseNo = purchaseNo;
     }
 
@@ -103,4 +105,12 @@ public class TbPurchaseItem {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

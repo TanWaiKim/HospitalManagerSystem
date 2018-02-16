@@ -2,7 +2,6 @@ package cn.edu.dgut.service;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbDrug;
@@ -22,4 +21,6 @@ public interface DrugService {
 	int deleteDrugByIds(String[] ids);
 	boolean isSimpleLoginName(String loginName);
 	List<TbDrug> selectAllDrug();
+	TbDrug getDrugByNo(String drugNo);
+	TbDrug getDrugByName(String drugName);
 }

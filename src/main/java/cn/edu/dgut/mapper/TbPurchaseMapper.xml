@@ -3,8 +3,8 @@
 <mapper namespace="cn.edu.dgut.mapper.TbPurchaseMapper" >
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbPurchase" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="purchase_no" property="purchaseNo" jdbcType="BIGINT" />
-    <result column="warehouse_id" property="warehouseId" jdbcType="INTEGER" />
+    <result column="purchase_no" property="purchaseNo" jdbcType="VARCHAR" />
+    <result column="warehouse_no" property="warehouseNo" jdbcType="VARCHAR" />
     <result column="provider_id" property="providerId" jdbcType="INTEGER" />
     <result column="total_quantity" property="totalQuantity" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, purchase_no, warehouse_id, provider_id, total_quantity, total_price, operator, 
+    id, purchase_no, warehouse_no, provider_id, total_quantity, total_price, operator, 
     remarks, create_time, update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseExample" >
@@ -106,14 +106,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbPurchase" >
-    insert into tb_purchase (id, purchase_no, warehouse_id, 
+    insert into tb_purchase (id, purchase_no, warehouse_no, 
       provider_id, total_quantity, total_price, 
       operator, remarks, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=BIGINT}, #{warehouseId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR}, #{warehouseNo,jdbcType=VARCHAR}, 
       #{providerId,jdbcType=INTEGER}, #{totalQuantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
-      #{operator,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{operator,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbPurchase" >
     insert into tb_purchase
@@ -124,8 +123,8 @@
       <if test="purchaseNo != null" >
         purchase_no,
       </if>
-      <if test="warehouseId != null" >
-        warehouse_id,
+      <if test="warehouseNo != null" >
+        warehouse_no,
       </if>
       <if test="providerId != null" >
         provider_id,
@@ -154,10 +153,10 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="purchaseNo != null" >
-        #{purchaseNo,jdbcType=BIGINT},
+        #{purchaseNo,jdbcType=VARCHAR},
       </if>
-      <if test="warehouseId != null" >
-        #{warehouseId,jdbcType=INTEGER},
+      <if test="warehouseNo != null" >
+        #{warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="providerId != null" >
         #{providerId,jdbcType=INTEGER},
@@ -175,10 +174,10 @@
         #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
     </trim>
   </insert>
@@ -195,10 +194,10 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.purchaseNo != null" >
-        purchase_no = #{record.purchaseNo,jdbcType=BIGINT},
+        purchase_no = #{record.purchaseNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.warehouseId != null" >
-        warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
+      <if test="record.warehouseNo != null" >
+        warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="record.providerId != null" >
         provider_id = #{record.providerId,jdbcType=INTEGER},
@@ -219,7 +218,7 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     <if test="_parameter != null" >
@@ -229,15 +228,15 @@
   <update id="updateByExample" parameterType="map" >
     update tb_purchase
     set id = #{record.id,jdbcType=INTEGER},
-      purchase_no = #{record.purchaseNo,jdbcType=BIGINT},
-      warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
+      purchase_no = #{record.purchaseNo,jdbcType=VARCHAR},
+      warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
       provider_id = #{record.providerId,jdbcType=INTEGER},
       total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
       total_price = #{record.totalPrice,jdbcType=DECIMAL},
       operator = #{record.operator,jdbcType=VARCHAR},
       remarks = #{record.remarks,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -246,10 +245,10 @@
     update tb_purchase
     <set >
       <if test="purchaseNo != null" >
-        purchase_no = #{purchaseNo,jdbcType=BIGINT},
+        purchase_no = #{purchaseNo,jdbcType=VARCHAR},
       </if>
-      <if test="warehouseId != null" >
-        warehouse_id = #{warehouseId,jdbcType=INTEGER},
+      <if test="warehouseNo != null" >
+        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="providerId != null" >
         provider_id = #{providerId,jdbcType=INTEGER},
@@ -270,22 +269,112 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByPurchaseNoSelective" parameterType="cn.edu.dgut.pojo.TbPurchase" >
+    update tb_purchase
+    <set >
+      <if test="purchaseNo != null" >
+        purchase_no = #{purchaseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseNo != null" >
+        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="providerId != null" >
+        provider_id = #{providerId,jdbcType=INTEGER},
+      </if>
+      <if test="totalQuantity != null" >
+        total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+    </set>
+    where purchase_no = #{purchaseNo,jdbcType=VARCHAR}
+  </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbPurchase" >
     update tb_purchase
-    set purchase_no = #{purchaseNo,jdbcType=BIGINT},
-      warehouse_id = #{warehouseId,jdbcType=INTEGER},
+    set purchase_no = #{purchaseNo,jdbcType=VARCHAR},
+      warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
       provider_id = #{providerId,jdbcType=INTEGER},
       total_quantity = #{totalQuantity,jdbcType=INTEGER},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       operator = #{operator,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+ 
+  <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_purchase order by id desc limit 1
+  </select>
+ 
+ 
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_purchase p
+  		<where>
+  			<if test="providerId != null">
+  				and p.provider_id =  #{providerId} 
+  			</if>
+  			<if test="purchaseNo!=null and !&quot;&quot;.equals(purchaseNo.trim())">
+  				and p.purchase_no like '%' #{purchaseNo} '%'
+  			</if>
+  			<if test="warehouseNo and !&quot;&quot;.equals(warehouseNo.trim())">
+  				and p.warehouse_no like '%' #{warehouseNo} '%'
+  			</if>
+  		</where>
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select * from tb_purchase p
+  	
+  		<where>
+  			<if test="providerId != null">
+  				and p.provider_id =  #{providerId} 
+  			</if>
+  			<if test="purchaseNo!=null and !&quot;&quot;.equals(purchaseNo.trim())">
+  				and p.purchase_no like '%' #{purchaseNo} '%'
+  			</if>
+  			<if test="warehouseNo and !&quot;&quot;.equals(warehouseNo.trim())">
+  				and p.warehouse_no like '%' #{warehouseNo} '%'
+  			</if>
+  		</where>
+  		order by p.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+   <!-- 根据采药单号查询 -->
+   <select id="selectByPurchaseNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_purchase
+    where purchase_no = #{purchaseNo,jdbcType=VARCHAR}
+  </select>
+ 
+   <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from tb_purchase where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
 </mapper>

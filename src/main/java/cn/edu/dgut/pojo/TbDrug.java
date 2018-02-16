@@ -1,5 +1,6 @@
 package cn.edu.dgut.pojo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class TbDrug {
@@ -28,6 +29,12 @@ public class TbDrug {
     private Date updateTime;
     
     private TbDrugtype drugtype;
+    
+    private BigDecimal purchasePrice;
+
+    private BigDecimal salePrice;
+    
+    private String remark;
     
     public Integer getId() {
         return id;
@@ -131,6 +138,30 @@ public class TbDrug {
 
 	public void setDrugtype(TbDrugtype drugtype) {
 		this.drugtype = drugtype;
+	}
+
+	public BigDecimal getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(BigDecimal purchasePrice) {
+		this.purchasePrice = purchasePrice;
+	}
+
+	public BigDecimal getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(BigDecimal salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

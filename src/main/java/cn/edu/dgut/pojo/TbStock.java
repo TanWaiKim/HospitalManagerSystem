@@ -1,36 +1,31 @@
 package cn.edu.dgut.pojo;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 public class TbStock {
     private Integer id;
 
-    private Integer warehouseId;
+    private String warehouseNo;
 
     private Integer drugId;
 
-    private String drugName;
-
     private Integer stockQuantity;
-
-    private BigDecimal purchasePrice;
-
-    private BigDecimal salePrice;
 
     private Integer minQuantity;
 
     private Integer maxQuantity;
-
-    private Date producedTime;
-
-    private Date validTime;
 
     private String operator;
 
     private Date createTime;
 
     private Date updateTime;
+    
+    private TbWarehouse warehouse;
+    
+    private TbDrug drug;
+    
+    private String waring;
 
     public Integer getId() {
         return id;
@@ -40,12 +35,12 @@ public class TbStock {
         this.id = id;
     }
 
-    public Integer getWarehouseId() {
-        return warehouseId;
+    public String getWarehouseNo() {
+        return warehouseNo;
     }
 
-    public void setWarehouseId(Integer warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setWarehouseNo(String warehouseNo) {
+        this.warehouseNo = warehouseNo;
     }
 
     public Integer getDrugId() {
@@ -56,36 +51,12 @@ public class TbStock {
         this.drugId = drugId;
     }
 
-    public String getDrugName() {
-        return drugName;
-    }
-
-    public void setDrugName(String drugName) {
-        this.drugName = drugName == null ? null : drugName.trim();
-    }
-
     public Integer getStockQuantity() {
         return stockQuantity;
     }
 
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
-    }
-
-    public BigDecimal getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(BigDecimal purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public BigDecimal getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(BigDecimal salePrice) {
-        this.salePrice = salePrice;
     }
 
     public Integer getMinQuantity() {
@@ -102,22 +73,6 @@ public class TbStock {
 
     public void setMaxQuantity(Integer maxQuantity) {
         this.maxQuantity = maxQuantity;
-    }
-
-    public Date getProducedTime() {
-        return producedTime;
-    }
-
-    public void setProducedTime(Date producedTime) {
-        this.producedTime = producedTime;
-    }
-
-    public Date getValidTime() {
-        return validTime;
-    }
-
-    public void setValidTime(Date validTime) {
-        this.validTime = validTime;
     }
 
     public String getOperator() {
@@ -143,4 +98,28 @@ public class TbStock {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public TbWarehouse getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(TbWarehouse warehouse) {
+		this.warehouse = warehouse;
+	}
+
+	public TbDrug getDrug() {
+		return drug;
+	}
+
+	public void setDrug(TbDrug drug) {
+		this.drug = drug;
+	}
+
+	public String getWaring() {
+		return waring;
+	}
+
+	public void setWaring(String waring) {
+		this.waring = waring;
+	}
 }

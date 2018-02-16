@@ -1,20 +1,16 @@
 package cn.edu.dgut.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.mapper.TbAdminMapper;
 import cn.edu.dgut.mapper.TbDrugtypeMapper;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TPatient;
-import cn.edu.dgut.pojo.TPatientExample;
 import cn.edu.dgut.pojo.TbAdmin;
 import cn.edu.dgut.pojo.TbAdminExample;
 import cn.edu.dgut.pojo.TbDrugtype;
@@ -121,6 +117,9 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	 */
 	@Override
 	public int deleteDrugtypeById(Integer id) {
+		
+		
+		
 		return drugtypeMapper.deleteByPrimaryKey(id);
 	}
 

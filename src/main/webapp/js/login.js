@@ -29,6 +29,10 @@ var LOGIN = {
 							alert("登录成功！");
 							location.href = "main";
 						}
+						if(data.msg == "药品管理员登录成功"){						
+							alert("登录成功！");
+							location.href = "mainDoctor";
+						}
 					} else{
 						alert("登录失败，原因是：" + data.msg);
 						$("#username").select();

@@ -22,6 +22,10 @@ public interface TbDrugMapper {
     List<TbDrug> selectByExample(TbDrugExample example);
 
     TbDrug selectByPrimaryKey(Integer id);
+    
+    TbDrug selectByDrugNo(String drugNo);
+    
+    TbDrug selectByDrugName(String drugName);
 
     int updateByExampleSelective(@Param("record") TbDrug record, @Param("example") TbDrugExample example);
 

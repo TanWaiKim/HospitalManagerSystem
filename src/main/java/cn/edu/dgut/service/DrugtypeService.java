@@ -2,7 +2,6 @@ package cn.edu.dgut.service;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbDrugtype;

@@ -41,5 +41,7 @@ public interface TbWarehouseMapper {
 	TbWarehouse selectLastRecord();
 
 	List<TbWarehouse> selectAllWarehouse();
+	
+	TbWarehouse selectByWarehouseNo(String warehouseNo);
     
 }

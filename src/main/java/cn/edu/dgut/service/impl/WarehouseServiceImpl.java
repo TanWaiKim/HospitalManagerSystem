@@ -1,7 +1,6 @@
 package cn.edu.dgut.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +12,8 @@ import cn.edu.dgut.common.util.IDUtils;
 import cn.edu.dgut.mapper.TbAdminMapper;
 import cn.edu.dgut.mapper.TbWarehouseMapper;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TPatient;
-import cn.edu.dgut.pojo.TPatientExample;
 import cn.edu.dgut.pojo.TbAdmin;
 import cn.edu.dgut.pojo.TbAdminExample;
-import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.pojo.TbWarehouseExample;
 import cn.edu.dgut.service.WarehouseService;
@@ -77,6 +73,18 @@ public class WarehouseServiceImpl implements WarehouseService {
 	@Override
 	public TbWarehouse getWarehouseById(Integer id) {
 		TbWarehouse warehouse =warehouseMapper.selectByPrimaryKey(id);
+		if (warehouse!=null) {
+			return warehouse;
+		}
+		return null;
+	}
+	
+	/**
+	 * 根据仓库no查找仓库信息
+	 */
+	@Override
+	public TbWarehouse getWarehouseByNo(String warehouseNo) {
+		TbWarehouse warehouse =warehouseMapper.selectByWarehouseNo(warehouseNo);
 		if (warehouse!=null) {
 			return warehouse;
 		}

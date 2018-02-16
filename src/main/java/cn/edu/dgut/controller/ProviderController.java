@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.service.ProviderService;
 

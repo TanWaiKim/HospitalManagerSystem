@@ -3,7 +3,7 @@
 <mapper namespace="cn.edu.dgut.mapper.TbPurchaseItemMapper" >
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbPurchaseItem" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="purchase_no" property="purchaseNo" jdbcType="BIGINT" />
+    <result column="purchase_no" property="purchaseNo" jdbcType="VARCHAR" />
     <result column="drug_id" property="drugId" jdbcType="INTEGER" />
     <result column="drug_name" property="drugName" jdbcType="VARCHAR" />
     <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
@@ -12,6 +12,7 @@
     <result column="purchase_total_price" property="purchaseTotalPrice" jdbcType="DECIMAL" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, purchase_no, drug_id, drug_name, purchase_price, sale_price, quantity, purchase_total_price, 
-    create_time, update_time
+    create_time, update_time, status
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseItemExample" >
     select
@@ -99,6 +100,10 @@
     delete from tb_purchase_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByPurchaseNo" parameterType="java.lang.String" >
+    delete from tb_purchase_item
+    where purchase_no = #{purchaseNo,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="cn.edu.dgut.pojo.TbPurchaseItemExample" >
     delete from tb_purchase_item
     <if test="_parameter != null" >
@@ -109,11 +114,10 @@
     insert into tb_purchase_item (id, purchase_no, drug_id, 
       drug_name, purchase_price, sale_price, 
       quantity, purchase_total_price, create_time, 
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=BIGINT}, #{drugId,jdbcType=INTEGER}, 
+      update_time, status)
+    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR}, #{drugId,jdbcType=INTEGER}, 
       #{drugName,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, 
-      #{quantity,jdbcType=INTEGER}, #{purchaseTotalPrice,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{quantity,jdbcType=INTEGER}, #{purchaseTotalPrice,jdbcType=DECIMAL}, now(), now(), #{status,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
     insert into tb_purchase_item
@@ -148,13 +152,16 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
       <if test="purchaseNo != null" >
-        #{purchaseNo,jdbcType=BIGINT},
+        #{purchaseNo,jdbcType=VARCHAR},
       </if>
       <if test="drugId != null" >
         #{drugId,jdbcType=INTEGER},
@@ -175,10 +182,13 @@
         #{purchaseTotalPrice,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -195,7 +205,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.purchaseNo != null" >
-        purchase_no = #{record.purchaseNo,jdbcType=BIGINT},
+        purchase_no = #{record.purchaseNo,jdbcType=VARCHAR},
       </if>
       <if test="record.drugId != null" >
         drug_id = #{record.drugId,jdbcType=INTEGER},
@@ -219,7 +229,10 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -229,7 +242,7 @@
   <update id="updateByExample" parameterType="map" >
     update tb_purchase_item
     set id = #{record.id,jdbcType=INTEGER},
-      purchase_no = #{record.purchaseNo,jdbcType=BIGINT},
+      purchase_no = #{record.purchaseNo,jdbcType=VARCHAR},
       drug_id = #{record.drugId,jdbcType=INTEGER},
       drug_name = #{record.drugName,jdbcType=VARCHAR},
       purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
@@ -237,7 +250,8 @@
       quantity = #{record.quantity,jdbcType=INTEGER},
       purchase_total_price = #{record.purchaseTotalPrice,jdbcType=DECIMAL},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now(),
+      status = #{record.status,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -246,7 +260,7 @@
     update tb_purchase_item
     <set >
       <if test="purchaseNo != null" >
-        purchase_no = #{purchaseNo,jdbcType=BIGINT},
+        purchase_no = #{purchaseNo,jdbcType=VARCHAR},
       </if>
       <if test="drugId != null" >
         drug_id = #{drugId,jdbcType=INTEGER},
@@ -270,14 +284,17 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
     update tb_purchase_item
-    set purchase_no = #{purchaseNo,jdbcType=BIGINT},
+    set purchase_no = #{purchaseNo,jdbcType=VARCHAR},
       drug_id = #{drugId,jdbcType=INTEGER},
       drug_name = #{drugName,jdbcType=VARCHAR},
       purchase_price = #{purchasePrice,jdbcType=DECIMAL},
@@ -285,7 +302,41 @@
       quantity = #{quantity,jdbcType=INTEGER},
       purchase_total_price = #{purchaseTotalPrice,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+ 
+   <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_purchase_item order by id desc limit 1
+  </select>
+  
+   <!-- 查询所有记录 -->
+  <select id="selectAllPurchaseItem" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from  tb_purchase_item where purchase_no = #{purchaseNo}
+  </select>  
+
+ 
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_purchase_item p
+  	where p.purchase_no = #{purchaseNo}
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select * from tb_purchase_item p
+  	where p.purchase_no = #{purchaseNo}
+  	order by p.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from tb_purchase_item where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
 </mapper>
