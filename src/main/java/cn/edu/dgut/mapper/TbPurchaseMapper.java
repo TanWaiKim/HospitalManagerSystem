@@ -41,5 +41,7 @@ public interface TbPurchaseMapper {
 	TbPurchase selectByPurchaseNo(String purchaseNo);
 	
 	int deleteBatch(List<Long> list);
+	
+	List<TbPurchase> selectAllPurchase();
     
 }

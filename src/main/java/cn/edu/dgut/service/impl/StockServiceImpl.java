@@ -11,10 +11,12 @@ import cn.edu.dgut.mapper.TbStockMapper;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbDrugtype;
+import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbStock;
 import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.service.DrugService;
 import cn.edu.dgut.service.DrugtypeService;
+import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.StockService;
 import cn.edu.dgut.service.WarehouseService;
 
@@ -34,6 +36,8 @@ public class StockServiceImpl implements StockService {
 	private WarehouseService warehouseService;
 	@Autowired
 	private DrugService drugService;
+	@Autowired
+	private PurchaseItemService purchaseItemService;
 	
 	/**
 	 * 分页查询所有的库存单信息，刚进来的页面信息
@@ -137,8 +141,8 @@ public class StockServiceImpl implements StockService {
 	 * 根据医药id查询
 	 */
 	@Override
-	public TbStock getStockByDrug(Integer id) {
-		TbStock stock = stockMapper.selectByDrugId(id);
+	public TbStock getStockByDrug(Map<String, Object> map) {
+		TbStock stock = stockMapper.selectByDrugIdAndBatchNo(map);
 		if (stock != null) {
 			return stock;
 		}
@@ -184,18 +188,35 @@ public class StockServiceImpl implements StockService {
 		return 0;
 	}
 
+	/**
+	 * 获取所有库存
+	 * @return
+	 */
 	@Override
 	public List<TbStock> selectAllStock() {
+		List<TbStock> stockList = stockMapper.selectAllStock();
 		
+		if (stockList != null) {
+			return stockList;
+		}
 		return null;
 	}
 
 	/**
-	 * 更新库存
+	 * 根据药品id和批次更新库存
 	 */
 	@Override
 	public int updateStockBySelective(TbStock stock) {
 		int count = stockMapper.updateByDrugSelective(stock);
+		return count;
+	}
+	
+	/**
+	 * 根据药品id更新库存
+	 */
+	@Override
+	public int updateStockByDrugId(TbStock stock) {
+		int count = stockMapper.updateByDrugId(stock);
 		return count;
 	}
 
@@ -224,7 +245,7 @@ public class StockServiceImpl implements StockService {
 			} else if (tbStock.getStockQuantity() > tbStock.getMaxQuantity()) {
 				tbStock.setWaring("当前库存量高于库存上线，请减少库存数量！");
 			} 
-			stockMapper.updateByPrimaryKeySelective(tbStock);
+			stockMapper.updateWaring(tbStock);
 		}
 		
 		for (TbStock tbStock : stockList) {
@@ -268,7 +289,7 @@ public class StockServiceImpl implements StockService {
 			} else if (tbStock.getStockQuantity() > tbStock.getMaxQuantity()) {
 				tbStock.setWaring("当前库存量高于库存上线，请减少库存数量！");
 			} 
-			stockMapper.updateByPrimaryKeySelective(tbStock);
+			stockMapper.updateWaring(tbStock);
 		}
 		
 		
@@ -305,15 +326,17 @@ public class StockServiceImpl implements StockService {
 		
 		// 有效期预警
 		for (TbStock tbStock : stockList) {
-			TbDrug drug = drugService.getDrugById(tbStock.getDrugId());
 			String remark = null;
-			if (stockMapper.countValidTime(drug.getId()) < 0) {
-				remark = "该药品已经过期"+(-stockMapper.countValidTime(drug.getId()))+"天，请进行退货或销毁处理！";
+			if (stockMapper.countValidTime(tbStock) < 0) {
+				System.out.println("我是答案1："+stockMapper.countValidTime(tbStock));
+				remark = "该药品已经过期"+(-stockMapper.countValidTime(tbStock))+"天，请进行退货或销毁处理！";
 			} else {
-				remark = "该药品还有"+stockMapper.countValidTime(drug.getId())+"天将失效，请尽快销售！";
+				System.out.println("我是答案2："+stockMapper.countValidTime(tbStock));
+				remark = "该药品还有"+stockMapper.countValidTime(tbStock)+"天将失效，请尽快销售！";
 			}
-			drug.setRemark(remark);
-			drugService.updateDrugByTbDrug(drug);
+			
+			tbStock.setValidWaring(remark);
+			stockMapper.updateValidWaring(tbStock);
 		}
 		
 		for (TbStock tbStock : stockList) {
@@ -321,9 +344,16 @@ public class StockServiceImpl implements StockService {
 			TbDrugtype drugtype = drugtypeService.getDrugtypeById(drug.getDrugtypeId());
 			TbWarehouse warehouse = warehouseService.getWarehouseByNo(tbStock.getWarehouseNo());
 			
+			TbPurchaseItem purchaseItem = new TbPurchaseItem();
+			purchaseItem.setBatchNo(tbStock.getBatchNo());
+			purchaseItem.setDrugId(tbStock.getDrugId());
+			purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+			
+			
 			drug.setDrugtype(drugtype);
 			tbStock.setDrug(drug);
 			tbStock.setWarehouse(warehouse);
+			tbStock.setPurchaseItem(purchaseItem);
 		}
 		
 		return stockList;
@@ -352,17 +382,118 @@ public class StockServiceImpl implements StockService {
 		
 		// 有效期预警
 		for (TbStock tbStock : stockList) {
-			TbDrug drug = drugService.getDrugById(tbStock.getDrugId());
 			String remark = null;
-			if (stockMapper.countValidTime(drug.getId()) < 0) {
-				remark = "该药品已经过期"+(-stockMapper.countValidTime(drug.getId()))+"天，请进行退货或销毁处理！";
+			if (stockMapper.countValidTime(tbStock) < 0) {
+				System.out.println("我是答案3："+stockMapper.countValidTime(tbStock));
+				remark = "该药品已经过期"+(-stockMapper.countValidTime(tbStock))+"天，请进行退货或销毁处理！";
 			} else {
-				remark = "该药品还有"+stockMapper.countValidTime(drug.getId())+"天将失效，请尽快销售！";
+				System.out.println("我是答案4："+stockMapper.countValidTime(tbStock));
+				remark = "该药品还有"+stockMapper.countValidTime(tbStock)+"天将失效，请尽快销售！";
 			}
-			drug.setRemark(remark);
-			drugService.updateDrugByTbDrug(drug);
+			tbStock.setValidWaring(remark);
+			stockMapper.updateValidWaring(tbStock);
 		}
 		
+		
+		for (TbStock tbStock : stockList) {
+			TbDrug drug2 = drugService.getDrugById(tbStock.getDrugId());
+			TbDrugtype drugtype = drugtypeService.getDrugtypeById(drug2.getDrugtypeId());
+			TbWarehouse warehouse = warehouseService.getWarehouseByNo(tbStock.getWarehouseNo());
+			TbPurchaseItem purchaseItem = new TbPurchaseItem();
+			purchaseItem.setBatchNo(tbStock.getBatchNo());
+			purchaseItem.setDrugId(tbStock.getDrugId());
+			purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+			
+			drug2.setDrugtype(drugtype);
+			tbStock.setDrug(drug2);
+			tbStock.setWarehouse(warehouse);
+			tbStock.setPurchaseItem(purchaseItem);
+		}
+		
+		return stockList;
+	}
+
+	
+	@Override
+	public List<TbStock> getStockByDrugId(Integer drugId) {
+		List<TbStock> stocks = stockMapper.getStockByDrugId(drugId);
+		
+		if (stocks != null) {
+			for (TbStock tbStock : stocks) {
+				TbDrug drug = drugService.getDrugById(tbStock.getDrugId());
+				TbDrugtype drugtype = drugtypeService.getDrugtypeById(drug.getDrugtypeId());
+				TbWarehouse warehouse = warehouseService.getWarehouseByNo(tbStock.getWarehouseNo());
+				
+				drug.setDrugtype(drugtype);
+				tbStock.setDrug(drug);
+				tbStock.setWarehouse(warehouse);
+			}
+			
+			return stocks;
+		}
+		return null;
+	}
+
+	
+	@Override
+	public List<TbStock> getAllListStock(Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// 根据条件查询总数
+		int totalNum = stockMapper.countByListCondition(map);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		
+		List<TbStock> stockList = stockMapper.pageByListCondition(map);
+		
+		for (TbStock tbStock : stockList) {
+			TbDrug drug = drugService.getDrugById(tbStock.getDrugId());
+			TbDrugtype drugtype = drugtypeService.getDrugtypeById(drug.getDrugtypeId());
+			TbWarehouse warehouse = warehouseService.getWarehouseByNo(tbStock.getWarehouseNo());
+			
+			drug.setDrugtype(drugtype);
+			tbStock.setDrug(drug);
+			tbStock.setWarehouse(warehouse);
+		}
+		
+		return stockList;
+	}
+
+	
+	@Override
+	public List<TbStock> pageByListCondition(String drugName, String drugNo, Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		// 根据药名获得医药
+		TbDrug drug = drugService.getDrugByName(drugName);
+		
+		if (drug != null) {
+			map.put("drugId", drug.getId());
+		} else {
+			map.put("drugId", null);
+		}
+		
+		if (!drugNo.equals("")) {
+			// 根据药品编号获得药品的id
+			TbDrug drug1 = drugService.getDrugByNo(drugNo);
+			if (drug1 != null) {
+				map.put("drugId", drug1.getId());
+			} else {
+				map.put("drugId", null);
+			}
+		}
+		
+		// 根据条件查询总数
+		int totalNum = stockMapper.countByListCondition(map);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		
+		
+		
+		List<TbStock> stockList = stockMapper.pageByListCondition(map);
 		
 		for (TbStock tbStock : stockList) {
 			TbDrug drug2 = drugService.getDrugById(tbStock.getDrugId());

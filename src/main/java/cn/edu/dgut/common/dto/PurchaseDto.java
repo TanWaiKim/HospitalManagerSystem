@@ -40,6 +40,12 @@ public class PurchaseDto {
     
     private Integer purchaseId;
     
+    private String produceTime;
+    
+    private String validTime;
+    
+    private String batchNo;
+    
 	public String getWarehouseNo() {
 		return warehouseNo;
 	}
@@ -166,6 +172,30 @@ public class PurchaseDto {
 
 	public void setPurchaseId(Integer purchaseId) {
 		this.purchaseId = purchaseId;
+	}
+
+	public String getProduceTime() {
+		return produceTime;
+	}
+
+	public void setProduceTime(String produceTime) {
+		this.produceTime = produceTime;
+	}
+
+	public String getValidTime() {
+		return validTime;
+	}
+
+	public void setValidTime(String validTime) {
+		this.validTime = validTime;
+	}
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
 	}
     
     

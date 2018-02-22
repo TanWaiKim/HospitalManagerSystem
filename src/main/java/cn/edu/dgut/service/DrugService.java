@@ -23,4 +23,5 @@ public interface DrugService {
 	List<TbDrug> selectAllDrug();
 	TbDrug getDrugByNo(String drugNo);
 	TbDrug getDrugByName(String drugName);
+	TbDrug getDrugBySelective(TbDrug drug);
 }

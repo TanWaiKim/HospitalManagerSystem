@@ -20,9 +20,9 @@ public class TbDrug {
 
     private String howuse;
 
-    private String producedTime;
-
-    private String validTime;
+//    private String producedTime;
+//
+//    private String validTime;
 
     private Date createTime;
 
@@ -30,11 +30,13 @@ public class TbDrug {
     
     private TbDrugtype drugtype;
     
-    private BigDecimal purchasePrice;
+//    private BigDecimal purchasePrice;
 
     private BigDecimal salePrice;
     
     private String remark;
+    
+    private String uneffect;
     
     public Integer getId() {
         return id;
@@ -100,21 +102,21 @@ public class TbDrug {
         this.howuse = howuse == null ? null : howuse.trim();
     }
 
-    public String getProducedTime() {
-        return producedTime;
-    }
-
-    public void setProducedTime(String producedTime) {
-        this.producedTime = producedTime;
-    }
-
-    public String getValidTime() {
-        return validTime;
-    }
-
-    public void setValidTime(String validTime) {
-        this.validTime = validTime;
-    }
+//    public String getProducedTime() {
+//        return producedTime;
+//    }
+//
+//    public void setProducedTime(String producedTime) {
+//        this.producedTime = producedTime;
+//    }
+//
+//    public String getValidTime() {
+//        return validTime;
+//    }
+//
+//    public void setValidTime(String validTime) {
+//        this.validTime = validTime;
+//    }
 
     public Date getCreateTime() {
         return createTime;
@@ -140,13 +142,13 @@ public class TbDrug {
 		this.drugtype = drugtype;
 	}
 
-	public BigDecimal getPurchasePrice() {
-		return purchasePrice;
-	}
-
-	public void setPurchasePrice(BigDecimal purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
+//	public BigDecimal getPurchasePrice() {
+//		return purchasePrice;
+//	}
+//
+//	public void setPurchasePrice(BigDecimal purchasePrice) {
+//		this.purchasePrice = purchasePrice;
+//	}
 
 	public BigDecimal getSalePrice() {
 		return salePrice;
@@ -162,6 +164,14 @@ public class TbDrug {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getUneffect() {
+		return uneffect;
+	}
+
+	public void setUneffect(String uneffect) {
+		this.uneffect = uneffect;
 	}
 
 }

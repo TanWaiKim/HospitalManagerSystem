@@ -38,7 +38,11 @@ public interface TbStockMapper {
 
 	List<TbStock> pageByCondition(Map<String, Object> map);
 	
-	TbStock selectByDrugId(Integer id);
+	int countByListCondition(Map<String, Object> map);
+
+	List<TbStock> pageByListCondition(Map<String, Object> map);
+	
+	TbStock selectByDrugIdAndBatchNo(Map<String, Object> map);
 	
 	int countByQuantityWaring(Map<String, Object> map);
 
@@ -48,5 +52,12 @@ public interface TbStockMapper {
 
 	List<TbStock> pageByValidWaring(Map<String, Object> map);
 	
-	Integer countValidTime(Integer id);
+	Integer countValidTime(TbStock stock);
+	List<TbStock> selectAllStock();
+	
+	List<TbStock> getStockByDrugId(Integer drugId);
+	
+	int updateByDrugId (TbStock record);
+	int updateWaring (TbStock record);
+	int updateValidWaring (TbStock record);
 }

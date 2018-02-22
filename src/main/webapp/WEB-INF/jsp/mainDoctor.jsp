@@ -287,15 +287,30 @@
 					
 		</ul>
 		<h2>
-			<span class="icon-hospital-o"></span>进销药统计分析
+			<span class="icon-hospital-o"></span>统计分析
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>进药分析</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>销药分析</a></li>
-					
+			<li>
+				<a href="statistics/category" target="right">
+					<span class="icon-caret-right"></span>种类统计
+				</a>
+			</li>
+			<li>
+				<a href="statistics/purchase" target="right">
+					<span class="icon-caret-right"></span>采药分析
+				</a>
+			</li>
+			<li>
+				<a href="statistics/priceChange" target="right">
+					<span class="icon-caret-right"></span>价格异动
+				</a>
+			</li>
+			<li>
+				<a href="info.html" target="right">
+					<span class="icon-caret-right"></span>销药分析
+				</a>
+			</li>					
 		</ul>
 		<h2>
 			<span class="icon-wrench"></span>系统管理

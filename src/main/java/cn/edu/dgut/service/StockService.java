@@ -1,6 +1,7 @@
 package cn.edu.dgut.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbStock;
@@ -18,10 +19,16 @@ public interface StockService {
 	int deleteStockById(Integer id);
 	int deleteStockByIds(String[] ids);
 	List<TbStock> selectAllStock();
-	TbStock getStockByDrug(Integer id);
+	TbStock getStockByDrug(Map<String, Object> map);
 	int updateStockBySelective(TbStock stock);
 	List<TbStock> getAllStockByQuantityWaring(Page page);
 	List<TbStock> pageByQuantityWaring(Page page);
 	List<TbStock> getAllStockByValidWaring(Page page);
 	List<TbStock> pageByValidWaring(Page page);
+	List<TbStock> getStockByDrugId(Integer drugId);
+	
+	List<TbStock> getAllListStock(Page page);
+	List<TbStock> pageByListCondition(String drugName, String drugNo, Page page);
+	
+	int updateStockByDrugId(TbStock stock);
 }

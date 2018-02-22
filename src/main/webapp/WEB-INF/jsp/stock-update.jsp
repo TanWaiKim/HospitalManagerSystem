@@ -34,19 +34,17 @@
 						<label>医药名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${stock.drug.drugName }"
-							name="drug.drugName" data-validate="required:请输入医药名称" readonly="readonly"/>
-						<div class="tips"></div>
-					</div>
+						<input type="text" class="input w50" value="${stock.drug.drugName }" name="" readonly="readonly"/>
+					</div>	
 				</div>
 				
 				<div class="form-group">
 					<div class="label">
-						<label>医药编号：</label>
+						<label>批准文号：</label>
 					</div>
-						<input type="text" class="input w50" value="${stock.drug.drugNo }"
-							name="drug.drugNo" data-validate="required:请输入医药编号" readonly="readonly"/>
-						<div class="tips"></div>					
+					<div class="field">
+						<input type="text" class="input w50" value="${stock.drug.drugNo }" name="" readonly="readonly"/>
+					</div>			
 				</div>
 				
 				
@@ -55,9 +53,7 @@
 						<label>当前库存数量：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${stock.stockQuantity }"
-							name="stockQuantity" data-validate="required:请输入当前库存数量" readonly="readonly"/>
-						<div class="tips"></div>
+						<input type="text" class="input w50" value="${stock.stockQuantity }" name="" readonly="readonly"/>
 					</div>
 				</div>
 		

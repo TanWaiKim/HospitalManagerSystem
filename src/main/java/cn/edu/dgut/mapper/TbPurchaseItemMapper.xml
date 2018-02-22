@@ -13,6 +13,9 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
+    <result column="produce_time" property="produceTime" jdbcType="VARCHAR" />
+    <result column="valid_time" property="validTime" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, purchase_no, drug_id, drug_name, purchase_price, sale_price, quantity, purchase_total_price, 
-    create_time, update_time, status
+    create_time, update_time, status, batch_no, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseItemExample" >
     select
@@ -96,6 +99,14 @@
     from tb_purchase_item
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectByDrugIdAndBatchNo" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_purchase_item
+    where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_purchase_item
     where id = #{id,jdbcType=INTEGER}
@@ -114,10 +125,13 @@
     insert into tb_purchase_item (id, purchase_no, drug_id, 
       drug_name, purchase_price, sale_price, 
       quantity, purchase_total_price, create_time, 
-      update_time, status)
+      update_time, status, batch_no, produce_time, valid_time)
     values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR}, #{drugId,jdbcType=INTEGER}, 
       #{drugName,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, 
-      #{quantity,jdbcType=INTEGER}, #{purchaseTotalPrice,jdbcType=DECIMAL}, now(), now(), #{status,jdbcType=VARCHAR})
+      #{quantity,jdbcType=INTEGER}, #{purchaseTotalPrice,jdbcType=DECIMAL}, now(), now(), 
+      #{status,jdbcType=VARCHAR}, #{batchNo,jdbcType=VARCHAR}, str_to_date(#{produceTime},"%Y-%m-%d"), 
+      str_to_date(#{validTime},"%Y-%m-%d")
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
     insert into tb_purchase_item
@@ -155,6 +169,15 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="batchNo != null" >
+        batch_no,
+      </if>
+      <if test="produceTime != null" >
+        produce_time,
+      </if>
+      <if test="validTime != null" >
+        valid_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -189,6 +212,15 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="batchNo != null" >
+        #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="produceTime != null" >
+        str_to_date(#{produceTime},"%Y-%m-%d"),
+      </if>
+      <if test="validTime != null" >
+        str_to_date(#{validTime},"%Y-%m-%d"),
       </if>
     </trim>
   </insert>
@@ -232,7 +264,16 @@
         update_time = now(),
       </if>
       <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="produceTime != null" >
+        produce_time = str_to_date(#{produceTime},"%Y-%m-%d"),
+      </if>
+      <if test="validTime != null" >
+        valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
       </if>
     </set>
     <if test="_parameter != null" >
@@ -251,7 +292,10 @@
       purchase_total_price = #{record.purchaseTotalPrice,jdbcType=DECIMAL},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = now(),
-      status = #{record.status,jdbcType=VARCHAR}
+      status = #{record.status,jdbcType=VARCHAR},
+      batch_no = #{record.batchNo,jdbcType=VARCHAR},
+      produce_time = str_to_date(#{produceTime},"%Y-%m-%d"), 
+      valid_time = str_to_date(#{validTime},"%Y-%m-%d")
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -289,6 +333,15 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="produceTime != null" >
+        produce_time = str_to_date(#{produceTime},"%Y-%m-%d"),
+      </if>
+      <if test="validTime != null" >
+        valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -303,18 +356,25 @@
       purchase_total_price = #{purchaseTotalPrice,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=VARCHAR}
+      status = #{status,jdbcType=VARCHAR},
+      batch_no = #{batchNo,jdbcType=VARCHAR},
+      produce_time = str_to_date(#{produceTime},"%Y-%m-%d"), 
+      valid_time = str_to_date(#{validTime},"%Y-%m-%d")
     where id = #{id,jdbcType=INTEGER}
   </update>
  
    <!-- 查询最后一条记录 -->
   <select id="selectLastRecord"  resultMap="BaseResultMap">
-  	select * from  tb_purchase_item order by id desc limit 1
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from  tb_purchase_item order by id desc limit 1
   </select>
   
    <!-- 查询所有记录 -->
   <select id="selectAllPurchaseItem" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select * from  tb_purchase_item where purchase_no = #{purchaseNo}
+  	select
+  	<include refid="Base_Column_List"></include>
+  	from  tb_purchase_item where purchase_no = #{purchaseNo}
   </select>  
 
  
@@ -326,7 +386,9 @@
   
   <!-- 条件查询 -->
   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
-  	select * from tb_purchase_item p
+  	select  
+  	<include refid="Base_Column_List"></include>
+  	from tb_purchase_item p
   	where p.purchase_no = #{purchaseNo}
   	order by p.id limit #{pageIndex} ,#{pageSize}
   </select>
@@ -339,4 +401,25 @@
 			#{id}
 		</foreach>
   </delete>
+  
+   <!-- 统计分析条件查询 -->
+  <select id="analysisByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from tb_purchase_item p
+  		<where>
+  			<if test="drugId != null">
+  				and p.drug_id =  #{drugId} 
+  			</if>
+  			<if test="beginTime!=null and !&quot;&quot;.equals(beginTime.trim()) and endTime!=null and !&quot;&quot;.equals(endTime.trim())">
+  				and p.create_time <![CDATA[>=]]> #{beginTime} and p.create_time <![CDATA[<=]]> #{endTime}
+  			</if>
+  		</where>
+  </select>
+  
+    <!-- 查询所有记录 -->
+  <select id="selectAllPurchaseItem1"  resultMap="BaseResultMap">
+  	select * from  tb_purchase_item
+  </select>  
+  
 </mapper>

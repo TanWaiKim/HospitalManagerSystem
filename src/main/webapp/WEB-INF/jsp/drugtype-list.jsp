@@ -43,7 +43,7 @@
 					<li>搜索：</li>
 					<li>
 						医药种类名称
-						<input type="text" name="drugtypeName" value="${drugtypeName }" />  
+						<input type="text" placeholder="请输入医药种类名称" name="drugtypeName" value="${drugtypeName }" />  
 					</li>
 
 					<li>

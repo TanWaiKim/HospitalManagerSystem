@@ -39,13 +39,13 @@
 					<li>搜索：</li>
 					<li>
 						医药名称
-						<input type="text" name="drugName" value="${drugName }" />  
+						<input type="text" placeholder="请输入医药名称" name="drugName" value="${drugName }" />  
 					</li>
 					<li>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						药品编号
-						<input type="text" name="drugNo" value="${drugNo }" />  
+						批准文号
+						<input type="text" placeholder="请输入批准文号" name="drugNo" value="${drugNo }" />  
 					</li>	
 		
 					<li>
@@ -70,7 +70,7 @@
 					<tr>
 						<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
 						<th width="300" >医药名称</th>
-						<th width="200" >医药编号</th>
+						<th width="200" >批准文号</th>
 						<th width="200">当前库存数量</th>
 						<th width="200">库存下限</th>
 						<th width="200">库存上限</th>
@@ -91,7 +91,7 @@
 							
 							<td>
 								<div class="button-group">
-									<a class="button border-main" href="${pageContext.request.contextPath }/stock/findByStockId?id=${stock.id }">
+									<a class="button border-main" href="${pageContext.request.contextPath }/stock/findByDrugId?drugId=${stock.drugId }">
 										<span class="icon-edit">设置上下限</span> 
 									</a> 
 								</div>

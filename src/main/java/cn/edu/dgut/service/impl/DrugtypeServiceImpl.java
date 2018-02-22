@@ -146,7 +146,7 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 		TbAdminExample example = new TbAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
 		List<TbAdmin> adminList = adminMapper.selectByExample(example);
-		if(adminList.size()>0){
+		if(adminList != null){
 			return true;
 		}
 		return false;
@@ -158,7 +158,7 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	@Override
 	public List<TbDrugtype> selectAllDrugtype() {
 		List<TbDrugtype> drugtypeList = drugtypeMapper.selectAllDrugtype();
-		if (drugtypeList.size() > 0) {
+		if (drugtypeList != null) {
 			return drugtypeList;
 		}
 		return null;

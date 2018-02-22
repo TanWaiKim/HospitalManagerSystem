@@ -175,7 +175,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 		TbAdminExample example = new TbAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
 		List<TbAdmin> adminList = adminMapper.selectByExample(example);
-		if(adminList.size()>0){
+		if(adminList != null){
 			return true;
 		}
 		return false;
@@ -187,7 +187,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 	@Override
 	public List<TbWarehouse> selectAllWarehouse() {
 		List<TbWarehouse> warehouseList = warehouseMapper.selectAllWarehouse();
-		if (warehouseList.size() > 0) {
+		if (warehouseList != null) {
 			return warehouseList;
 		}
 		return null;

@@ -26,6 +26,12 @@ public class TbStock {
     private TbDrug drug;
     
     private String waring;
+    
+    private String validWaring;
+    
+    private String batchNo;
+    
+    private TbPurchaseItem purchaseItem;
 
     public Integer getId() {
         return id;
@@ -121,5 +127,29 @@ public class TbStock {
 
 	public void setWaring(String waring) {
 		this.waring = waring;
+	}
+
+	public String getValidWaring() {
+		return validWaring;
+	}
+
+	public void setValidWaring(String validWaring) {
+		this.validWaring = validWaring;
+	}
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	public TbPurchaseItem getPurchaseItem() {
+		return purchaseItem;
+	}
+
+	public void setPurchaseItem(TbPurchaseItem purchaseItem) {
+		this.purchaseItem = purchaseItem;
 	}
 }

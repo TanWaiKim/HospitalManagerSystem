@@ -17,6 +17,7 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
+<script src="${pageContext.request.contextPath }/js/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -70,6 +71,42 @@
 					</div>
 				</div>
 		
+				<div class="form-group">
+					<div class="label">
+						<label>生产日期：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="Wdate" value="${purchaseDto.produceTime }" name="produceTime"  
+						 data-validate="required:请输入生产日期"
+						 onClick="WdatePicker({lang:'zh-cn'})" />  
+						 <div class="tips"></div>
+					</div>
+					
+				</div>						
+	
+				<div class="form-group">
+					<div class="label">
+						<label>有效期至：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="Wdate" value="${purchaseDto.validTime }" name="validTime" 
+						 data-validate="required:请输入有效期至"
+						 onClick="WdatePicker({lang:'zh-cn'})" />  
+						 <div class="tips"></div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="label">
+						<label>产品批号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${purchaseDto.batchNo }"
+							name="batchNo" data-validate="required:请输入产品批号" />
+						<div class="tips"></div>
+					</div>
+				</div>
+
 				<div class="form-group">
 					<div class="label">
 						<label>数量：</label>

@@ -41,4 +41,10 @@ public interface TbPurchaseItemMapper {
 	List<TbPurchaseItem> pageByCondition(Map<String, Object> map);
 	
 	int deleteBatch(List<Long> list);
+	
+	List<TbPurchaseItem> analysisByCondition(Map<String, Object> map);
+	
+	TbPurchaseItem selectByDrugIdAndBatchNo(TbPurchaseItem purchaseItem);
+	List<TbPurchaseItem> selectAllPurchaseItem1();
+	
 }

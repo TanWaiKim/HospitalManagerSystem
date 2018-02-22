@@ -239,6 +239,12 @@
 			<artifactId>poi-ooxml-schemas</artifactId>
 			<version>3.14-beta1</version>
 		</dependency>
+		<!-- jfreechart插件 -->
+		<dependency>  
+		<groupId>jfreechart</groupId>  
+		    <artifactId>jfreechart</artifactId>  
+		    <version>1.0.0</version>  
+		</dependency> 
 	</dependencies>
 
     <build>

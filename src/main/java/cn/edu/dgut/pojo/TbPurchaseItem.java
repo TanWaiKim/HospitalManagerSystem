@@ -25,6 +25,12 @@ public class TbPurchaseItem {
     private Date updateTime;
     
     private String status;
+    
+    private String batchNo;
+    
+    private String produceTime;
+    
+    private String validTime;
 
     public Integer getId() {
         return id;
@@ -112,5 +118,29 @@ public class TbPurchaseItem {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	public String getProduceTime() {
+		return produceTime;
+	}
+
+	public void setProduceTime(String produceTime) {
+		this.produceTime = produceTime;
+	}
+
+	public String getValidTime() {
+		return validTime;
+	}
+
+	public void setValidTime(String validTime) {
+		this.validTime = validTime;
 	}
 }

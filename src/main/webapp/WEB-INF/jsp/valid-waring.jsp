@@ -43,6 +43,7 @@
 						<th width="150">生产日期</th>
 						<th width="150">有效日期至</th>
 						<th width="300">预警信息</th>
+						<th width="200">操作</th>
 					</tr>
 					<c:forEach items="${stockList}" var="stock"  varStatus="status">
 						<tr>
@@ -54,13 +55,20 @@
 							<td>${stock.warehouse.warehouseName }</td>
 							<td>${stock.drug.drugtype.drugtypeName }</td>
 							<td>${stock.drug.drugName }</td>
-							<td>${stock.drug.producedTime }</td>
-							<td>${stock.drug.validTime }</td>
-							<td>${stock.drug.remark  }</td>
+							<td>${stock.purchaseItem.produceTime }</td>
+							<td>${stock.purchaseItem.validTime }</td>
+							<td>${stock.validWaring  }</td>
+							<td>
+								<div class="button-group">
+									<a class="button border-red"
+										href="#"><span
+										class="icon-minus"></span> 退药</a>
+								</div>
+							</td>
 						</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="8">
+						<td colspan="9">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">
@@ -81,6 +89,8 @@
 									href="javascript:changeCurrentPage($('#currentPageText').val())"
 									class='go'>GO</a>
 									
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

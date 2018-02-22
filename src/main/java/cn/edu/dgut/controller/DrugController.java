@@ -80,13 +80,21 @@ public class DrugController {
 				return HmsResult.build(505, "用法用量不能为空！");
 			}
 			
-			if (drug.getProducedTime() == null) {
-				return HmsResult.build(505, "生产日期不能为空！");
+			if (drug.getDrugNo() == null) {
+				return HmsResult.build(505, "批准文号不能为空！");
 			}
-
-			if (drug.getValidTime() == null) {
-				return HmsResult.build(505, "有效期至不能为空！");
+			
+			if (drug.getUneffect() == null) {
+				return HmsResult.build(505, "不良反应不能为空！");
 			}
+			
+//			if (drug.getProducedTime() == null) {
+//				return HmsResult.build(505, "生产日期不能为空！");
+//			}
+//
+//			if (drug.getValidTime() == null) {
+//				return HmsResult.build(505, "有效期至不能为空！");
+//			}
 			
 			if (drugService.addDrugByTbDrug(drug) > 0) {
 				return HmsResult.ok();

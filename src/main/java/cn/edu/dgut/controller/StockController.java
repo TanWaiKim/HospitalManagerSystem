@@ -1,7 +1,9 @@
 package cn.edu.dgut.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
@@ -63,28 +65,33 @@ public class StockController {
 			TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseItem.getPurchaseNo());
 	        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
 	        
-	        purchaseItem.setStatus("已入库");
-	        purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
-	        
 			TbStock stock = new TbStock();
 			stock.setWarehouseNo(purchase.getWarehouseNo());
 			stock.setDrugId(purchaseItem.getDrugId());
 			stock.setStockQuantity(purchaseItem.getQuantity());
 			stock.setOperator(admin.getUsername());
+			stock.setBatchNo(purchaseItem.getBatchNo());
 			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("drugId", purchaseItem.getDrugId());
+			map.put("batchNo", purchaseItem.getBatchNo());
 			
-			TbStock stock2 = stockService.getStockByDrug(purchaseItem.getDrugId());
+			TbStock stock2 = stockService.getStockByDrug(map);
 			
 			if (stock2 != null) {
 				BigDecimal stockQuantity = BigDecimalUtil.add(purchaseItem.getQuantity().doubleValue(),
 						stock2.getStockQuantity().doubleValue());
 				stock.setStockQuantity(stockQuantity.intValue());
 				if (stockService.updateStockBySelective(stock) > 0) {
+			        purchaseItem.setStatus("已入库");
+			        purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
 					return HmsResult.ok();
 				}
 			} else {
 				// 添加库存
 				if (stockService.addStockByTbStock(stock) > 0) {
+			        purchaseItem.setStatus("已入库");
+			        purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
 					return HmsResult.ok();
 				}
 			}
@@ -178,7 +185,8 @@ public class StockController {
 			Page page = new Page();
 			page.setPageNumber(page.getPageNumber()+2);
 			page.setCurrentPage(currentPage);
-			model.addAttribute("stockList", stockService.getAllStock(page));
+			
+			model.addAttribute("stockList", stockService.getAllListStock(page));
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,7 +218,7 @@ public class StockController {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
 			
-			List<TbStock> stockList = stockService.pageByCondition(null, null,drugName, drugNo,  page);
+			List<TbStock> stockList = stockService.pageByListCondition(drugName,drugNo,page);
 			
 			
 			model.addAttribute("stockList", stockList);
@@ -337,9 +345,18 @@ public class StockController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/findByStockId")
-	public String getStockById(@RequestParam(value = "id") Integer id, Model model) {
-		TbStock stock = stockService.getStockById(id);
+	@RequestMapping("/findByDrugId")
+	public String getStockByDrugId(@RequestParam(value = "drugId") Integer drugId, Model model) {
+		List<TbStock> stockList = stockService.getStockByDrugId(drugId);
+		
+		Integer totalQuantity = 0;
+		
+		for(TbStock stock:stockList) {
+			totalQuantity += stock.getStockQuantity();
+		}
+		
+		TbStock stock = stockList.get(0);
+		stock.setStockQuantity(totalQuantity);
 		model.addAttribute("stock", stock);
 		return "stock-update";
 	}
@@ -355,7 +372,7 @@ public class StockController {
 	public HmsResult updateStockByTbStock(TbStock stock, Model model) {
 		
 		try {
-			if (stockService.updateStockBySelective(stock) > 0) {
+			if (stockService.updateStockByDrugId(stock) > 0) {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {

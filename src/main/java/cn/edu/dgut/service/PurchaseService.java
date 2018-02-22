@@ -5,6 +5,7 @@ import java.util.List;
 import cn.edu.dgut.common.dto.PurchaseDto;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbPurchase;
+import cn.edu.dgut.pojo.TbPurchaseItem;
 
 /**
  * @author TanWaiKim
@@ -23,4 +24,5 @@ public interface PurchaseService {
 	int updatePurchaseByPurchaseNo(PurchaseDto purchaseDto);
 	int updatePurchaseByPurchaseItemId(PurchaseDto purchaseDto);
 	int updatePurchase(TbPurchase purchase);
+	List<TbPurchaseItem> purchaseByCondition(String drugName,String drugNo,String beginTime,String endTime);
 }

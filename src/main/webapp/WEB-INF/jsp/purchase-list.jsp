@@ -43,7 +43,7 @@
 					<li>搜索：</li>
 					<li>
 						采药单编号
-						<input type="text" name="purchaseNo" value="${purchaseNo }" style= "width:120px"/>  
+						<input type="text" placeholder="请输入采药单编号" name="purchaseNo" value="${purchaseNo }" style= "width:120px"/>  
 					</li>
 					<li>
 						供药商
@@ -86,7 +86,7 @@
 					<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="200" >采药单编号</th>
 					<th width="200" >供药商名称</th>
-					<th width="100" >仓库名称</th>
+					<th width="110" >仓库名称</th>
 					<th width="100" >总数量</th>
 					<th width="100" >总价格</th>
 					<th width="90" >操作员</th>

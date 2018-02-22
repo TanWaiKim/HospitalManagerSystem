@@ -646,125 +646,125 @@ public class TbDrugExample {
             return (Criteria) this;
         }
 
-        public Criteria andProducedTimeIsNull() {
-            addCriterion("produced_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeIsNotNull() {
-            addCriterion("produced_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeEqualTo(Date value) {
-            addCriterion("produced_time =", value, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeNotEqualTo(Date value) {
-            addCriterion("produced_time <>", value, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeGreaterThan(Date value) {
-            addCriterion("produced_time >", value, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("produced_time >=", value, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeLessThan(Date value) {
-            addCriterion("produced_time <", value, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeLessThanOrEqualTo(Date value) {
-            addCriterion("produced_time <=", value, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeIn(List<Date> values) {
-            addCriterion("produced_time in", values, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeNotIn(List<Date> values) {
-            addCriterion("produced_time not in", values, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeBetween(Date value1, Date value2) {
-            addCriterion("produced_time between", value1, value2, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andProducedTimeNotBetween(Date value1, Date value2) {
-            addCriterion("produced_time not between", value1, value2, "producedTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeIsNull() {
-            addCriterion("valid_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeIsNotNull() {
-            addCriterion("valid_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeEqualTo(Date value) {
-            addCriterion("valid_time =", value, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeNotEqualTo(Date value) {
-            addCriterion("valid_time <>", value, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeGreaterThan(Date value) {
-            addCriterion("valid_time >", value, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("valid_time >=", value, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeLessThan(Date value) {
-            addCriterion("valid_time <", value, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeLessThanOrEqualTo(Date value) {
-            addCriterion("valid_time <=", value, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeIn(List<Date> values) {
-            addCriterion("valid_time in", values, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeNotIn(List<Date> values) {
-            addCriterion("valid_time not in", values, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeBetween(Date value1, Date value2) {
-            addCriterion("valid_time between", value1, value2, "validTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andValidTimeNotBetween(Date value1, Date value2) {
-            addCriterion("valid_time not between", value1, value2, "validTime");
-            return (Criteria) this;
-        }
+//        public Criteria andProducedTimeIsNull() {
+//            addCriterion("produced_time is null");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeIsNotNull() {
+//            addCriterion("produced_time is not null");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeEqualTo(Date value) {
+//            addCriterion("produced_time =", value, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeNotEqualTo(Date value) {
+//            addCriterion("produced_time <>", value, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeGreaterThan(Date value) {
+//            addCriterion("produced_time >", value, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeGreaterThanOrEqualTo(Date value) {
+//            addCriterion("produced_time >=", value, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeLessThan(Date value) {
+//            addCriterion("produced_time <", value, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeLessThanOrEqualTo(Date value) {
+//            addCriterion("produced_time <=", value, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeIn(List<Date> values) {
+//            addCriterion("produced_time in", values, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeNotIn(List<Date> values) {
+//            addCriterion("produced_time not in", values, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeBetween(Date value1, Date value2) {
+//            addCriterion("produced_time between", value1, value2, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andProducedTimeNotBetween(Date value1, Date value2) {
+//            addCriterion("produced_time not between", value1, value2, "producedTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeIsNull() {
+//            addCriterion("valid_time is null");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeIsNotNull() {
+//            addCriterion("valid_time is not null");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeEqualTo(Date value) {
+//            addCriterion("valid_time =", value, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeNotEqualTo(Date value) {
+//            addCriterion("valid_time <>", value, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeGreaterThan(Date value) {
+//            addCriterion("valid_time >", value, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeGreaterThanOrEqualTo(Date value) {
+//            addCriterion("valid_time >=", value, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeLessThan(Date value) {
+//            addCriterion("valid_time <", value, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeLessThanOrEqualTo(Date value) {
+//            addCriterion("valid_time <=", value, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeIn(List<Date> values) {
+//            addCriterion("valid_time in", values, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeNotIn(List<Date> values) {
+//            addCriterion("valid_time not in", values, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeBetween(Date value1, Date value2) {
+//            addCriterion("valid_time between", value1, value2, "validTime");
+//            return (Criteria) this;
+//        }
+//
+//        public Criteria andValidTimeNotBetween(Date value1, Date value2) {
+//            addCriterion("valid_time not between", value1, value2, "validTime");
+//            return (Criteria) this;
+//        }
 
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
@@ -886,66 +886,6 @@ public class TbDrugExample {
             return (Criteria) this;
         }
 
-        public Criteria andPurchasePriceIsNull() {
-            addCriterion("purchase_price is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceIsNotNull() {
-            addCriterion("purchase_price is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceEqualTo(BigDecimal value) {
-            addCriterion("purchase_price =", value, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceNotEqualTo(BigDecimal value) {
-            addCriterion("purchase_price <>", value, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceGreaterThan(BigDecimal value) {
-            addCriterion("purchase_price >", value, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("purchase_price >=", value, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceLessThan(BigDecimal value) {
-            addCriterion("purchase_price <", value, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("purchase_price <=", value, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceIn(List<BigDecimal> values) {
-            addCriterion("purchase_price in", values, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceNotIn(List<BigDecimal> values) {
-            addCriterion("purchase_price not in", values, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("purchase_price between", value1, value2, "purchasePrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andPurchasePriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("purchase_price not between", value1, value2, "purchasePrice");
-            return (Criteria) this;
-        }
-
         public Criteria andSalePriceIsNull() {
             addCriterion("sale_price is null");
             return (Criteria) this;
@@ -1003,6 +943,76 @@ public class TbDrugExample {
 
         public Criteria andSalePriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("sale_price not between", value1, value2, "salePrice");
+            return (Criteria) this;
+        }
+        
+        public Criteria andUneffectIsNull() {
+            addCriterion("uneffect is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUncffectIsNotNull() {
+            addCriterion("uneffect is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUncffectEqualTo(String value) {
+            addCriterion("uneffect =", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectNotEqualTo(String value) {
+            addCriterion("uneffect <>", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectGreaterThan(String value) {
+            addCriterion("uneffect >", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectGreaterThanOrEqualTo(String value) {
+            addCriterion("uneffect >=", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectLessThan(String value) {
+            addCriterion("uneffect <", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectLessThanOrEqualTo(String value) {
+            addCriterion("uneffect <=", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectLike(String value) {
+            addCriterion("uneffect like", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectNotLike(String value) {
+            addCriterion("uneffect not like", value, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectIn(List<String> values) {
+            addCriterion("uneffect in", values, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectNotIn(List<String> values) {
+            addCriterion("uneffect not in", values, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectBetween(String value1, String value2) {
+            addCriterion("uneffect between", value1, value2, "uneffect");
+            return (Criteria) this;
+        }
+
+        public Criteria andUneffectNotBetween(String value1, String value2) {
+            addCriterion("uneffect not between", value1, value2, "uneffect");
             return (Criteria) this;
         }
 

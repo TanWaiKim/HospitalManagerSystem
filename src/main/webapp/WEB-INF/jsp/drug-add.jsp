@@ -71,7 +71,7 @@
 
 				<div class="form-group">
 					<div class="label">
-						<label>单位：</label>
+						<label>单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</label>
 					</div>
 					<div class="field">
 						<select name="unit" class="input" 
@@ -91,7 +91,7 @@
 		
 				<div class="form-group">
 					<div class="label">
-						<label>规格：</label>
+						<label>规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</label>
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value=""
@@ -109,35 +109,30 @@
 							name="howuse" data-validate="required:请输入用法用量" />
 						<div class="tips"></div>
 					</div>
-				</div>		
-				
-
-				<div class="form-group">
-					<div class="label">
-						<label>生产日期：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="Wdate" value="" name="producedTime"  
-						 data-validate="required:请输入生产日期"
-						 onClick="WdatePicker({lang:'zh-cn'})" />  
-						 <div class="tips"></div>
-					</div>
-					
-				</div>						
-	
-				<div class="form-group">
-					<div class="label">
-						<label>有效期至：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="Wdate" value="" name="validTime" 
-						 data-validate="required:请输入有效期至"
-						 onClick="WdatePicker({lang:'zh-cn'})" />  
-						 <div class="tips"></div>
-					</div>
 				</div>	
 
+				<div class="form-group">
+					<div class="label">
+						<label>批准文号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value=""
+							name="drugNo" data-validate="required:请输入批准文号" />
+						<div class="tips"></div>
+					</div>
+				</div>	
 				
+				<div class="form-group">
+					<div class="label">
+						<label>不良反应：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value=""
+							name="uneffect" data-validate="required:请输入不良反应" />
+						<div class="tips"></div>
+					</div>
+				</div>		
+
 				<div class="form-group">
 					<div class="label">
 						<label></label>

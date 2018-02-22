@@ -29,7 +29,6 @@
 				onsubmit="return false;">
 				<input type="hidden" id="id" name="id" value="${drug.id }" />
 				<input type="hidden" id="createTime" name="createTime" value="${drug.createTime }" />
-				<input type="hidden" id="drugNo" name="drugNo" value="${drug.drugNo }" />
 				
 				<div class="form-group">
 					<div class="label">
@@ -114,28 +113,26 @@
 				
 				<div class="form-group">
 					<div class="label">
-						<label>生产日期：</label>
+						<label>批准文号：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="Wdate" value="${drug.producedTime }" name="producedTime"  
-						 data-validate="required:请输入生产日期"
-						 onClick="WdatePicker({lang:'zh-cn'})" />  
-						 <div class="tips"></div>
-					</div>
-					
-				</div>						
-	
-				<div class="form-group">
-					<div class="label">
-						<label>有效期至：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="Wdate" value="${drug.validTime }" name="validTime" 
-						 data-validate="required:请输入有效期至"
-						 onClick="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd'})" />  
-						 <div class="tips"></div>
+						<input type="text" class="input w50" value="${drug.drugNo }"
+							name="drugNo" data-validate="required:请输入批准文号" />
+						<div class="tips"></div>
 					</div>
 				</div>	
+
+				<div class="form-group">
+					<div class="label">
+						<label>不良反应：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${drug.uneffect }"
+							name="uneffect" data-validate="required:请输入不良反应" />
+						<div class="tips"></div>
+					</div>
+				</div>
+	
 				<div class="form-group">
 					<div class="label">
 						<label></label>

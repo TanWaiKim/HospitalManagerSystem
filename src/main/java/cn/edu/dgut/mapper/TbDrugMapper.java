@@ -26,6 +26,8 @@ public interface TbDrugMapper {
     TbDrug selectByDrugNo(String drugNo);
     
     TbDrug selectByDrugName(String drugName);
+    
+    TbDrug getDrugBySelective(TbDrug drug);
 
     int updateByExampleSelective(@Param("record") TbDrug record, @Param("example") TbDrugExample example);
 

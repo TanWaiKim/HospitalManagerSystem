@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import cn.edu.dgut.common.util.BigDecimalUtil;
 import cn.edu.dgut.mapper.TbPurchaseItemMapper;
 import cn.edu.dgut.pojo.Page;
+import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseItem;
+import cn.edu.dgut.service.DrugService;
 import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.PurchaseService;
 
@@ -28,6 +30,8 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
 	private TbPurchaseItemMapper purchaseItemMapper;
 	@Autowired
 	private PurchaseService purchaseService;
+	@Autowired
+	private DrugService drugService;
 	
 	/**
 	 * 分页查询所有的采药单项目信息，刚进来的页面信息
@@ -45,8 +49,7 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
 		map.put("pageIndex", page.getDbIndex());
 		map.put("pageSize", page.getDbNumber());
 		
-		List<TbPurchaseItem> purchaseItemList = purchaseItemMapper.pageByCondition(map);
-		
+		List<TbPurchaseItem> purchaseItemList = purchaseItemMapper.pageByCondition(map);	
 		return purchaseItemList;
 	}
 
@@ -163,4 +166,70 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
 		return purchaseItemMapper.deleteByPurchaseNo(purchaseNo);
 	}
 
+	/**
+	 * 根据条件统计采购情况
+	 */
+	@Override
+	public List<TbPurchaseItem> selectAllPurchase(Map<String, Object> map) {
+		List<TbPurchaseItem> purchaseItem = purchaseItemMapper.analysisByCondition(map);
+		if (purchaseItem != null) {
+			return purchaseItem;
+		}
+		
+		return null;
+	}
+
+
+	@Override
+	public TbPurchaseItem selectByDrugIdAndBatchNo(TbPurchaseItem purchaseItem) {
+		TbPurchaseItem purchaseItem2 = purchaseItemMapper.selectByDrugIdAndBatchNo(purchaseItem);
+		
+		if (purchaseItem2 != null) {
+			return purchaseItem2;
+		}
+		
+		return null;
+	}
+
+	
+	@Override
+	public List<TbPurchaseItem> selectAllPurchaseItem() {
+		List<TbPurchaseItem> purchaseItems = purchaseItemMapper.selectAllPurchaseItem1();
+		
+		if (purchaseItems != null) {
+			return purchaseItems;
+		}
+		
+		return null;
+	}
+
+	
+	@Override
+	public List<TbPurchaseItem> purchaseItemByCondition(String drugName, String drugNo, String beginTime, String endTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		TbDrug drug = new TbDrug();
+		if (!drugName.equals("") || !drugNo.equals("")) {
+			drug.setDrugName(drugName);
+			drug.setDrugNo(drugNo);
+			drug.setId(0);
+			drug = drugService.getDrugBySelective(drug);
+		} else if (drugName.equals("") && drugNo.equals("")) {
+			drug = null;
+		} 
+		
+		if (drug == null) {
+			return null;
+		}
+		
+		map.put("drugId", drug.getId());
+		map.put("beginTime", beginTime);
+		map.put("endTime", endTime);
+		
+		List<TbPurchaseItem> purchaseItemList = purchaseItemMapper.analysisByCondition(map);
+		
+		if (purchaseItemList != null) {
+			return purchaseItemList;
+		}
+		return null;
+	}
 }

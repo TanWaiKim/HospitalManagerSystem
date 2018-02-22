@@ -713,6 +713,66 @@ public class TbStockExample {
             addCriterion("waring not between", value1, value2, "waring");
             return (Criteria) this;
         }
+        
+        public Criteria andValidWaringNoIsNull() {
+            addCriterion("valid_waring is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringNoIsNotNull() {
+            addCriterion("valid_waring is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringEqualTo(String value) {
+            addCriterion("valid_waring =", value, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringNotEqualTo(String value) {
+            addCriterion("valid_waring <>", value, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringGreaterThan(String value) {
+            addCriterion("valid_waring >", value, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringGreaterThanOrEqualTo(String value) {
+            addCriterion("valid_waring >=", value, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringLessThan(String value) {
+            addCriterion("valid_waring <", value, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringLessThanOrEqualTo(String value) {
+            addCriterion("valid_waring <=", value, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringIn(List<String> values) {
+            addCriterion("valid_waring in", values, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringNotIn(List<String> values) {
+            addCriterion("valid_waring not in", values, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringBetween(String value1, String value2) {
+            addCriterion("valid_waring between", value1, value2, "valid_waring");
+            return (Criteria) this;
+        }
+
+        public Criteria andValidWaringNotBetween(String value1, String value2) {
+            addCriterion("valid_waring not between", value1, value2, "valid_waring");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

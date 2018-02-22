@@ -1,6 +1,7 @@
 package cn.edu.dgut.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbPurchaseItem;
@@ -21,4 +22,8 @@ public interface PurchaseItemService {
 	int deletePurchaseItemByIds(String[] ids);
 	int deletePurchaseItemByPurchase(String purchaseNo);
 	List<TbPurchaseItem> selectAllPurchaseItem(String purchaseNo);
+	List<TbPurchaseItem> selectAllPurchase(Map<String, Object> map);
+	TbPurchaseItem selectByDrugIdAndBatchNo(TbPurchaseItem purchaseItem);
+	List<TbPurchaseItem> selectAllPurchaseItem();
+	List<TbPurchaseItem> purchaseItemByCondition(String drugName,String drugNo,String beginTime,String endTime);
 }

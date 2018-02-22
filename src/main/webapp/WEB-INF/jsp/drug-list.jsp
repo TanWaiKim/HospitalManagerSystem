@@ -54,11 +54,11 @@
 					</li>
 					<li>
 						医药名称
-						<input type="text" name="drugName" value="${drugName }" />  
+						<input type="text" placeholder="请输入医药名称" name="drugName" value="${drugName }" />  
 					</li>
 					<li>
-						药品编号
-						<input type="text" name="drugNo" value="${drugNo }" />  
+						批准文号
+						<input type="text" placeholder="请输入批准文号" name="drugNo" value="${drugNo }" />  
 					</li>				
 					<li>
 						<input type="text" placeholder="请输入搜索关键字" name="keywords" class="input" value="${keywords }"
@@ -76,13 +76,12 @@
 						<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
 						<th width="20" >医药种类</th>
 						<th width="20" >医药名称</th>
-						<th width="15" >医药编号</th>
+						<th width="20" >批准文号</th>
 						<th width="200" >功能主治</th>
 						<th width="10" >规格</th>
 						<th width="5" >单位</th>
 						<th width="100" >用法用量</th>
-						<th width="30" >生产日期</th>
-						<th width="30" >有效期至</th>
+						<th width="50" >不良反应</th>
 						<th width="150">操作</th>
 					</tr>
 					<c:forEach items="${drugList}" var="drug"  varStatus="status">
@@ -101,9 +100,7 @@
 							<td>${drug.spec }</td>
 							<td>${drug.unit }</td>
 							<td>${drug.howuse }</td>
-							<td>${drug.producedTime}</td>
-							<td>${drug.validTime }</td>
-							
+							<td>${drug.uneffect }</td>
 							<td><div class="button-group">
 									<a class="button border-main"
 										href="${pageContext.request.contextPath }/drug/findById?id=${drug.id }"><span

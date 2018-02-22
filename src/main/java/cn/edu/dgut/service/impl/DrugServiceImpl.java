@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.edu.dgut.common.util.IDUtils;
 import cn.edu.dgut.mapper.TbAdminMapper;
 import cn.edu.dgut.mapper.TbDrugMapper;
 import cn.edu.dgut.pojo.Page;
@@ -52,8 +51,6 @@ public class DrugServiceImpl implements DrugService {
 		}else{
 			drug.setId(1);
 		}
-		String drugNo = "YY"+IDUtils.getId() + "";
-		drug.setDrugNo(drugNo);
 		int count = drugMapper.insert(drug);
 		return count;
 	}
@@ -147,7 +144,7 @@ public class DrugServiceImpl implements DrugService {
 		TbAdminExample example = new TbAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
 		List<TbAdmin> adminList = adminMapper.selectByExample(example);
-		if(adminList.size()>0){
+		if(adminList != null){
 			return true;
 		}
 		return false;
@@ -159,7 +156,7 @@ public class DrugServiceImpl implements DrugService {
 	@Override
 	public List<TbDrug> selectAllDrug() {
 		List<TbDrug> drugList = drugMapper.selectAllDrug();
-		if (drugList.size() > 0) {
+		if (drugList != null) {
 			return drugList;
 		}
 		return null;
@@ -182,6 +179,18 @@ public class DrugServiceImpl implements DrugService {
 		TbDrug drug = drugMapper.selectByDrugName(drugName);
 		if (drug!=null) {
 			return drug;
+		}
+		return null;
+	}
+
+	/**
+	 * 条件查询
+	 */
+	@Override
+	public TbDrug getDrugBySelective(TbDrug drug) {
+		TbDrug drug2 = drugMapper.getDrugBySelective(drug);
+		if (drug2 != null) {
+			return drug2;
 		}
 		return null;
 	}

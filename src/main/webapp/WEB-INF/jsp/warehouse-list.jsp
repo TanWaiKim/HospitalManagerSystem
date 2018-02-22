@@ -43,15 +43,15 @@
 					<li>搜索：</li>
 					<li>
 						仓库名称
-						<input type="text" name="warehouseName" value="${warehouseName }" style= "width:120px"/>  
+						<input type="text" placeholder="请输入仓库名称" name="warehouseName" value="${warehouseName }" style= "width:120px"/>  
 					</li>
 					<li>
 						仓库编号
-						<input type="text" name="warehouseNo" value="${warehouseNo }" style= "width:120px"/>  
+						<input type="text" placeholder="请输入仓库编号" name="warehouseNo" value="${warehouseNo }" style= "width:120px"/>  
 					</li>
 					<li>
 						管理员
-						<input type="text" name="manager" value="${manager }" style= "width:120px"/>  
+						<input type="text" placeholder="请输入管理员" name="manager" value="${manager }" style= "width:120px"/>  
 					</li>
 
 					<li>

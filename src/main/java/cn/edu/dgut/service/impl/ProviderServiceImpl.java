@@ -140,7 +140,7 @@ public class ProviderServiceImpl implements ProviderService {
 		TbAdminExample example = new TbAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
 		List<TbAdmin> adminList = adminMapper.selectByExample(example);
-		if(adminList.size()>0){
+		if(adminList != null){
 			return true;
 		}
 		return false;
@@ -152,7 +152,7 @@ public class ProviderServiceImpl implements ProviderService {
 	@Override
 	public List<TbProvider> selectAllProvider() {
 		List<TbProvider> providerList = providerMapper.selectAllProvider();
-		if (providerList.size() > 0) {
+		if (providerList != null) {
 			return providerList;
 		}
 		return null;

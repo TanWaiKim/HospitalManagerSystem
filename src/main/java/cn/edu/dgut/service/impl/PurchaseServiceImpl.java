@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import cn.edu.dgut.common.dto.PurchaseDto;
 import cn.edu.dgut.common.util.BigDecimalUtil;
 import cn.edu.dgut.common.util.IDUtils;
@@ -206,6 +207,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchase.setRemarks(purchaseDto.getRemarks());
 		
 		
+		
 		TbDrug drug = drugService.getDrugById(purchaseDto.getDrugId());
 		
 		// 组装采药单项目
@@ -218,12 +220,23 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseItem.setQuantity(purchaseDto.getQuantity());
 		purchaseItem.setPurchaseTotalPrice(this.getOrderItemTotalPrice(purchaseDto.getQuantity(), purchaseDto.getPurchasePrice()));
 		purchaseItem.setStatus("待入库");
+		purchaseItem.setBatchNo(purchaseDto.getBatchNo());
+		purchaseItem.setProduceTime(purchaseDto.getProduceTime());
+		purchaseItem.setValidTime(purchaseDto.getValidTime());
 		
-		// 添加采药单子项目
-		purchaseItemService.addPurchaseItemByTbPurchaseItem(purchaseItem);
+		TbPurchaseItem purchaseItem2 = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+		
+		if (purchaseItem2 != null) {
+			purchaseItem.setId(purchaseItem2.getId());
+			purchaseItem.setQuantity(purchaseItem2.getQuantity()+purchaseItem.getQuantity());
+			purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
+		} else {
+			// 添加采药单子项目
+			purchaseItemService.addPurchaseItemByTbPurchaseItem(purchaseItem);
+		}
 		
 		// 设置药品的进药单价、销药单价
-		drug.setPurchasePrice(purchaseDto.getPurchasePrice());
+//		drug.setPurchasePrice(purchaseDto.getPurchasePrice());
 		drug.setSalePrice(purchaseDto.getSalePrice());
 		drugService.updateDrugByTbDrug(drug);
 		
@@ -290,12 +303,23 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseItem.setQuantity(purchaseDto.getQuantity());
 		purchaseItem.setPurchaseTotalPrice(this.getOrderItemTotalPrice(purchaseDto.getQuantity(), purchaseDto.getPurchasePrice()));
 		purchaseItem.setStatus("待入库");
+		purchaseItem.setBatchNo(purchaseDto.getBatchNo());
+		purchaseItem.setProduceTime(purchaseDto.getProduceTime());
+		purchaseItem.setValidTime(purchaseDto.getValidTime());
 		
-		// 添加采药单子项目
-		purchaseItemService.addPurchaseItemByTbPurchaseItem(purchaseItem);
+		TbPurchaseItem purchaseItem2 = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+		
+		if (purchaseItem2 != null) {
+			purchaseItem.setId(purchaseItem2.getId());
+			purchaseItem.setQuantity(purchaseItem2.getQuantity()+purchaseItem.getQuantity());
+			purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
+		} else {
+			// 添加采药单子项目
+			purchaseItemService.addPurchaseItemByTbPurchaseItem(purchaseItem);
+		}
 		
 		// 设置药品的进药单价、销药单价
-		drug.setPurchasePrice(purchaseDto.getPurchasePrice());
+//		drug.setPurchasePrice(purchaseDto.getPurchasePrice());
 		drug.setSalePrice(purchaseDto.getSalePrice());
 		drugService.updateDrugByTbDrug(drug);
 		
@@ -360,10 +384,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return purchaseMapper.deleteBatch(list);
 	}
 
-	
+	/**
+	 * 获取所有的订单
+	 * @return
+	 */
 	@Override
 	public List<TbPurchase> selectAllPurchase() {
-		
+		List<TbPurchase> purchaseList = purchaseMapper.selectAllPurchase();
+		if (purchaseList != null ) {
+			return purchaseList;
+		}
 		return null;
 	}
 
@@ -388,6 +418,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseItem.setQuantity(purchaseDto.getQuantity());
 		purchaseItem.setPurchaseTotalPrice(this.getOrderItemTotalPrice(purchaseDto.getQuantity(), purchaseDto.getPurchasePrice()));
 		purchaseItem.setStatus("待入库");
+		purchaseItem.setBatchNo(purchaseDto.getBatchNo());
+		purchaseItem.setProduceTime(purchaseDto.getProduceTime());
+		purchaseItem.setValidTime(purchaseDto.getValidTime());
 		
 		// 更新采药详细单前的记录，用于比较
 		TbPurchaseItem purchaseItem1 = purchaseItemService.getPurchaseItemById(purchaseDto.getId());
@@ -396,7 +429,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
 		
 		// 设置药品的进药单价、销药单价
-		drug.setPurchasePrice(purchaseDto.getPurchasePrice());
+//		drug.setPurchasePrice(purchaseDto.getPurchasePrice());
 		drug.setSalePrice(purchaseDto.getSalePrice());
 		drugService.updateDrugByTbDrug(drug);
 		
@@ -406,9 +439,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 //		stock.setProducedTime(new DateTimeUtil().strToDate(drug.getProducedTime(), "yyyy-MM-dd"));
 //		stock.setValidTime(new DateTimeUtil().strToDate(drug.getValidTime(), "yyyy-MM-dd"));
 		stock.setOperator(purchaseDto.getOperator());
+		stock.setBatchNo(purchaseDto.getBatchNo());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("drugId", purchaseItem.getDrugId());
+		map.put("batchNo", purchaseItem.getBatchNo());
 		
 		// 获取当前该药品的库存信息
-		TbStock stock2 = stockService.getStockByDrug(purchaseDto.getDrugId());
+		TbStock stock2 = stockService.getStockByDrug(map);
 		Integer diffQuantity  = purchaseItem.getQuantity() - purchaseItem1.getQuantity();
 		
 		// 如果仓库中存在，则减少相应的库存量
@@ -426,7 +464,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 			} else{
 				stockQuantity = 0;
 			}
-			
+			stock.setId(stock2.getId());
 			stock.setStockQuantity(stockQuantity);
 			stockService.updateStockBySelective(stock);
 		}
@@ -450,6 +488,38 @@ public class PurchaseServiceImpl implements PurchaseService {
 		int count = purchaseMapper.updateByPurchaseNoSelective(purchase);
 		
 		return count;
+	}
+
+	/**
+	 * 采购条件统计，根据名称、编号等查询某一种药品的采购情况
+	 */
+	@Override
+	public List<TbPurchaseItem> purchaseByCondition(String drugName, String drugNo, String beginTime, String endTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		TbDrug drug = new TbDrug();
+		if (!drugName.equals("") || !drugNo.equals("")) {
+			drug.setDrugName(drugName);
+			drug.setDrugNo(drugNo);
+			drug.setId(0);
+			drug = drugService.getDrugBySelective(drug);
+		} else if (drugName.equals("") && drugNo.equals("")) {
+			drug = null;
+		} 
+		
+		if (drug == null) {
+			return null;
+		}
+		
+		map.put("drugId", drug.getId());
+		map.put("beginTime", beginTime);
+		map.put("endTime", endTime);
+		
+		List<TbPurchaseItem> purchaseItemList = purchaseItemService.selectAllPurchase(map);
+		
+		if (purchaseItemList != null) {
+			return purchaseItemList;
+		}
+		return null;
 	}
 
 }

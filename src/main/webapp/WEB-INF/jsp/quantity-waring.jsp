@@ -37,13 +37,14 @@
 				<table class="table table-hover text-center table-bordered">
 					<tr>
 						<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
-						<th width="100" >所属仓库</th>
 						<th width="100" >医药种类</th>
 						<th width="200" >医药名称</th>
+						<th width="100" >批准文号</th>
 						<th width="100">当前库存数量</th>
 						<th width="100">库存下限</th>
 						<th width="100">库存上限</th>
 						<th width="200">预警信息</th>
+						<th width="200">操作</th>
 					</tr>
 					<c:forEach items="${stockList}" var="stock"  varStatus="status">
 						<tr>
@@ -52,17 +53,26 @@
 									&nbsp;&nbsp;${(page.currentPage-1)*6+status.count}
 								</span>
 							</td>
-							<td>${stock.warehouse.warehouseName }</td>
 							<td>${stock.drug.drugtype.drugtypeName }</td>
 							<td>${stock.drug.drugName }</td>
+							<td>${stock.drug.drugNo }</td>
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
 							<td>${stock.maxQuantity }</td>
 							<td>${stock.waring }</td>
+							<td>
+								<div class="button-group">
+									<a class="button border-main"
+										href="${pageContext.request.contextPath }/purchase/skipToAdd"><span
+										class="icon-plus"></span>采药</a> <a class="button border-red"
+										href="#"><span
+										class="icon-minus"></span> 退药</a>
+								</div>
+							</td>
 						</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="8">
+						<td colspan="9">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">
@@ -83,6 +93,8 @@
 									href="javascript:changeCurrentPage($('#currentPageText').val())"
 									class='go'>GO</a>
 									
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

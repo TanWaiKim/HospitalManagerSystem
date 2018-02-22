@@ -88,16 +88,18 @@
 			
 			<table class="table table-hover text-center">
 				<tr>
-					<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
-					<th width="200" >医药名称</th>
-					<th width="200" >进药单价</th>
-					<th width="90" >销药单价</th>
-					<th width="90" >数量</th>
-					<th width="90" >进药总价</th>
+					<th width="125" style="text-align: left; padding-left: 20px;">序号</th>
+					<th width="150" >医药名称</th>
+					<th width="100" >进药单价</th>
+					<th width="170" >生产日期</th>
+					<th width="170" >有效期至</th>
+					<th width="100" >产品编号</th>					
+					<th width="60" >数量</th>
+					<th width="80" >进药总价</th>
 					<th width="150" >库存状态</th>
-					<th width="150" >创建时间</th>
-					<th width="150" >更新时间</th>
-					<th width="450" >操作</th>
+					<th width="170" >创建时间</th>
+					<th width="170" >更新时间</th>
+					<th width="620" >操作</th>
 				</tr>
 				<c:forEach items="${purchaseItemList}" var="purchaseItem"  varStatus="status">
 					<tr>
@@ -110,7 +112,9 @@
 
 						<td>${purchaseItem.drugName }</td>
 						<td>${purchaseItem.purchasePrice }</td>
-						<td>${purchaseItem.salePrice }</td>
+						<td>${purchaseItem.produceTime }</td>
+						<td>${purchaseItem.validTime }</td>
+						<td>${purchaseItem.batchNo }</td>
 						<td>${purchaseItem.quantity }</td>
 						<td>${purchaseItem.purchaseTotalPrice }</td>
 						<td>${purchaseItem.status }</td>
@@ -145,7 +149,7 @@
 
 				</tr>
 				<tr>
-					<td colspan="7">
+					<td colspan="10">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

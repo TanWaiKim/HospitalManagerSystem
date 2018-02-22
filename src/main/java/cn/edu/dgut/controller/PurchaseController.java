@@ -111,6 +111,18 @@ public class PurchaseController {
 				return HmsResult.build(505, "销药价格不能为空！");
 			}
 			
+			if (purchaseDto.getProduceTime() == null) {
+				return HmsResult.build(505, "生产日期不能为空！");
+			}
+			
+			if (purchaseDto.getValidTime() == null) {
+				return HmsResult.build(505, "有效日期至不能为空！");
+			}
+			
+			if (purchaseDto.getBatchNo() == null) {
+				return HmsResult.build(505, "产品批号不能为空！");
+			}			
+			
 			if (purchaseService.addPurchaseByTbPurchase(purchaseDto) > 0) {
 				return HmsResult.ok();
 			}
@@ -178,6 +190,9 @@ public class PurchaseController {
 			model.addAttribute("purchaseList", purchaseList);
 			model.addAttribute("page", page);
 			model.addAttribute("purchaseNo", purchaseNo);
+			
+			TbWarehouse warehouseCondition = warehouseService.getWarehouseByNo(warehouseNo);
+			model.addAttribute("warehouseCondition", warehouseCondition);
 			
 			model.addAttribute("providerList", providerService.selectAllProvider());
 			model.addAttribute("warehouseList", warehouseService.selectAllWarehouse());

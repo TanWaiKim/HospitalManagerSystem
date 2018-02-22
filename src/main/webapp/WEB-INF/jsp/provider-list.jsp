@@ -43,11 +43,11 @@
 					<li>搜索：</li>
 					<li>
 						供药商名称
-						<input type="text" name="providerName" value="${providerName }" />  
+						<input type="text" placeholder="请输入供药商名称" name="providerName" value="${providerName }" />  
 					</li>
 					<li>
 						联络人
-						<input type="text" name="contact" value="${contact }" />  
+						<input type="text" placeholder="请输入联络人" name="contact" value="${contact }" />  
 					</li>
 
 					<li>

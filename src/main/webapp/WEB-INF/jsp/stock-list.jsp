@@ -51,15 +51,15 @@
 					</li>
 					<li>
 						医药名称
-						<input type="text" name="drugName" value="${drugName }" />  
+						<input type="text" placeholder="请输入医药名称" name="drugName" value="${drugName }" />  
 					</li>
 					<li>
-						药品编号
-						<input type="text" name="drugNo" value="${drugNo }" />  
+						批准文号
+						<input type="text" placeholder="请输入批准文号" name="drugNo" value="${drugNo }" />  
 					</li>	
 					<li>
 						操作员
-						<input type="text" name="operator" value="${operator }" />  
+						<input type="text" placeholder="请输入操作员" name="operator" value="${operator }" />  
 					</li>			
 					<li>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -77,7 +77,7 @@
 						<th width="50" >所属仓库</th>
 						<th width="90" >医药种类</th>
 						<th width="90" >医药名称</th>
-						<th width="90" >医药编号</th>
+						<th width="90" >产品批号</th>
 						<th width="50" >规格</th>
 						<th width="50" >单位</th>
 						<th width="100" >生产日期</th>
@@ -101,12 +101,12 @@
 							<td>${stock.warehouse.warehouseName }</td>
 							<td>${stock.drug.drugtype.drugtypeName }</td>
 							<td>${stock.drug.drugName }</td>
-							<td>${stock.drug.drugNo }</td>
+							<td>${stock.batchNo }</td>
 							<td>${stock.drug.spec }</td>
 							<td>${stock.drug.unit }</td>
-							<td>${stock.drug.producedTime }</td>
-							<td>${stock.drug.validTime }</td>
-							<td>${stock.drug.purchasePrice }</td>
+							<td>${stock.purchaseItem.produceTime }</td>
+							<td>${stock.purchaseItem.validTime }</td>
+							<td>${stock.purchaseItem.purchasePrice }</td>
 							<td>${stock.drug.salePrice }</td>
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
