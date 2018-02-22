@@ -1,6 +1,7 @@
 package cn.edu.dgut.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class TPatient {
     private Long id;
@@ -30,8 +31,28 @@ public class TPatient {
     private Date created;
 
     private Date updated;
+  
+    private TDiagnosis diagnosis;
+    
+    private TStayHospital stayHospital;
+    
+	public TDiagnosis getDiagnosis() {
+		return diagnosis;
+	}
 
-    public Long getId() {
+	public void setDiagnosis(TDiagnosis diagnosis) {
+		this.diagnosis = diagnosis;
+	}
+
+	public TStayHospital getStayHospital() {
+		return stayHospital;
+	}
+
+	public void setStayHospital(TStayHospital stayHospital) {
+		this.stayHospital = stayHospital;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -148,8 +169,8 @@ public class TPatient {
 		return "TPatient [id=" + id + ", patientId=" + patientId + ", name=" + name + ", sex=" + sex + ", address="
 				+ address + ", age=" + age + ", isFinished=" + isFinished + ", mcName=" + mcName + ", personType="
 				+ personType + ", phone=" + phone + ", loginName=" + loginName + ", loginPassword=" + loginPassword
-				+ ", created=" + created + ", updated=" + updated + "]";
+				+ ", created=" + created + ", updated=" + updated + ", diagnosis=" + diagnosis + ", stayHospital="
+				+ stayHospital + "]";
 	}
-    
-    
+
 }

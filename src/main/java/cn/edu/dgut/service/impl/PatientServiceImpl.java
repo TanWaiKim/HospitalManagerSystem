@@ -22,10 +22,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.common.util.IDUtils;
+import cn.edu.dgut.mapper.TDiagnosisMapper;
 import cn.edu.dgut.mapper.TPatientMapper;
+import cn.edu.dgut.mapper.TStayHospitalMapper;
 import cn.edu.dgut.pojo.Page;
+import cn.edu.dgut.pojo.TDiagnosis;
+import cn.edu.dgut.pojo.TDiagnosisExample;
 import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.pojo.TPatientExample;
+import cn.edu.dgut.pojo.TStayHospital;
+import cn.edu.dgut.pojo.TStayHospitalExample;
 import cn.edu.dgut.service.PatientService;
 
 @Service
@@ -34,7 +40,13 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private TPatientMapper patientMapper;
 
-	//分页查询
+	@Autowired
+	private TDiagnosisMapper diagnosisMapper;
+
+	@Autowired
+	private TStayHospitalMapper stayHospitalMapper;
+
+	// 分页查询
 	public List<TPatient> getAllPatient(Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mcName", null);
@@ -47,7 +59,7 @@ public class PatientServiceImpl implements PatientService {
 		return patientMapper.pageByCondition(map);
 	}
 
-	//条件分页查询
+	// 条件分页查询
 	public List<TPatient> pageByCondition(String patientId, String name, String mcName, String keywords, Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("patientId", patientId);
@@ -63,14 +75,15 @@ public class PatientServiceImpl implements PatientService {
 		return patientMapper.pageByCondition(map);
 	}
 
-	//通过id标识查询病人
+	// 通过id标识查询病人
 	public TPatient getPById(Long id) {
-		TPatient patient =patientMapper.selectByPrimaryKey(id);
-		if (patient!=null) {
+		TPatient patient = patientMapper.selectByPrimaryKey(id);
+		if (patient != null) {
 			return patient;
 		}
 		return null;
 	}
+
 	// 通过病人id查询病人
 	public TPatient getPatientById(String patientId) {
 		TPatientExample example = new TPatientExample();
@@ -93,15 +106,15 @@ public class PatientServiceImpl implements PatientService {
 		return null;
 	}
 
-	//获取t_patient中最后一条记录
-	public TPatient getLastRecord(){
+	// 获取t_patient中最后一条记录
+	public TPatient getLastRecord() {
 		TPatient patient = patientMapper.selectLastRecord();
-		if(patient!=null){
+		if (patient != null) {
 			return patient;
 		}
 		return null;
 	}
-	
+
 	// 修改病人信息
 	public int updatePatientByTPatient(TPatient patient) {
 		patient.setUpdated(new Date());
@@ -113,12 +126,12 @@ public class PatientServiceImpl implements PatientService {
 	// 添加病人
 	public int addPatientByTPatient(TPatient patient) {
 		TPatient lastPatient = this.getLastRecord();
-		if(lastPatient!=null){
-			patient.setId(lastPatient.getId()+1);
-		}else{
+		if (lastPatient != null) {
+			patient.setId(lastPatient.getId() + 1);
+		} else {
 			patient.setId(1l);
 		}
-		String patientId = "P"+IDUtils.getId() + "";
+		String patientId = "P" + IDUtils.getId() + "";
 		patient.setPatientId(patientId);
 		patient.setCreated(new Date());
 		patient.setUpdated(new Date());
@@ -126,12 +139,12 @@ public class PatientServiceImpl implements PatientService {
 		return count;
 	}
 
-	//删除单个记录
+	// 删除单个记录
 	public int deletePatientById(long id) {
 		return patientMapper.deleteByPrimaryKey(id);
 	}
 
-	//批量删除记录
+	// 批量删除记录
 	public int deletePatientByIds(String[] ids) {
 		List<Long> list = new ArrayList<Long>();
 		for (String id : ids) {
@@ -141,22 +154,21 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	/*
-	 * 判断数据库中是否存在该登录账号所对应的记录
-	 * 如果找到该记录，则返回true
-	 * 否则返回false
+	 * 判断数据库中是否存在该登录账号所对应的记录 如果找到该记录，则返回true 否则返回false
 	 */
-	
+
 	public boolean isSimpleLoginName(String loginName) {
-		//根据loginName条件查询
+		// 根据loginName条件查询
 		TPatientExample example = new TPatientExample();
 		example.createCriteria().andLoginNameEqualTo(loginName);
 		List<TPatient> patientList = patientMapper.selectByExample(example);
-		if(patientList.size()>0){
+		if (patientList.size() > 0) {
 			return true;
 		}
 		return false;
 	}
-	//批量导出数据
+
+	// 批量导出数据
 	public void export(String[] idArray) {
 		String filename = "D:/patients.xls";
 		File file = new File(filename);
@@ -239,8 +251,10 @@ public class PatientServiceImpl implements PatientService {
 						row.createCell((short) 9).setCellValue(patient.getPhone());
 						row.createCell((short) 10).setCellValue(patient.getLoginName());
 						row.createCell((short) 11).setCellValue(patient.getLoginPassword());
-						row.createCell((short) 12).setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getCreated()));
-						row.createCell((short) 13).setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getUpdated()));
+						row.createCell((short) 12)
+								.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getCreated()));
+						row.createCell((short) 13)
+								.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getUpdated()));
 					}
 				}
 
@@ -300,105 +314,134 @@ public class PatientServiceImpl implements PatientService {
 		}
 	}
 
-	//导入excel文件
-	public void importExcelInfo(MultipartFile file) throws Exception{
+	// 导入excel文件
+	public void importExcelInfo(MultipartFile file) throws Exception {
 		List<TPatient> patientList = new ArrayList<TPatient>();
-		//打开Excel，读取文件内容
+		// 打开Excel，读取文件内容
 		HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
-		//获取第一个工作表
-        HSSFSheet sheet = workbook.getSheetAt(0);
-      
-        //获取sheet中最后一行行号
-        int lastRowNum = sheet.getLastRowNum();
-        
-        //count用于记录id
-        Long count = 0l;
-        for(int i=1; i<=lastRowNum; i++){
-        	//创建Patient对象，用户存储每一行数据的值
-        	TPatient patient = new TPatient();
-        	HSSFRow row = sheet.getRow(i);
-        	//获取当前行最后单元格列号
-        	int lastCellNum = row.getLastCellNum();
-        	for(int j=0; j<lastCellNum; j++){
-        		HSSFCell cell = row.getCell(j);
-        		switch(j){
-        		 case 0:
-        			 //patient.setId(Math.round(cell.getNumericCellValue()));
-        			 TPatient lastPatient = this.getLastRecord();
-        				if(lastPatient!=null){
-        					if(count==0){
-        						count =lastPatient.getId()+1;
-        					}else{
-        						count++;
-        					}
-        					patient.setId(count);
-        				}else{
-        					patient.setId(1l);
-        				}
-        			 break;
-        		 case 1:
-        			 patient.setPatientId(cell.getStringCellValue());
-        			 break;
-        		 case 2:
-        			 patient.setName(cell.getStringCellValue());
-        			 break;
-        		 case 3:
-        			 patient.setSex(cell.getStringCellValue());
-        			 break;
-        		 case 4:
-        			 patient.setAddress(cell.getStringCellValue());
-        			 break;
-        		 case 5:
-        			 patient.setAge(new Double(cell.getNumericCellValue()).intValue());
-        			 break;
-        		 case 6:
-        			 patient.setIsFinished(cell.getStringCellValue());
-        			 break;
-        		 case 7:
-        			 patient.setMcName(cell.getStringCellValue());
-        			 break;
-        		 case 8:
-        			 patient.setPersonType(cell.getStringCellValue());
-        			 break;
-        		 case 9:
-        			 patient.setPhone(cell.getStringCellValue());
-        			 break;
-        		 case 10:
-        			 patient.setLoginName(cell.getStringCellValue());
-        			 break;
-        		 case 11:
-        			 patient.setLoginPassword(cell.getStringCellValue());
-        			 break;
-        		 case 12:
-        			 patient.setCreated(new SimpleDateFormat("yyyyMMdd").parse(cell.getStringCellValue()));
-        			 break;
-        		 case 13:
-        			 patient.setUpdated(new SimpleDateFormat("yyyyMMdd").parse(cell.getStringCellValue()));
-        			 break;
-        		}
-        	}
-        	patientList.add(patient);
-        }
-        
-	    //批量插入
-	    patientMapper.insertInfoBatch(patientList);
-	    
+		// 获取第一个工作表
+		HSSFSheet sheet = workbook.getSheetAt(0);
+
+		// 获取sheet中最后一行行号
+		int lastRowNum = sheet.getLastRowNum();
+
+		// count用于记录id
+		Long count = 0l;
+		for (int i = 1; i <= lastRowNum; i++) {
+			// 创建Patient对象，用户存储每一行数据的值
+			TPatient patient = new TPatient();
+			HSSFRow row = sheet.getRow(i);
+			// 获取当前行最后单元格列号
+			int lastCellNum = row.getLastCellNum();
+			for (int j = 0; j < lastCellNum; j++) {
+				HSSFCell cell = row.getCell(j);
+				switch (j) {
+				case 0:
+					// patient.setId(Math.round(cell.getNumericCellValue()));
+					TPatient lastPatient = this.getLastRecord();
+					if (lastPatient != null) {
+						if (count == 0) {
+							count = lastPatient.getId() + 1;
+						} else {
+							count++;
+						}
+						patient.setId(count);
+					} else {
+						patient.setId(1l);
+					}
+					break;
+				case 1:
+					patient.setPatientId(cell.getStringCellValue());
+					break;
+				case 2:
+					patient.setName(cell.getStringCellValue());
+					break;
+				case 3:
+					patient.setSex(cell.getStringCellValue());
+					break;
+				case 4:
+					patient.setAddress(cell.getStringCellValue());
+					break;
+				case 5:
+					patient.setAge(new Double(cell.getNumericCellValue()).intValue());
+					break;
+				case 6:
+					patient.setIsFinished(cell.getStringCellValue());
+					break;
+				case 7:
+					patient.setMcName(cell.getStringCellValue());
+					break;
+				case 8:
+					patient.setPersonType(cell.getStringCellValue());
+					break;
+				case 9:
+					patient.setPhone(cell.getStringCellValue());
+					break;
+				case 10:
+					patient.setLoginName(cell.getStringCellValue());
+					break;
+				case 11:
+					patient.setLoginPassword(cell.getStringCellValue());
+					break;
+				case 12:
+					patient.setCreated(new SimpleDateFormat("yyyyMMdd").parse(cell.getStringCellValue()));
+					break;
+				case 13:
+					patient.setUpdated(new SimpleDateFormat("yyyyMMdd").parse(cell.getStringCellValue()));
+					break;
+				}
+			}
+			patientList.add(patient);
+		}
+
+		// 批量插入
+		patientMapper.insertInfoBatch(patientList);
+
 	}
 
 	@Override
 	public List<String> selectAllPatientIds() {
 		List<TPatient> patientList = patientMapper.selectAllPatient();
-		if(patientList.size()>0){
+		if (patientList.size() > 0) {
 			List<String> ids = new ArrayList<String>();
 			for (TPatient patient : patientList) {
 				ids.add(patient.getPatientId());
 			}
 			return ids;
-			
+
 		}
 		return null;
 	}
-	
-	
+
+	// 查询健康档案
+	@Override
+	public TPatient getHealthRecordByPId(String patientId) {
+		//通过patientId查询病人记录
+		TPatientExample example0 = new TPatientExample();
+		example0.createCriteria().andPatientIdEqualTo(patientId);
+		List<TPatient> patientList = patientMapper.selectByExample(example0);
+		if (patientList.size() > 0) {
+			TPatient patient  = patientList.get(0);
+			//通过patientId查询病人诊断记录
+			TDiagnosisExample example = new TDiagnosisExample();
+			example.createCriteria().andPatientIdEqualTo(patientId);
+			List<TDiagnosis> diagnosisList = diagnosisMapper.selectByExample(example);
+			if (diagnosisList.size() > 0) {
+				//通过patientId查询病人住院记录
+				TDiagnosis diagnosis = diagnosisList.get(diagnosisList.size() - 1);
+				patient.setDiagnosis(diagnosis);
+				TStayHospitalExample example1 = new TStayHospitalExample();
+				example1.createCriteria().andPatientIdEqualTo(patientId);
+				List<TStayHospital> stayHospitalList = stayHospitalMapper.selectByExample(example1);
+				if (stayHospitalList.size() > 0) {
+					TStayHospital stayHospital = stayHospitalList.get(stayHospitalList.size() - 1);
+					patient.setStayHospital(stayHospital);
+				}
+			}
+			System.out.println("patient="+patient.toString());
+			return patient;
+		}
+		return null;
+	}
 
 }

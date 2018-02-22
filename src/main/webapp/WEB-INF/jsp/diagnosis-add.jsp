@@ -90,7 +90,7 @@
 	<script type="text/javascript">
 		function addForm() {
 			//ajax的post方式提交表单
-			//$("#patientAddForm").serialize()将表单序列号为key-value形式的字符串
+			//$("#diagnosisAddForm").serialize()将表单序列号为key-value形式的字符串
 			$.post("${pageContext.request.contextPath }/diagnosis/add",
 							$("#diagnosisAddForm").serialize(),
 							function(data) {

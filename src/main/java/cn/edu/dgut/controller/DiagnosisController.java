@@ -110,7 +110,6 @@ public class DiagnosisController {
 		try {
 			TDoctor doctor = (TDoctor) request.getSession().getAttribute("doctorInfo");
 			diagnosis.setDoctorId(doctor.getDoctorId());
-			System.out.println("diagnosis="+diagnosis.toString());
 			if (diagnosisService.addDiagnosisByTDiagnosis(diagnosis) > 0) {
 				return HmsResult.ok();
 			}
@@ -156,31 +155,6 @@ public class DiagnosisController {
 
 	}
 
-	@RequestMapping(value = "/export", method = RequestMethod.POST)
-	@ResponseBody
-	public HmsResult exportBatch(String ids) {
-		String[] idArray = ids.split(",");
-		try {
-			patientService.export(idArray);
-			return HmsResult.ok();
-		} catch (Exception e) {
-			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "导出失败！");
-		}
-	}
-
-	@RequestMapping("/import")
-	@ResponseBody
-	public HmsResult importBatch(MultipartFile uploadFile,HttpServletRequest request) throws Exception {
-		try {
-			// 数据导入
-			patientService.importExcelInfo(uploadFile);
-			return HmsResult.ok();
-		} catch (Exception e) {
-			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "导入失败！");
-		}
-	}
 }
 
 

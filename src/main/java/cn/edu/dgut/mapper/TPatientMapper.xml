@@ -16,6 +16,8 @@
     <result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+    
+    <!-- 嵌套结果 -->
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -420,8 +422,9 @@
       )
     </foreach>  
 </insert>  
-<!-- 查询所有记录 -->
+  <!-- 查询所有记录 -->
   <select id="selectAllPatient"  resultMap="BaseResultMap">
   	select * from  t_patient
   </select>
+  
 </mapper>

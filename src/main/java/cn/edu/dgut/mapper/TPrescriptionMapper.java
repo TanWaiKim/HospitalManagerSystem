@@ -33,4 +33,8 @@ public interface TPrescriptionMapper {
 	int countByCondition(Map<String, Object> map);
 
 	List<TPrescription> pageByCondition(Map<String, Object> map);
+
+	TPrescription selectById(Integer id);
+
+	int deleteBatch(List<Integer> list);
 }

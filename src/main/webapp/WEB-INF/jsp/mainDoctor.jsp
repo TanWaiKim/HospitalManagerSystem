@@ -90,7 +90,7 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
+			<li><a href="healthRecord/list" target="right"><span
 					class="icon-caret-right"></span>健康档案信息</a></li>
 		</ul>
 		<h2>

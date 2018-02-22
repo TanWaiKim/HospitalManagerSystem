@@ -41,4 +41,6 @@ public interface TPatientMapper {
 	TPatient selectLastRecord();
 
 	List<TPatient> selectAllPatient();
+
+	TPatient getHealthRecordByPId(String patientId);
 }

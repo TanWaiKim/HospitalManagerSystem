@@ -80,4 +80,17 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 		return diagnosisMapper.deleteBatch(list);
 	}
 
+	@Override
+	public List<TDiagnosis> pageByPatientName(String patientName, Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", patientName);
+		// 根据条件查询总数
+		int totalNum = diagnosisMapper.countByCondition(map);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		return diagnosisMapper.pageByCondition(map);
+	}
+
 }

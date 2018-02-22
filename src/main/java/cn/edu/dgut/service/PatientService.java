@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
+import cn.edu.dgut.pojo.TPrescription;
 
 public interface PatientService {
 	List<TPatient> getAllPatient(Page page);
@@ -20,4 +21,5 @@ public interface PatientService {
 	void export(String[] idArray);
 	void importExcelInfo(MultipartFile file) throws Exception;
 	List<String> selectAllPatientIds();
+	TPatient getHealthRecordByPId(String patientId);
 }

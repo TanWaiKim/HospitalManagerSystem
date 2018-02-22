@@ -62,4 +62,12 @@ public class TStayHospital {
     public void setUpdated(Date updated) {
         this.updated = updated;
     }
+
+	@Override
+	public String toString() {
+		return "TStayHospital [id=" + id + ", patientId=" + patientId + ", sickbedId=" + sickbedId + ", time=" + time
+				+ ", created=" + created + ", updated=" + updated + "]";
+	}
+    
+    
 }

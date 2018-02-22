@@ -270,4 +270,18 @@
 
 		order by pr.prescription_id limit #{pageIndex} ,#{pageSize}
 	</select>
+	<select id="selectById" resultMap="BaseResultMap">
+		select * from t_prescription pr,t_patient p
+				where pr.id = #{id}
+				and pr.patient_id = p.patient_id
+	</select>
+	
+	<!-- 批量删除 -->
+    <delete id="deleteBatch" parameterType="list">
+		delete from t_prescription where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+    </delete>
 </mapper>
