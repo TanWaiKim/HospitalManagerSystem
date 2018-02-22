@@ -176,52 +176,52 @@ public class TbPurchaseItemExample {
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoEqualTo(Long value) {
+        public Criteria andPurchaseNoEqualTo(String value) {
             addCriterion("purchase_no =", value, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoNotEqualTo(Long value) {
+        public Criteria andPurchaseNoNotEqualTo(String value) {
             addCriterion("purchase_no <>", value, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoGreaterThan(Long value) {
+        public Criteria andPurchaseNoGreaterThan(String value) {
             addCriterion("purchase_no >", value, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoGreaterThanOrEqualTo(Long value) {
+        public Criteria andPurchaseNoGreaterThanOrEqualTo(String value) {
             addCriterion("purchase_no >=", value, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoLessThan(Long value) {
+        public Criteria andPurchaseNoLessThan(String value) {
             addCriterion("purchase_no <", value, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoLessThanOrEqualTo(Long value) {
+        public Criteria andPurchaseNoLessThanOrEqualTo(String value) {
             addCriterion("purchase_no <=", value, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoIn(List<Long> values) {
+        public Criteria andPurchaseNoIn(List<String> values) {
             addCriterion("purchase_no in", values, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoNotIn(List<Long> values) {
+        public Criteria andPurchaseNoNotIn(List<String> values) {
             addCriterion("purchase_no not in", values, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoBetween(Long value1, Long value2) {
+        public Criteria andPurchaseNoBetween(String value1, String value2) {
             addCriterion("purchase_no between", value1, value2, "purchaseNo");
             return (Criteria) this;
         }
 
-        public Criteria andPurchaseNoNotBetween(Long value1, Long value2) {
+        public Criteria andPurchaseNoNotBetween(String value1, String value2) {
             addCriterion("purchase_no not between", value1, value2, "purchaseNo");
             return (Criteria) this;
         }
@@ -713,6 +713,75 @@ public class TbPurchaseItemExample {
 
         public Criteria andUpdateTimeNotBetween(Date value1, Date value2) {
             addCriterion("update_time not between", value1, value2, "updateTime");
+            return (Criteria) this;
+        }
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(String value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(String value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(String value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(String value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(String value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLike(String value) {
+            addCriterion("status like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotLike(String value) {
+            addCriterion("status not like", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<String> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<String> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(String value1, String value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(String value1, String value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
     }

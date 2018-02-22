@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +20,6 @@ import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TDiagnosis;
 import cn.edu.dgut.pojo.TDoctor;
-import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.service.DiagnosisService;
 import cn.edu.dgut.service.PatientService;
 

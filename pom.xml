@@ -239,5 +239,31 @@
 			<artifactId>poi-ooxml-schemas</artifactId>
 			<version>3.14-beta1</version>
 		</dependency>
+		<!-- jfreechart插件 -->
+		<dependency>  
+		<groupId>jfreechart</groupId>  
+		    <artifactId>jfreechart</artifactId>  
+		    <version>1.0.0</version>  
+		</dependency> 
 	</dependencies>
+
+    <build>
+        <finalName>hospitalManagerSystem</finalName>
+        <plugins>
+
+            <!-- geelynote maven的核心插件之-complier插件默认只支持编译Java 1.4，因此需要加上支持高版本jre的配置，在pom.xml里面加上 增加编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <extdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</extdirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build> 
 </project>

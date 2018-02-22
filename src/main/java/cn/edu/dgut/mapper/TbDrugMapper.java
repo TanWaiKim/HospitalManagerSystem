@@ -2,7 +2,10 @@ package cn.edu.dgut.mapper;
 
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbDrugExample;
+
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbDrugMapper {
@@ -19,6 +22,12 @@ public interface TbDrugMapper {
     List<TbDrug> selectByExample(TbDrugExample example);
 
     TbDrug selectByPrimaryKey(Integer id);
+    
+    TbDrug selectByDrugNo(String drugNo);
+    
+    TbDrug selectByDrugName(String drugName);
+    
+    TbDrug getDrugBySelective(TbDrug drug);
 
     int updateByExampleSelective(@Param("record") TbDrug record, @Param("example") TbDrugExample example);
 
@@ -27,4 +36,15 @@ public interface TbDrugMapper {
     int updateByPrimaryKeySelective(TbDrug record);
 
     int updateByPrimaryKey(TbDrug record);
+    
+    TbDrug selectLastRecord();
+    
+	int countByCondition(Map<String, Object> map);
+
+	List<TbDrug> pageByCondition(Map<String, Object> map);
+
+	int deleteBatch(List<Long> list);
+	
+	List<TbDrug> selectAllDrug();
+    
 }

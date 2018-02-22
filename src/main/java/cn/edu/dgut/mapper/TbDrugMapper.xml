@@ -5,16 +5,50 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="drugtype_id" property="drugtypeId" jdbcType="INTEGER" />
     <result column="drug_name" property="drugName" jdbcType="VARCHAR" />
-    <result column="drug_no" property="drugNo" jdbcType="BIGINT" />
+    <result column="drug_no" property="drugNo" jdbcType="VARCHAR" />
     <result column="purpose" property="purpose" jdbcType="VARCHAR" />
     <result column="spec" property="spec" jdbcType="VARCHAR" />
     <result column="unit" property="unit" jdbcType="CHAR" />
-    <result column="usage" property="usage" jdbcType="VARCHAR" />
+    <result column="howuse" property="howuse" jdbcType="VARCHAR" />
+    <!-- 
     <result column="produced_time" property="producedTime" jdbcType="TIMESTAMP" />
     <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
+     -->
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <resultMap id="BaseResultMap1" type="cn.edu.dgut.pojo.TbDrug" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="drugtype_id" property="drugtypeId" jdbcType="INTEGER" />
+    <result column="drug_name" property="drugName" jdbcType="VARCHAR" />
+    <result column="drug_no" property="drugNo" jdbcType="VARCHAR" />
+    <result column="purpose" property="purpose" jdbcType="VARCHAR" />
+    <result column="spec" property="spec" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="CHAR" />
+    <result column="howuse" property="howuse" jdbcType="VARCHAR" />
+    <!-- 
+    <result column="produced_time" property="producedTime" jdbcType="TIMESTAMP" />
+    <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
+     -->
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
+    <association property="drugtype" javaType="cn.edu.dgut.pojo.TbDrugtype">
+    	<id property="id" column="id"/>
+    	<result property="drugtypeName" column="drugtype_name"/>
+    	<result property="remarks" column="remarks"/>
+    	<result property="createTime" column="create_time"/>
+    	<result property="updateTime" column="update_time"/>
+    </association>
+  </resultMap>
+  
+  
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -74,9 +108,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, usage, produced_time, valid_time, 
-    create_time, update_time
+    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, create_time, update_time, sale_price, remark, uneffect
   </sql>
+  
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbDrugExample" >
     select
     <if test="distinct" >
@@ -91,12 +125,49 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  
+  
+  <sql id="Base_Column_List1" >
+    d.id as id , drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, d.create_time as create_time, d.update_time as update_time, sale_price, remark, uneffect, drugtype_name
+  </sql>
+  
+  <!-- 实现tb_drug和tb_drugtype关联 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap1" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List" />
-    from tb_drug
-    where id = #{id,jdbcType=INTEGER}
+    <include refid="Base_Column_List1" />
+    from tb_drug d,tb_drugtype dt
+    where d.drugtype_id = dt.id and d.id = #{id,jdbcType=INTEGER}
   </select>
+  <!-- 实现tb_drug和tb_drugtype关联 -->
+  <select id="selectByDrugNo" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List1" />
+    from tb_drug d,tb_drugtype dt
+    where d.drugtype_id = dt.id and d.drug_no = #{drugNo,jdbcType=VARCHAR}
+  </select>
+  <!-- 实现tb_drug和tb_drugtype关联 -->
+  <select id="selectByDrugName" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List1" />
+    from tb_drug d,tb_drugtype dt
+    where d.drugtype_id = dt.id and d.drug_name = #{drugName,jdbcType=VARCHAR}
+  </select>
+   <!-- 实现tb_drug和tb_drugtype关联 -->
+  <select id="getDrugBySelective" resultMap="BaseResultMap1" parameterType="cn.edu.dgut.pojo.TbDrug" >
+    select 
+    <include refid="Base_Column_List1" />
+    from tb_drug d,tb_drugtype dt
+		<where>
+			d.drugtype_id = dt.id
+			<if test="drugName!=null and !&quot;&quot;.equals(drugName.trim())">
+				and d.drug_name like '%' #{drugName} '%'
+			</if>
+			<if test="drugNo and !&quot;&quot;.equals(drugNo.trim())">
+				and d.drug_no like '%' #{drugNo} '%'
+			</if>
+		</where>
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_drug
     where id = #{id,jdbcType=INTEGER}
@@ -110,13 +181,12 @@
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbDrug" >
     insert into tb_drug (id, drugtype_id, drug_name, 
       drug_no, purpose, spec, 
-      unit, usage, produced_time, 
-      valid_time, create_time, update_time
+      unit, howuse, create_time, update_time, sale_price, remark, uneffect
       )
     values (#{id,jdbcType=INTEGER}, #{drugtypeId,jdbcType=INTEGER}, #{drugName,jdbcType=VARCHAR}, 
-      #{drugNo,jdbcType=BIGINT}, #{purpose,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=CHAR}, #{usage,jdbcType=VARCHAR}, #{producedTime,jdbcType=TIMESTAMP}, 
-      #{validTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{drugNo,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=CHAR}, #{howuse,jdbcType=VARCHAR}, now(), now(), #{salePrice,jdbcType=DECIMAL},
+      #{remark,jdbcType=VARCHAR}, #{uneffect,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbDrug" >
@@ -143,20 +213,23 @@
       <if test="unit != null" >
         unit,
       </if>
-      <if test="usage != null" >
-        usage,
-      </if>
-      <if test="producedTime != null" >
-        produced_time,
-      </if>
-      <if test="validTime != null" >
-        valid_time,
+      <if test="howuse != null" >
+        howuse,
       </if>
       <if test="createTime != null" >
         create_time,
       </if>
       <if test="updateTime != null" >
         update_time,
+      </if>
+      <if test="salePrice != null" >
+        sale_price,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="uneffect != null" >
+        uneffect,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -170,7 +243,7 @@
         #{drugName,jdbcType=VARCHAR},
       </if>
       <if test="drugNo != null" >
-        #{drugNo,jdbcType=BIGINT},
+        #{drugNo,jdbcType=VARCHAR},
       </if>
       <if test="purpose != null" >
         #{purpose,jdbcType=VARCHAR},
@@ -181,20 +254,23 @@
       <if test="unit != null" >
         #{unit,jdbcType=CHAR},
       </if>
-      <if test="usage != null" >
-        #{usage,jdbcType=VARCHAR},
-      </if>
-      <if test="producedTime != null" >
-        #{producedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="validTime != null" >
-        #{validTime,jdbcType=TIMESTAMP},
+      <if test="howuse != null" >
+        #{howuse,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="uneffect != null" >
+        #{uneffect,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -217,7 +293,7 @@
         drug_name = #{record.drugName,jdbcType=VARCHAR},
       </if>
       <if test="record.drugNo != null" >
-        drug_no = #{record.drugNo,jdbcType=BIGINT},
+        drug_no = #{record.drugNo,jdbcType=VARCHAR},
       </if>
       <if test="record.purpose != null" >
         purpose = #{record.purpose,jdbcType=VARCHAR},
@@ -228,20 +304,23 @@
       <if test="record.unit != null" >
         unit = #{record.unit,jdbcType=CHAR},
       </if>
-      <if test="record.usage != null" >
-        usage = #{record.usage,jdbcType=VARCHAR},
-      </if>
-      <if test="record.producedTime != null" >
-        produced_time = #{record.producedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.validTime != null" >
-        valid_time = #{record.validTime,jdbcType=TIMESTAMP},
+      <if test="record.howuse != null" >
+        howuse = #{record.howuse,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uneffect != null" >
+        uneffect = #{record.uneffect,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -253,15 +332,16 @@
     set id = #{record.id,jdbcType=INTEGER},
       drugtype_id = #{record.drugtypeId,jdbcType=INTEGER},
       drug_name = #{record.drugName,jdbcType=VARCHAR},
-      drug_no = #{record.drugNo,jdbcType=BIGINT},
+      drug_no = #{record.drugNo,jdbcType=VARCHAR},
       purpose = #{record.purpose,jdbcType=VARCHAR},
       spec = #{record.spec,jdbcType=VARCHAR},
       unit = #{record.unit,jdbcType=CHAR},
-      usage = #{record.usage,jdbcType=VARCHAR},
-      produced_time = #{record.producedTime,jdbcType=TIMESTAMP},
-      valid_time = #{record.validTime,jdbcType=TIMESTAMP},
+      howuse = #{record.howuse,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now(),
+      sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      uneffect = #{record.uneffect,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -276,7 +356,7 @@
         drug_name = #{drugName,jdbcType=VARCHAR},
       </if>
       <if test="drugNo != null" >
-        drug_no = #{drugNo,jdbcType=BIGINT},
+        drug_no = #{drugNo,jdbcType=VARCHAR},
       </if>
       <if test="purpose != null" >
         purpose = #{purpose,jdbcType=VARCHAR},
@@ -287,20 +367,23 @@
       <if test="unit != null" >
         unit = #{unit,jdbcType=CHAR},
       </if>
-      <if test="usage != null" >
-        usage = #{usage,jdbcType=VARCHAR},
-      </if>
-      <if test="producedTime != null" >
-        produced_time = #{producedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="validTime != null" >
-        valid_time = #{validTime,jdbcType=TIMESTAMP},
+      <if test="howuse != null" >
+        howuse = #{howuse,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="uneffect != null" >
+        uneffect = #{uneffect,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -309,15 +392,79 @@
     update tb_drug
     set drugtype_id = #{drugtypeId,jdbcType=INTEGER},
       drug_name = #{drugName,jdbcType=VARCHAR},
-      drug_no = #{drugNo,jdbcType=BIGINT},
+      drug_no = #{drugNo,jdbcType=VARCHAR},
       purpose = #{purpose,jdbcType=VARCHAR},
       spec = #{spec,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=CHAR},
-      usage = #{usage,jdbcType=VARCHAR},
-      produced_time = #{producedTime,jdbcType=TIMESTAMP},
-      valid_time = #{validTime,jdbcType=TIMESTAMP},
+      howuse = #{howuse,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now(),
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      uneffect = #{uneffect,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+   <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_drug order by id desc limit 1
+  </select>
+ 
+ 
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_drug d
+  		<where>
+  			<if test="drugtypeId != null">
+  				and d.drugtype_id =  #{drugtypeId} 
+  			</if>
+  			<if test="drugName!=null and !&quot;&quot;.equals(drugName.trim())">
+  				and d.drug_name like '%' #{drugName} '%'
+  			</if>
+  			<if test="drugNo and !&quot;&quot;.equals(drugNo.trim())">
+  				and d.drug_no like '%' #{drugNo} '%'
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				and d.purpose like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap1">
+  	select d.id as id,d.drugtype_id as drugtype_id,drug_name, drug_no,purpose,spec,unit,howuse, uneffect, sale_price, drugtype_name 
+  	from tb_drug d,tb_drugtype dt
+  	
+  		<where>
+  			d.drugtype_id = dt.id
+  			<if test="drugtypeId != null">
+  				and d.drugtype_id = #{drugtypeId} 
+  			</if>
+  			<if test="drugName!=null and !&quot;&quot;.equals(drugName.trim())">
+  				and d.drug_name like '%' #{drugName} '%'
+  			</if>
+  			<if test="drugNo and !&quot;&quot;.equals(drugNo.trim())">
+  				and d.drug_no like '%' #{drugNo} '%'
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				and d.purpose like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  		order by d.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from tb_drug where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
+  
+  <!-- 查询所有记录 -->
+  <select id="selectAllDrug"  resultMap="BaseResultMap">
+  	select * from  tb_drug
+  </select>
+  
 </mapper>

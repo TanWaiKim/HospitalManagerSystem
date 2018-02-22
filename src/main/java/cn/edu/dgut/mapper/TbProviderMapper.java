@@ -3,6 +3,8 @@ package cn.edu.dgut.mapper;
 import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.pojo.TbProviderExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbProviderMapper {
@@ -27,4 +29,14 @@ public interface TbProviderMapper {
     int updateByPrimaryKeySelective(TbProvider record);
 
     int updateByPrimaryKey(TbProvider record);
+   
+    TbProvider selectLastRecord();
+    
+	int countByCondition(Map<String, Object> map);
+
+	List<TbProvider> pageByCondition(Map<String, Object> map);
+
+	int deleteBatch(List<Long> list);
+	
+	List<TbProvider> selectAllProvider();
 }

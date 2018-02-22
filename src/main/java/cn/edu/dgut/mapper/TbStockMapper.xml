@@ -3,19 +3,38 @@
 <mapper namespace="cn.edu.dgut.mapper.TbStockMapper" >
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbStock" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="warehouse_id" property="warehouseId" jdbcType="INTEGER" />
+    <result column="warehouse_no" property="warehouseNo" jdbcType="VARCHAR" />
+    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
     <result column="drug_id" property="drugId" jdbcType="INTEGER" />
-    <result column="drug_name" property="drugName" jdbcType="VARCHAR" />
     <result column="stock_quantity" property="stockQuantity" jdbcType="INTEGER" />
-    <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
-    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
     <result column="min_quantity" property="minQuantity" jdbcType="INTEGER" />
     <result column="max_quantity" property="maxQuantity" jdbcType="INTEGER" />
-    <result column="produced_time" property="producedTime" jdbcType="TIMESTAMP" />
-    <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="waring" property="waring" jdbcType="VARCHAR" />
+    <result column="valid_waring" property="validWaring" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap1" type="cn.edu.dgut.pojo.TbStock" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="warehouse_no" property="warehouseNo" jdbcType="VARCHAR" />
+    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
+    <result column="drug_id" property="drugId" jdbcType="INTEGER" />
+    <result column="stock_quantity" property="stockQuantity" jdbcType="INTEGER" />
+    <result column="min_quantity" property="minQuantity" jdbcType="INTEGER" />
+    <result column="max_quantity" property="maxQuantity" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="waring" property="waring" jdbcType="VARCHAR" />
+    <result column="valid_waring" property="validWaring" jdbcType="VARCHAR" />
+    <association property="purchaseItem" javaType="cn.edu.dgut.pojo.TbPurchaseItem">
+    	<id property="id" column="id"/>
+    	<result property="purchasePrice" column="purchase_price"/>
+    	<result property="produceTime" column="produce_time"/>
+    	<result property="validTime" column="valid_time"/>
+    </association>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,8 +95,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, warehouse_id, drug_id, drug_name, stock_quantity, purchase_price, sale_price, 
-    min_quantity, max_quantity, produced_time, valid_time, operator, create_time, update_time
+    id, warehouse_no, batch_no, drug_id, stock_quantity,  
+    min_quantity, max_quantity, operator, create_time, update_time, waring, valid_waring
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbStockExample" >
     select
@@ -110,16 +129,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbStock" >
-    insert into tb_stock (id, warehouse_id, drug_id, 
-      drug_name, stock_quantity, purchase_price, 
-      sale_price, min_quantity, max_quantity, 
-      produced_time, valid_time, operator, 
-      create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{warehouseId,jdbcType=INTEGER}, #{drugId,jdbcType=INTEGER}, 
-      #{drugName,jdbcType=VARCHAR}, #{stockQuantity,jdbcType=INTEGER}, #{purchasePrice,jdbcType=DECIMAL}, 
-      #{salePrice,jdbcType=DECIMAL}, #{minQuantity,jdbcType=INTEGER}, #{maxQuantity,jdbcType=INTEGER}, 
-      #{producedTime,jdbcType=TIMESTAMP}, #{validTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    insert into tb_stock (id, warehouse_no, batch_no, drug_id, 
+      stock_quantity, min_quantity, max_quantity, 
+      operator, create_time, update_time, waring, valid_waring)
+    values (#{id,jdbcType=INTEGER}, #{warehouseNo,jdbcType=VARCHAR}, #{batchNo,jdbcType=VARCHAR}, #{drugId,jdbcType=INTEGER}, 
+      #{stockQuantity,jdbcType=INTEGER}, #{minQuantity,jdbcType=INTEGER}, #{maxQuantity,jdbcType=INTEGER}, 
+      #{operator,jdbcType=VARCHAR}, 
+      now(), now(), #{waring,jdbcType=VARCHAR}, #{validWaring,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbStock" >
     insert into tb_stock
@@ -127,35 +143,23 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="warehouseId != null" >
-        warehouse_id,
+      <if test="warehouseNo != null" >
+        warehouse_no,
+      </if>
+      <if test="batchNo != null" >
+        batch_no,
       </if>
       <if test="drugId != null" >
         drug_id,
       </if>
-      <if test="drugName != null" >
-        drug_name,
-      </if>
       <if test="stockQuantity != null" >
         stock_quantity,
-      </if>
-      <if test="purchasePrice != null" >
-        purchase_price,
-      </if>
-      <if test="salePrice != null" >
-        sale_price,
       </if>
       <if test="minQuantity != null" >
         min_quantity,
       </if>
       <if test="maxQuantity != null" >
         max_quantity,
-      </if>
-      <if test="producedTime != null" >
-        produced_time,
-      </if>
-      <if test="validTime != null" >
-        valid_time,
       </if>
       <if test="operator != null" >
         operator,
@@ -166,28 +170,28 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="waring != null" >
+        waring,
+      </if>
+      <if test="validWaring != null" >
+        valid_waring,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="warehouseId != null" >
-        #{warehouseId,jdbcType=INTEGER},
+      <if test="warehouseNo != null" >
+        #{warehouseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="batchNo != null" >
+        #{batchNo,jdbcType=VARCHAR},
       </if>
       <if test="drugId != null" >
         #{drugId,jdbcType=INTEGER},
       </if>
-      <if test="drugName != null" >
-        #{drugName,jdbcType=VARCHAR},
-      </if>
       <if test="stockQuantity != null" >
         #{stockQuantity,jdbcType=INTEGER},
-      </if>
-      <if test="purchasePrice != null" >
-        #{purchasePrice,jdbcType=DECIMAL},
-      </if>
-      <if test="salePrice != null" >
-        #{salePrice,jdbcType=DECIMAL},
       </if>
       <if test="minQuantity != null" >
         #{minQuantity,jdbcType=INTEGER},
@@ -195,20 +199,20 @@
       <if test="maxQuantity != null" >
         #{maxQuantity,jdbcType=INTEGER},
       </if>
-      <if test="producedTime != null" >
-        #{producedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="validTime != null" >
-        #{validTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="operator != null" >
         #{operator,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
+      </if>
+      <if test="waring != null" >
+        #{waring,jdbcType=VARCHAR},
+      </if>
+      <if test="validWaring != null" >
+        #{validWaring,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -224,35 +228,23 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.warehouseId != null" >
-        warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
+      <if test="record.warehouseNo != null" >
+        warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.batchNo != null" >
+        batch_no = #{record.batchNo,jdbcType=VARCHAR},
       </if>
       <if test="record.drugId != null" >
         drug_id = #{record.drugId,jdbcType=INTEGER},
       </if>
-      <if test="record.drugName != null" >
-        drug_name = #{record.drugName,jdbcType=VARCHAR},
-      </if>
       <if test="record.stockQuantity != null" >
         stock_quantity = #{record.stockQuantity,jdbcType=INTEGER},
-      </if>
-      <if test="record.purchasePrice != null" >
-        purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.salePrice != null" >
-        sale_price = #{record.salePrice,jdbcType=DECIMAL},
       </if>
       <if test="record.minQuantity != null" >
         min_quantity = #{record.minQuantity,jdbcType=INTEGER},
       </if>
       <if test="record.maxQuantity != null" >
         max_quantity = #{record.maxQuantity,jdbcType=INTEGER},
-      </if>
-      <if test="record.producedTime != null" >
-        produced_time = #{record.producedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.validTime != null" >
-        valid_time = #{record.validTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.operator != null" >
         operator = #{record.operator,jdbcType=VARCHAR},
@@ -261,7 +253,13 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+      <if test="record.waring != null" >
+        waring = #{record.waring,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validWaring != null" >
+        valid_waring = #{record.validWaring,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -271,19 +269,17 @@
   <update id="updateByExample" parameterType="map" >
     update tb_stock
     set id = #{record.id,jdbcType=INTEGER},
-      warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
+      warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
+      batch_no = #{record.batchNo,jdbcType=VARCHAR},
       drug_id = #{record.drugId,jdbcType=INTEGER},
-      drug_name = #{record.drugName,jdbcType=VARCHAR},
       stock_quantity = #{record.stockQuantity,jdbcType=INTEGER},
-      purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
-      sale_price = #{record.salePrice,jdbcType=DECIMAL},
       min_quantity = #{record.minQuantity,jdbcType=INTEGER},
       max_quantity = #{record.maxQuantity,jdbcType=INTEGER},
-      produced_time = #{record.producedTime,jdbcType=TIMESTAMP},
-      valid_time = #{record.validTime,jdbcType=TIMESTAMP},
       operator = #{record.operator,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now(),
+      waring = #{record.waring,jdbcType=VARCHAR},
+      valid_waring = #{record.validWaring,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -291,35 +287,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.dgut.pojo.TbStock" >
     update tb_stock
     <set >
-      <if test="warehouseId != null" >
-        warehouse_id = #{warehouseId,jdbcType=INTEGER},
+      <if test="warehouseNo != null" >
+        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
       </if>
       <if test="drugId != null" >
         drug_id = #{drugId,jdbcType=INTEGER},
       </if>
-      <if test="drugName != null" >
-        drug_name = #{drugName,jdbcType=VARCHAR},
-      </if>
       <if test="stockQuantity != null" >
         stock_quantity = #{stockQuantity,jdbcType=INTEGER},
-      </if>
-      <if test="purchasePrice != null" >
-        purchase_price = #{purchasePrice,jdbcType=DECIMAL},
-      </if>
-      <if test="salePrice != null" >
-        sale_price = #{salePrice,jdbcType=DECIMAL},
       </if>
       <if test="minQuantity != null" >
         min_quantity = #{minQuantity,jdbcType=INTEGER},
       </if>
       <if test="maxQuantity != null" >
         max_quantity = #{maxQuantity,jdbcType=INTEGER},
-      </if>
-      <if test="producedTime != null" >
-        produced_time = #{producedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="validTime != null" >
-        valid_time = #{validTime,jdbcType=TIMESTAMP},
       </if>
       <if test="operator != null" >
         operator = #{operator,jdbcType=VARCHAR},
@@ -328,26 +312,277 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+       <if test="waring != null" >
+        waring = #{waring,jdbcType=VARCHAR},
+      </if>
+       <if test="validWaring != null" >
+        valid_waring = #{validWaring,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByDrugSelective" parameterType="cn.edu.dgut.pojo.TbStock" >
+    update tb_stock
+    <set >
+      <if test="warehouseNo != null" >
+        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="drugId != null" >
+        drug_id = #{drugId,jdbcType=INTEGER},
+      </if>
+      <if test="stockQuantity != null" >
+        stock_quantity = #{stockQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="minQuantity != null" >
+        min_quantity = #{minQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="maxQuantity != null" >
+        max_quantity = #{maxQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+      <if test="waring != null" >
+        waring = #{waring,jdbcType=VARCHAR},
+      </if>
+      <if test="validWaring != null" >
+        valid_waring = #{validWaring,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByDrugId" parameterType="cn.edu.dgut.pojo.TbStock" >
+    update tb_stock
+    <set >
+      <if test="warehouseNo != null" >
+        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="drugId != null" >
+        drug_id = #{drugId,jdbcType=INTEGER},
+      </if>
+      <if test="stockQuantity != null" >
+        stock_quantity = #{stockQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="minQuantity != null" >
+        min_quantity = #{minQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="maxQuantity != null" >
+        max_quantity = #{maxQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+      <if test="waring != null" >
+        waring = #{waring,jdbcType=VARCHAR},
+      </if>
+      <if test="validWaring != null" >
+        valid_waring = #{validWaring,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where drug_id = #{drugId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateWaring" parameterType="cn.edu.dgut.pojo.TbStock" >
+    update tb_stock
+    <set >
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+      <if test="waring != null" >
+        waring = #{waring,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where drug_id = #{drugId,jdbcType=INTEGER}
+  </update> 
+  
+  <update id="updateValidWaring" parameterType="cn.edu.dgut.pojo.TbStock" >
+    update tb_stock
+    <set >
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+      <if test="validWaring != null" >
+        valid_waring = #{validWaring,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where drug_id = #{drugId,jdbcType=INTEGER}
+    AND batch_no = #{batchNo,jdbcType=VARCHAR}
+  </update>  
+  
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbStock" >
     update tb_stock
-    set warehouse_id = #{warehouseId,jdbcType=INTEGER},
+    set warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+      batch_no = #{batchNo,jdbcType=VARCHAR},
       drug_id = #{drugId,jdbcType=INTEGER},
-      drug_name = #{drugName,jdbcType=VARCHAR},
       stock_quantity = #{stockQuantity,jdbcType=INTEGER},
-      purchase_price = #{purchasePrice,jdbcType=DECIMAL},
-      sale_price = #{salePrice,jdbcType=DECIMAL},
       min_quantity = #{minQuantity,jdbcType=INTEGER},
       max_quantity = #{maxQuantity,jdbcType=INTEGER},
-      produced_time = #{producedTime,jdbcType=TIMESTAMP},
-      valid_time = #{validTime,jdbcType=TIMESTAMP},
       operator = #{operator,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now(),
+      waring = #{waring,jdbcType=VARCHAR},
+      valid_waring = #{validWaring,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_stock order by id desc limit 1
+  </select>
+ 
+ 
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_stock s
+  		<where>
+  			<if test="warehouseNo!=null and !&quot;&quot;.equals(warehouseNo.trim())">
+  				and s.warehouse_no like '%' #{warehouseNo} '%'
+  			</if>
+  			<if test="drugId !=null and drugId != ''">
+  				and s.drug_id = #{drugId}
+  			</if>
+  			<if test="operator!=null and !&quot;&quot;.equals(operator.trim())">
+  				and s.operator like '%' #{operator} '%'
+  			</if>
+  		</where>
+  </select>
+  
+
+  <sql id="Base_Column_List1" >
+    s.id as id, warehouse_no, s.batch_no as batch_no, s.drug_id as drug_id, stock_quantity,  
+    min_quantity, max_quantity, operator, s.create_time as create_time, s.update_time as update_time, waring, valid_waring, purchase_price, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
+  </sql>
+  
+  
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap1">
+  	select
+  	<include refid="Base_Column_List1"></include>
+  	from tb_stock s,tb_purchase_item p
+  		<where>
+  			s.drug_id = p.drug_id and s.batch_no = p.batch_no
+  			<if test="warehouseNo!=null and !&quot;&quot;.equals(warehouseNo.trim())">
+  				and s.warehouse_no like '%' #{warehouseNo} '%'
+  			</if>
+  			<if test="drugId !=null and drugId != ''">
+  				and s.drug_id = #{drugId}
+  			</if>
+  			<if test="operator!=null and !&quot;&quot;.equals(operator.trim())">
+  				and s.operator like '%' #{operator} '%'
+  			</if>
+  		</where>
+  		order by s.id limit #{pageIndex} ,#{pageSize}
+  </select>
+ 
+  <!-- 统计限制库存记录数 -->
+  <select id="countByListCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(distinct drug_id) from tb_stock s
+  	<where>
+		<if test="drugId !=null and drugId != ''">
+			and s.drug_id = #{drugId}
+		</if>
+  	</where>
+  </select>
+  
+  <!-- 条件查询限制库存 -->
+  <select id="pageByListCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select
+  	id,warehouse_no,batch_no,drug_id,sum(stock_quantity) as stock_quantity,min_quantity,max_quantity
+  	from tb_stock s
+  	<where>
+		<if test="drugId !=null and drugId != ''">
+			and s.drug_id = #{drugId}
+		</if>
+  	</where>
+  	group by drug_id
+  	order by s.id limit #{pageIndex} ,#{pageSize}
+  </select>  
+  	
+  <!-- 统计库存预警记录数 -->
+  <select id="countByQuantityWaring"  parameterType="java.util.Map" resultType="int">
+  	select count(distinct drug_id) 
+  	from tb_stock s 
+  	where ((select sum(s1.stock_quantity) from tb_stock s1 where s1.drug_id = s.drug_id group by s1.drug_id )  <![CDATA[<]]> min_quantity ) 
+  	or ((select sum(s1.stock_quantity) from tb_stock s1 where s1.drug_id = s.drug_id group by s1.drug_id ) <![CDATA[>]]> max_quantity ) 
+  </select>
+  
+  <!-- 条件查询库存预警 -->
+  <select id="pageByQuantityWaring"  parameterType="java.util.Map" resultMap="BaseResultMap">
+	select s.id as id,s.warehouse_no as warehouse_no,s.drug_id as drug_id,sum(stock_quantity) as stock_quantity,s.min_quantity as min_quantity,s.max_quantity as max_quantity
+  	from tb_stock s 
+  	where ((select sum(s1.stock_quantity) from tb_stock s1 where s1.drug_id = s.drug_id group by s1.drug_id )  <![CDATA[<]]> min_quantity ) 
+  	or ((select sum(s1.stock_quantity) from tb_stock s1 where s1.drug_id = s.drug_id group by s1.drug_id ) <![CDATA[>]]> max_quantity ) 
+  	group by s.drug_id
+  	order by s.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+  
+  <!-- 统计医药有效期预警记录数 -->
+  <select id="countByValidWaring"  parameterType="java.util.Map" resultType="int">
+  	select count(s.drug_id) from tb_stock s, tb_purchase_item p
+  	where s.drug_id = p.drug_id
+  	AND s.batch_no = p.batch_no
+  	AND DATEDIFF(p.valid_time,now()) <![CDATA[<]]> 15
+  </select>
+  
+  <!-- 条件查询医药有效期预警 -->
+  <select id="pageByValidWaring"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select s.id as id,s.warehouse_no as warehouse_no,s.batch_no as batch_no,s.drug_id as drug_id
+  	from tb_stock s, tb_purchase_item p
+  	where s.drug_id = p.drug_id
+  	AND s.batch_no = p.batch_no
+  	AND DATEDIFF(p.valid_time,now()) <![CDATA[<]]> 15
+  	order by s.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+   <!-- 统计有效期天数 -->
+  <select id="countValidTime"  parameterType="cn.edu.dgut.pojo.TbStock" resultType="int">
+  	select DATEDIFF(p.valid_time,now())
+  	from tb_stock s, tb_purchase_item p
+  	where s.drug_id = p.drug_id
+  	AND s.batch_no = p.batch_no
+  	AND DATEDIFF(p.valid_time,now()) <![CDATA[<]]> 15
+  	AND s.drug_id = #{drugId,jdbcType=INTEGER}
+  	AND s.batch_no = #{batchNo,jdbcType=VARCHAR}
+  </select> 
+  
+   <!-- 根据医药id和批号查询 -->
+   <select id="selectByDrugIdAndBatchNo" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_stock
+    where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询所有记录 -->
+  <select id="selectAllStock"  resultMap="BaseResultMap">
+  	select * from  tb_stock
+  </select>
+  
+    <!-- 根据id查询 -->
+  <select id="getStockByDrugId"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * 
+  	from  tb_stock
+  	where drug_id = #{drugId}
+  </select>
 </mapper>
