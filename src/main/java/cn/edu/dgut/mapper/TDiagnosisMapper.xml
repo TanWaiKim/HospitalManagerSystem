@@ -293,11 +293,36 @@
 	</select>
 	
 	<!-- 批量删除 -->
-  <delete id="deleteBatch" parameterType="list">
+  	<delete id="deleteBatch" parameterType="list">
 		delete from t_diagnosis where diagnosis_id in
 		<foreach collection="list" item="id" open="(" close=")"
 			separator=",">
 			#{id}
 		</foreach>
-  </delete>
+  	</delete>
+  	
+  	 <select id="countByPersonType" parameterType="java.util.Map"
+		resultType="int">
+		select count(*) from t_diagnosis d,t_patient p
+		<where>
+			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+				and p.name = #{name}
+			</if>
+			and p.person_type != #{personType}
+			and d.patient_id = p.patient_id
+		</where>
+	</select>
+	
+	<select id="pageByPersonType" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select * from t_diagnosis d,t_patient p
+		<where>
+			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+				and p.name = #{name}
+			</if>
+			and p.person_type != #{personType}
+			and d.patient_id = p.patient_id
+		</where>
+		order by d.diagnosis_id limit #{pageIndex} ,#{pageSize}
+	</select>
 </mapper>

@@ -41,4 +41,8 @@ public interface TDiagnosisMapper {
 	int deleteBatch(List<Long> list);
 
 	TDiagnosis selectByDid(long diagnosisId);
+
+	int countByPersonType(Map<String, Object> map);
+
+	List<TDiagnosis> pageByPersonType(Map<String, Object> map);
 }

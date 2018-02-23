@@ -98,7 +98,7 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
+			<li><a href="specialPatient/list" target="right"><span
 					class="icon-caret-right"></span>查看特殊病人信息</a></li>
 		</ul>
 		

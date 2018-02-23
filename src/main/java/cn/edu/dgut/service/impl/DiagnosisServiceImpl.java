@@ -68,10 +68,12 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 		return diagnosisMapper.insert(diagnosis);
 	}
 
+	//通过诊断id删除诊断信息
 	public int deleteDiagnosisByDId(long diagnosisId) {
 		return diagnosisMapper.deleteByPrimaryKey(diagnosisId);
 	}
 
+	//通过多诊断id批量删除诊断信息
 	public int deleteDiagnosisByDIds(String[] dIds) {
 		List<Long> list = new ArrayList<Long>();
 		for (String id : dIds) {
@@ -80,7 +82,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 		return diagnosisMapper.deleteBatch(list);
 	}
 
-	@Override
+	//通过病人姓名分页查询诊断信息
 	public List<TDiagnosis> pageByPatientName(String patientName, Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", patientName);
@@ -93,4 +95,33 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 		return diagnosisMapper.pageByCondition(map);
 	}
 
+	//通过病人人群类型分页查询诊断信息
+	public List<TDiagnosis> getDiagnosisByPersonType(Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("personType", "正常");
+		// 根据条件查询总数
+		int totalNum = diagnosisMapper.countByPersonType(map);
+		
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		
+		return diagnosisMapper.pageByPersonType(map);
+	}
+
+	//通过病人姓名和人群类型分页查询诊断信息
+	public List<TDiagnosis> pageByPatientNameAndPersonType(String patientName, Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", patientName);
+		map.put("personType", "正常");
+		// 根据条件查询总数
+		int totalNum = diagnosisMapper.countByPersonType(map);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		return diagnosisMapper.pageByPersonType(map);
+	}
+	
 }
