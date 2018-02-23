@@ -66,7 +66,6 @@ public class HealthRecordController {
 	
 	
 	@RequestMapping("/findById/{patientId}")
-	@ResponseBody
 	public String getHealthRecordByPatientId(@PathVariable("patientId") String patientId, Model model) {
 		TPatient patient = patientService.getHealthRecordByPId(patientId);
 		model.addAttribute("patient", patient);
