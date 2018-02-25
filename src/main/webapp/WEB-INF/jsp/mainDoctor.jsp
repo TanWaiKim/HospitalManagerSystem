@@ -325,9 +325,9 @@
 		</h2>
 	
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
+			<li><a href="${pageContext.request.contextPath }/notice/skipToAdd" target="right"><span
 					class="icon-caret-right"></span>添加公告</a></li>
-			<li><a href="info.html" target="right"><span
+			<li><a href="${pageContext.request.contextPath }/notice/list" target="right"><span
 					class="icon-caret-right"></span>管理公告</a></li>
 		</ul>
 		<h2>
