@@ -44,16 +44,6 @@
 					class="icon-caret-right"></span>管理病人信息</a></li>
 		</ul>
 		
-		<h2>
-			<span class="icon-user"></span>医生信息管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/patient/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加医生信息</a></li>
-			<li><a href="patient/list" target="right"><span
-					class="icon-caret-right"></span>管理医生信息</a></li>
-		</ul>
 		
 		<h2>
 			<span class="icon-user"></span>药品管理员管理

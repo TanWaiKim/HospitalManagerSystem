@@ -24,12 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 import cn.edu.dgut.common.util.IDUtils;
 import cn.edu.dgut.mapper.TDiagnosisMapper;
 import cn.edu.dgut.mapper.TPatientMapper;
+import cn.edu.dgut.mapper.TPrescriptionMapper;
 import cn.edu.dgut.mapper.TStayHospitalMapper;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TDiagnosis;
 import cn.edu.dgut.pojo.TDiagnosisExample;
 import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.pojo.TPatientExample;
+import cn.edu.dgut.pojo.TPrescriptionExample;
 import cn.edu.dgut.pojo.TStayHospital;
 import cn.edu.dgut.pojo.TStayHospitalExample;
 import cn.edu.dgut.service.PatientService;
@@ -45,6 +47,9 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private TStayHospitalMapper stayHospitalMapper;
+
+	@Autowired
+	private TPrescriptionMapper prescriptionMapper;
 
 	// 分页查询
 	public List<TPatient> getAllPatient(Page page) {
@@ -141,13 +146,37 @@ public class PatientServiceImpl implements PatientService {
 
 	// 删除单个记录
 	public int deletePatientById(long id) {
+		// 通过id查询patient获取patientId
+		String patientId = patientMapper.selectByPrimaryKey(id).getPatientId();
+		deleteRelaByPatientId(patientId);
 		return patientMapper.deleteByPrimaryKey(id);
+	}
+
+	public void deleteRelaByPatientId(String patientId) {
+		// 删除病人的诊断信息
+		TDiagnosisExample example = new TDiagnosisExample();
+		example.createCriteria().andPatientIdEqualTo(patientId);
+		diagnosisMapper.deleteByExample(example);
+
+		// 删除病人的处方信息
+		TPrescriptionExample pExample = new TPrescriptionExample();
+		pExample.createCriteria().andPatientIdEqualTo(patientId);
+		prescriptionMapper.deleteByExample(pExample);
+
+		// 删除病人的住院信息
+		TStayHospitalExample dExample = new TStayHospitalExample();
+		dExample.createCriteria().andPatientIdEqualTo(patientId);
+		stayHospitalMapper.deleteByExample(dExample);
 	}
 
 	// 批量删除记录
 	public int deletePatientByIds(String[] ids) {
 		List<Long> list = new ArrayList<Long>();
 		for (String id : ids) {
+			// 通过id查询patient获取patientId
+			String patientId = patientMapper.selectByPrimaryKey(Long.valueOf(id).longValue()).getPatientId();
+			//该方法删除与病人相关的诊断，处方，住院等信息
+			deleteRelaByPatientId(patientId);
 			list.add(Long.valueOf(id).longValue());
 		}
 		return patientMapper.deleteBatch(list);
@@ -416,18 +445,18 @@ public class PatientServiceImpl implements PatientService {
 	// 查询健康档案
 	@Override
 	public TPatient getHealthRecordByPId(String patientId) {
-		//通过patientId查询病人记录
+		// 通过patientId查询病人记录
 		TPatientExample example0 = new TPatientExample();
 		example0.createCriteria().andPatientIdEqualTo(patientId);
 		List<TPatient> patientList = patientMapper.selectByExample(example0);
 		if (patientList.size() > 0) {
-			TPatient patient  = patientList.get(0);
-			//通过patientId查询病人诊断记录
+			TPatient patient = patientList.get(0);
+			// 通过patientId查询病人诊断记录
 			TDiagnosisExample example = new TDiagnosisExample();
 			example.createCriteria().andPatientIdEqualTo(patientId);
 			List<TDiagnosis> diagnosisList = diagnosisMapper.selectByExample(example);
 			if (diagnosisList.size() > 0) {
-				//通过patientId查询病人住院记录
+				// 通过patientId查询病人住院记录
 				TDiagnosis diagnosis = diagnosisList.get(diagnosisList.size() - 1);
 				patient.setDiagnosis(diagnosis);
 				TStayHospitalExample example1 = new TStayHospitalExample();
@@ -438,7 +467,7 @@ public class PatientServiceImpl implements PatientService {
 					patient.setStayHospital(stayHospital);
 				}
 			}
-			System.out.println("patient="+patient.toString());
+			System.out.println("patient=" + patient.toString());
 			return patient;
 		}
 		return null;
