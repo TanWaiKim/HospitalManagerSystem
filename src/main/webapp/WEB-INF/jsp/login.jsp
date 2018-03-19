@@ -55,7 +55,7 @@ body {
 							<td class="white">
 							<input type="radio" name="postOffice"value="医生" checked="checked">医生 
 							<input type="radio" name="postOffice" value="护士">护士 
-							<input type="radio" name="postOffice" value="管理员">管理员</td>
+							<input type="radio" name="postOffice" value="医药管理员">医药管理员</td>
 						</tr>
 					</table>
 				</td>
