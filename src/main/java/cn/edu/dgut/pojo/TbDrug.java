@@ -17,7 +17,7 @@ public class TbDrug {
     private String spec;
 
     private String unit;
-
+    
     private String howuse;
 
 //    private String producedTime;

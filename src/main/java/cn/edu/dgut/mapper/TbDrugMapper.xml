@@ -17,7 +17,6 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
   </resultMap>
   
@@ -37,7 +36,6 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
     <association property="drugtype" javaType="cn.edu.dgut.pojo.TbDrugtype">
     	<id property="id" column="id"/>
@@ -108,7 +106,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, create_time, update_time, sale_price, remark, uneffect
+    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, create_time, update_time, sale_price,uneffect
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbDrugExample" >
@@ -128,7 +126,7 @@
   
   
   <sql id="Base_Column_List1" >
-    d.id as id , drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, d.create_time as create_time, d.update_time as update_time, sale_price, remark, uneffect, drugtype_name
+    d.id as id , drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, d.create_time as create_time, d.update_time as update_time, sale_price, uneffect, drugtype_name
   </sql>
   
   <!-- 实现tb_drug和tb_drugtype关联 -->
@@ -181,12 +179,12 @@
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbDrug" >
     insert into tb_drug (id, drugtype_id, drug_name, 
       drug_no, purpose, spec, 
-      unit, howuse, create_time, update_time, sale_price, remark, uneffect
+      unit, howuse, create_time, update_time, sale_price,uneffect
       )
     values (#{id,jdbcType=INTEGER}, #{drugtypeId,jdbcType=INTEGER}, #{drugName,jdbcType=VARCHAR}, 
       #{drugNo,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
       #{unit,jdbcType=CHAR}, #{howuse,jdbcType=VARCHAR}, now(), now(), #{salePrice,jdbcType=DECIMAL},
-      #{remark,jdbcType=VARCHAR}, #{uneffect,jdbcType=VARCHAR}
+      #{uneffect,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbDrug" >
@@ -225,9 +223,6 @@
       <if test="salePrice != null" >
         sale_price,
       </if>
-      <if test="remark != null" >
-        remark,
-      </if>
       <if test="uneffect != null" >
         uneffect,
       </if>
@@ -265,9 +260,6 @@
       </if>
       <if test="salePrice != null" >
         #{salePrice,jdbcType=DECIMAL},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="uneffect != null" >
         #{uneffect,jdbcType=VARCHAR},
@@ -316,9 +308,6 @@
       <if test="record.salePrice != null" >
         sale_price = #{record.salePrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
       <if test="record.uneffect != null" >
         uneffect = #{record.uneffect,jdbcType=VARCHAR},
       </if>
@@ -340,7 +329,6 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = now(),
       sale_price = #{record.salePrice,jdbcType=DECIMAL},
-      remark = #{record.remark,jdbcType=VARCHAR},
       uneffect = #{record.uneffect,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -379,9 +367,6 @@
       <if test="salePrice != null" >
         sale_price = #{salePrice,jdbcType=DECIMAL},
       </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
       <if test="uneffect != null" >
         uneffect = #{uneffect,jdbcType=VARCHAR},
       </if>
@@ -400,7 +385,6 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now(),
       sale_price = #{salePrice,jdbcType=DECIMAL},
-      remark = #{remark,jdbcType=VARCHAR},
       uneffect = #{uneffect,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

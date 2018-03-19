@@ -25,102 +25,106 @@
 </head>
 <body>
 	<form method="post"
-		action="${pageContext.request.contextPath }/purchase/pageByCondition"
+		action="${pageContext.request.contextPath }/salesItem/pageByCondition?salesNo=${sales.salesNo }"
 		id="listform">
 		<input type="hidden" id="currentPage" name="currentPage"
 			value="${page.currentPage }" />
 		<div class="panel admin-panel">
 			<div class="panel-head">
-				<strong class="icon-reorder">采药单列表</strong> <a href=""
-					style="float: right; display: none;">添加字段</a>
+				<strong class="icon-align-left">销药单信息</strong>
 			</div>
 			<div class="padding border-bottom">
+				<table class="table table-hover text-center table-bordered">
+					<tr>
+						<th width="150" >销药单编号</th>
+						<th width="200" >病人名称</th>
+						<th width="100" >总数量</th>
+						<th width="100" >总价格</th>					
+						<th width="150" >创建时间</th>
+						<th width="80" >操作员</th>
+						<th width="150" >备注</th>
+					</tr>
+					<tr>
+						<td>
+							${sales.salesNo }
+						</td>
+						<td>
+							${sales.patient.name }
+						</td>
+						<td>
+							${sales.totalQuantity }
+						</td>
+						<td>
+							${sales.totalPrice }
+						</td>
+						<td>
+							<fmt:formatDate type="date" value="${sales.createTime }"/>
+						</td>
+						<td>
+							${sales.operator }
+						</td>
+						<td>
+							${sales.remarks }
+						</td>
+					</tr>
+				</table>	
+				<br/>
 
+				<br/>
 				<ul class="search" style="padding-left: 10px;">
-					<li><a class="button border-main icon-plus-square-o"
-						href="${pageContext.request.contextPath }/purchase/skipToAdd">
-							添加采药单</a></li>
-					<li>搜索：</li>
 					<li>
-						采药单编号
-						<input type="text" placeholder="请输入采药单编号" name="purchaseNo" value="${purchaseNo }" style= "width:120px"/>  
-					</li>
-					<li>
-						供药商
-						<select name="providerId" class="input" 
-							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<option value="${providerCondition.id }">${providerCondition.providerName }</option>
-							<c:forEach
-							items="${providerList}" var="provider" >
-							<option value="${provider.id }">${provider.providerName }</option>
-							</c:forEach>
-						</select>
-					</li>
-					<li>
-						仓库
-						<select name="warehouseNo" class="input" 
-							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<option value="${warehouseCondition.warehouseNo }">${warehouseCondition.warehouseName }</option>
-							<c:forEach
-							items="${warehouseList}" var="warehouse" >
-							<option value="${warehouse.warehouseNo }">${warehouse.warehouseName }</option>
-							</c:forEach>
-						</select>
-					</li>
-
-					<li>
-						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-						<a href="javascript:void(0)" class="button border-main icon-search" name="keySearch" onclick="changesearch()"> 
-							搜索
+						<a class="button border-main icon-plus-square-o" href="${pageContext.request.contextPath }/salesItem/skipToAdd?salesNo=${sales.salesNo }">
+							添加药品项目
 						</a>
 					</li>
-				</ul>
+				</ul>			
 
 			</div>
+			
+
+			
+			<div class="panel-head">
+				<strong class="icon-reorder">药品清单</strong>
+			</div>
+			
 			<table class="table table-hover text-center table-bordered">
 				<tr>
-					<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
-					<th width="200" >采药单编号</th>
-					<th width="200" >供药商名称</th>
-					<th width="110" >仓库名称</th>
-					<th width="100" >总数量</th>
-					<th width="100" >总价格</th>
-					<th width="90" >操作员</th>
-					<th width="100" >备注</th>
-					<th width="150" >创建时间</th>
-					<th width="150" >更新时间</th>
-					<th width="300" >操作</th>
+					<th width="125" style="text-align: left; padding-left: 20px;">序号</th>
+					<th width="200" >医药名称</th>
+					<th width="150" >产品批号</th>
+					<th width="100" >销药单价</th>			
+					<th width="100" >数量</th>
+					<th width="100" >总价</th>
+					<th width="200" >创建时间</th>
+					<th width="200" >更新时间</th>
+					<th width=500" >操作</th>
 				</tr>
-				<c:forEach items="${purchaseList}" var="purchase"  varStatus="status">
+				<c:forEach items="${salesItemList}" var="salesItem"  varStatus="status">
 					<tr>
 						<td style="text-align: left; padding-left: 20px;">
-							<input type="checkbox" name="id[]" value="${purchase.id}" />
+							<input type="checkbox" name="id[]" value="${salesItem.id}" />
 								<span>
-									${(page.currentPage-1)*5+status.count}
+									${(page.currentPage-1)*3+status.count}
 								</span>
 						</td>
 
-						<td>${purchase.purchaseNo }</td>
-						<td>${purchase.provider.providerName }</td>
-						<td>${purchase.warehouse.warehouseName }</td>
-						<td>${purchase.totalQuantity }</td>
-						<td>${purchase.totalPrice }</td>
-						<td>${purchase.operator }</td>
-						<td>${purchase.remarks }</td>
-						<td><fmt:formatDate type="date" value="${purchase.createTime }"/></td>
-						<td><fmt:formatDate type="date" value="${purchase.updateTime }"/></td>
+						<td>${salesItem.drugName }</td>
+						<td>${salesItem.batchNo }</td>
+						<td>${salesItem.salePrice }</td>
+						<td>${salesItem.quantity }</td>
+						<td>${salesItem.saleTotalPrice }</td>
+						<td><fmt:formatDate type="date" value="${salesItem.createTime }"/></td>
+						<td><fmt:formatDate type="date" value="${salesItem.updateTime }"/></td>
 						
-						<td>
-							<div class="button-group">
+						<td><div class="button-group">
 								<a class="button border-main"
-									href="${pageContext.request.contextPath }/purchase/findByPurchaseNo?purchaseNo=${purchase.purchaseNo }"><span
-									class="icon-edit"></span> 查看</a> <a class="button border-red"
-									href="javascript:judgeDelete(${purchase.id })"><span
-									class="icon-trash-o"></span> 删除</a>
+									href="${pageContext.request.contextPath }/salesItem/updateById?id=${salesItem.id }&&salesNo=${sales.salesNo}">
+									<span class="icon-edit"></span> 修改
+								</a> 							
+								<a class="button border-red"
+									href="javascript:judgeDelete(${salesItem.id })">
+									<span class="icon-trash-o"></span> 删除
+								</a>
 							</div>
 						</td>
 					</tr>
@@ -135,7 +139,7 @@
 
 				</tr>
 				<tr>
-					<td colspan="7" style="border-style:none;">
+					<td colspan="10" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">
@@ -155,6 +159,20 @@
 							<a
 								href="javascript:changeCurrentPage($('#currentPageText').val())"
 								class='go'>GO</a>
+								
+								
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;								
 						</div>
 					</td>
 				</tr>
@@ -180,20 +198,20 @@
 			
 			if (confirm("确定要删除id为" + id + "的记录吗？")) {
 				var params = {"id":id};
-				$.post("${pageContext.request.contextPath }/purchase/deleteOne",params ,function(data){
+				$.post("${pageContext.request.contextPath }/salesItem/deleteOne",params ,function(data){
         			if(data.status == 200){
         				alert('删除成功!');
-        				location.href = "${pageContext.request.contextPath }/purchase/list";
+        				location.href = "${pageContext.request.contextPath }/sales/findBySalesNo?salesNo=${sales.salesNo }";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/purchase/list";
+        				location.href = "${pageContext.request.contextPath }/sales/findBySalesNo?salesNo=${sales.salesNo }";
         			}
         		});
 				//window.location.href = "${pageContext.request.contextPath }/patient/deleteOne?id="+ id;
 			}
 		}
-
+		
 		//搜索
 		function changesearch() {
 			$('#currentPage').val('1');
@@ -226,14 +244,14 @@
 				}
 				var ids = getSelectionsIds();
 				var params = {"ids":ids};
-				$.post("${pageContext.request.contextPath }/purchase/deleteBatch",params ,function(data){
+				$.post("${pageContext.request.contextPath }/salesItem/deleteBatch",params ,function(data){
         			if(data.status == 200){
         				alert('删除采药单成功!');
-        				location.href = "${pageContext.request.contextPath }/purchase/list";
+        				location.href = "${pageContext.request.contextPath }/sales/findBySalesNo?salesNo=${sales.salesNo }";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/purchase/list";
+        				location.href = "${pageContext.request.contextPath }/sales/findBySalesNo?salesNo=${sales.salesNo }";
         			}
         		});
 				//$('#listform').attr("action","${pageContext.request.contextPath }/patient/deleteBatch");

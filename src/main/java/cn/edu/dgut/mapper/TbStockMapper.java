@@ -53,11 +53,18 @@ public interface TbStockMapper {
 	List<TbStock> pageByValidWaring(Map<String, Object> map);
 	
 	Integer countValidTime(TbStock stock);
+	
 	List<TbStock> selectAllStock();
 	
 	List<TbStock> getStockByDrugId(Integer drugId);
 	
 	int updateByDrugId (TbStock record);
+	
 	int updateWaring (TbStock record);
+	
 	int updateValidWaring (TbStock record);
+	
+	int countStockQuantityByDrugId(Integer drugId);
+	
+	int updateByStockSelective(TbStock record);
 }

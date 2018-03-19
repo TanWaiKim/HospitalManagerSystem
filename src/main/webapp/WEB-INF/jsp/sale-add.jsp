@@ -17,124 +17,82 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
-<script src="${pageContext.request.contextPath }/js/My97DatePicker/WdatePicker.js"></script>  
+<script src="${pageContext.request.contextPath }/js/My97DatePicker/WdatePicker.js"></script> 
   </head>  
 
 </head>
 <body>
 	<div class="panel admin-panel">
 		<div class="panel-head" id="add">
-			<strong><span class="icon-pencil-square-o"></span>添加医药信息</strong>
+			<strong><span class="icon-pencil-square-o"></span>添加销药单</strong>
 		</div>
 		<div class="body-content">
-			<form method="post" class="form-x" id="drugAddForm"
+			<form method="post" class="form-x" id="saleAddForm"
 				onsubmit="return false;">
 		
 				<div class="form-group">
 					<div class="label">
-						<label>医药种类：</label>
+						<label>病人名称：</label>
 					</div>
 					<div class="field">
-						<select name="drugtypeId" class="input" 
-							style="width: 155px; line-height: 17px; display: inline-block" data-validate="required:请输入医药种类" >
-							<option value="">选择医药种类</option>
+						<select name="patientId" class="input" 
+							style="width: 155px; line-height: 17px; display: inline-block" data-validate="required:请输入病人名称" >
+							<option value="">选择</option>
 							<c:forEach
-							items="${drugtypeList}" var="drugtype" >
-							<option value="${drugtype.id }">${drugtype.drugtypeName }</option>
+							items="${patientList}" var="patient" >
+							<option value="${patient.patientId }">${patient.name }</option>
 							</c:forEach>
 						</select>
 						<div class="tips"></div>
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<div class="label">
 						<label>医药名称：</label>
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value=""
-							name="drugName" data-validate="required:请输入病医药名称" />
+							name="drugName" data-validate="required:请输入医药名称" />
 						<div class="tips"></div>
 					</div>
 				</div>
-				
-				<div class="form-group">
-					<div class="label">
-						<label>功能主治：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="purpose" data-validate="required:请输入功能主治" />
-						<div class="tips"></div>
-					</div>
-				</div>
+									
 
 				<div class="form-group">
 					<div class="label">
-						<label>单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</label>
-					</div>
-					<div class="field">
-						<select name="unit" class="input" 
-							style="width: 155px; line-height: 17px; display: inline-block" data-validate="required:请输入单位">
-							<option value="">选择计量单位</option>
-							<option value="盒">盒</option>
-							<option value="板">板</option>
-							<option value="袋">袋</option>
-							<option value="瓶">瓶</option>
-							<option value="支">支</option>
-							<option value="片">片</option>
-							<option value="粒">粒</option>
-							<option value="丸">丸</option>
-							<option value="剂">剂</option>
-						</select>
-						<div class="tips"></div>
-					</div>
-				</div>
-		
-				<div class="form-group">
-					<div class="label">
-						<label>规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</label>
+						<label>数量：</label>
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value=""
-							name="spec" data-validate="required:请输入规格" />
+							name="quantity" data-validate="required:请输入数量" />
 						<div class="tips"></div>
 					</div>
 				</div>
 				
 				<div class="form-group">
 					<div class="label">
-						<label>用法用量：</label>
+						<label>操作员：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="howuse" data-validate="required:请输入用法用量" />
-						<div class="tips"></div>
-					</div>
-				</div>	
-
-				<div class="form-group">
-					<div class="label">
-						<label>批准文号：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="drugNo" data-validate="required:请输入批准文号" />
-						<div class="tips"></div>
-					</div>
-				</div>	
-				
-				<div class="form-group">
-					<div class="label">
-						<label>不良反应：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="uneffect" data-validate="required:请输入不良反应" />
+						<input type="text" class="input w50" value="${operator }"
+							name="operator" readonly="readonly" />
 						<div class="tips"></div>
 					</div>
 				</div>		
+				
+				<div class="form-group">
+					<div class="label">
+						<label>备注：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value=""
+							name="remarks" data-validate="required:请输入备注" />
+						<div class="tips"></div>
+					</div>
+				</div>				
 
+				
 				<div class="form-group">
 					<div class="label">
 						<label></label>
@@ -151,12 +109,12 @@
 		function addForm() {
 			//ajax的post方式提交表单
 			//$("#patientAddForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/drug/add",
-							$("#drugAddForm").serialize(),
+			$.post("${pageContext.request.contextPath }/sales/add",
+							$("#saleAddForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
 									alert("添加成功!");
-									location.href = "${pageContext.request.contextPath }/drug/list";
+									location.href = "${pageContext.request.contextPath }/sales/list";
 								} else if (data.status == 500) {
 									alert("添加失败!");
 								} else if (data.status == 505) {

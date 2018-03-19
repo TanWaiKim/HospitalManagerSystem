@@ -3,7 +3,7 @@
 <mapper namespace="cn.edu.dgut.mapper.TbSalesMapper" >
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbSales" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="sales_no" property="salesNo" jdbcType="BIGINT" />
+    <result column="sales_no" property="salesNo" jdbcType="VARCHAR" />
     <result column="patient_id" property="patientId" jdbcType="VARCHAR" />
     <result column="total_quantity" property="totalQuantity" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
@@ -109,9 +109,9 @@
       total_quantity, total_price, operator, 
       remarks, create_time, update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{salesNo,jdbcType=BIGINT}, #{patientId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{salesNo,jdbcType=VARCHAR}, #{patientId,jdbcType=VARCHAR}, 
       #{totalQuantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{operator,jdbcType=VARCHAR}, 
-      #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{remarks,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbSales" >
@@ -150,7 +150,7 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="salesNo != null" >
-        #{salesNo,jdbcType=BIGINT},
+        #{salesNo,jdbcType=VARCHAR},
       </if>
       <if test="patientId != null" >
         #{patientId,jdbcType=VARCHAR},
@@ -168,10 +168,10 @@
         #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
     </trim>
   </insert>
@@ -188,7 +188,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.salesNo != null" >
-        sales_no = #{record.salesNo,jdbcType=BIGINT},
+        sales_no = #{record.salesNo,jdbcType=VARCHAR},
       </if>
       <if test="record.patientId != null" >
         patient_id = #{record.patientId,jdbcType=VARCHAR},
@@ -209,7 +209,7 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     <if test="_parameter != null" >
@@ -219,14 +219,14 @@
   <update id="updateByExample" parameterType="map" >
     update tb_sales
     set id = #{record.id,jdbcType=INTEGER},
-      sales_no = #{record.salesNo,jdbcType=BIGINT},
+      sales_no = #{record.salesNo,jdbcType=VARCHAR},
       patient_id = #{record.patientId,jdbcType=VARCHAR},
       total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
       total_price = #{record.totalPrice,jdbcType=DECIMAL},
       operator = #{record.operator,jdbcType=VARCHAR},
       remarks = #{record.remarks,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -235,7 +235,7 @@
     update tb_sales
     <set >
       <if test="salesNo != null" >
-        sales_no = #{salesNo,jdbcType=BIGINT},
+        sales_no = #{salesNo,jdbcType=VARCHAR},
       </if>
       <if test="patientId != null" >
         patient_id = #{patientId,jdbcType=VARCHAR},
@@ -256,21 +256,115 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <update id="updateBySalesNoSelective" parameterType="cn.edu.dgut.pojo.TbSales" >
+    update tb_sales
+    <set >
+      <if test="salesNo != null" >
+        sales_no = #{salesNo,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null" >
+        patient_id = #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalQuantity != null" >
+        total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+    </set>
+    where sales_no = #{salesNo,jdbcType=VARCHAR}
+  </update>
+  
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbSales" >
     update tb_sales
-    set sales_no = #{salesNo,jdbcType=BIGINT},
+    set sales_no = #{salesNo,jdbcType=VARCHAR},
       patient_id = #{patientId,jdbcType=VARCHAR},
       total_quantity = #{totalQuantity,jdbcType=INTEGER},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       operator = #{operator,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_sales order by id desc limit 1
+  </select>
+  
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_sales s
+  		<where>
+  			<if test="patientId!=null and !&quot;&quot;.equals(patientId.trim())">
+  				and s.patient_id like '%' #{patientId} '%'
+  			</if>
+  			<if test="salesNo and !&quot;&quot;.equals(salesNo.trim())">
+  				and s.sales_no like '%' #{salesNo} '%'
+  			</if>
+  		</where>
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select * from tb_sales s
+  	
+  		<where>
+  			<if test="patientId!=null and !&quot;&quot;.equals(patientId.trim())">
+  				and s.patient_id like '%' #{patientId} '%'
+  			</if>
+  			<if test="salesNo and !&quot;&quot;.equals(salesNo.trim())">
+  				and s.sales_no like '%' #{salesNo} '%'
+  			</if>
+  		</where>
+  		order by s.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+   <!-- 根据采药单号查询 -->
+   <select id="selectBySalesNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sales
+    where sales_no = #{salesNo,jdbcType=VARCHAR}
+  </select>
+ 
+   <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from tb_sales where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
+
+  <!-- 查询所有记录 -->
+  <select id="selectAllSales"  resultMap="BaseResultMap">
+  	select * from  tb_sales
+  </select>  
+  
+  
+  
+  
+  
+  
+  
 </mapper>

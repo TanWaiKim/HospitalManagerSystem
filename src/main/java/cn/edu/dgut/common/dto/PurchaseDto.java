@@ -46,6 +46,8 @@ public class PurchaseDto {
     
     private String batchNo;
     
+    
+    
 	public String getWarehouseNo() {
 		return warehouseNo;
 	}

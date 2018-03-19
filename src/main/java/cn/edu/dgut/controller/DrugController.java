@@ -68,12 +68,12 @@ public class DrugController {
 				return HmsResult.build(505, "功能主治不能为空！");
 			}
 			
-			if (drug.getSpec() == null) {
-				return HmsResult.build(505, "规格不能为空！");
-			}
-			
 			if (drug.getUnit() == null) {
 				return HmsResult.build(505, "单位不能为空！");
+			}
+			
+			if (drug.getSpec() == null) {
+				return HmsResult.build(505, "规格不能为空！");
 			}
 			
 			if (drug.getHowuse() == null) {

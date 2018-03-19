@@ -84,6 +84,7 @@ public class ProviderController {
 	public String getAllProvider(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
 		try {
 			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+2);
 			page.setCurrentPage(currentPage);
 			model.addAttribute("providerList", providerService.getAllProvider(page));
 			model.addAttribute("page", page);
@@ -110,6 +111,7 @@ public class ProviderController {
 		try {
 			// 创建分页对象
 			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+2);
 			Pattern pattern = Pattern.compile("[0-9]{1,9}");
 			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
 				page.setCurrentPage(1);

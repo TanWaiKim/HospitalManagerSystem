@@ -38,7 +38,7 @@
 						<label>医药种类简介：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w80" value="" name="remarks" data-validate="required:请输入医药种类简介"/>
+						<input type="text" class="input w50" value="" name="remarks" data-validate="required:请输入医药种类简介"/>
 						<div class="tips"></div>
 					</div>
 				</div>

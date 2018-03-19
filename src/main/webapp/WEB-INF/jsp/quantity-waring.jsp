@@ -72,7 +72,7 @@
 						</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="9">
+						<td colspan="9" style="border-style:none;">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">

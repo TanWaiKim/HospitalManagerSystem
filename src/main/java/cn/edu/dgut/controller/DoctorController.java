@@ -9,4 +9,9 @@ public class DoctorController {
 	public String mainDoctor(){
 		return "mainDoctor";
 	}
+	
+	@RequestMapping("/mainDrug")
+	public String mainDrug(){
+		return "mainDrug";
+	}
 }

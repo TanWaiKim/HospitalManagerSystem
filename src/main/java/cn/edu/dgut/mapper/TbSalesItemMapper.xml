@@ -11,6 +11,7 @@
     <result column="sale_total_price" property="saleTotalPrice" jdbcType="DECIMAL" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, sales_no, drug_id, drug_name, sale_price, quantity, sale_total_price, create_time, 
-    update_time
+    update_time,batch_no
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbSalesItemExample" >
     select
@@ -98,6 +99,10 @@
     delete from tb_sales_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteBySalesNo" parameterType="java.lang.String" >
+    delete from tb_sales_item
+    where sales_no = #{selaseNo,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="cn.edu.dgut.pojo.TbSalesItemExample" >
     delete from tb_sales_item
     <if test="_parameter != null" >
@@ -107,11 +112,11 @@
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbSalesItem" >
     insert into tb_sales_item (id, sales_no, drug_id, 
       drug_name, sale_price, quantity, 
-      sale_total_price, create_time, update_time
+      sale_total_price, create_time, update_time, batch_no
       )
     values (#{id,jdbcType=INTEGER}, #{salesNo,jdbcType=BIGINT}, #{drugId,jdbcType=INTEGER}, 
       #{drugName,jdbcType=VARCHAR}, #{salePrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, 
-      #{saleTotalPrice,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{saleTotalPrice,jdbcType=DECIMAL}, now(), now(), #{batchNo,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbSalesItem" >
@@ -144,6 +149,9 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="batchNo != null" >
+        batch_no,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -168,10 +176,13 @@
         #{saleTotalPrice,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        now(),
+      </if>
+      <if test="batchNo != null" >
+        #{batchNo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -209,7 +220,10 @@
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+      <if test="record.batchNo != null" >
+        batch_no = #{record.batchNo,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -226,7 +240,8 @@
       quantity = #{record.quantity,jdbcType=INTEGER},
       sale_total_price = #{record.saleTotalPrice,jdbcType=DECIMAL},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_time = now(),
+      batch_no = #{record.batchNo,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -256,7 +271,10 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      </if>
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -270,7 +288,57 @@
       quantity = #{quantity,jdbcType=INTEGER},
       sale_total_price = #{saleTotalPrice,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = now(),
+      batch_no = #{batchNo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+ 
+   <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  tb_sales_item order by id desc limit 1
+  </select>
+  
+  
+  <select id="selectByDrugIdAndBatchNo" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_sales_item
+    where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
+  </select>
+  
+     <!-- 查询所有记录 -->
+  <select id="selectAllSalesItem" parameterType="java.lang.String"  resultMap="BaseResultMap">
+  	select * from  tb_sales_item
+  	where sales_no = #{salesNo}
+  </select>  
+  
+  <!-- 统计记录数 -->
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_sales_item s
+  	where s.sales_no = #{salesNo}
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select  
+  	<include refid="Base_Column_List"></include>
+  	from tb_sales_item s
+  	where s.sales_no = #{salesNo}
+  	order by s.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from tb_sales_item where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
+ 
+    <!-- 查询所有记录 -->
+  <select id="selectAllSalesItem1"  resultMap="BaseResultMap">
+  	select * from  tb_sales_item
+  </select>    
+  
 </mapper>

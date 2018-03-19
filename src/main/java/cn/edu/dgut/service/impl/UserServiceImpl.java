@@ -42,6 +42,9 @@ public class UserServiceImpl implements UserService {
 				//对输入的密码进行验证
 				if(doctorList.get(0).getLoginPassword().equals(password)){
 					//密码相同
+					TbAdmin admin = new TbAdmin();
+					admin.setUsername(doctorList.get(0).getName());
+					session.setAttribute(Const.CURRENT_USER, admin);
 					request.getSession().setAttribute("doctorInfo", doctorList.get(0));
 					return HmsResult.build(200, "医生登录成功");
 				}else{
@@ -52,13 +55,13 @@ public class UserServiceImpl implements UserService {
 			}
 			//账号不一致
 			return HmsResult.build(500, "账号错误！");
-		} else if(postOffice.equals("管理员")){
+		} else if(postOffice.equals("医药管理员")){
 			//条件查询  通过用户名查询记录 
 			TbAdmin admin = adminService.login(username, password);
 			//验证密码
 			if(admin != null){
 				session.setAttribute(Const.CURRENT_USER, admin);
-				return HmsResult.build(200, "药品管理员登录成功");		
+				return HmsResult.build(200, "医药管理员登录成功");		
 			}
 			//账号不一致
 			return HmsResult.build(500, "账号或密码错误！");

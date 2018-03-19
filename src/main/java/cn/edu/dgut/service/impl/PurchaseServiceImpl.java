@@ -226,9 +226,12 @@ public class PurchaseServiceImpl implements PurchaseService {
 		
 		TbPurchaseItem purchaseItem2 = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
 		
+		// 此处代码存在bug，回头再修改
 		if (purchaseItem2 != null) {
 			purchaseItem.setId(purchaseItem2.getId());
+			purchaseItem.setBatchNo(purchaseItem2.getBatchNo());
 			purchaseItem.setQuantity(purchaseItem2.getQuantity()+purchaseItem.getQuantity());
+			purchaseItem.setPurchaseTotalPrice(BigDecimalUtil.add(purchaseItem2.getPurchaseTotalPrice().doubleValue(), purchaseItem.getPurchaseTotalPrice().doubleValue()));
 			purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
 		} else {
 			// 添加采药单子项目

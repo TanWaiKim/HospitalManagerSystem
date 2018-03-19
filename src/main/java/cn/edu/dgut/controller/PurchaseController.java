@@ -145,6 +145,7 @@ public class PurchaseController {
 	public String getAllPurchase(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
 		try {
 			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+2);
 			page.setCurrentPage(currentPage);
 			model.addAttribute("providerList", providerService.selectAllProvider());
 			model.addAttribute("warehouseList", warehouseService.selectAllWarehouse());
@@ -174,6 +175,7 @@ public class PurchaseController {
 		try {
 			// 创建分页对象
 			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+2);
 			Pattern pattern = Pattern.compile("[0-9]{1,9}");
 			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
 				page.setCurrentPage(1);

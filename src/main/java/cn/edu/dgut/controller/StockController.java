@@ -115,7 +115,7 @@ public class StockController {
 	public String getAllStock(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
 		try {
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+2);
+			page.setPageNumber(page.getPageNumber()+1);
 			page.setCurrentPage(currentPage);
 			model.addAttribute("stockList", stockService.getAllStock(page));
 			model.addAttribute("warehouseList", warehouseService.selectAllWarehouse());
@@ -146,7 +146,7 @@ public class StockController {
 		try {
 			// 创建分页对象
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+2);
+			page.setPageNumber(page.getPageNumber()+1);
 			Pattern pattern = Pattern.compile("[0-9]{1,9}");
 			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
 				page.setCurrentPage(1);
@@ -296,7 +296,7 @@ public class StockController {
 	public String getValidWaring(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
 		try {
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+5);
+			page.setPageNumber(page.getPageNumber()+4);
 			page.setCurrentPage(currentPage);
 			model.addAttribute("stockList", stockService.getAllStockByValidWaring(page));
 			model.addAttribute("page", page);
@@ -317,7 +317,7 @@ public class StockController {
 		try {
 			// 创建分页对象
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+5);
+			page.setPageNumber(page.getPageNumber()+4);
 			Pattern pattern = Pattern.compile("[0-9]{1,9}");
 			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
 				page.setCurrentPage(1);

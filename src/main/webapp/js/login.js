@@ -18,20 +18,16 @@ var LOGIN = {
 				$.post("login", $("#loginAllForm").serialize(),function(data){
 					if (data.status == 200) {
 						if(data.msg == "医生登录成功"){						
-							alert("登录成功！");
 							location.href = "mainDoctor";
 						}
 						if(data.msg == "护士登录成功"){
-							alert("登录成功！");
 							location.href = "mainNurse";
 						}
 						if(data.msg == "管理员登录成功"){
-							alert("登录成功！");
 							location.href = "main";
 						}
-						if(data.msg == "药品管理员登录成功"){						
-							alert("登录成功！");
-							location.href = "mainDoctor";
+						if(data.msg == "医药管理员登录成功"){						
+							location.href = "mainDrug";
 						}
 					} else{
 						alert("登录失败，原因是：" + data.msg);

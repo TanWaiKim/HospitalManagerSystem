@@ -64,7 +64,7 @@
 				</ul>
 
 			</div>
-			<table class="table table-hover text-center">
+			<table class="table table-hover text-center table-bordered">
 				<tr>
 					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="100" >仓库编号</th>
@@ -81,7 +81,7 @@
 						<td style="text-align: left; padding-left: 20px;">
 							<input type="checkbox" name="id[]" value="${warehouse.id}" />
 								<span>
-									${(page.currentPage-1)*3+status.count}
+									${(page.currentPage-1)*5+status.count}
 								</span>
 						</td>
 
@@ -95,7 +95,7 @@
 						
 						<td><div class="button-group">
 								<a class="button border-main"
-									href="${pageContext.request.contextPath }/provider/findById?id=${warehouse.id }"><span
+									href="${pageContext.request.contextPath }/warehouse/findById?id=${warehouse.id }"><span
 									class="icon-edit"></span> 修改</a> <a class="button border-red"
 									href="javascript:judgeDelete(${warehouse.id })"><span
 									class="icon-trash-o"></span> 删除</a>
@@ -103,17 +103,16 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td style="text-align: left; padding: 19px 0; padding-left: 20px;"><input
+					<td style="text-align: left; padding: 19px 0; padding-left: 20px;border-style:none;"><input
 						type="checkbox" id="checkall" /> 全选</td>
-					<td colspan="5" style="text-align: left; padding-left: 20px;"><a
+					<td colspan="5" style="text-align: left; padding-left: 20px;border-style:none;"><a
 						href="javascript:deleteBatch()"
 						class="button border-red icon-trash-o" style="padding: 5px 15px;" >
 							删除</a></td>
-					<td colspan="7" style="text-align: left; padding-left: 20px;">
 
 				</tr>
 				<tr>
-					<td colspan="7">
+					<td colspan="7" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

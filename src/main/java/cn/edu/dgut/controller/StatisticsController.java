@@ -439,7 +439,7 @@ public class StatisticsController {
     	
 		
 	    JFreeChart lineChart = ChartFactory.createLineChart(
-	    		drug.getDrugName()+"采购价格统计",
+	    		drug.getDrugName()+"采购价格异动",
 	    	    "采购时间",
 	    	    "采药单价（元/单位）",
 	    	    this.getPriceChangeDataSet(this.countPriceChange(drugName,drugNo,beginTime,endTime),drug.getDrugName()),

@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<span>医院管理系统</span>
+	<span>医药管理系统</span>
 </body>
 </html>

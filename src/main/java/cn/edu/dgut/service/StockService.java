@@ -28,7 +28,12 @@ public interface StockService {
 	List<TbStock> getStockByDrugId(Integer drugId);
 	
 	List<TbStock> getAllListStock(Page page);
+	
 	List<TbStock> pageByListCondition(String drugName, String drugNo, Page page);
 	
 	int updateStockByDrugId(TbStock stock);
+	
+	int updateByStockSelective(TbStock stock);
+	
+	int countStockQuantityByDrugId(Integer drugId);
 }

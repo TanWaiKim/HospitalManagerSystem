@@ -32,6 +32,7 @@
     <association property="purchaseItem" javaType="cn.edu.dgut.pojo.TbPurchaseItem">
     	<id property="id" column="id"/>
     	<result property="purchasePrice" column="purchase_price"/>
+    	<result property="salePrice" column="sale_price"/>
     	<result property="produceTime" column="produce_time"/>
     	<result property="validTime" column="valid_time"/>
     </association>
@@ -362,6 +363,13 @@
     </set>
     where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
   </update>
+  
+   <update id="updateByStockSelective" parameterType="cn.edu.dgut.pojo.TbStock" >
+    update tb_stock
+    set stock_quantity = stock_quantity - #{stockQuantity,jdbcType=INTEGER}, update_time = now()
+    where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
+  </update>
+  
   <update id="updateByDrugId" parameterType="cn.edu.dgut.pojo.TbStock" >
     update tb_stock
     <set >
@@ -470,7 +478,7 @@
 
   <sql id="Base_Column_List1" >
     s.id as id, warehouse_no, s.batch_no as batch_no, s.drug_id as drug_id, stock_quantity,  
-    min_quantity, max_quantity, operator, s.create_time as create_time, s.update_time as update_time, waring, valid_waring, purchase_price, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
+    min_quantity, max_quantity, operator, s.create_time as create_time, s.update_time as update_time, waring, valid_waring, purchase_price, sale_price, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
   </sql>
   
   
@@ -584,5 +592,13 @@
   	select * 
   	from  tb_stock
   	where drug_id = #{drugId}
+  	order by create_time asc
   </select>
+  
+  
+   <select id="countStockQuantityByDrugId"  parameterType="java.lang.Integer" resultType="int">
+  	select sum(stock_quantity) from tb_stock s
+  	where s.drug_id = #{drugId}
+  </select>
+  
 </mapper>

@@ -508,4 +508,16 @@ public class StockServiceImpl implements StockService {
 		return stockList;
 	}
 
+	
+	@Override
+	public int countStockQuantityByDrugId(Integer drugId) {
+		return stockMapper.countStockQuantityByDrugId(drugId);
+	}
+
+	
+	@Override
+	public int updateByStockSelective(TbStock stock) {
+		return stockMapper.updateByStockSelective(stock);
+	}
+
 }

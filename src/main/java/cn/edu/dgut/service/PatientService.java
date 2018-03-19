@@ -22,4 +22,6 @@ public interface PatientService {
 	void importExcelInfo(MultipartFile file) throws Exception;
 	List<String> selectAllPatientIds();
 	TPatient getHealthRecordByPId(String patientId);
+	
+	List<TPatient> selectAllPatient();
 }

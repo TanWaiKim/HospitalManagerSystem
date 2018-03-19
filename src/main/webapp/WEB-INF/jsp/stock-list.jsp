@@ -95,7 +95,7 @@
 						<tr>
 							<td style="text-align: left; padding-left: 20px;">
 								<span>
-									&nbsp;&nbsp;${(page.currentPage-1)*5+status.count}
+									&nbsp;&nbsp;${(page.currentPage-1)*4+status.count}
 								</span>
 							</td>
 							<td>${stock.warehouse.warehouseName }</td>
@@ -107,7 +107,7 @@
 							<td>${stock.purchaseItem.produceTime }</td>
 							<td>${stock.purchaseItem.validTime }</td>
 							<td>${stock.purchaseItem.purchasePrice }</td>
-							<td>${stock.drug.salePrice }</td>
+							<td>${stock.purchaseItem.salePrice }</td>
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
 							<td>${stock.maxQuantity }</td>
@@ -118,7 +118,7 @@
 						</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="17">
+						<td colspan="16" style="border-style:none;">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">

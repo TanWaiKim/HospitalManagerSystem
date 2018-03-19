@@ -3,6 +3,8 @@ package cn.edu.dgut.mapper;
 import cn.edu.dgut.pojo.TbSalesItem;
 import cn.edu.dgut.pojo.TbSalesItemExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface TbSalesItemMapper {
@@ -11,6 +13,8 @@ public interface TbSalesItemMapper {
     int deleteByExample(TbSalesItemExample example);
 
     int deleteByPrimaryKey(Integer id);
+    
+    int deleteBySalesNo(String salesNo);
 
     int insert(TbSalesItem record);
 
@@ -27,4 +31,20 @@ public interface TbSalesItemMapper {
     int updateByPrimaryKeySelective(TbSalesItem record);
 
     int updateByPrimaryKey(TbSalesItem record);
+    
+    
+    TbSalesItem selectLastRecord();
+    
+    TbSalesItem selectByDrugIdAndBatchNo(TbSalesItem salesItem);
+    
+    List<TbSalesItem> selectAllSalesItem(String salesNo);
+    
+	int countByCondition(Map<String, Object> map);
+
+	List<TbSalesItem> pageByCondition(Map<String, Object> map);
+	
+	int deleteBatch(List<Long> list);
+	
+	List<TbSalesItem> selectAllSalesItem1();
+    
 }

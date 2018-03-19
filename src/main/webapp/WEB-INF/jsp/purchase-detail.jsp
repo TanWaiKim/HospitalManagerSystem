@@ -34,41 +34,44 @@
 				<strong class="icon-align-left">采药单信息</strong>
 			</div>
 			<div class="padding border-bottom">
-				
-				<ul>
-					<li>
-						采药单编号：
-						<span>${purchase.purchaseNo }</span>
-					</li>
-					<li>
-						供药商名称：
-						<span>${purchase.provider.providerName }</span>
-					</li>
-					<li>
-						储存仓库：
-						<span>${purchase.warehouse.warehouseName }</span>
-					<li>
-						总数量：
-						<span>${purchase.totalQuantity }</span>
-					</li>
-					<li>
-						总价格：
-						<span>${purchase.totalPrice }</span>
-					</li>
-					<li>
-						创建时间：
-						<span><fmt:formatDate type="date" value="${purchase.createTime }"/></span>
-					</li>
-					<li>
-						操作员：
-						<span>${purchase.operator }</span>
-					</li>		
-					<li>
-						备注：
-						<span>${purchase.remarks }</span>
-					</li>			
-				</ul>
-				<br/>
+				<table class="table table-hover text-center table-bordered">
+					<tr>
+						<th width="150" >采药单编号</th>
+						<th width="200" >供药商名称</th>
+						<th width="100" >储存仓库</th>
+						<th width="100" >总数量</th>
+						<th width="100" >总价格</th>					
+						<th width="150" >创建时间</th>
+						<th width="80" >操作员</th>
+						<th width="150" >备注</th>
+					</tr>
+					<tr>
+						<td>
+							${purchase.purchaseNo }
+						</td>
+						<td>
+							${purchase.provider.providerName }
+						</td>
+						<td>
+							${purchase.warehouse.warehouseName }
+						</td>
+						<td>
+							${purchase.totalQuantity }
+						</td>
+						<td>
+							${purchase.totalPrice }
+						</td>
+						<td>
+							<fmt:formatDate type="date" value="${purchase.createTime }"/>
+						</td>
+						<td>
+							${purchase.operator }
+						</td>
+						<td>
+							${purchase.remarks }
+						</td>
+					</tr>
+				</table>	
 				<br/>
 				<ul class="search" style="padding-left: 10px;">
 					<li>
@@ -76,17 +79,15 @@
 							添加药品项目
 						</a>
 					</li>
-				</ul>			
+				</ul>		
 
 			</div>
-			
-
 			
 			<div class="panel-head">
 				<strong class="icon-reorder">药品清单</strong>
 			</div>
 			
-			<table class="table table-hover text-center">
+			<table class="table table-hover text-center table-bordered">
 				<tr>
 					<th width="125" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="150" >医药名称</th>
@@ -139,17 +140,16 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td style="text-align: left; padding: 19px 0; padding-left: 20px;"><input
+					<td style="text-align: left; padding: 19px 0; padding-left: 20px;border-style:none;"><input
 						type="checkbox" id="checkall" /> 全选</td>
-					<td colspan="5" style="text-align: left; padding-left: 20px;"><a
+					<td colspan="5" style="text-align: left; padding-left: 20px;border-style:none;"><a
 						href="javascript:deleteBatch()"
 						class="button border-red icon-trash-o" style="padding: 5px 15px;" >
 							删除</a></td>
-					<td colspan="7" style="text-align: left; padding-left: 20px;">
 
 				</tr>
 				<tr>
-					<td colspan="10">
+					<td colspan="9" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

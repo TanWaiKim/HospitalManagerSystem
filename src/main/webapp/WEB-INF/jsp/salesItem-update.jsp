@@ -17,59 +17,46 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
+<script src="${pageContext.request.contextPath }/js/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 	<div class="panel admin-panel">
 		<div class="panel-head" id="add">
-			<strong><span class="icon-pencil-square-o"></span>修改仓库信息信息</strong>
+			<strong><span class="icon-pencil-square-o"></span>修改销售药品信息</strong>
 		</div>
 		<div class="body-content">
-			<form method="post" id="warehouseUpdateForm" class="form-x"
+			<form method="post" id="salesItemUpdateForm" class="form-x"
 				onsubmit="return false;">
-				<input type="hidden" id="id" name="id" value="${warehouse.id }" />
-				<input type="hidden" id="warehouseNo" name="warehouseNo" value="${warehouse.warehouseNo }" />				
-				<input type="hidden" id="createTime" name="createTime" value="${warehouse.createTime }" />
+				<input type="hidden" id="id" name="id" value="${salesDto.id }" />
+				<input type="hidden" id="salesNo" name="salesNo" value="${salesDto.salesNo }" />
+				<input type="hidden" id="patientId" name="patientId" value="${salesDto.patientId }" />
+				<input type="hidden" id="totalQuantity" name="totalQuantity" value="${salesDto.totalQuantity }" />
+				<input type="hidden" id="totalPrice" name="totalPrice" value="${salesDto.totalPrice }" />
+				<input type="hidden" id="operator" name="operator" value="${salesDto.operator }" />
+				<input type="hidden" id="remarks" name="remarks" value="${salesDto.remarks }" />
+				<input type="hidden" id="oldSalesItemQuantity" name="oldSalesItemQuantity" value="${salesDto.oldSalesItemQuantity }" />
+				<input type="hidden" id="salePrice" name="salePrice" value="${salesDto.salePrice }" />
+				<input type="hidden" id="batchNo" name="batchNo" value="${salesDto.batchNo }" />
 				
 				<div class="form-group">
 					<div class="label">
-						<label>仓库名称：</label>
+						<label>医药名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${warehouse.warehouseName}" name="warehouseName"
-							data-validate="required:请输入仓库名称" />
-						<div class="tips"></div>
+						<select name="drugId" class="input"
+							style="width: 155px; line-height: 17px; display: inline-block" >
+							<option value="${salesDto.drugId }" selected="selected">${salesDto.drugName }</option>
+						</select>
 					</div>
 				</div>
-
+				
 				<div class="form-group">
 					<div class="label">
-						<label>仓库位置：</label>
+						<label>数量：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${warehouse.location}" name="location"
-							data-validate="required:请输入仓库位置" />
-						<div class="tips"></div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="label">
-						<label>管理员：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value="${warehouse.manager}" name="manager"
-							data-validate="required:请输入管理员" />
-						<div class="tips"></div>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="label">
-						<label>管理员手机号码：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value="${warehouse.phone}" name="phone"
-							data-validate="required:请输入联络人电话" />
+						<input type="text" class="input w50" value="${salesDto.quantity }"
+							name="quantity" data-validate="required:请输入数量" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -90,12 +77,12 @@
 		function updateForm() {
 			//ajax的post方式提交表单
 			//$("#patientUpdateForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/warehouse/update",
-							$("#warehouseUpdateForm").serialize(),
+			$.post("${pageContext.request.contextPath }/salesItem/update",
+							$("#salesItemUpdateForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
 									alert("修改成功!");
-									location.href = "${pageContext.request.contextPath }/warehouse/list";
+									location.href = "${pageContext.request.contextPath }/sales/findBySalesNo?salesNo=${salesDto.salesNo }";
 								} else if (data.status == 500) {
 									alert("修改失败!");
 								} else if (data.status == 505) {

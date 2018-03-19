@@ -6,7 +6,7 @@ import java.util.Date;
 public class TbSalesItem {
     private Integer id;
 
-    private Long salesNo;
+    private String salesNo;
 
     private Integer drugId;
 
@@ -21,6 +21,8 @@ public class TbSalesItem {
     private Date createTime;
 
     private Date updateTime;
+    
+    private String batchNo;
 
     public Integer getId() {
         return id;
@@ -30,11 +32,11 @@ public class TbSalesItem {
         this.id = id;
     }
 
-    public Long getSalesNo() {
+    public String getSalesNo() {
         return salesNo;
     }
 
-    public void setSalesNo(Long salesNo) {
+    public void setSalesNo(String salesNo) {
         this.salesNo = salesNo;
     }
 
@@ -93,4 +95,12 @@ public class TbSalesItem {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
 }

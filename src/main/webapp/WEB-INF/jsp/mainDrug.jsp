@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>医生模块</title>
+<title>医药管理子系统</title>
 
 <link rel="stylesheet" href="css/pintuer.css">
 <link rel="stylesheet" href="css/admin.css">
@@ -17,15 +17,15 @@
 	<div class="header bg-main">
 		<div class="logo margin-big-left fadein-top">
 			<h1>
-				<img src="images/dc-logo.png" class="radius-circle rotate-hover"
-					height="50" alt="" />医院后台管理中心
+				<img src="images/drug-logo.jpg" class="radius-circle rotate-hover"
+					height="50" alt="" />医药管理系统
 			</h1>
 		</div>
 		<div class="head-l">
 			<a class="button button-little bg-green" href="" target="_blank"><span
 				class="icon-home"></span> 登录用户：${currentUser.username }</a> &nbsp;&nbsp;<a href="##"
 				class="button button-little bg-blue"><span class="icon-user"></span>
-				用户角色:医生</a> &nbsp;&nbsp;<a class="button button-little bg-red"
+				用户角色:药品管理员</a> &nbsp;&nbsp;<a class="button button-little bg-red"
 				href="login.html"><span class="icon-power-off"></span> 退出登录</a>
 		</div>
 	</div>
@@ -33,65 +33,7 @@
 		<div class="leftnav-title">
 			<strong><span class="icon-list "></span>菜单列表</strong>
 		</div>
-		<h2>
-			<span class="icon-user"></span>病人信息管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/patient/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加病人信息</a></li>
-			<li><a href="patient/list" target="right"><span
-					class="icon-caret-right"></span>管理病人信息</a></li>
-		</ul>
-		
-		
-		<h2>
-			<span class="icon-user"></span>药品管理员管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/patient/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加药品管理员信息</a></li>
-			<li><a href="patient/list" target="right"><span
-					class="icon-caret-right"></span>管理药品管理员信息</a></li>
-		</ul>
-		<h2>
-			<span class="icon-stethoscope"></span>诊断信息管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/diagnosis/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加诊断信息</a></li>
-			<li><a href="diagnosis/list" target="right"><span
-					class="icon-caret-right"></span>管理诊断信息</a></li>
-		</ul>
-		<h2>
-			<span class="icon-key"></span>处方信息管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="prescription/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加处方信息</a></li>
-			<li><a href="prescription/list" target="right"><span
-					class="icon-caret-right"></span>管理处方信息</a></li>
-		</ul>
-		<h2>
-			<span class="icon-search"></span>查看健康档案
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="healthRecord/list" target="right"><span
-					class="icon-caret-right"></span>健康档案信息</a></li>
-		</ul>
-		<h2>
-			<span class="icon-wheelchair"></span>特殊病人管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="specialPatient/list" target="right"><span
-					class="icon-caret-right"></span>查看特殊病人信息</a></li>
-		</ul>
-		
+
 		<h2>
 			<span class="icon-user"></span>基础信息管理
 		</h2>
@@ -191,13 +133,13 @@
 		</ul>
 		
 		<h2>
-			<span class="icon-hospital-o"></span>采药管理
+			<span class="icon-plus-square"></span>采药管理
 		</h2>
 		
 		<ul style="display: none">
 			<li>
 				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>采药单管理
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>进药入库
 				</h5>
 		
 				<ul style="display: none">
@@ -219,7 +161,7 @@
 					
 			<li>
 				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>退药单管理
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>进药退回
 				</h5>
 		
 				<ul style="display: none">
@@ -240,7 +182,7 @@
 		</ul>
 		
 		<h2>
-			<span class="icon-hospital-o"></span>库存管理
+			<span class="icon-database"></span>库存管理
 		</h2>
 		
 		<ul style="display: none">
@@ -266,18 +208,40 @@
 			</li>
 		</ul>
 		<h2>
-			<span class="icon-hospital-o"></span>销药管理
+			<span class="icon-minus-square"></span>销药管理
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>销药单管理</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>退药单管理</a></li>
+			<li>
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>销药出库
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/sales/skipToAdd" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加销药单
+						</a>
+					</li>
+					<li>
+						<a href="sales/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理销药单
+						</a>
+					</li>
+				</ul>
+			</li>
+					
+			<li>
+				<a href="info.html" target="right">
+					<span class="icon-caret-right"></span>销药退出
+				</a>
+			</li>
 					
 		</ul>
 		<h2>
-			<span class="icon-hospital-o"></span>统计分析
+			<span class="icon-mobile"></span>统计分析
 		</h2>
 		
 		<ul style="display: none">
@@ -302,26 +266,9 @@
 				</a>
 			</li>					
 		</ul>
+
 		<h2>
-			<span class="icon-wrench"></span>系统管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>系统用户管理</a></li>
-		</ul>
-		<h2>
-			<span class="icon-rss-square"></span>系统公告
-		</h2>
-	
-		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/notice/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加公告</a></li>
-			<li><a href="${pageContext.request.contextPath }/notice/list" target="right"><span
-					class="icon-caret-right"></span>管理公告</a></li>
-		</ul>
-		<h2>
-			<span class="icon-cog"></span>基本设置
+			<span class="icon-cog"></span>系统设置
 		</h2>
 		
 		<ul style="display: none">
@@ -382,7 +329,7 @@
 		
 	</ul>
 	<div class="admin">
-		 <iframe scrolling="auto" rameborder="0" src="wel.jsp" name="right"
+		 <iframe scrolling="auto" rameborder="0" src="drug-index.jsp" name="right"
 			width="100%" height="100%"></iframe>		
 	</div>
 </body>

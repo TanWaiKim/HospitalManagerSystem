@@ -78,6 +78,8 @@
 							style="width: 95px; line-height: 17px; display: inline-block" data-validate="required:请输入单位">
 							<option value="${drug.unit }">${drug.unit }</option>
 							<option value="盒">盒</option>
+							<option value="板">板</option>
+							<option value="袋">袋</option>
 							<option value="瓶">瓶</option>
 							<option value="支">支</option>
 							<option value="片">片</option>

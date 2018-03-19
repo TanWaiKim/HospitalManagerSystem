@@ -412,6 +412,8 @@ public class PatientServiceImpl implements PatientService {
 		}
 		return null;
 	}
+	
+	
 
 	// 查询健康档案
 	@Override
@@ -441,6 +443,18 @@ public class PatientServiceImpl implements PatientService {
 			System.out.println("patient="+patient.toString());
 			return patient;
 		}
+		return null;
+	}
+
+	
+	@Override
+	public List<TPatient> selectAllPatient() {
+		List<TPatient> patients = patientMapper.selectAllPatient();
+		
+		if (patients != null) {
+			return patients;
+		}
+		
 		return null;
 	}
 
