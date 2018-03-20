@@ -85,6 +85,10 @@ public class PatientController {
 			// 更新前后patient_id都不会变
 			TPatient patient1 = patientService.getPatientById(patient.getPatientId());
 			TPatient patient2 = patientService.getPatientByPhone(patient.getPhone());
+			
+			if(patient.getAge()<0 || patient.getAge()>150){
+				return HmsResult.build(505, "年龄必须为0-150之间的整数");
+			}
 			if (patient.getPhone() == null) {
 				return HmsResult.build(505, "手机号码不能为空！");
 			}

@@ -108,7 +108,7 @@
 							<option value="是">是</option>
 							<option value="否">否</option>
 						</select>
-					</div>
+					</div> 
 				</div>
 				
 				<div class="form-group">
