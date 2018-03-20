@@ -29,6 +29,8 @@ public interface TbPurchaseItemMapper {
     int updateByExample(@Param("record") TbPurchaseItem record, @Param("example") TbPurchaseItemExample example);
 
     int updateByPrimaryKeySelective(TbPurchaseItem record);
+    
+    int updateByDrugIdSelective(TbPurchaseItem record);
 
     int updateByPrimaryKey(TbPurchaseItem record);
     

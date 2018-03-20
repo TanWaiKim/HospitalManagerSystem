@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
-import cn.edu.dgut.pojo.TPrescription;
 
 public interface PatientService {
 	List<TPatient> getAllPatient(Page page);

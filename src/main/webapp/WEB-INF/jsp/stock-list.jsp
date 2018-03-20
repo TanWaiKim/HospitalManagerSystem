@@ -41,11 +41,16 @@
 						仓库
 						<select name="warehouseNo" class="input" 
 							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<option value="${warehouseCondition.warehouseNo }" selected="selected">${warehouseCondition.warehouseName }</option>
+							<c:if test="${warehouseCondition.warehouseNo != null}">
+								<option value="${warehouseCondition.warehouseNo }" selected="selected">${warehouseCondition.warehouseName }</option>
+							</c:if>
+							
 							<option value="">未选择</option>
 							<c:forEach
 							items="${warehouseList}" var="warehouse" >
-							<option value="${warehouse.warehouseNo }">${warehouse.warehouseName }</option>
+							<c:if test="${warehouseCondition.warehouseNo != warehouse.warehouseNo}">
+								<option value="${warehouse.warehouseNo }">${warehouse.warehouseName }</option>
+							</c:if>
 							</c:forEach>
 						</select>
 					</li>

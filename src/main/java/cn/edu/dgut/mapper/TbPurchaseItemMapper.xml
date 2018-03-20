@@ -345,6 +345,21 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 调整价格 -->
+  <update id="updateByDrugIdSelective" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
+    update tb_purchase_item
+    <set >
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="updateTime != null" >
+        update_time = now(),
+      </if>
+    </set>
+    where drug_id = #{drugId,jdbcType=INTEGER}
+  </update>
+  
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
     update tb_purchase_item
     set purchase_no = #{purchaseNo,jdbcType=VARCHAR},

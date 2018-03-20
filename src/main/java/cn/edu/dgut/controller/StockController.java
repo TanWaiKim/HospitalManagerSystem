@@ -186,7 +186,18 @@ public class StockController {
 			page.setPageNumber(page.getPageNumber()+2);
 			page.setCurrentPage(currentPage);
 			
-			model.addAttribute("stockList", stockService.getAllListStock(page));
+			List<TbStock> stockList = stockService.getAllListStock(page);
+			
+			for(TbStock stock:stockList) {
+				TbPurchaseItem purchaseItem = new TbPurchaseItem();
+				purchaseItem.setBatchNo(stock.getBatchNo());
+				purchaseItem.setDrugId(stock.getDrugId());
+				purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+				
+				stock.setPurchaseItem(purchaseItem);
+			}
+			
+			model.addAttribute("stockList", stockList);
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -220,6 +231,14 @@ public class StockController {
 			
 			List<TbStock> stockList = stockService.pageByListCondition(drugName,drugNo,page);
 			
+			for(TbStock stock:stockList) {
+				TbPurchaseItem purchaseItem = new TbPurchaseItem();
+				purchaseItem.setBatchNo(stock.getBatchNo());
+				purchaseItem.setDrugId(stock.getDrugId());
+				purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+				
+				stock.setPurchaseItem(purchaseItem);
+			}
 			
 			model.addAttribute("stockList", stockList);
 			model.addAttribute("page", page);
@@ -274,7 +293,6 @@ public class StockController {
 			}
 			
 			List<TbStock> stockList = stockService.pageByQuantityWaring(page);
-			
 			
 			model.addAttribute("stockList", stockList);
 			model.addAttribute("page", page);
@@ -340,7 +358,7 @@ public class StockController {
 	
 	
 	/**
-	 * 根据id查询库存信息，返回修改页面
+	 * 根据id查询库存信息，返回设置库存上下限页面
 	 * @param id
 	 * @param model
 	 * @return
@@ -356,13 +374,14 @@ public class StockController {
 		}
 		
 		TbStock stock = stockList.get(0);
+		
 		stock.setStockQuantity(totalQuantity);
 		model.addAttribute("stock", stock);
 		return "stock-update";
 	}
 	
 	/**
-	 * 修改库存信息
+	 * 修改库存上下限信息
 	 * @param stock
 	 * @param model
 	 * @return
@@ -380,5 +399,34 @@ public class StockController {
 			return HmsResult.build(500, "数据库异常，修改库存信息失败！");
 		}
 		return HmsResult.build(500, "修改库存信息失败！");
+	}
+	
+	/**
+	 * 根据id查询库存信息，返回调整价格页面
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/findByDrugId1")
+	public String getStockByDrugId1(@RequestParam(value = "drugId") Integer drugId, Model model) {
+		List<TbStock> stockList = stockService.getStockByDrugId(drugId);
+		
+		Integer totalQuantity = 0;
+		
+		for(TbStock stock:stockList) {
+			totalQuantity += stock.getStockQuantity();
+		}
+		
+		TbStock stock = stockList.get(0);
+		
+		TbPurchaseItem purchaseItem = new TbPurchaseItem();
+		purchaseItem.setBatchNo(stock.getBatchNo());
+		purchaseItem.setDrugId(stock.getDrugId());
+		purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+		
+		stock.setPurchaseItem(purchaseItem);
+		stock.setStockQuantity(totalQuantity);
+		model.addAttribute("stock", stock);
+		return "price-reset";
 	}	
 }

@@ -182,7 +182,7 @@
 		</ul>
 		
 		<h2>
-			<span class="icon-database"></span>库存管理
+			<span class="icon-home"></span>库存管理
 		</h2>
 		
 		<ul style="display: none">
@@ -193,7 +193,7 @@
 			</li>
 			<li>
 				<a href="stock/limtList" target="right">
-					<span class="icon-caret-right"></span>限制库存
+					<span class="icon-caret-right"></span>限制库存调整价格
 				</a>
 			</li>
 			<li>
@@ -221,7 +221,7 @@
 					<li>
 						<a href="${pageContext.request.contextPath }/sales/skipToAdd" target="right">
 							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加销药单
+							<span class="icon-caret-right"></span>处方药品
 						</a>
 					</li>
 					<li>

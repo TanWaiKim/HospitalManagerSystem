@@ -300,4 +300,25 @@ public class PurchaseItemController {
 		
 	}
 	
+	/**
+	 * 调整价格
+	 * @param stock
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/updatePrice")
+	@ResponseBody()
+	public HmsResult updatePrice(TbPurchaseItem purchaseItem, Model model) {
+		
+		try {
+			if (purchaseItemService.updateByDrugIdSelective(purchaseItem) > 0) {
+				return HmsResult.ok();
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			return HmsResult.build(500, "数据库异常，修改库存信息失败！");
+		}
+		return HmsResult.build(500, "修改库存信息失败！");
+	}	
+	
 }
