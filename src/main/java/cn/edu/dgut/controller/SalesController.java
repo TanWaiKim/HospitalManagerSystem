@@ -95,6 +95,7 @@ public class SalesController {
 
 		} catch (Exception e) {
 			e.getStackTrace();
+			
 			return HmsResult.build(500, "数据库异常，添加医药信息失败！");
 		}
 	}
@@ -208,7 +209,7 @@ public class SalesController {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
-			System.out.println(ExceptionUtil.getStackTrace(e));
+			System.out.println("异常信息："+ExceptionUtil.getStackTrace(e));
 			return HmsResult.build(500, "删除销药单失败！");
 		}
 		return HmsResult.build(500, "删除销药单失败！");
