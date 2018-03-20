@@ -31,7 +31,7 @@
 			value="${page.currentPage }" />
 		<div class="panel admin-panel">
 			<div class="panel-head">
-				<strong class="icon-reorder">库存上下限列表</strong> 
+				<strong class="icon-reorder">库存调整信息列表</strong> 
 			</div>
 			<div class="padding border-bottom">
 
@@ -71,10 +71,11 @@
 						<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
 						<th width="300" >医药名称</th>
 						<th width="200" >批准文号</th>
+						<th width="200" >销药单价</th>
 						<th width="200">当前库存数量</th>
 						<th width="200">库存下限</th>
 						<th width="200">库存上限</th>
-					    <th width="300" >操作</th>
+					    <th width="400" >操作</th>
 					</tr>
 					<c:forEach items="${stockList}" var="stock"  varStatus="status">
 						<tr>
@@ -85,6 +86,7 @@
 							</td>
 							<td>${stock.drug.drugName }</td>
 							<td>${stock.drug.drugNo }</td>
+							<td>${stock.purchaseItem.salePrice }</td>
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
 							<td>${stock.maxQuantity }</td>
@@ -95,11 +97,16 @@
 										<span class="icon-edit">设置上下限</span> 
 									</a> 
 								</div>
+								<div class="button-group">
+									<a class="button border-main" href="${pageContext.request.contextPath }/stock/findByDrugId1?drugId=${stock.drugId }">
+										<span class="icon-edit">调整价格</span> 
+									</a> 
+								</div>
 							</td>
 						</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="7">
+						<td colspan="8">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">

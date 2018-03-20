@@ -25,6 +25,11 @@
 <script src="${pageContext.request.contextPath }/js/My97DatePicker/WdatePicker.js"></script> 
 </head>
 <body>
+	<%   
+         java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd"); 
+         java.util.Date currentTime = new java.util.Date();//得到当前系统时间 
+         String str_date = formatter.format(currentTime); //将日期时间格式化 
+ 	%> 
 	<form method="post"
 		action="${pageContext.request.contextPath }/statistics/priceChangeByCondition"
 		id="listform">
@@ -46,6 +51,12 @@
 					</li>
 					<li>
 						结束日期
+						<c:if test="${endTime == null}">
+							<c:set var='endTime' value="<%=str_date%>" scope="page"></c:set>
+							<span>
+								<%=str_date%>
+							</span>
+						</c:if>
 						<input type="text" class="Wdate" value="${endTime }" name="endTime"  
 								 placeholder="请输入结束时间"
 								 onClick="WdatePicker({lang:'zh-cn'})" />  

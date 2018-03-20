@@ -125,7 +125,7 @@
 						<td><div class="button-group">
 								<a class="button border-main"
 									href="${pageContext.request.contextPath }/purchaseItem/updateById?id=${purchaseItem.id }&&purchaseNo=${purchase.purchaseNo}">
-									<spa class="icon-edit"></span> 修改
+									<span class="icon-edit"></span> 修改
 								</a> 
 								<a class="button border-red"
 									href="javascript:putInStock(${purchaseItem.id })">

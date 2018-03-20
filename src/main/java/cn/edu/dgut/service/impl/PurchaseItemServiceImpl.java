@@ -117,6 +117,17 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
 		int count = purchaseItemMapper.updateByPrimaryKeySelective(purchaseItem);
 		return count;
 	}
+	
+	/**
+	 * 调整价格
+	 * @param purchaseItem
+	 * @return
+	 */
+	@Override
+	public int updateByDrugIdSelective(TbPurchaseItem purchaseItem) {
+		int count = purchaseItemMapper.updateByDrugIdSelective(purchaseItem);
+		return count;
+	}	
 
 	/**
 	 * 删除单条采药详细单

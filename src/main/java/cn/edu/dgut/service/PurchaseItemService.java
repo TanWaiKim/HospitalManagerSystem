@@ -18,6 +18,7 @@ public interface PurchaseItemService {
 	List<TbPurchaseItem> getPurchaseItemByPurchaseNo(String purchaseNo);
 	int addPurchaseItemByTbPurchaseItem(TbPurchaseItem purchaseItem);
 	int updatePurchaseItemByTbPurchaseItem(TbPurchaseItem purchaseItem);
+	int updateByDrugIdSelective(TbPurchaseItem purchaseItem);
 	int deletePurchaseItemById(Integer id);
 	int deletePurchaseItemByIds(String[] ids);
 	int deletePurchaseItemByPurchase(String purchaseNo);
