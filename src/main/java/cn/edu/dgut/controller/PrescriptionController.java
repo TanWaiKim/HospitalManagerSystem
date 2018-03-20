@@ -142,6 +142,7 @@ public class PrescriptionController {
 			DrugData drugData2 = drugDataList.get(i);
 			String dN = drugData2.getDrugNum();
 			drugData2.setDrugNum(dN.substring(0, dN.length()-1));
+			drugData2.setUnit(dN.substring(dN.length()-1));
 		}
 		model.addAttribute("prescription", prescription);
 		model.addAttribute("drugDataList", drugDataList);

@@ -83,6 +83,16 @@
 					class="icon-caret-right"></span>查看特殊病人信息</a></li>
 		</ul>
 		
+		<h2>
+			<span class="icon-wrench"></span>病人就诊统计
+		</h2>
+		
+		<ul style="display: none">
+			<li><a href="info.html" target="right"><span
+					class="icon-caret-right"></span>人群类型统计</a></li>
+			<li><a href="info.html" target="right"><span
+					class="icon-caret-right"></span>人群类型统计</a></li>
+		</ul>
 		
 		<h2>
 			<span class="icon-wrench"></span>系统管理
@@ -92,6 +102,7 @@
 			<li><a href="info.html" target="right"><span
 					class="icon-caret-right"></span>系统用户管理</a></li>
 		</ul>
+		
 		<h2>
 			<span class="icon-rss-square"></span>系统公告
 		</h2>

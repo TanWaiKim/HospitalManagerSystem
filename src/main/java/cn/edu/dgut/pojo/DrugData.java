@@ -3,6 +3,7 @@ package cn.edu.dgut.pojo;
 public class DrugData {
 	private String drugName;
 	private String drugNum;
+	private String unit;
 	private String drugUsage;
 	public String getDrugName() {
 		return drugName;
@@ -15,6 +16,13 @@ public class DrugData {
 	}
 	public void setDrugNum(String drugNum) {
 		this.drugNum = drugNum;
+	}
+	
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 	public String getDrugUsage() {
 		return drugUsage;

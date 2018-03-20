@@ -64,14 +64,21 @@
 									value="${drugData.drugNum }"> <select name="unit"
 									class="input" id="unit"
 									style="width: 38px; line-height: 17px; display: inline-block">
-									<option value="瓶">瓶</option>
-									<option value="盒">盒</option>
-									<option value="板">板</option>
+									<option value="瓶"
+									<c:if test="${drugData.unit == '瓶'}">selected="selected"</c:if>>瓶</option>
+									<option value="盒"
+									<c:if test="${drugData.unit == '盒'}">selected="selected"</c:if>>盒</option>
+									<option value="板"
+									<c:if test="${drugData.unit == '板'}">selected="selected"</c:if>>板</option>
 
-									<option value="袋">袋</option>
-									<option value="支">支</option>
-									<option value="片">片</option>
-									<option value="粒">粒</option>
+									<option value="袋"
+									<c:if test="${drugData.unit == '袋'}">selected="selected"</c:if>>袋</option>
+									<option value="支"
+									<c:if test="${drugData.unit == '支'}">selected="selected"</c:if>>支</option>
+									<option value="片"
+									<c:if test="${drugData.unit == '片'}">selected="selected"</c:if>>片</option>
+									<option value="粒"
+									<c:if test="${drugData.unit == '粒'}">selected="selected"</c:if>>粒</option>
 
 								</select>
 							</div>
