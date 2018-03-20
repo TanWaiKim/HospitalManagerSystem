@@ -171,7 +171,6 @@ public class PatientController {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
-			System.out.println("测试");
 			System.out.println(ExceptionUtil.getStackTrace(e));
 			return HmsResult.build(500, "删除病人记录失败！");
 		}
