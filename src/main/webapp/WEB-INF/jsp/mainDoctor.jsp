@@ -23,10 +23,10 @@
 		</div>
 		<div class="head-l">
 			<a class="button button-little bg-green" href="" target="_blank"><span
-				class="icon-home"></span> 登录用户：${currentUser.username }</a> &nbsp;&nbsp;<a href="##"
+				class="icon-home"></span> 登录用户：${doctorInfo.name }</a> &nbsp;&nbsp;<a href="##"
 				class="button button-little bg-blue"><span class="icon-user"></span>
-				用户角色:医生</a> &nbsp;&nbsp;<a class="button button-little bg-red"
-				href="login.html"><span class="icon-power-off"></span> 退出登录</a>
+				用户角色:${postOffice }</a> &nbsp;&nbsp;<a class="button button-little bg-red"
+				href="${pageContext.request.contextPath }/"><span class="icon-power-off"></span> 退出登录</a>
 		</div>
 	</div>
 	<div class="leftnav " style="overflow:scroll;">
@@ -45,16 +45,7 @@
 		</ul>
 		
 		
-		<h2>
-			<span class="icon-user"></span>药品管理员管理
-		</h2>
 		
-		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/patient/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加药品管理员信息</a></li>
-			<li><a href="patient/list" target="right"><span
-					class="icon-caret-right"></span>管理药品管理员信息</a></li>
-		</ul>
 		<h2>
 			<span class="icon-stethoscope"></span>诊断信息管理
 		</h2>
@@ -92,216 +83,7 @@
 					class="icon-caret-right"></span>查看特殊病人信息</a></li>
 		</ul>
 		
-		<h2>
-			<span class="icon-user"></span>基础信息管理
-		</h2>
 		
-		<ul style="display: none">
-			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>供药商管理
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/provider/skipToAdd" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加供药商信息
-						</a>
-					</li>
-					<li>
-						<a href="provider/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理供药商信息
-						</a>
-					</li>
-				</ul>
-			</li>
-					
-					
-			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>仓库管理
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/warehouse/skipToAdd" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加仓库信息
-						</a>
-					</li>
-					<li>
-						<a href="warehouse/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理仓库信息
-						</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-		
-		<h2>
-			<span class="icon-medkit"></span>医药管理
-		</h2>
-		
-		<ul style="display: none">
-			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>医药种类管理
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/drugtype/skipToAdd" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加医药种类
-						</a>
-					</li>
-					<li>
-						<a href="drugtype/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理医药种类
-						</a>
-					</li>
-				</ul>
-			</li>
-					
-					
-			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>医药信息管理
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/drug/skipToAdd" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加医药信息
-						</a>
-					</li>
-					<li>
-						<a href="drug/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理医药信息
-						</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-		
-		<h2>
-			<span class="icon-hospital-o"></span>采药管理
-		</h2>
-		
-		<ul style="display: none">
-			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>采药单管理
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/purchase/skipToAdd" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加采药单
-						</a>
-					</li>
-					<li>
-						<a href="purchase/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理采药单
-						</a>
-					</li>
-				</ul>
-			</li>
-					
-					
-			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>退药单管理
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/drug/skipToAdd" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加退药单
-						</a>
-					</li>
-					<li>
-						<a href="drug/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理退药单
-						</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-		
-		<h2>
-			<span class="icon-hospital-o"></span>库存管理
-		</h2>
-		
-		<ul style="display: none">
-			<li>
-				<a href="stock/list" target="right">
-					<span class="icon-caret-right"></span>查看库存
-				</a>
-			</li>
-			<li>
-				<a href="stock/limtList" target="right">
-					<span class="icon-caret-right"></span>限制库存
-				</a>
-			</li>
-			<li>
-				<a href="stock/quantityWaring" target="right">
-					<span class="icon-caret-right"></span>库存上下限预警
-				</a>
-			</li>
-			<li>
-				<a href="stock/validWaring" target="right">
-					<span class="icon-caret-right"></span>医药有效期预警
-				</a>
-			</li>
-		</ul>
-		<h2>
-			<span class="icon-hospital-o"></span>销药管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>销药单管理</a></li>
-					<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>退药单管理</a></li>
-					
-		</ul>
-		<h2>
-			<span class="icon-hospital-o"></span>统计分析
-		</h2>
-		
-		<ul style="display: none">
-			<li>
-				<a href="statistics/category" target="right">
-					<span class="icon-caret-right"></span>种类统计
-				</a>
-			</li>
-			<li>
-				<a href="statistics/purchase" target="right">
-					<span class="icon-caret-right"></span>采药分析
-				</a>
-			</li>
-			<li>
-				<a href="statistics/priceChange" target="right">
-					<span class="icon-caret-right"></span>价格异动
-				</a>
-			</li>
-			<li>
-				<a href="info.html" target="right">
-					<span class="icon-caret-right"></span>销药分析
-				</a>
-			</li>					
-		</ul>
 		<h2>
 			<span class="icon-wrench"></span>系统管理
 		</h2>

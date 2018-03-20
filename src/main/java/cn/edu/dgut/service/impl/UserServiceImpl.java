@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
 					admin.setUsername(doctorList.get(0).getName());
 					session.setAttribute(Const.CURRENT_USER, admin);
 					request.getSession().setAttribute("doctorInfo", doctorList.get(0));
+					request.getSession().setAttribute("postOffice", postOffice);
 					return HmsResult.build(200, "医生登录成功");
 				}else{
 					//密码不相等

@@ -27,7 +27,6 @@
 			<form method="post" id="patientUpdateForm" class="form-x"
 				onsubmit="return false;">
 				<input type="hidden" id="id" name="id" value="${patient.id }" />
-				<input type="hidden" id="created" name="created" value="${patient.created }" />
 				
 				<div class="form-group">
 					<div class="label">

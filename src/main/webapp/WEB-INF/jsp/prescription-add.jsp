@@ -26,20 +26,32 @@
 		<div class="body-content">
 			<form method="post" class="form-x prescriptionAddForm"
 				id="prescriptionAddForm" onsubmit="return false;">
-
 				<div class="form-group">
 					<div class="label">
 						<label>病人编号：</label>
 					</div>
-					<div class="field">
-						<select name="patientId" class="input"
-							style="width: 155px; line-height: 17px; display: inline-block">
-							<option value="">选择</option>
-							<c:forEach items="${patientIds}" var="patientId">
-								<option value="${patientId }">${patientId }</option>
-							</c:forEach>
-						</select>
-					</div>
+					<c:choose>
+						<c:when test="${pId != null}">
+							<div class="field">
+								<select name="patientId" class="input"
+									style="width: 155px; line-height: 17px; display: inline-block">
+									<option value="${pId }">${pId }</option>
+
+								</select>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="field">
+								<select name="patientId" class="input"
+									style="width: 155px; line-height: 17px; display: inline-block">
+									<option value="">选择</option>
+									<c:forEach items="${patientIds}" var="patientId">
+										<option value="${patientId }">${patientId }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</div>
 
 				<div class="form-group" name="drug-group-div">
@@ -57,7 +69,19 @@
 						<div name="drug-num-div"
 							style="margin-left: 100px; margin-top: 10px;">
 							数量：<input type="text" name="drug-num"
-								style="width: 400px; height: 30px;">
+								style="width: 400px; height: 30px;"> <select name="unit"
+								class="input" id="unit"
+								style="width: 38px; line-height: 17px; display: inline-block">
+								<option value="瓶">瓶</option>
+								<option value="盒">盒</option>
+								<option value="板">板</option>
+
+								<option value="袋">袋</option>
+								<option value="支">支</option>
+								<option value="片">片</option>
+								<option value="粒">粒</option>
+
+							</select>
 						</div>
 						<div name="drug-usage-div"
 							style="margin-left: 100px; margin-top: 10px;">
@@ -66,7 +90,8 @@
 						</div>
 						<a href="javascript:void()"
 							class="button border-red icon-trash-o delParam"
-							style="padding: 5px 15px; margin-left: 600px;visibility:hidden;"> 删除药品数据</a>
+							style="padding: 5px 15px; margin-left: 600px; visibility: hidden;">
+							删除药品数据</a>
 					</ul>
 				</div>
 
@@ -84,48 +109,53 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		$(function() {		
+		$(function() {
 			$(".addGroup").click(function() {
 				var temple = $(".prescriptionAddForm ul").eq(0).clone();
 				temple.find("input").val("");
 				$(this).parent().append(temple);
-				temple.find(".delParam").css("visibility","visible");
+				temple.find(".delParam").css("visibility", "visible");
 				temple.find(".delParam").click(function() {
 					$(this).parent().remove();
 				});
 			});
-			
+
 		});
 
-		
 		function addForm() {
-			var drugnames =document.getElementsByName("drug-name");
-			var drugnums =document.getElementsByName("drug-num");
-			var drugusages =document.getElementsByName("drug-usage");
-		
+			var drugnames = document.getElementsByName("drug-name");
+			var drugnums = document.getElementsByName("drug-num");
+			var units = document.getElementsByName("unit");
+			var drugusages = document.getElementsByName("drug-usage");
+
 			var params = [];
-			for (var i = 0; i < drugnames.length; i++){
-				for(var j = 0;j< drugnums.length; j++){
-					for(var k = 0;k< drugusages.length; k++){
-						if(i == j)
-						{
-							if(i == k){
+			for (var i = 0; i < drugnames.length; i++) {
+				for (var j = 0; j < drugnums.length; j++) {
+					for (var k = 0; k < drugusages.length; k++) {
+						if (i == j) {
+							if (i == k) {
 								params.push({
-									"drugName":drugnames[i].value,
-									"drugNum":drugnums[i].value,
-									"drugUsage":drugusages[i].value
+									"drugName" : drugnames[i].value,
+									"drugNum" : drugnums[i].value+units[i].value,
+									"drugUsage" : drugusages[i].value
 								});
 							}
-							
+
 						}
-						
+
 					}
 				}
 			}
-			
+
 			//ajax的post方式提交表单
-			$.post("${pageContext.request.contextPath }/prescription/add/"+$("#prescriptionAddForm [name=patientId]").val(),
-							{"paramData":JSON.stringify(params)},
+			$
+					.post(
+							"${pageContext.request.contextPath }/prescription/add/"
+									+ $("#prescriptionAddForm [name=patientId]")
+											.val(),
+							{
+								"paramData" : JSON.stringify(params)
+							},
 							function(data) {
 								if (data.status == 200) {
 									alert("添加成功!");

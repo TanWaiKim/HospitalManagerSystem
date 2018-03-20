@@ -101,7 +101,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 		map.put("personType", "正常");
 		// 根据条件查询总数
 		int totalNum = diagnosisMapper.countByPersonType(map);
-		
+		System.out.println("totalNum="+totalNum);
 		page.setTotalNumber(totalNum);
 		// 组织分页查询总数
 		map.put("pageIndex", page.getDbIndex());

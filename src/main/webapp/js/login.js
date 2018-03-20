@@ -17,7 +17,7 @@ var LOGIN = {
 			doLogin:function() {
 				$.post("login", $("#loginAllForm").serialize(),function(data){
 					if (data.status == 200) {
-						if(data.msg == "医生登录成功"){						
+						if(data.msg == "医生登录成功"){	
 							location.href = "mainDoctor";
 						}
 						if(data.msg == "护士登录成功"){

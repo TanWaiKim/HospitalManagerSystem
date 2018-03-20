@@ -5,12 +5,12 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="prescription_id" property="prescriptionId" jdbcType="VARCHAR" />
     <result column="drug_data" property="drugData" jdbcType="VARCHAR" />
-    <result column="created" property="created" jdbcType="TIMESTAMP" />
-    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
     <result column="patient_id" property="patientId" jdbcType="VARCHAR" />
     <result column="doctor_id" property="doctorId" jdbcType="VARCHAR" />
-      <!-- 嵌套结果 -->
-	<association property="patient" column="patient_id" resultMap="cn.edu.dgut.mapper.TPatientMapper.BaseResultMap" />
+    <result column="is_deal" property="isDeal" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+    <association property="patient" column="patient_id" resultMap="cn.edu.dgut.mapper.TPatientMapper.BaseResultMap" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, prescription_id, drug_data, created, updated, patient_id, doctor_id
+    id, prescription_id, drug_data, patient_id, doctor_id, is_deal, created, updated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TPrescriptionExample" >
     select
@@ -105,11 +105,11 @@
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TPrescription" >
     insert into t_prescription (id, prescription_id, drug_data, 
-      created, updated, patient_id, 
-      doctor_id)
+      patient_id, doctor_id, is_deal, 
+      created, updated)
     values (#{id,jdbcType=INTEGER}, #{prescriptionId,jdbcType=VARCHAR}, #{drugData,jdbcType=VARCHAR}, 
-      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}, #{patientId,jdbcType=VARCHAR}, 
-      #{doctorId,jdbcType=VARCHAR})
+      #{patientId,jdbcType=VARCHAR}, #{doctorId,jdbcType=VARCHAR}, #{isDeal,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TPrescription" >
     insert into t_prescription
@@ -123,17 +123,20 @@
       <if test="drugData != null" >
         drug_data,
       </if>
-      <if test="created != null" >
-        created,
-      </if>
-      <if test="updated != null" >
-        updated,
-      </if>
       <if test="patientId != null" >
         patient_id,
       </if>
       <if test="doctorId != null" >
         doctor_id,
+      </if>
+      <if test="isDeal != null" >
+        is_deal,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="updated != null" >
+        updated,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -146,17 +149,20 @@
       <if test="drugData != null" >
         #{drugData,jdbcType=VARCHAR},
       </if>
-      <if test="created != null" >
-        #{created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updated != null" >
-        #{updated,jdbcType=TIMESTAMP},
-      </if>
       <if test="patientId != null" >
         #{patientId,jdbcType=VARCHAR},
       </if>
       <if test="doctorId != null" >
         #{doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeal != null" >
+        #{isDeal,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        #{updated,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -178,17 +184,20 @@
       <if test="record.drugData != null" >
         drug_data = #{record.drugData,jdbcType=VARCHAR},
       </if>
-      <if test="record.created != null" >
-        created = #{record.created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.updated != null" >
-        updated = #{record.updated,jdbcType=TIMESTAMP},
-      </if>
       <if test="record.patientId != null" >
         patient_id = #{record.patientId,jdbcType=VARCHAR},
       </if>
       <if test="record.doctorId != null" >
         doctor_id = #{record.doctorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDeal != null" >
+        is_deal = #{record.isDeal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null" >
+        updated = #{record.updated,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -200,10 +209,11 @@
     set id = #{record.id,jdbcType=INTEGER},
       prescription_id = #{record.prescriptionId,jdbcType=VARCHAR},
       drug_data = #{record.drugData,jdbcType=VARCHAR},
-      created = #{record.created,jdbcType=TIMESTAMP},
-      updated = #{record.updated,jdbcType=TIMESTAMP},
       patient_id = #{record.patientId,jdbcType=VARCHAR},
-      doctor_id = #{record.doctorId,jdbcType=VARCHAR}
+      doctor_id = #{record.doctorId,jdbcType=VARCHAR},
+      is_deal = #{record.isDeal,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -217,26 +227,28 @@
       <if test="drugData != null" >
         drug_data = #{drugData,jdbcType=VARCHAR},
       </if>
-      <if test="created != null" >
-        created = #{created,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updated != null" >
-        updated = #{updated,jdbcType=TIMESTAMP},
-      </if>
       <if test="patientId != null" >
         patient_id = #{patientId,jdbcType=VARCHAR},
       </if>
       <if test="doctorId != null" >
         doctor_id = #{doctorId,jdbcType=VARCHAR},
       </if>
+      <if test="isDeal != null" >
+        is_deal = #{isDeal,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TPrescription" >
+ <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TPrescription" >
     update t_prescription
     set prescription_id = #{prescriptionId,jdbcType=VARCHAR},
       drug_data = #{drugData,jdbcType=VARCHAR},
-      created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP},
       patient_id = #{patientId,jdbcType=VARCHAR},
       doctor_id = #{doctorId,jdbcType=VARCHAR}
@@ -284,4 +296,6 @@
 			#{id}
 		</foreach>
     </delete>
+  
+  
 </mapper>

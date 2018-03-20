@@ -253,7 +253,6 @@
       patient_id = #{patientId,jdbcType=VARCHAR},
       disease = #{disease,jdbcType=VARCHAR},
       body_status = #{bodyStatus,jdbcType=VARCHAR},
-      created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where diagnosis_id = #{diagnosisId,jdbcType=BIGINT}
   </update>

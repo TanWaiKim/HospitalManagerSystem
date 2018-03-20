@@ -26,52 +26,53 @@
 		<div class="body-content">
 			<form method="post" class="form-x" id="diagnosisAddForm"
 				onsubmit="return false;">
-		
+				
 				<div class="form-group">
 					<div class="label">
 						<label>病人编号：</label>
 					</div>
-					<div class="field">
-						<select name="patient.patientId" class="input" 
-							style="width: 155px; line-height: 17px; display: inline-block">
-							<option value="">选择</option>
-							<c:forEach
-							items="${patientIds}" var="patientId" >
-							<option value="${patientId }">${patientId }</option>
-							</c:forEach>
-						</select>
-					</div>
+					
+							<div class="field">
+								<select name="patient.patientId" id="patientId" class="input"
+									style="width: 155px; line-height: 17px; display: inline-block">
+									<option value="">选择</option>
+									<c:forEach items="${patientIds}" var="patientId">
+										<option value="${patientId }">${patientId }</option>
+									</c:forEach>
+								</select>
+							</div>
+						
 				</div>
-				
+
 				<div class="form-group">
 					<div class="label">
 						<label>病人症状：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="symptom" data-validate="required:请输入病人症状" />
+						
+						<textarea rows="5" class="input" name="symptom" style="height:200px; data-validate="required:请输入病人症状""></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<div class="label">
 						<label>诊断疾病：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="disease" data-validate="required:请输入诊断疾病" />
+						<input type="text" class="input w50" value="" name="disease"
+							data-validate="required:请输入诊断疾病" />
 						<div class="tips"></div>
 					</div>
 				</div>
-		
+
 				<div class="form-group">
 					<div class="label">
 						<label>病人身体情况：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="bodyStatus" data-validate="required:请输入病人身体情况" />
+						<input type="text" class="input w50" value="" name="bodyStatus"
+							data-validate="required:请输入病人身体情况" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -91,12 +92,15 @@
 		function addForm() {
 			//ajax的post方式提交表单
 			//$("#diagnosisAddForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/diagnosis/add",
+			$
+					.post(
+							"${pageContext.request.contextPath }/diagnosis/add",
 							$("#diagnosisAddForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
 									alert("添加成功!");
-									location.href = "${pageContext.request.contextPath }/diagnosis/list";
+									var pId = document.getElementById('patientId').value;
+									location.href = "${pageContext.request.contextPath }/prescription/skipToAdd1/"+pId;
 								} else if (data.status == 500) {
 									alert("添加失败!");
 								} else if (data.status == 505) {

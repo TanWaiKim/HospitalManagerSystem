@@ -29,7 +29,6 @@
 				<input type="hidden" id="diagnosisId" name="diagnosisId" value="${diagnosis.diagnosisId }" />
 				<input type="hidden" id="patientId" name="patientId" value="${diagnosis.patientId }" />
 				<input type="hidden" id="doctorId" name="doctorId" value="${diagnosis.doctorId }" />
-				<input type="hidden" id="created" name="created" value="${diagnosis.created }" />
 				<div class="form-group">
 					<div class="label">
 						<label>病人名字：</label>
@@ -46,8 +45,8 @@
 						<label>病人症状：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${diagnosis.symptom }"
-							name="symptom" data-validate="required:请输入病人症状" />
+						
+						<textarea rows="5" class="input" name="content" style="height:200px;" >${diagnosis.symptom }</textarea>
 						<div class="tips"></div>
 					</div>
 				</div>

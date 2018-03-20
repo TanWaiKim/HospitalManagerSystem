@@ -16,6 +16,8 @@ public class TPrescription {
     private String patientId;
 
     private String doctorId;
+    
+    private String isDeal;
 
     private TPatient patient;
     
@@ -83,6 +85,14 @@ public class TPrescription {
         this.doctorId = doctorId == null ? null : doctorId.trim();
     }
 
+    public String getIsDeal() {
+        return isDeal;
+    }
+
+    public void setIsDeal(String isDeal) {
+        this.isDeal = isDeal == null ? null : isDeal.trim();
+    }
+    
 	@Override
 	public String toString() {
 		return "TPrescription [id=" + id + ", prescriptionId=" + prescriptionId + ", drugData=" + drugData

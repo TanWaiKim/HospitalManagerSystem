@@ -40,7 +40,19 @@ public class PrescriptionController {
 		try {
 			Page page = new Page();
 			page.setCurrentPage(currentPage);
-			model.addAttribute("prescriptionList", prescriptionService.getAllPrescription(page));
+			List<TPrescription> prescriptionList = prescriptionService.getAllPrescription(page);
+			//用于存放自定义处方数据返回到jsp中
+			if(prescriptionList.size()>0){
+				for (TPrescription prescription : prescriptionList) {
+					List<DrugData> drugDataList = JsonUtils.jsonToList(prescription.getDrugData(), DrugData.class);
+					StringBuilder sb = new StringBuilder();
+					for (DrugData drugData : drugDataList) {
+						sb.append("'"+drugData.getDrugName()+"'×"+drugData.getDrugNum()+",'"+drugData.getDrugUsage()+"';");
+					}
+					prescription.setDrugData(new String(sb));
+				}
+			}
+			model.addAttribute("prescriptionList", prescriptionList);
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,6 +76,17 @@ public class PrescriptionController {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
 			List<TPrescription> prescriptionList = prescriptionService.pageByCondition(prescriptionId,patientName, page);
+			//用于存放自定义处方数据返回到jsp中
+			if(prescriptionList.size()>0){
+				for (TPrescription prescription : prescriptionList) {
+					List<DrugData> drugDataList = JsonUtils.jsonToList(prescription.getDrugData(), DrugData.class);
+					StringBuilder sb = new StringBuilder();
+					for (DrugData drugData : drugDataList) {
+						sb.append("'"+drugData.getDrugName()+"'×"+drugData.getDrugNum()+",'"+drugData.getDrugUsage()+"';");
+					}
+					prescription.setDrugData(new String(sb));
+				}
+			}
 			model.addAttribute("prescriptionList", prescriptionList);
 			model.addAttribute("page", page);
 			model.addAttribute("prescriptionId", prescriptionId);
@@ -82,6 +105,12 @@ public class PrescriptionController {
 		model.addAttribute("patientIds", patientIds);
 		return "prescription-add";
 	}
+	//添加诊断信息成功后直接跳转到处方信息增加界面
+	@RequestMapping("/skipToAdd1/{patientId}")
+	public String skipToAdd1(@PathVariable("patientId")String patientId,Model model) {
+		model.addAttribute("pId", patientId);
+		return "prescription-add";
+	}
 	
 	@RequestMapping("/add/{patientId}")
 	@ResponseBody
@@ -92,6 +121,7 @@ public class PrescriptionController {
 			prescription.setPatientId(patientId);
 			prescription.setDoctorId(doctor.getDoctorId());
 			prescription.setDrugData(paramData);
+			prescription.setIsDeal("未处理");
 			if (prescriptionService.addPrescription(prescription) > 0) {
 				return HmsResult.ok();
 			}
@@ -108,16 +138,21 @@ public class PrescriptionController {
 		TPrescription prescription = prescriptionService.getPrescriptionById(id);
 		String drugData = prescription.getDrugData();
 		List<DrugData> drugDataList = JsonUtils.jsonToList(drugData, DrugData.class);
+		for(int i =0; i < drugDataList.size(); i++){
+			DrugData drugData2 = drugDataList.get(i);
+			String dN = drugData2.getDrugNum();
+			drugData2.setDrugNum(dN.substring(0, dN.length()-1));
+		}
 		model.addAttribute("prescription", prescription);
 		model.addAttribute("drugDataList", drugDataList);
 		return "prescription-update";
 	}
 	
-	@RequestMapping("/update/{id}/{prescriptionId}/{patientId}/{doctorId}/{created}")
+	@RequestMapping("/update/{id}/{prescriptionId}/{patientId}/{doctorId}")
 	@ResponseBody
 	public HmsResult updatePrescription(@PathVariable("id")String id, 
 			@PathVariable("prescriptionId")String prescriptionId, @PathVariable("patientId")String patientId, 
-			@PathVariable("doctorId")String doctorId, @PathVariable("created")Date created, String paramData){
+			@PathVariable("doctorId")String doctorId, String paramData, Model model){
 		try {
 			TPrescription prescription = new TPrescription();
 			//TDoctor doctor = (TDoctor) request.getSession().getAttribute("doctorInfo");
@@ -127,11 +162,12 @@ public class PrescriptionController {
 			prescription.setPatientId(patientId);
 			prescription.setDoctorId(doctorId);
 			prescription.setDrugData(paramData);
-			prescription.setCreated(created);
+			
 			prescription.setUpdated(new Date());
 			
 			System.out.println("prescription="+prescription.toString());
 			if (prescriptionService.updatePrescription(prescription) > 0) {
+				model.addAttribute("pId", "");
 				return HmsResult.ok();
 			}
 

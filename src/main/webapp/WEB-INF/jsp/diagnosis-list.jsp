@@ -54,7 +54,7 @@
 				</ul>
 
 			</div>
-			<table class="table table-hover text-center">
+			<table class="table table-hover text-center table-bordered">
 				<tr>
 					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="120" >病人编号</th>
@@ -93,15 +93,15 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td style="text-align: left; padding: 19px 0; padding-left: 20px;"><input
+					<td style="text-align: left; padding: 19px 0; padding-left: 20px;border-style:none;"><input
 						type="checkbox" id="checkall" /> 全选</td>
-					<td colspan="5" style="text-align: left; padding-left: 20px;"><a
+					<td colspan="5" style="text-align: left; padding-left: 20px;border-style:none;"><a
 						href="javascript:deleteBatch()"
 						class="button border-red icon-trash-o" style="padding: 5px 15px;" >
 							删除</a></td>
 				</tr>
 				<tr>
-					<td colspan="8">
+					<td colspan="8" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

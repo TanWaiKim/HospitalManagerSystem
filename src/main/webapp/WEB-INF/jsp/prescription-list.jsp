@@ -53,13 +53,14 @@
 				</ul>
 
 			</div>
-			<table class="table table-hover text-center">
+			<table class="table table-hover text-center table-bordered">
 				<tr>
 					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="120" >处方编号</th>
 					<th width="120" >病人姓名</th>
 					<th width="400" >处方数据</th>
 					<th width="150" >处方医生编号</th>
+					<th width="150" >是否处理</th>
 					<th width="150" >创建时间</th>
 					<th width="150" >更新时间</th>
 					<th width="300">操作</th>
@@ -75,6 +76,7 @@
 						<td>${prescription.patient.name }</td>
 						<td>${prescription.drugData }</td>
 						<td>${prescription.doctorId }</td>
+						<td>${prescription.isDeal }</td>
 						<td><fmt:formatDate type="date" value="${prescription.created }"/></td>
 						<td><fmt:formatDate type="date" value="${prescription.updated }"/></td>
 						
@@ -88,15 +90,15 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td style="text-align: left; padding: 19px 0; padding-left: 20px; width:100px;"><input
+					<td style="text-align: left; padding: 19px 0; padding-left: 20px; width:100px;border-style:none;"><input
 						type="checkbox" id="checkall" /> 全选 </td>
-					<td colspan="4" style="text-align: left; padding-left: 30px; margin-left: 20px;"><a
+					<td colspan="4" style="text-align: left; padding-left: 30px; margin-left: 20px;border-style:none;"><a
 						href="javascript:deleteBatch()"
 						class="button border-red icon-trash-o" style="padding: 5px 15px;" >
 							删除</a></td>
 				</tr>
 				<tr>
-					<td colspan="8">
+					<td colspan="8" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

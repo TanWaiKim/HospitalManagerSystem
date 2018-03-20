@@ -49,7 +49,7 @@
 				</ul>
 
 			</div>
-			<table class="table table-hover text-center">
+			<table class="table table-hover text-center table-bordered">
 				<tr>
 					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="120" >病人编号</th>
@@ -62,8 +62,7 @@
 				 <c:forEach
 					items="${diagnosisList}" var="diagnosis" varStatus="status">
 					<tr>
-						<td style="text-align: left; padding-left: 20px;"><input
-							type="checkbox" name="id[]" value="${diagnosis.diagnosisId}" /><span>${(page.currentPage-1)*3+status.count}</span>
+						<td style="text-align: left; padding-left: 20px;"><span>${(page.currentPage-1)*3+status.count}</span>
 						</td>
 						
 						<td>${diagnosis.patient.patientId}</td>
@@ -82,7 +81,7 @@
 				</c:forEach>
 
 				<tr>
-					<td colspan="5">
+					<td colspan="5" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">
