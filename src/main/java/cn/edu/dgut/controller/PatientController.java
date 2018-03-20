@@ -83,6 +83,7 @@ public class PatientController {
 		try {
 			// 先通过patient_id获取更新之前的数据，为了与后面的phone对比
 			// 更新前后patient_id都不会变
+			// 测试
 			TPatient patient1 = patientService.getPatientById(patient.getPatientId());
 			TPatient patient2 = patientService.getPatientByPhone(patient.getPhone());
 			
