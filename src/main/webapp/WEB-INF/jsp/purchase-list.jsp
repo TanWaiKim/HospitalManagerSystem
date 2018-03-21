@@ -42,30 +42,26 @@
 							添加采药单</a></li>
 					<li>搜索：</li>
 					<li>
-						采药单编号
-						<input type="text" placeholder="请输入采药单编号" name="purchaseNo" value="${purchaseNo }" style= "width:120px"/>  
-					</li>
-					<li>
 						供药商
 						<select name="providerId" class="input" 
 							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<option value="${providerCondition.id }">${providerCondition.providerName }</option>
+							<c:if test="${providerCondition.id != null}">
+								<option value="${providerCondition.id }" selected="selected">${providerCondition.providerName }</option>
+							</c:if>
+							
+							<option value="">未选择</option>
+							
 							<c:forEach
 							items="${providerList}" var="provider" >
-							<option value="${provider.id }">${provider.providerName }</option>
+							<c:if test="${providerCondition.id != provider.id}">
+								<option value="${provider.id }">${provider.providerName }</option>
+							</c:if>
 							</c:forEach>
 						</select>
 					</li>
 					<li>
-						仓库
-						<select name="warehouseNo" class="input" 
-							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<option value="${warehouseCondition.warehouseNo }">${warehouseCondition.warehouseName }</option>
-							<c:forEach
-							items="${warehouseList}" var="warehouse" >
-							<option value="${warehouse.warehouseNo }">${warehouse.warehouseName }</option>
-							</c:forEach>
-						</select>
+						采药单编号
+						<input type="text" placeholder="请输入采药单编号" name="purchaseNo" value="${purchaseNo }" style= "width:120px"/>  
 					</li>
 
 					<li>
@@ -86,13 +82,12 @@
 					<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="200" >采药单编号</th>
 					<th width="200" >供药商名称</th>
-					<th width="110" >仓库名称</th>
 					<th width="100" >总数量</th>
 					<th width="100" >总价格</th>
-					<th width="90" >操作员</th>
-					<th width="100" >备注</th>
 					<th width="150" >创建时间</th>
 					<th width="150" >更新时间</th>
+					<th width="100" >备注</th>
+					<th width="90" >操作员</th>
 					<th width="300" >操作</th>
 				</tr>
 				<c:forEach items="${purchaseList}" var="purchase"  varStatus="status">
@@ -106,13 +101,12 @@
 
 						<td>${purchase.purchaseNo }</td>
 						<td>${purchase.provider.providerName }</td>
-						<td>${purchase.warehouse.warehouseName }</td>
 						<td>${purchase.totalQuantity }</td>
 						<td>${purchase.totalPrice }</td>
-						<td>${purchase.operator }</td>
-						<td>${purchase.remarks }</td>
 						<td><fmt:formatDate type="date" value="${purchase.createTime }"/></td>
 						<td><fmt:formatDate type="date" value="${purchase.updateTime }"/></td>
+						<td>${purchase.remarks }</td>
+						<td>${purchase.operator }</td>
 						
 						<td>
 							<div class="button-group">

@@ -1,6 +1,9 @@
 package cn.edu.dgut.common.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import cn.edu.dgut.pojo.DrugData;
 
 /**
  * @author TanWaiKim
@@ -37,6 +40,8 @@ public class SalesDto {
     private BigDecimal totalPrice;
     
     private BigDecimal oldTotalQuantity;
+    
+    List<DrugData> drugDataList;
 
 	public String getPatientId() {
 		return patientId;
@@ -156,6 +161,14 @@ public class SalesDto {
 
 	public void setPatientName(String patientName) {
 		this.patientName = patientName;
+	}
+
+	public List<DrugData> getDrugDataList() {
+		return drugDataList;
+	}
+
+	public void setDrugDataList(List<DrugData> drugDataList) {
+		this.drugDataList = drugDataList;
 	}
 	
 	

@@ -170,7 +170,6 @@ public class PurchaseController {
 	public String getPurchaseByPage(
 			@RequestParam(value = "providerId", defaultValue = "") Integer providerId,
 			@RequestParam(value = "purchaseNo", defaultValue = "") String purchaseNo,
-			@RequestParam(value = "warehouseNo", defaultValue = "") String warehouseNo,
 			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
 		try {
 			// 创建分页对象
@@ -183,7 +182,7 @@ public class PurchaseController {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
 			
-			List<TbPurchase> purchaseList = purchaseService.pageByCondition(purchaseNo, providerId, warehouseNo, page);
+			List<TbPurchase> purchaseList = purchaseService.pageByCondition(purchaseNo, providerId, page);
 			
 			
 			TbProvider providerCondition = providerService.getProviderById(providerId);
@@ -193,11 +192,8 @@ public class PurchaseController {
 			model.addAttribute("page", page);
 			model.addAttribute("purchaseNo", purchaseNo);
 			
-			TbWarehouse warehouseCondition = warehouseService.getWarehouseByNo(warehouseNo);
-			model.addAttribute("warehouseCondition", warehouseCondition);
 			
 			model.addAttribute("providerList", providerService.selectAllProvider());
-			model.addAttribute("warehouseList", warehouseService.selectAllWarehouse());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -217,6 +213,15 @@ public class PurchaseController {
 		TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseNo);
 		model.addAttribute("purchase", purchase);
 		List<TbPurchaseItem> purchaseItemList = purchaseItemService.getAllPurchaseItem(purchaseNo, page);
+		
+		TbWarehouse warehouse = new TbWarehouse();
+		
+		for (int i = 0; i < purchaseItemList.size(); i++) {
+			warehouse.setWarehouseNo(purchaseItemList.get(i).getWarehouseNo());
+			warehouse = warehouseService.getWarehouseByNo(warehouse.getWarehouseNo());
+			purchaseItemList.get(i).setWarehouseNo(warehouse.getWarehouseName());
+		}
+		
 		model.addAttribute("purchaseItemList", purchaseItemList);
 		model.addAttribute("page", page);
 		return "purchase-detail";

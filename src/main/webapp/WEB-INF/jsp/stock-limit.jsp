@@ -73,9 +73,9 @@
 						<th width="200" >批准文号</th>
 						<th width="200" >销药单价</th>
 						<th width="200">当前库存数量</th>
-						<th width="200">库存下限</th>
-						<th width="200">库存上限</th>
-					    <th width="400" >操作</th>
+						<th width="150">库存下限</th>
+						<th width="150">库存上限</th>
+					    <th width="600" >操作</th>
 					</tr>
 					<c:forEach items="${stockList}" var="stock"  varStatus="status">
 						<tr>

@@ -38,7 +38,6 @@
 					<tr>
 						<th width="150" >采药单编号</th>
 						<th width="200" >供药商名称</th>
-						<th width="100" >储存仓库</th>
 						<th width="100" >总数量</th>
 						<th width="100" >总价格</th>					
 						<th width="150" >创建时间</th>
@@ -51,9 +50,6 @@
 						</td>
 						<td>
 							${purchase.provider.providerName }
-						</td>
-						<td>
-							${purchase.warehouse.warehouseName }
 						</td>
 						<td>
 							${purchase.totalQuantity }
@@ -91,15 +87,14 @@
 				<tr>
 					<th width="125" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="150" >医药名称</th>
-					<th width="100" >进药单价</th>
 					<th width="170" >生产日期</th>
 					<th width="170" >有效期至</th>
-					<th width="100" >产品编号</th>					
-					<th width="60" >数量</th>
+					<th width="100" >产品批号</th>	
+					<th width="100" >进药单价</th>				
+					<th width="100" >数量</th>
 					<th width="80" >进药总价</th>
 					<th width="150" >库存状态</th>
-					<th width="170" >创建时间</th>
-					<th width="170" >更新时间</th>
+					<th width="200" >目标仓库</th>
 					<th width="620" >操作</th>
 				</tr>
 				<c:forEach items="${purchaseItemList}" var="purchaseItem"  varStatus="status">
@@ -112,16 +107,14 @@
 						</td>
 
 						<td>${purchaseItem.drugName }</td>
-						<td>${purchaseItem.purchasePrice }</td>
 						<td>${purchaseItem.produceTime }</td>
 						<td>${purchaseItem.validTime }</td>
 						<td>${purchaseItem.batchNo }</td>
+						<td>${purchaseItem.purchasePrice }</td>
 						<td>${purchaseItem.quantity }</td>
 						<td>${purchaseItem.purchaseTotalPrice }</td>
 						<td>${purchaseItem.status }</td>
-						<td><fmt:formatDate type="date" value="${purchaseItem.createTime }"/></td>
-						<td><fmt:formatDate type="date" value="${purchaseItem.updateTime }"/></td>
-						
+						<td>${purchaseItem.warehouseNo }</td>
 						<td><div class="button-group">
 								<a class="button border-main"
 									href="${pageContext.request.contextPath }/purchaseItem/updateById?id=${purchaseItem.id }&&purchaseNo=${purchase.purchaseNo}">

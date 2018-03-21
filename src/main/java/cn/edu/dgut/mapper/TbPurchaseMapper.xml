@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbPurchase" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="purchase_no" property="purchaseNo" jdbcType="VARCHAR" />
-    <result column="warehouse_no" property="warehouseNo" jdbcType="VARCHAR" />
     <result column="provider_id" property="providerId" jdbcType="INTEGER" />
     <result column="total_quantity" property="totalQuantity" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
@@ -72,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, purchase_no, warehouse_no, provider_id, total_quantity, total_price, operator, 
+    id, purchase_no, provider_id, total_quantity, total_price, operator, 
     remarks, create_time, update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseExample" >
@@ -106,11 +105,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbPurchase" >
-    insert into tb_purchase (id, purchase_no, warehouse_no, 
+    insert into tb_purchase (id, purchase_no, 
       provider_id, total_quantity, total_price, 
       operator, remarks, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR}, #{warehouseNo,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR},
       #{providerId,jdbcType=INTEGER}, #{totalQuantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
       #{operator,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, now(), now())
   </insert>
@@ -122,9 +121,6 @@
       </if>
       <if test="purchaseNo != null" >
         purchase_no,
-      </if>
-      <if test="warehouseNo != null" >
-        warehouse_no,
       </if>
       <if test="providerId != null" >
         provider_id,
@@ -154,9 +150,6 @@
       </if>
       <if test="purchaseNo != null" >
         #{purchaseNo,jdbcType=VARCHAR},
-      </if>
-      <if test="warehouseNo != null" >
-        #{warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="providerId != null" >
         #{providerId,jdbcType=INTEGER},
@@ -196,9 +189,6 @@
       <if test="record.purchaseNo != null" >
         purchase_no = #{record.purchaseNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.warehouseNo != null" >
-        warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
-      </if>
       <if test="record.providerId != null" >
         provider_id = #{record.providerId,jdbcType=INTEGER},
       </if>
@@ -229,7 +219,6 @@
     update tb_purchase
     set id = #{record.id,jdbcType=INTEGER},
       purchase_no = #{record.purchaseNo,jdbcType=VARCHAR},
-      warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
       provider_id = #{record.providerId,jdbcType=INTEGER},
       total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
       total_price = #{record.totalPrice,jdbcType=DECIMAL},
@@ -246,9 +235,6 @@
     <set >
       <if test="purchaseNo != null" >
         purchase_no = #{purchaseNo,jdbcType=VARCHAR},
-      </if>
-      <if test="warehouseNo != null" >
-        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
       </if>
       <if test="providerId != null" >
         provider_id = #{providerId,jdbcType=INTEGER},
@@ -280,9 +266,6 @@
       <if test="purchaseNo != null" >
         purchase_no = #{purchaseNo,jdbcType=VARCHAR},
       </if>
-      <if test="warehouseNo != null" >
-        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
-      </if>
       <if test="providerId != null" >
         provider_id = #{providerId,jdbcType=INTEGER},
       </if>
@@ -310,7 +293,6 @@
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbPurchase" >
     update tb_purchase
     set purchase_no = #{purchaseNo,jdbcType=VARCHAR},
-      warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
       provider_id = #{providerId,jdbcType=INTEGER},
       total_quantity = #{totalQuantity,jdbcType=INTEGER},
       total_price = #{totalPrice,jdbcType=DECIMAL},
@@ -337,9 +319,6 @@
   			<if test="purchaseNo!=null and !&quot;&quot;.equals(purchaseNo.trim())">
   				and p.purchase_no like '%' #{purchaseNo} '%'
   			</if>
-  			<if test="warehouseNo and !&quot;&quot;.equals(warehouseNo.trim())">
-  				and p.warehouse_no like '%' #{warehouseNo} '%'
-  			</if>
   		</where>
   </select>
   
@@ -353,9 +332,6 @@
   			</if>
   			<if test="purchaseNo!=null and !&quot;&quot;.equals(purchaseNo.trim())">
   				and p.purchase_no like '%' #{purchaseNo} '%'
-  			</if>
-  			<if test="warehouseNo and !&quot;&quot;.equals(warehouseNo.trim())">
-  				and p.warehouse_no like '%' #{warehouseNo} '%'
   			</if>
   		</where>
   		order by p.id limit #{pageIndex} ,#{pageSize}

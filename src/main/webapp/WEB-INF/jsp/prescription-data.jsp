@@ -25,23 +25,25 @@
 </head>
 <body>
 	<form method="post"
-		action="${pageContext.request.contextPath }/prescription/pageByCondition"
+		action="${pageContext.request.contextPath }/prescription/dataPageByCondition"
 		id="listform">
 		<input type="hidden" id="currentPage" name="currentPage"
 			value="${page.currentPage }" />
 		<div class="panel admin-panel">
 			<div class="panel-head">
-				<strong class="icon-reorder">处方单列表</strong> <a href=""
-					style="float: right; display: none;">添加字段</a>
+				<strong class="icon-reorder">处方单列表</strong>
 			</div>
 			<div class="padding border-bottom">
 
 				<ul class="search" style="padding-left: 10px;">
 					<li>搜索：</li>
-					<li>处方编号 <input type="text"
+					<li>处方编号 <input type="text" placeholder="请输入处方编号"
 						name="prescriptionId" value="${prescriptionId }" /> 
 					<li>
-					<li>病人姓名 <input type="text"
+					<li>病人编号<input type="text" placeholder="请输入病人编号"
+						name="patientId" value="${patientId }" /> 
+					<li>
+					<li>病人姓名 <input type="text" placeholder="请输入病人姓名"
 						name="patientName" value="${patientName }" /> 
 					<li>
 						<a href="javascript:void(0)"
@@ -52,31 +54,34 @@
 			</div>
 			<table class="table table-hover text-center table-bordered">
 				<tr>
-					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
-					<th width="120" >处方编号</th>
-					<th width="120" >病人姓名</th>
-					<th width="400" >处方数据</th>
-					<th width="150" >是否处理</th>
-					<th width="300">操作</th>
+					<th width="50" style="text-align: left; padding-left: 20px;">序号</th>
+					<th width="100" >处方编号</th>
+					<th width="90" >病人姓名</th>
+					<th width="100" >病人编号</th>
+					<th width="600" >处方药品</th>
+					<th width="100" >是否处理</th>
+					<th width="110">操作</th>
 				</tr>
 				 <c:forEach
 					items="${prescriptionList}" var="prescription" varStatus="status">
 					<tr>
 						<td style="text-align: left; padding-left: 20px;"><input
-							type="checkbox" name="id[]" value="${prescription.id}" /><span>${(page.currentPage-1)*3+status.count}</span>
+							type="checkbox" name="id[]" value="${prescription.id}" /><span>${(page.currentPage-1)*4+status.count}</span>
 						</td>
 						<td>${prescription.prescriptionId}</td>
 						<td>${prescription.patient.name }</td>
+						<td>${prescription.patientId}</td>
 						<td>${prescription.drugData }</td>
 						<td>${prescription.isDeal }</td>
 						
-						<td><div class="button-group">
-								<a class="button border-main"
-									href="${pageContext.request.contextPath }/prescription/findById/${prescription.id }"><span
-									class="icon-edit"></span> 修改</a> <a class="button border-red"
-									href="javascript:judgeDelete('${prescription.id}')"><span
-									class="icon-trash-o"></span> 删除</a>
-							</div></td>
+						<td>
+							<div class="button-group">
+								<a class="button border-green"
+									href="javascript:judgeOut('${prescription.id}','${prescription.isDeal }')"><span
+									class="icon-edit"></span> 出药
+								</a>
+							</div>
+						</td>
 					</tr>
 				</c:forEach>
 				<tr>
@@ -88,7 +93,7 @@
 							删除</a></td>
 				</tr>
 				<tr>
-					<td colspan="8" style="border-style:none;">
+					<td colspan="5" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">
@@ -107,7 +112,13 @@
 								value='${page.currentPage}' class='allInput w28' />&nbsp;页&nbsp;
 							<a
 								href="javascript:changeCurrentPage($('#currentPageText').val())"
-								class='go'>GO</a>
+								class='go'>GO
+							</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						</div>
 					</td>
 				</tr>
@@ -129,22 +140,23 @@
 	 		return s;
 	    }
 	 	
-		function judgeDelete(id) {
+		function judgeOut(id,isDeal) {
 			
-			if (confirm("确定要删除id为" + id + "的记录吗？")) {
-				var params = {"id":id};
-				$.post("${pageContext.request.contextPath }/prescription/deleteOne",params ,function(data){
+				var params = {"id":id,"isDeal":isDeal};
+				$.post("${pageContext.request.contextPath }/sales/add",params ,function(data){
         			if(data.status == 200){
-        				alert('删除成功!');
-        				location.href = "${pageContext.request.contextPath }/prescription/list";
+        				alert('出药成功!');
+        				location.href = "${pageContext.request.contextPath }/prescription/list-data";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/prescription/list";
+        				location.href = "${pageContext.request.contextPath }/prescription/list-data";
+        			}
+        			if(data.status == 505){
+        				alert(data.msg);
+        				location.href = "${pageContext.request.contextPath }/prescription/list-data";
         			}
         		});
-				//window.location.href = "${pageContext.request.contextPath }/patient/deleteOne?id="+ id;
-			}
 		}
 
 		//搜索
@@ -182,15 +194,13 @@
 				$.post("${pageContext.request.contextPath }/prescription/deleteBatch",params ,function(data){
         			if(data.status == 200){
         				alert('删除成功!');
-        				location.href = "${pageContext.request.contextPath }/prescription/list";
+        				location.href = "${pageContext.request.contextPath }/prescription/list-data";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/prescription/list";
+        				location.href = "${pageContext.request.contextPath }/prescription/list-data";
         			}
         		});
-				//$('#listform').attr("action","${pageContext.request.contextPath }/patient/deleteBatch");
-				//$("#listform").submit();
 			} else {
 				alert("请选择您要删除的内容!");
 				return false;

@@ -45,10 +45,18 @@
 						医药种类
 						<select name="drugtypeId" class="input" 
 							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<option value="${drugType.id }">${drugType.drugtypeName }</option>
+				
+							<c:if test="${drugTypeCondition.id != null}">
+								<option value="${drugTypeCondition.id }" selected="selected">${drugTypeCondition.drugtypeName }</option>
+							</c:if>
+							
+							<option value="">未选择</option>
+							
 							<c:forEach
 							items="${drugtypeList}" var="drugtype" >
-							<option value="${drugtype.id }">${drugtype.drugtypeName }</option>
+							<c:if test="${drugTypeCondition.id != drugtype.id}">
+								<option value="${drugtype.id }">${drugtype.drugtypeName }</option>
+							</c:if>
 							</c:forEach>
 						</select>
 					</li>
@@ -79,7 +87,7 @@
 						<th width="20" >批准文号</th>
 						<th width="200" >功能主治</th>
 						<th width="10" >规格</th>
-						<th width="5" >单位</th>
+						<th width="10" >单位</th>
 						<th width="100" >用法用量</th>
 						<th width="50" >不良反应</th>
 						<th width="200">操作</th>
@@ -121,7 +129,7 @@
 	
 					</tr>
 					<tr>
-						<td colspan="7" style="border-style:none;">
+						<td colspan="8" style="border-style:none;">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">

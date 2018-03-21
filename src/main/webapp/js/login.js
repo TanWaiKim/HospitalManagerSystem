@@ -26,7 +26,7 @@ var LOGIN = {
 						if(data.msg == "管理员登录成功"){
 							location.href = "main";
 						}
-						if(data.msg == "医药管理员登录成功"){						
+						if(data.msg == "药品员登录成功"){						
 							location.href = "mainDrug";
 						}
 					} else{

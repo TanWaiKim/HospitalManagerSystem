@@ -23,6 +23,8 @@ public class TbSalesItem {
     private Date updateTime;
     
     private String batchNo;
+    
+    private TbDrug drug;
 
     public Integer getId() {
         return id;
@@ -102,5 +104,13 @@ public class TbSalesItem {
 
 	public void setBatchNo(String batchNo) {
 		this.batchNo = batchNo;
+	}
+
+	public TbDrug getDrug() {
+		return drug;
+	}
+
+	public void setDrug(TbDrug drug) {
+		this.drug = drug;
 	}
 }

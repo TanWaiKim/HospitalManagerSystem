@@ -8,8 +8,6 @@ public class TbPurchase {
 
     private String purchaseNo;
 
-    private String warehouseNo;
-
     private Integer providerId;
 
     private Integer totalQuantity;
@@ -42,14 +40,6 @@ public class TbPurchase {
 
     public void setPurchaseNo(String purchaseNo) {
         this.purchaseNo = purchaseNo;
-    }
-
-    public String getWarehouseNo() {
-        return warehouseNo;
-    }
-
-    public void setWarehouseNo(String warehouseNo) {
-        this.warehouseNo = warehouseNo;
     }
 
     public Integer getProviderId() {

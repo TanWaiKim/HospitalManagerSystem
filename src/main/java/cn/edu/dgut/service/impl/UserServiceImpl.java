@@ -56,13 +56,13 @@ public class UserServiceImpl implements UserService {
 			}
 			//账号不一致
 			return HmsResult.build(500, "账号错误！");
-		} else if(postOffice.equals("医药管理员")){
+		} else if(postOffice.equals("药品员")){
 			//条件查询  通过用户名查询记录 
 			TbAdmin admin = adminService.login(username, password);
 			//验证密码
 			if(admin != null){
 				session.setAttribute(Const.CURRENT_USER, admin);
-				return HmsResult.build(200, "医药管理员登录成功");		
+				return HmsResult.build(200, "药品员登录成功");		
 			}
 			//账号不一致
 			return HmsResult.build(500, "账号或密码错误！");

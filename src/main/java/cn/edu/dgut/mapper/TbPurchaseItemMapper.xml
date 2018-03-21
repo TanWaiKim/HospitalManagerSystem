@@ -16,6 +16,7 @@
     <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
     <result column="produce_time" property="produceTime" jdbcType="VARCHAR" />
     <result column="valid_time" property="validTime" jdbcType="VARCHAR" />
+    <result column="warehouse_no" property="warehouseNo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,7 +78,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, purchase_no, drug_id, drug_name, purchase_price, sale_price, quantity, purchase_total_price, 
-    create_time, update_time, status, batch_no, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
+    create_time, update_time, status, batch_no, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time,
+    warehouse_no
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseItemExample" >
     select
@@ -125,12 +127,12 @@
     insert into tb_purchase_item (id, purchase_no, drug_id, 
       drug_name, purchase_price, sale_price, 
       quantity, purchase_total_price, create_time, 
-      update_time, status, batch_no, produce_time, valid_time)
+      update_time, status, batch_no, produce_time, valid_time, warehouse_no)
     values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR}, #{drugId,jdbcType=INTEGER}, 
       #{drugName,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, 
       #{quantity,jdbcType=INTEGER}, #{purchaseTotalPrice,jdbcType=DECIMAL}, now(), now(), 
       #{status,jdbcType=VARCHAR}, #{batchNo,jdbcType=VARCHAR}, str_to_date(#{produceTime},"%Y-%m-%d"), 
-      str_to_date(#{validTime},"%Y-%m-%d")
+      str_to_date(#{validTime},"%Y-%m-%d"),#{warehouseNo,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
@@ -178,6 +180,9 @@
       <if test="validTime != null" >
         valid_time,
       </if>
+      <if test="warehouseNo != null" >
+        warehouse_no,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -221,6 +226,9 @@
       </if>
       <if test="validTime != null" >
         str_to_date(#{validTime},"%Y-%m-%d"),
+      </if>
+      <if test="warehouseNo != null" >
+        #{warehouseNo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -275,6 +283,9 @@
       <if test="validTime != null" >
         valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
       </if>
+      <if test="record.warehouseNo != null" >
+        warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -295,7 +306,8 @@
       status = #{record.status,jdbcType=VARCHAR},
       batch_no = #{record.batchNo,jdbcType=VARCHAR},
       produce_time = str_to_date(#{produceTime},"%Y-%m-%d"), 
-      valid_time = str_to_date(#{validTime},"%Y-%m-%d")
+      valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
+      warehouse_no = #{record.warehouseNo,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -342,6 +354,9 @@
       <if test="validTime != null" >
         valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
       </if>
+      <if test="warehouseNo != null" >
+        warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -374,7 +389,8 @@
       status = #{status,jdbcType=VARCHAR},
       batch_no = #{batchNo,jdbcType=VARCHAR},
       produce_time = str_to_date(#{produceTime},"%Y-%m-%d"), 
-      valid_time = str_to_date(#{validTime},"%Y-%m-%d")
+      valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
+      warehouse_no = #{warehouseNo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
  

@@ -31,7 +31,6 @@
 				onsubmit="return false;">
 				<input type="hidden" id="purchaseNo" name="purchaseNo" value="${purchaseDto.purchaseNo }" />
 				<input type="hidden" id="providerId" name="providerId" value="${purchaseDto.providerId }" />
-				<input type="hidden" id="warehouseNo" name="warehouseNo" value="${purchaseDto.warehouseNo }" />
 				<input type="hidden" id="totalQuantity" name="totalQuantity" value="${purchaseDto.totalQuantity }" />
 				<input type="hidden" id="totalPrice" name="totalPrice" value="${purchaseDto.totalPrice }" />
 				<input type="hidden" id="operator" name="operator" value="${purchaseDto.operator }" />
@@ -48,6 +47,23 @@
 							<c:forEach
 							items="${drugList}" var="drug" >
 							<option value="${drug.id }">${drug.drugName }</option>
+							</c:forEach>
+						</select>
+						<div class="tips"></div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="label">
+						<label>存储仓库：</label>
+					</div>
+					<div class="field">
+						<select name="warehouseNo" class="input" 
+							style="width: 155px; line-height: 17px; display: inline-block" data-validate="required:请输入仓库" >
+							<option value="">选择</option>
+							<c:forEach
+							items="${warehouseList}" var="warehouse" >
+							<option value="${warehouse.warehouseNo }">${warehouse.warehouseName }</option>
 							</c:forEach>
 						</select>
 						<div class="tips"></div>

@@ -21,12 +21,10 @@ import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbAdmin;
-import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbStock;
 import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.service.PurchaseItemService;
-import cn.edu.dgut.service.PurchaseService;
 import cn.edu.dgut.service.StockService;
 import cn.edu.dgut.service.WarehouseService;
 
@@ -38,8 +36,6 @@ import cn.edu.dgut.service.WarehouseService;
 @Controller
 @RequestMapping("/stock")
 public class StockController {
-	@Autowired
-	private PurchaseService purchaseService;
 	@Autowired
 	private PurchaseItemService purchaseItemService;
 	@Autowired
@@ -62,11 +58,10 @@ public class StockController {
 				return HmsResult.build(500, "该记录处于已入库状态，不可再次入库！");
 			}
 			
-			TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseItem.getPurchaseNo());
 	        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
 	        
 			TbStock stock = new TbStock();
-			stock.setWarehouseNo(purchase.getWarehouseNo());
+			stock.setWarehouseNo(purchaseItem.getWarehouseNo());
 			stock.setDrugId(purchaseItem.getDrugId());
 			stock.setStockQuantity(purchaseItem.getQuantity());
 			stock.setOperator(admin.getUsername());

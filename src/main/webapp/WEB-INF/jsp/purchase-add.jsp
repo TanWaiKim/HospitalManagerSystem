@@ -46,6 +46,7 @@
 						<div class="tips"></div>
 					</div>
 				</div>
+				
 				<div class="form-group">
 					<div class="label">
 						<label>存储仓库：</label>

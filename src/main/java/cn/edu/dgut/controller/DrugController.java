@@ -160,6 +160,8 @@ public class DrugController {
 			}
 			List<TbDrug> drugList = drugService.pageByCondition(drugtypeId, drugName, drugNo, keywords, page);
 			
+			TbDrugtype drugTypeCondition = drugtypeService.getDrugtypeById(drugtypeId);
+			model.addAttribute("drugTypeCondition", drugTypeCondition);
 			
 			TbDrugtype drugtype = drugtypeService.getDrugtypeById(drugtypeId);
 			model.addAttribute("drugType", drugtype);	

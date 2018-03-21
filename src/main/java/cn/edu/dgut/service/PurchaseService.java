@@ -14,7 +14,7 @@ import cn.edu.dgut.pojo.TbPurchaseItem;
  */
 public interface PurchaseService {
 	List<TbPurchase> getAllPurchase(Page page);
-	List<TbPurchase> pageByCondition(String purchaseNo, Integer providerId,String warehouseNo, Page page);
+	List<TbPurchase> pageByCondition(String purchaseNo, Integer providerId, Page page);
 	TbPurchase getPurchaseById(Integer id);
 	TbPurchase getPurchaseByPurchaseNo(String purchaseNo);
 	int addPurchaseByTbPurchase(PurchaseDto purchaseDto);
