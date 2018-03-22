@@ -431,7 +431,26 @@ public class StatisticsController {
 		}
     	
 		if (purchaseItemList == null) {
-			return null;
+		    JFreeChart lineChart = ChartFactory.createLineChart(
+		    		"",
+		    	    "采购时间",
+		    	    "采药单价（元/单位）",
+		    	    this.getPriceChangeDataSet(this.countPriceChange(drugName,drugNo,beginTime,endTime),""),
+		    	    PlotOrientation.VERTICAL,
+		    	    true,
+		    	    true,
+		    	    false
+		    	    );
+
+	        //3. 将图形转换为图片，传到前台  
+	        String fileName1 = ServletUtilities.saveChartAsJPEG(lineChart, 1200, 500, null, request.getSession());  
+	        String chartURL1 = request.getContextPath() + "/chart?filename="+fileName1;  
+	        modelMap.put("chartURL", chartURL1);  
+			modelMap.addAttribute("drugName", drugName);
+			modelMap.addAttribute("drugNo", drugNo);
+			modelMap.addAttribute("beginTime", beginTime);
+			modelMap.addAttribute("endTime", endTime);
+	        return new ModelAndView("price-change",modelMap);  
 		}
 		
 		TbPurchaseItem purchaseItem = purchaseItemList.get(0);
