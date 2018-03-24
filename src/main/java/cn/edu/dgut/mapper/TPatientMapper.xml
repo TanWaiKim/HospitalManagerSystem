@@ -426,4 +426,14 @@
   	select * from  t_patient
   </select>
   
+   <!-- 根据时间查询所有记录 -->
+  <select id="selectAllPatientByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include>
+  	from  t_patient p
+  		<where>
+  			<if test="beginTime!=null and !&quot;&quot;.equals(beginTime.trim()) and endTime!=null and !&quot;&quot;.equals(endTime.trim())">
+  				and p.created <![CDATA[>=]]> #{beginTime} and p.created <![CDATA[<=]]> #{endTime}
+  			</if>
+  		</where>
+  </select>
 </mapper>

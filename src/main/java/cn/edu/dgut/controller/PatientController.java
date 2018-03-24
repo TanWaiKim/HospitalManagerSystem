@@ -86,15 +86,6 @@ public class PatientController {
 			TPatient patient1 = patientService.getPatientById(patient.getPatientId());
 			TPatient patient2 = patientService.getPatientByPhone(patient.getPhone());
 			
-			if(patient.getAge()<0 || patient.getAge()>150){
-				return HmsResult.build(505, "年龄必须为0-100之间的整数");
-			}
-			if (patient.getPhone() == null) {
-				return HmsResult.build(505, "手机号码不能为空！");
-			}
-			if (patient.getPhone() != null && patient.getPhone().length() != 11) {
-				return HmsResult.build(505, "手机号码格式错误！(只能为11位数字)");
-			}
 			if (patient2 != null) {
 				if (!patient2.getPhone().equals(patient1.getPhone())) {
 					return HmsResult.build(505, "手机号码已存在！");
@@ -119,13 +110,7 @@ public class PatientController {
 	@ResponseBody()
 	public HmsResult addPatientByTPatient(TPatient patient, Model model) {
 		try {
-			// System.out.println("Patient=" + patient);
-			if (patient.getPhone() == null) {
-				return HmsResult.build(505, "手机号码不能为空！");
-			}
-			if (patient.getPhone() != null && patient.getPhone().length() != 11) {
-				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
-			}
+			
 			if (patientService.getPatientByPhone(patient.getPhone()) != null) {
 				return HmsResult.build(505, "手机号码已存在！");
 			}

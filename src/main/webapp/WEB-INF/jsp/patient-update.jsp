@@ -17,6 +17,32 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
+<script type="text/javascript">
+$(function()  {
+	$("#age").blur(function() {
+		var reg = /^[0-9]+.?[0-9]*$/;
+		var a = document.getElementById("age");
+		if (!reg.test(a.value)) {
+			alert("请输入0-150之间的数字!");
+		}
+		else if(a.value < 0 || a.value > 150){
+			alert("年龄必须为0-150之间的整数!");
+		}
+	})
+});
+$(function()  {
+	$("#phone").blur(function() {
+		var reg = /^[0-9]+.?[0-9]*$/;
+		var phone = document.getElementById("phone");
+		if (!reg.test(phone.value)) {
+			alert("请输入11位数字!");
+		}
+		else if(phone.value.toString().length != 11 ){
+			alert("手机号码格式错误！(11位数字)");
+		}
+	})
+});
+</script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -27,7 +53,7 @@
 			<form method="post" id="patientUpdateForm" class="form-x"
 				onsubmit="return false;">
 				<input type="hidden" id="id" name="id" value="${patient.id }" />
-				
+
 				<div class="form-group">
 					<div class="label">
 						<label>病人ID：</label>
@@ -72,7 +98,7 @@
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${patient.age }"
-							name="age" data-validate="required:请输入病人年龄" />
+							id="age" name="age" data-validate="required:请输入病人年龄" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -116,8 +142,9 @@
 						<label>联系方式：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${patient.phone }" maxlength="11"
-							name="phone" data-validate="required:请输入联系方式" />
+						<input type="text" class="input w50" value="${patient.phone }"
+							id="phone" maxlength="11" name="phone"
+							data-validate="required:请输入联系方式" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -152,9 +179,10 @@
 						<label>是否处理：</label>
 					</div>
 					<div class="field">
-						<select name="isFinished" class="input" 
+						<select name="isFinished" class="input"
 							style="width: 85px; line-height: 17px; display: inline-block">
-							<c:if test="${patient.isFinished == ''}">selected="selected"</c:if>>选择</option>
+							<c:if test="${patient.isFinished == ''}">selected="selected"</c:if>>选择
+							</option>
 							<option value="是"
 								<c:if test="${patient.isFinished == '是'}">selected="selected"</c:if>>是</option>
 							<option value="否"
@@ -162,15 +190,14 @@
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<div class="label">
 						<label>病人登录账号：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50"
-							value="${patient.loginName }" name="loginName"
-							data-validate="required:请输入病人登录账号" />
+						<input type="text" class="input w50" value="${patient.loginName }"
+							name="loginName" data-validate="required:请输入病人登录账号" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -201,7 +228,9 @@
 		function updateForm() {
 			//ajax的post方式提交表单
 			//$("#patientUpdateForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/patient/update",
+			$
+					.post(
+							"${pageContext.request.contextPath }/patient/update",
 							$("#patientUpdateForm").serialize(),
 							function(data) {
 								if (data.status == 200) {

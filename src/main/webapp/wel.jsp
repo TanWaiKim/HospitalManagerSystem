@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<span>医药管理系统</span>
+	<span>基于SSM的医院管理系统的设计与实现--病人管理子系统</span>
 </body>
 </html>

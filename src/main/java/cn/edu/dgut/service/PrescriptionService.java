@@ -1,11 +1,8 @@
 package cn.edu.dgut.service;
 
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
+import javax.servlet.http.HttpServletResponse;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TDiagnosis;
 import cn.edu.dgut.pojo.TPrescription;
 
 
@@ -17,4 +14,6 @@ public interface PrescriptionService {
 	int deletePrescriptionByIds(String[] ids);
 	int addPrescription(TPrescription prescription);
 	int updatePrescription(TPrescription prescription);
+	String autoDrugName(String term, HttpServletResponse response) throws Exception;
+	boolean isEnoughDrug(String drugName, String drugNum);
 }

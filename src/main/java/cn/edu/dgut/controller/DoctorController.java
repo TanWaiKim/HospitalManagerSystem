@@ -14,4 +14,9 @@ public class DoctorController {
 	public String mainDrug(){
 		return "mainDrug";
 	}
+	
+	@RequestMapping("/dPassReset")
+	public String toPassReset(){
+		return "doctor-pass-reset";
+	}
 }

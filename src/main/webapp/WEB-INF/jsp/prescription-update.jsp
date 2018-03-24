@@ -17,6 +17,13 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="http://jqueryui.com/resources/demos/style.css">
+
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -53,7 +60,7 @@
 						<ul name="drug-ul">
 							<div name="drug-name-div"
 								style="margin-left: 87px; margin-top: 10px;">
-								药品名：<input type="text" name="drug-name"
+								药品名：<input type="text" name="drug-name" id="drug-name"
 									style="width: 400px; height: 30px;"
 									value="${drugData.drugName }">
 							</div>
@@ -65,20 +72,20 @@
 									class="input" id="unit"
 									style="width: 38px; line-height: 17px; display: inline-block">
 									<option value="瓶"
-									<c:if test="${drugData.unit == '瓶'}">selected="selected"</c:if>>瓶</option>
+										<c:if test="${drugData.unit == '瓶'}">selected="selected"</c:if>>瓶</option>
 									<option value="盒"
-									<c:if test="${drugData.unit == '盒'}">selected="selected"</c:if>>盒</option>
+										<c:if test="${drugData.unit == '盒'}">selected="selected"</c:if>>盒</option>
 									<option value="板"
-									<c:if test="${drugData.unit == '板'}">selected="selected"</c:if>>板</option>
+										<c:if test="${drugData.unit == '板'}">selected="selected"</c:if>>板</option>
 
 									<option value="袋"
-									<c:if test="${drugData.unit == '袋'}">selected="selected"</c:if>>袋</option>
+										<c:if test="${drugData.unit == '袋'}">selected="selected"</c:if>>袋</option>
 									<option value="支"
-									<c:if test="${drugData.unit == '支'}">selected="selected"</c:if>>支</option>
+										<c:if test="${drugData.unit == '支'}">selected="selected"</c:if>>支</option>
 									<option value="片"
-									<c:if test="${drugData.unit == '片'}">selected="selected"</c:if>>片</option>
+										<c:if test="${drugData.unit == '片'}">selected="selected"</c:if>>片</option>
 									<option value="粒"
-									<c:if test="${drugData.unit == '粒'}">selected="selected"</c:if>>粒</option>
+										<c:if test="${drugData.unit == '粒'}">selected="selected"</c:if>>粒</option>
 
 								</select>
 							</div>
@@ -110,33 +117,44 @@
 	</div>
 
 	<script type="text/javascript">
-		$(function() {
-			$(".addGroup").click(function() {
-				var temple = $(".prescriptionAddForm ul").eq(0).clone();
-				temple.find("input").val("");
-				$(this).parent().append(temple);
-				temple.find(".delParam").css("visibility", "visible");
-				temple.find(".delParam").click(function() {
-					$(this).parent().remove();
-				});
-			});
+		
+		$("[id=drug-name]").autocomplete({
+			source : "<c:url value="/prescription/auto"/>",
+			minLength : 1
+		});
+		
+		
 
-			var druguls = document.getElementsByName("drug-ul");
-			if (druguls.length == 1) {
-				$(".prescriptionAddForm ul").find(".delParam").remove();
+		$(".addGroup").click(function() {
+			var temple = $(".prescriptionAddForm ul").eq(0).clone();
+			temple.find("input").val("");
+			temple.find("input[name=drug-name]").autocomplete({
+				source:"<c:url value="/prescription/auto"/>",  
+   		 		minLength:1
+   			});
+			
+			$(this).parent().append(temple);
+			temple.find(".delParam").css("visibility", "visible");
+			temple.find(".delParam").click(function() {
+				$(this).parent().remove();
+			});
+		});
+
+		var druguls = document.getElementsByName("drug-ul");
+		if (druguls.length == 1) {
+			$(".prescriptionAddForm ul").find(".delParam").remove();
+		}
+
+		$(".prescriptionAddForm ul").find(".delParam").click(function() {
+			if (druguls.length > 1) {
+				$(this).parent().remove();
 			}
-
-			$(".prescriptionAddForm ul").find(".delParam").click(function() {
-				if (druguls.length > 1) {
-					$(this).parent().remove();
-				}
-			});
-
 		});
 
 		function addForm() {
 			var drugnames = document.getElementsByName("drug-name");
 			var drugnums = document.getElementsByName("drug-num");
+			var units = document.getElementsByName("unit");
 			var drugusages = document.getElementsByName("drug-usage");
 
 			var params = [];
@@ -147,7 +165,8 @@
 							if (i == k) {
 								params.push({
 									"drugName" : drugnames[i].value,
-									"drugNum" : drugnums[i].value,
+									"drugNum" : drugnums[i].value
+									+ units[i].value,
 									"drugUsage" : drugusages[i].value
 								});
 							}

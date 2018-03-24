@@ -88,19 +88,34 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>人群类型统计</a></li>
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>人群类型统计</a></li>
+			<li><a href="patientStatistics/category" target="right"><span
+					class="icon-caret-right"></span>人群类型分析</a></li>
+			<li><a href="patientStatistics/month" target="right"><span
+					class="icon-caret-right"></span>月来访统计</a></li>
 		</ul>
 		
+		
 		<h2>
-			<span class="icon-wrench"></span>系统管理
+			<span class="icon-cog"></span>基本信息设置
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>系统用户管理</a></li>
+			<li><a href="${pageContext.request.contextPath }/dPassReset" target="right"><span
+					class="icon-caret-right"></span>修改密码</a></li>	
+
+		</ul>
+		
+		<h2>
+			<span class="icon-cog"></span>其他信息管理
+		</h2>
+		
+		<ul style="display: none">
+			<li><a href="${pageContext.request.contextPath }/list" target="right"><span
+					class="icon-caret-right"></span>医生所属科别管理</a></li>	
+			<li><a href="${pageContext.request.contextPath }/list" target="right"><span
+					class="icon-caret-right"></span>病床管理</a></li>	
+			<li><a href="${pageContext.request.contextPath }/list" target="right"><span
+					class="icon-caret-right"></span>住院信息管理</a></li>
 		</ul>
 		
 		<h2>
@@ -114,15 +129,14 @@
 					class="icon-caret-right"></span>管理公告</a></li>
 		</ul>
 		<h2>
-			<span class="icon-cog"></span>基本设置
+			<span class="icon-wrench"></span>系统管理
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="doctor-pass-reset.jsp" target="right"><span
-					class="icon-caret-right"></span>修改密码</a></li>	
-			<li><a href="doctor-pass-reset.jsp" target="right"><span
-					class="icon-caret-right"></span>个人基本信息管理</a></li>	
+			<li><a href="info.html" target="right"><span
+					class="icon-caret-right"></span>系统用户管理</a></li>
 		</ul>
+		
 		
 	</div>
 	<script type="text/javascript">

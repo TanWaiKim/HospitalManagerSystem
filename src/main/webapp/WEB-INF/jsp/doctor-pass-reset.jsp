@@ -24,8 +24,8 @@
           <label for="sitename">管理员帐号：</label>
         </div>
         <div class="field">
-          <label style="line-height:33px;">
-           admin
+          <label style="line-height:33px;" name="dName">
+           ${sessionScope.doctorInfo.loginName}
           </label>
         </div>
       </div>      

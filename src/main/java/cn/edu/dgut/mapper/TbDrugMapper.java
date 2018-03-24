@@ -46,5 +46,7 @@ public interface TbDrugMapper {
 	int deleteBatch(List<Long> list);
 	
 	List<TbDrug> selectAllDrug();
+
+	List<TbDrug> selectDrugNameByAutoComplete(String parameter);
     
 }

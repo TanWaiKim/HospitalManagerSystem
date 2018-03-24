@@ -451,4 +451,11 @@
   	select * from  tb_drug
   </select>
   
+   <!-- 根据输入字符自动模糊匹配药品记录 -->
+  <select id="selectDrugNameByAutoComplete" parameterType="string" resultMap="BaseResultMap">
+  	select drug_name 
+  	from  tb_drug
+  	where drug_name like '%' #{parameter} '%'
+  </select>
+  
 </mapper>

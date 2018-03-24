@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class PrescriptionController {
 	private PrescriptionService prescriptionService;
 	@Autowired 
 	private PatientService patientService;
-	
+
 	@RequestMapping("/list")
 	public String getAllPrescription(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model,HttpServletRequest request) {
 		try {
@@ -116,6 +117,15 @@ public class PrescriptionController {
 	@ResponseBody
 	public HmsResult addPrescription(@PathVariable("patientId")String patientId, String paramData, HttpServletRequest request){
 		try {
+			//查询药品所在库存记录，并判断库存是否满足处方药品数量
+			List<DrugData> drugDataList = JsonUtils.jsonToList(paramData, DrugData.class);
+			for (DrugData drugData : drugDataList) {
+				String drugName = drugData.getDrugName();
+				String drugNum = drugData.getDrugNum();
+				if(prescriptionService.isEnoughDrug(drugName,drugNum.substring(0, drugNum.length()-1)) != true){
+					return HmsResult.build(505, drugName+"在库存中不足！");
+				}
+			}
 			TPrescription prescription = new TPrescription();
 			TDoctor doctor = (TDoctor) request.getSession().getAttribute("doctorInfo");
 			prescription.setPatientId(patientId);
@@ -155,9 +165,16 @@ public class PrescriptionController {
 			@PathVariable("prescriptionId")String prescriptionId, @PathVariable("patientId")String patientId, 
 			@PathVariable("doctorId")String doctorId, String paramData, Model model){
 		try {
+			//查询药品所在库存记录，并判断库存是否满足处方药品数量
+			List<DrugData> drugDataList = JsonUtils.jsonToList(paramData, DrugData.class);
+			for (DrugData drugData : drugDataList) {
+				String drugName = drugData.getDrugName();
+				String drugNum = drugData.getDrugNum();
+				if(prescriptionService.isEnoughDrug(drugName,drugNum.substring(0, drugNum.length()-1)) != true){
+					return HmsResult.build(505, drugName+"在库存中不足！");
+				}
+			}
 			TPrescription prescription = new TPrescription();
-			//TDoctor doctor = (TDoctor) request.getSession().getAttribute("doctorInfo");
-			//prescription.setPatientId(patientId);
 			prescription.setId(Integer.valueOf(id));
 			prescription.setPrescriptionId(prescriptionId);
 			prescription.setPatientId(patientId);
@@ -171,7 +188,6 @@ public class PrescriptionController {
 				model.addAttribute("pId", "");
 				return HmsResult.ok();
 			}
-
 		} catch (Exception e) {
 			e.getStackTrace();
 			return HmsResult.build(500, "修改失败！");
@@ -209,8 +225,18 @@ public class PrescriptionController {
 			return HmsResult.build(500, "删除失败！");
 		}
 		return HmsResult.build(500, "删除失败！");
-		
-
+	}
+	
+	@RequestMapping(value = "/auto")
+	@ResponseBody
+	public String autoDrugName(@RequestParam("term") String term, HttpServletResponse response){
+		String dNs = null;
+		try {
+			dNs = prescriptionService.autoDrugName(term,response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dNs;
 	}
 
 }

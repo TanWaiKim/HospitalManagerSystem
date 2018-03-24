@@ -34,6 +34,8 @@ import cn.edu.dgut.pojo.TPatientExample;
 import cn.edu.dgut.pojo.TPrescriptionExample;
 import cn.edu.dgut.pojo.TStayHospital;
 import cn.edu.dgut.pojo.TStayHospitalExample;
+import cn.edu.dgut.pojo.TbDrug;
+import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.service.PatientService;
 
 @Service
@@ -329,6 +331,10 @@ public class PatientServiceImpl implements PatientService {
 						row.createCell((short) 9).setCellValue(patient.getPhone());
 						row.createCell((short) 10).setCellValue(patient.getLoginName());
 						row.createCell((short) 11).setCellValue(patient.getLoginPassword());
+						row.createCell((short) 12)
+						.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getCreated()));
+				row.createCell((short) 13)
+						.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getUpdated()));
 					}
 				}
 				FileOutputStream fout = new FileOutputStream(filename);
@@ -475,7 +481,9 @@ public class PatientServiceImpl implements PatientService {
 		return null;
 	}
 
-	
+	/**
+	 * 查询所有病人记录
+	 */
 	@Override
 	public List<TPatient> selectAllPatient() {
 		List<TPatient> patients = patientMapper.selectAllPatient();
@@ -484,6 +492,24 @@ public class PatientServiceImpl implements PatientService {
 			return patients;
 		}
 		
+		return null;
+	}
+
+	/**
+	 * 条件统计，根据开始时间，结束时间等查询病人的就诊情况
+	 */
+	@Override
+	public List<TPatient> selectAllPatientByCondition(String beginTime, String endTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("beginTime", beginTime);
+		map.put("endTime", endTime);
+		
+		List<TPatient> patientList = patientMapper.selectAllPatientByCondition(map);
+		
+		if (patientList.size() > 0) {
+			return patientList;
+		}
 		return null;
 	}
 

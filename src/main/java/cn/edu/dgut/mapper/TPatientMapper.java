@@ -43,4 +43,6 @@ public interface TPatientMapper {
 	List<TPatient> selectAllPatient();
 
 	TPatient getHealthRecordByPId(String patientId);
+
+	List<TPatient> selectAllPatientByCondition(Map<String, Object> map);
 }

@@ -23,4 +23,5 @@ public interface PatientService {
 	TPatient getHealthRecordByPId(String patientId);
 	
 	List<TPatient> selectAllPatient();
+	List<TPatient> selectAllPatientByCondition(String beginTime, String endTime);
 }
