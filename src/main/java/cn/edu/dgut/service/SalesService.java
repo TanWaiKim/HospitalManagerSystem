@@ -5,6 +5,7 @@ import java.util.List;
 import cn.edu.dgut.common.dto.SalesDto;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbSales;
+import cn.edu.dgut.pojo.TbSalesItem;
 
 /**
  * @author TanWaiKim
@@ -23,5 +24,5 @@ public interface SalesService {
 	int updateSalesBySalesNo(SalesDto salesDto);
 	int updateSalesBySalesItemId(SalesDto SalesDto);
 	int updateSales(TbSales sales);
-
+	List<TbSalesItem> saleByCondition(String drugName,String drugNo,String beginTime,String endTime);
 }

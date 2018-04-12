@@ -22,11 +22,21 @@
 			</h1>
 		</div>
 		<div class="head-l">
-			<a class="button button-little bg-green" href="" target="_blank"><span
-				class="icon-home"></span> 登录用户：${currentUser.username }</a> &nbsp;&nbsp;<a href="##"
-				class="button button-little bg-blue"><span class="icon-user"></span>
-				用户角色:药品员</a> &nbsp;&nbsp;<a class="button button-little bg-red"
-				href="login.html"><span class="icon-power-off"></span> 退出登录</a>
+			<a class="button button-little bg-green" href="" target="_blank">
+				<span class="icon-home"></span> 
+				登录用户：${currentUser.username }
+			</a> 
+			&nbsp;&nbsp;
+			
+			<a href="##" class="button button-little bg-blue">
+				<span class="icon-user"></span>
+				用户角色:药品员
+			</a> 
+			&nbsp;&nbsp;
+			
+			<a class="button button-little bg-red" href="${pageContext.request.contextPath }/logout">
+				<span class="icon-power-off"></span> 退出登录
+			</a>
 		</div>
 	</div>
 	<div class="leftnav " style="overflow:scroll;">
@@ -275,7 +285,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="info.html" target="right">
+				<a href="statistics/sale" target="right">
 					<span class="icon-caret-right"></span>销药分析
 				</a>
 			</li>					

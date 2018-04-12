@@ -25,4 +25,5 @@ public interface SalesItemService {
 	List<TbSalesItem> selectAllSalesItem(Map<String, Object> map);
 	TbSalesItem selectByDrugIdAndBatchNo(TbSalesItem salesItem);
 	List<TbSalesItem> selectAllSalesItem(String salesNo);
+	List<TbSalesItem> selectAllSale(Map<String, Object> map);
 }

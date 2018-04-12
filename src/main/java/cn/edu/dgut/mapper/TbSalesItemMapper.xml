@@ -340,6 +340,22 @@
     <!-- 查询所有记录 -->
   <select id="selectAllSalesItem1"  resultMap="BaseResultMap">
   	select * from  tb_sales_item
-  </select>    
+  </select>  
+  
+   <!-- 统计分析条件查询 -->
+  <select id="analysisByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from tb_sales_item s
+  		<where>
+  			<if test="drugId != null">
+  				and s.drug_id =  #{drugId} 
+  			</if>
+  			<if test="beginTime!=null and !&quot;&quot;.equals(beginTime.trim()) and endTime!=null and !&quot;&quot;.equals(endTime.trim())">
+  				and s.create_time <![CDATA[>=]]> #{beginTime} and s.create_time <![CDATA[<=]]> #{endTime}
+  			</if>
+  		</where>
+  </select>  
+  
   
 </mapper>

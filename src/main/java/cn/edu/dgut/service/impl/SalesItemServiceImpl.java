@@ -179,4 +179,17 @@ public class SalesItemServiceImpl implements SalesItemService {
 		return null;
 	}
 
+	/**
+	 * 根据条件统计销售情况
+	 */
+	@Override
+	public List<TbSalesItem> selectAllSale(Map<String, Object> map) {
+		List<TbSalesItem> salesItem = salesItemMapper.analysisByCondition(map);
+		if (salesItem != null) {
+			return salesItem;
+		}
+		
+		return null;
+	}
+
 }
