@@ -25,7 +25,7 @@ public class TbStock {
     
     private TbDrug drug;
     
-    private String waring;
+    private String quantityWaring;
     
     private String validWaring;
     
@@ -121,12 +121,12 @@ public class TbStock {
 		this.drug = drug;
 	}
 
-	public String getWaring() {
-		return waring;
+	public String getQuantityWaring() {
+		return quantityWaring;
 	}
 
-	public void setWaring(String waring) {
-		this.waring = waring;
+	public void setQuantityWaring(String quantityWaring) {
+		this.quantityWaring = quantityWaring;
 	}
 
 	public String getValidWaring() {

@@ -59,10 +59,10 @@
 		
 				<div class="form-group">
 					<div class="label">
-						<label>进货售价：</label>
+						<label>平均进价：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${stock.purchaseItem.salePrice }" name="" readonly="readonly"/>
+						<input type="text" class="input w50" value="${stock.purchaseItem.purchasePrice }" name="" readonly="readonly"/>
 					</div>
 				</div>
 				

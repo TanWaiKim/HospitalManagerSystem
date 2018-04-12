@@ -23,6 +23,7 @@ public interface PurchaseItemService {
 	int deletePurchaseItemByIds(String[] ids);
 	int deletePurchaseItemByPurchase(String purchaseNo);
 	List<TbPurchaseItem> selectAllPurchaseItem(String purchaseNo);
+	List<TbPurchaseItem> selectAllPurchaseItemByDrugId(Integer drugId);
 	List<TbPurchaseItem> selectAllPurchase(Map<String, Object> map);
 	TbPurchaseItem selectByDrugIdAndBatchNo(TbPurchaseItem purchaseItem);
 	List<TbPurchaseItem> selectAllPurchaseItem();

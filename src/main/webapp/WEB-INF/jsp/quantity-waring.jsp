@@ -59,7 +59,7 @@
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
 							<td>${stock.maxQuantity }</td>
-							<td>${stock.waring }</td>
+							<td>${stock.quantityWaring }</td>
 							<td>
 								<div class="button-group">
 									<a class="button border-main"

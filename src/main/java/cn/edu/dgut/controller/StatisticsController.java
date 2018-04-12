@@ -323,6 +323,7 @@ public class StatisticsController {
 			HttpServletResponse response, 
 			ModelMap modelMap) {
 		try {
+			// 如果输入搜索条件全为空，则显示所有的记录
 			if (drugName.equals("") && drugNo.equals("") && beginTime.equals("") && endTime.equals("")) {
 				this.getPurchase(request, response, modelMap);
 			} else {

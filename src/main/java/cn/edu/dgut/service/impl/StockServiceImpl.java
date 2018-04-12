@@ -238,12 +238,16 @@ public class StockServiceImpl implements StockService {
 		
 		List<TbStock> stockList = stockMapper.pageByQuantityWaring(map);
 		
+		if (stockList == null) {
+			return null;
+		}
+		
 		// 库存上下限预警
 		for (TbStock tbStock : stockList) {
 			if (tbStock.getStockQuantity() < tbStock.getMinQuantity()) {
-				tbStock.setWaring("当前库存量低于库存下限，请及时采药入库！");
+				tbStock.setQuantityWaring("当前库存量低于库存下限，请及时采药入库！");
 			} else if (tbStock.getStockQuantity() > tbStock.getMaxQuantity()) {
-				tbStock.setWaring("当前库存量高于库存上线，请减少库存数量！");
+				tbStock.setQuantityWaring("当前库存量高于库存上线，请减少库存数量！");
 			} 
 			stockMapper.updateWaring(tbStock);
 		}
@@ -282,12 +286,16 @@ public class StockServiceImpl implements StockService {
 		
 		List<TbStock> stockList = stockMapper.pageByQuantityWaring(map);
 		
+		if (stockList == null) {
+			return null;
+		}
+		
 		// 库存上下限预警
 		for (TbStock tbStock : stockList) {
 			if (tbStock.getStockQuantity() < tbStock.getMinQuantity()) {
-				tbStock.setWaring("当前库存量低于库存下限，请及时采药入库！");
+				tbStock.setQuantityWaring("当前库存量低于库存下限，请及时采药入库！");
 			} else if (tbStock.getStockQuantity() > tbStock.getMaxQuantity()) {
-				tbStock.setWaring("当前库存量高于库存上线，请减少库存数量！");
+				tbStock.setQuantityWaring("当前库存量高于库存上线，请减少库存数量！");
 			} 
 			stockMapper.updateWaring(tbStock);
 		}
@@ -323,6 +331,10 @@ public class StockServiceImpl implements StockService {
 		map.put("pageSize", page.getDbNumber());
 		
 		List<TbStock> stockList = stockMapper.pageByValidWaring(map);
+		
+		if (stockList == null) {
+			return null;
+		}
 		
 		// 有效期预警
 		for (TbStock tbStock : stockList) {
@@ -378,14 +390,16 @@ public class StockServiceImpl implements StockService {
 		
 		List<TbStock> stockList = stockMapper.pageByValidWaring(map);
 		
+		if (stockList == null) {
+			return null;
+		}
+		
 		// 有效期预警
 		for (TbStock tbStock : stockList) {
 			String remark = null;
 			if (stockMapper.countValidTime(tbStock) < 0) {
-				System.out.println("我是答案3："+stockMapper.countValidTime(tbStock));
 				remark = "该药品已经过期"+(-stockMapper.countValidTime(tbStock))+"天，请进行退货或销毁处理！";
 			} else {
-				System.out.println("我是答案4："+stockMapper.countValidTime(tbStock));
 				remark = "该药品还有"+stockMapper.countValidTime(tbStock)+"天将失效，请尽快销售！";
 			}
 			tbStock.setValidWaring(remark);

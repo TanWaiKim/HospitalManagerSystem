@@ -414,10 +414,21 @@ public class StockController {
 		
 		TbStock stock = stockList.get(0);
 		
+		List<TbPurchaseItem> purchaseItemList = purchaseItemService.selectAllPurchaseItemByDrugId(stock.getDrugId());
+		BigDecimal purchasePrice = new BigDecimal("0");
+		
+		// 计算平均进价
+		for(TbPurchaseItem tbPurchaseItem1 : purchaseItemList) {
+			purchasePrice = BigDecimalUtil.add(purchasePrice.doubleValue(), 
+					tbPurchaseItem1.getPurchasePrice().doubleValue());
+		}
+		purchasePrice = BigDecimalUtil.div(purchasePrice.doubleValue(), purchaseItemList.size());
+		
 		TbPurchaseItem purchaseItem = new TbPurchaseItem();
 		purchaseItem.setBatchNo(stock.getBatchNo());
 		purchaseItem.setDrugId(stock.getDrugId());
 		purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+		purchaseItem.setPurchasePrice(purchasePrice);
 		
 		stock.setPurchaseItem(purchaseItem);
 		stock.setStockQuantity(totalQuantity);

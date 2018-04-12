@@ -12,7 +12,7 @@
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="waring" property="waring" jdbcType="VARCHAR" />
+    <result column="quantity_waring" property="quantityWaring" jdbcType="VARCHAR" />
     <result column="valid_waring" property="validWaring" jdbcType="VARCHAR" />
   </resultMap>
   
@@ -27,7 +27,7 @@
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="waring" property="waring" jdbcType="VARCHAR" />
+    <result column="quantity_waring" property="quantityWaring" jdbcType="VARCHAR" />
     <result column="valid_waring" property="validWaring" jdbcType="VARCHAR" />
     <association property="purchaseItem" javaType="cn.edu.dgut.pojo.TbPurchaseItem">
     	<id property="id" column="id"/>
@@ -97,7 +97,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, warehouse_no, batch_no, drug_id, stock_quantity,  
-    min_quantity, max_quantity, operator, create_time, update_time, waring, valid_waring
+    min_quantity, max_quantity, operator, create_time, update_time, quantity_waring, valid_waring
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbStockExample" >
     select
@@ -132,11 +132,11 @@
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbStock" >
     insert into tb_stock (id, warehouse_no, batch_no, drug_id, 
       stock_quantity, min_quantity, max_quantity, 
-      operator, create_time, update_time, waring, valid_waring)
+      operator, create_time, update_time, quantity_waring, valid_waring)
     values (#{id,jdbcType=INTEGER}, #{warehouseNo,jdbcType=VARCHAR}, #{batchNo,jdbcType=VARCHAR}, #{drugId,jdbcType=INTEGER}, 
       #{stockQuantity,jdbcType=INTEGER}, #{minQuantity,jdbcType=INTEGER}, #{maxQuantity,jdbcType=INTEGER}, 
       #{operator,jdbcType=VARCHAR}, 
-      now(), now(), #{waring,jdbcType=VARCHAR}, #{validWaring,jdbcType=VARCHAR})
+      now(), now(), #{quantityWaring,jdbcType=VARCHAR}, #{validWaring,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbStock" >
     insert into tb_stock
@@ -171,8 +171,8 @@
       <if test="updateTime != null" >
         update_time,
       </if>
-      <if test="waring != null" >
-        waring,
+      <if test="quantityWaring != null" >
+        quantity_waring,
       </if>
       <if test="validWaring != null" >
         valid_waring,
@@ -209,8 +209,8 @@
       <if test="updateTime != null" >
         now(),
       </if>
-      <if test="waring != null" >
-        #{waring,jdbcType=VARCHAR},
+      <if test="quantityWaring != null" >
+        #{quantityWaring,jdbcType=VARCHAR},
       </if>
       <if test="validWaring != null" >
         #{validWaring,jdbcType=VARCHAR},
@@ -256,8 +256,8 @@
       <if test="record.updateTime != null" >
         update_time = now(),
       </if>
-      <if test="record.waring != null" >
-        waring = #{record.waring,jdbcType=VARCHAR},
+      <if test="record.quantityWaring != null" >
+        quantity_waring = #{record.quantityWaring,jdbcType=VARCHAR},
       </if>
       <if test="record.validWaring != null" >
         valid_waring = #{record.validWaring,jdbcType=VARCHAR},
@@ -279,7 +279,7 @@
       operator = #{record.operator,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = now(),
-      waring = #{record.waring,jdbcType=VARCHAR},
+      quantity_waring = #{record.quantityWaring,jdbcType=VARCHAR},
       valid_waring = #{record.validWaring,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -315,8 +315,8 @@
       <if test="updateTime != null" >
         update_time = now(),
       </if>
-       <if test="waring != null" >
-        waring = #{waring,jdbcType=VARCHAR},
+       <if test="quantityWaring != null" >
+        quantity_waring = #{quantityWaring,jdbcType=VARCHAR},
       </if>
        <if test="validWaring != null" >
         valid_waring = #{validWaring,jdbcType=VARCHAR},
@@ -354,8 +354,8 @@
       <if test="updateTime != null" >
         update_time = now(),
       </if>
-      <if test="waring != null" >
-        waring = #{waring,jdbcType=VARCHAR},
+      <if test="quantityWaring != null" >
+        quantity_waring = #{quantityWaring,jdbcType=VARCHAR},
       </if>
       <if test="validWaring != null" >
         valid_waring = #{validWaring,jdbcType=VARCHAR},
@@ -400,8 +400,8 @@
       <if test="updateTime != null" >
         update_time = now(),
       </if>
-      <if test="waring != null" >
-        waring = #{waring,jdbcType=VARCHAR},
+      <if test="quantityWaring != null" >
+        quantity_waring = #{quantityWaring,jdbcType=VARCHAR},
       </if>
       <if test="validWaring != null" >
         valid_waring = #{validWaring,jdbcType=VARCHAR},
@@ -416,8 +416,8 @@
       <if test="updateTime != null" >
         update_time = now(),
       </if>
-      <if test="waring != null" >
-        waring = #{waring,jdbcType=VARCHAR},
+      <if test="quantityWaring != null" >
+        quantity_waring = #{quantityWaring,jdbcType=VARCHAR},
       </if>
     </set>
     where drug_id = #{drugId,jdbcType=INTEGER}
@@ -448,7 +448,7 @@
       operator = #{operator,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now(),
-      waring = #{waring,jdbcType=VARCHAR},
+      quantity_waring = #{quantityWaring,jdbcType=VARCHAR},
       valid_waring = #{validWaring,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -478,7 +478,7 @@
 
   <sql id="Base_Column_List1" >
     s.id as id, s.warehouse_no as warehouse_no, s.batch_no as batch_no, s.drug_id as drug_id, stock_quantity,  
-    min_quantity, max_quantity, operator, s.create_time as create_time, s.update_time as update_time, waring, valid_waring, purchase_price, sale_price, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
+    min_quantity, max_quantity, operator, s.create_time as create_time, s.update_time as update_time, quantity_waring, valid_waring, purchase_price, sale_price, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
   </sql>
   
   
@@ -551,6 +551,7 @@
   	where s.drug_id = p.drug_id
   	AND s.batch_no = p.batch_no
   	AND DATEDIFF(p.valid_time,now()) <![CDATA[<]]> 15
+  	AND s.stock_quantity > 0
   </select>
   
   <!-- 条件查询医药有效期预警 -->
@@ -560,6 +561,7 @@
   	where s.drug_id = p.drug_id
   	AND s.batch_no = p.batch_no
   	AND DATEDIFF(p.valid_time,now()) <![CDATA[<]]> 15
+  	AND s.stock_quantity > 0
   	order by s.id limit #{pageIndex} ,#{pageSize}
   </select>
   
@@ -570,6 +572,7 @@
   	where s.drug_id = p.drug_id
   	AND s.batch_no = p.batch_no
   	AND DATEDIFF(p.valid_time,now()) <![CDATA[<]]> 15
+  	AND s.stock_quantity > 0
   	AND s.drug_id = #{drugId,jdbcType=INTEGER}
   	AND s.batch_no = #{batchNo,jdbcType=VARCHAR}
   </select> 
