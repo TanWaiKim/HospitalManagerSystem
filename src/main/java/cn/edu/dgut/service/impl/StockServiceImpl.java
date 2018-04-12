@@ -328,10 +328,8 @@ public class StockServiceImpl implements StockService {
 		for (TbStock tbStock : stockList) {
 			String remark = null;
 			if (stockMapper.countValidTime(tbStock) < 0) {
-				System.out.println("我是答案1："+stockMapper.countValidTime(tbStock));
 				remark = "该药品已经过期"+(-stockMapper.countValidTime(tbStock))+"天，请进行退货或销毁处理！";
 			} else {
-				System.out.println("我是答案2："+stockMapper.countValidTime(tbStock));
 				remark = "该药品还有"+stockMapper.countValidTime(tbStock)+"天将失效，请尽快销售！";
 			}
 			

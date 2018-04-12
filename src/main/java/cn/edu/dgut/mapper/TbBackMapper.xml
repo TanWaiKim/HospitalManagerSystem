@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.dgut.mapper.TbSalesItemMapper" >
-  <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbSalesItem" >
+<mapper namespace="cn.edu.dgut.mapper.TbBackMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbBack" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="sales_no" property="salesNo" jdbcType="BIGINT" />
+    <result column="back_type" property="backType" jdbcType="VARCHAR" />
+    <result column="back_object" property="backObject" jdbcType="VARCHAR" />
     <result column="drug_id" property="drugId" jdbcType="INTEGER" />
-    <result column="drug_name" property="drugName" jdbcType="VARCHAR" />
-    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
-    <result column="quantity" property="quantity" jdbcType="INTEGER" />
-    <result column="sale_total_price" property="saleTotalPrice" jdbcType="DECIMAL" />
+    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
+    <result column="back_sum" property="backSum" jdbcType="INTEGER" />
+    <result column="back_total_price" property="backTotalPrice" jdbcType="DECIMAL" />
+    <result column="back_reason" property="backReason" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,16 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sales_no, drug_id, drug_name, sale_price, quantity, sale_total_price, create_time, 
-    update_time,batch_no
+    id, back_type, back_object, drug_id, batch_no, back_sum, back_total_price, back_reason, 
+    operator, create_time, update_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbSalesItemExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbBackExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_sales_item
+    from tb_back
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,56 +93,58 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from tb_sales_item
+    from tb_back
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from tb_sales_item
+    delete from tb_back
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteBySalesNo" parameterType="java.lang.String" >
-    delete from tb_sales_item
-    where sales_no = #{selaseNo,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="cn.edu.dgut.pojo.TbSalesItemExample" >
-    delete from tb_sales_item
+  <delete id="deleteByExample" parameterType="cn.edu.dgut.pojo.TbBackExample" >
+    delete from tb_back
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.edu.dgut.pojo.TbSalesItem" >
-    insert into tb_sales_item (id, sales_no, drug_id, 
-      drug_name, sale_price, quantity, 
-      sale_total_price, create_time, update_time, batch_no
-      )
-    values (#{id,jdbcType=INTEGER}, #{salesNo,jdbcType=BIGINT}, #{drugId,jdbcType=INTEGER}, 
-      #{drugName,jdbcType=VARCHAR}, #{salePrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, 
-      #{saleTotalPrice,jdbcType=DECIMAL}, now(), now(), #{batchNo,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="cn.edu.dgut.pojo.TbBack" >
+    insert into tb_back (id, back_type, back_object, 
+      drug_id, batch_no, back_sum, 
+      back_total_price, back_reason, operator, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{backType,jdbcType=VARCHAR}, #{backObject,jdbcType=VARCHAR}, 
+      #{drugId,jdbcType=INTEGER}, #{batchNo,jdbcType=VARCHAR}, #{backSum,jdbcType=INTEGER}, 
+      #{backTotalPrice,jdbcType=DECIMAL}, #{backReason,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+      now(), now())
   </insert>
-  <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbSalesItem" >
-    insert into tb_sales_item
+  <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbBack" >
+    insert into tb_back
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="salesNo != null" >
-        sales_no,
+      <if test="backType != null" >
+        back_type,
+      </if>
+      <if test="backObject != null" >
+        back_object,
       </if>
       <if test="drugId != null" >
         drug_id,
       </if>
-      <if test="drugName != null" >
-        drug_name,
+      <if test="batchNo != null" >
+        batch_no,
       </if>
-      <if test="salePrice != null" >
-        sale_price,
+      <if test="backSum != null" >
+        back_sum,
       </if>
-      <if test="quantity != null" >
-        quantity,
+      <if test="backTotalPrice != null" >
+        back_total_price,
       </if>
-      <if test="saleTotalPrice != null" >
-        sale_total_price,
+      <if test="backReason != null" >
+        back_reason,
+      </if>
+      <if test="operator != null" >
+        operator,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -149,31 +152,34 @@
       <if test="updateTime != null" >
         update_time,
       </if>
-      <if test="batchNo != null" >
-        batch_no,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="salesNo != null" >
-        #{salesNo,jdbcType=BIGINT},
+      <if test="backType != null" >
+        #{backType,jdbcType=VARCHAR},
+      </if>
+      <if test="backObject != null" >
+        #{backObject,jdbcType=VARCHAR},
       </if>
       <if test="drugId != null" >
         #{drugId,jdbcType=INTEGER},
       </if>
-      <if test="drugName != null" >
-        #{drugName,jdbcType=VARCHAR},
+      <if test="batchNo != null" >
+        #{batchNo,jdbcType=VARCHAR},
       </if>
-      <if test="salePrice != null" >
-        #{salePrice,jdbcType=DECIMAL},
+      <if test="backSum != null" >
+        #{backSum,jdbcType=INTEGER},
       </if>
-      <if test="quantity != null" >
-        #{quantity,jdbcType=INTEGER},
+      <if test="backTotalPrice != null" >
+        #{backTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="saleTotalPrice != null" >
-        #{saleTotalPrice,jdbcType=DECIMAL},
+      <if test="backReason != null" >
+        #{backReason,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         now(),
@@ -181,40 +187,43 @@
       <if test="updateTime != null" >
         now(),
       </if>
-      <if test="batchNo != null" >
-        #{batchNo,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.edu.dgut.pojo.TbSalesItemExample" resultType="java.lang.Integer" >
-    select count(*) from tb_sales_item
+  <select id="countByExample" parameterType="cn.edu.dgut.pojo.TbBackExample" resultType="java.lang.Integer" >
+    select count(*) from tb_back
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update tb_sales_item
+    update tb_back
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.salesNo != null" >
-        sales_no = #{record.salesNo,jdbcType=BIGINT},
+      <if test="record.backType != null" >
+        back_type = #{record.backType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backObject != null" >
+        back_object = #{record.backObject,jdbcType=VARCHAR},
       </if>
       <if test="record.drugId != null" >
         drug_id = #{record.drugId,jdbcType=INTEGER},
       </if>
-      <if test="record.drugName != null" >
-        drug_name = #{record.drugName,jdbcType=VARCHAR},
+      <if test="record.batchNo != null" >
+        batch_no = #{record.batchNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.salePrice != null" >
-        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      <if test="record.backSum != null" >
+        back_sum = #{record.backSum,jdbcType=INTEGER},
       </if>
-      <if test="record.quantity != null" >
-        quantity = #{record.quantity,jdbcType=INTEGER},
+      <if test="record.backTotalPrice != null" >
+        back_total_price = #{record.backTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.saleTotalPrice != null" >
-        sale_total_price = #{record.saleTotalPrice,jdbcType=DECIMAL},
+      <if test="record.backReason != null" >
+        back_reason = #{record.backReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -222,50 +231,54 @@
       <if test="record.updateTime != null" >
         update_time = now(),
       </if>
-      <if test="record.batchNo != null" >
-        batch_no = #{record.batchNo,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update tb_sales_item
+    update tb_back
     set id = #{record.id,jdbcType=INTEGER},
-      sales_no = #{record.salesNo,jdbcType=BIGINT},
+      back_type = #{record.backType,jdbcType=VARCHAR},
+      back_object = #{record.backObject,jdbcType=VARCHAR},
       drug_id = #{record.drugId,jdbcType=INTEGER},
-      drug_name = #{record.drugName,jdbcType=VARCHAR},
-      sale_price = #{record.salePrice,jdbcType=DECIMAL},
-      quantity = #{record.quantity,jdbcType=INTEGER},
-      sale_total_price = #{record.saleTotalPrice,jdbcType=DECIMAL},
+      batch_no = #{record.batchNo,jdbcType=VARCHAR},
+      back_sum = #{record.backSum,jdbcType=INTEGER},
+      back_total_price = #{record.backTotalPrice,jdbcType=DECIMAL},
+      back_reason = #{record.backReason,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
-      batch_no = #{record.batchNo,jdbcType=VARCHAR}
+      update_time = now()
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.dgut.pojo.TbSalesItem" >
-    update tb_sales_item
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.dgut.pojo.TbBack" >
+    update tb_back
     <set >
-      <if test="salesNo != null" >
-        sales_no = #{salesNo,jdbcType=BIGINT},
+      <if test="backType != null" >
+        back_type = #{backType,jdbcType=VARCHAR},
+      </if>
+      <if test="backObject != null" >
+        back_object = #{backObject,jdbcType=VARCHAR},
       </if>
       <if test="drugId != null" >
         drug_id = #{drugId,jdbcType=INTEGER},
       </if>
-      <if test="drugName != null" >
-        drug_name = #{drugName,jdbcType=VARCHAR},
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
       </if>
-      <if test="salePrice != null" >
-        sale_price = #{salePrice,jdbcType=DECIMAL},
+      <if test="backSum != null" >
+        back_sum = #{backSum,jdbcType=INTEGER},
       </if>
-      <if test="quantity != null" >
-        quantity = #{quantity,jdbcType=INTEGER},
+      <if test="backTotalPrice != null" >
+        back_total_price = #{backTotalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="saleTotalPrice != null" >
-        sale_total_price = #{saleTotalPrice,jdbcType=DECIMAL},
+      <if test="backReason != null" >
+        back_reason = #{backReason,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -273,73 +286,67 @@
       <if test="updateTime != null" >
         update_time = now(),
       </if>
-      <if test="batchNo != null" >
-        batch_no = #{batchNo,jdbcType=VARCHAR},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbSalesItem" >
-    update tb_sales_item
-    set sales_no = #{salesNo,jdbcType=BIGINT},
+  <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbBack" >
+    update tb_back
+    set back_type = #{backType,jdbcType=VARCHAR},
+      back_object = #{backObject,jdbcType=VARCHAR},
       drug_id = #{drugId,jdbcType=INTEGER},
-      drug_name = #{drugName,jdbcType=VARCHAR},
-      sale_price = #{salePrice,jdbcType=DECIMAL},
-      quantity = #{quantity,jdbcType=INTEGER},
-      sale_total_price = #{saleTotalPrice,jdbcType=DECIMAL},
+      batch_no = #{batchNo,jdbcType=VARCHAR},
+      back_sum = #{backSum,jdbcType=INTEGER},
+      back_total_price = #{backTotalPrice,jdbcType=DECIMAL},
+      back_reason = #{backReason,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
-      batch_no = #{batchNo,jdbcType=VARCHAR}
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
  
-   <!-- 查询最后一条记录 -->
+  <!-- 查询最后一条记录 -->
   <select id="selectLastRecord"  resultMap="BaseResultMap">
-  	select * from  tb_sales_item order by id desc limit 1
+  	select * from  tb_back order by id desc limit 1
   </select>
-  
-  
-  <select id="selectByDrugIdAndBatchNo" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseItem" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_sales_item
-    where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
-   	order by id desc limit 1 
-  </select>
-  
-     <!-- 查询所有记录 -->
-  <select id="selectAllSalesItem" parameterType="java.lang.String"  resultMap="BaseResultMap">
-  	select * from  tb_sales_item
-  	where sales_no = #{salesNo}
-  </select>  
-  
+ 
   <!-- 统计记录数 -->
   <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
-  	select count(*) from tb_sales_item s
-  	where s.sales_no = #{salesNo}
-  </select>
+  	select count(*) from tb_back b
+  		<where>
+  			<if test="backObject != null and !&quot;&quot;.equals(backObject.trim())">
+  				and b.back_object like '%' #{backObject} '%'
+  			</if>
+  			<if test="backType!=null and !&quot;&quot;.equals(backType.trim())">
+  				and b.back_type like '%' #{backType} '%'
+  			</if>
+  		</where>
+  </select> 
   
   <!-- 条件查询 -->
   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
-  	select  
-  	<include refid="Base_Column_List"></include>
-  	from tb_sales_item s
-  	where s.sales_no = #{salesNo}
-  	order by s.id limit #{pageIndex} ,#{pageSize}
+  	select * from tb_back b
+  		<where>
+  			<if test="backObject != null and !&quot;&quot;.equals(backObject.trim())">
+  				and b.back_object like '%' #{backObject} '%'
+  			</if>
+  			<if test="backType!=null and !&quot;&quot;.equals(backType.trim())">
+  				and b.back_type like '%' #{backType} '%'
+  			</if>
+  		</where>
+  		order by b.id limit #{pageIndex} ,#{pageSize}
   </select>
   
   <!-- 批量删除 -->
   <delete id="deleteBatch" parameterType="list">
-		delete from tb_sales_item where id in
+		delete from tb_back where id in
 		<foreach collection="list" item="id" open="(" close=")"
 			separator=",">
 			#{id}
 		</foreach>
   </delete>
- 
-    <!-- 查询所有记录 -->
-  <select id="selectAllSalesItem1"  resultMap="BaseResultMap">
-  	select * from  tb_sales_item
-  </select>    
   
+  <!-- 查询所有记录 -->
+  <select id="selectAllBack"  resultMap="BaseResultMap">
+  	select * from  tb_back
+  </select>
 </mapper>

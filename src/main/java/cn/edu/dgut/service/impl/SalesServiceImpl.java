@@ -245,6 +245,7 @@ public class SalesServiceImpl implements SalesService {
 				return 0;
 			}
 			
+			// 获得到将被销售的药品，key为批号，value为药品信息
 			Map<String, TbStock> map = this.getSalesStock(salesDto,drug.getId());
 			
 			TbSalesItem salesItem = new TbSalesItem();

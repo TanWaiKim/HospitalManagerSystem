@@ -161,18 +161,18 @@
 					
 			<li>
 				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>进药退回
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>药商退药
 				</h5>
 		
 				<ul style="display: none">
 					<li>
-						<a href="${pageContext.request.contextPath }/drug/skipToAdd" target="right">
+						<a href="${pageContext.request.contextPath }/back/skipToAdd?type=1" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>添加退药单
 						</a>
 					</li>
 					<li>
-						<a href="drug/list" target="right">
+						<a href="back/list" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>管理退药单
 						</a>
@@ -234,11 +234,25 @@
 			</li>
 					
 			<li>
-				<a href="info.html" target="right">
-					<span class="icon-caret-right"></span>销药退出
-				</a>
-			</li>
-					
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>病人退药
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/back/skipToAdd?type=2" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加退药单
+						</a>
+					</li>
+					<li>
+						<a href="back/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理退药单
+						</a>
+					</li>
+				</ul>
+			</li>	
 		</ul>
 		<h2>
 			<span class="icon-mobile"></span>统计分析

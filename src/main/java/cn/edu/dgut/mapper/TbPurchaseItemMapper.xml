@@ -107,6 +107,7 @@
     <include refid="Base_Column_List" />
     from tb_purchase_item
     where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
+    order by id desc limit 1
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
