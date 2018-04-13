@@ -18,7 +18,7 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrugAdmin;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseItem;
@@ -55,7 +55,7 @@ public class PurchaseItemController {
 			@RequestParam(value = "purchaseNo", defaultValue = "") String purchaseNo,
 			HttpSession session, 
 			Model model) {
-        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
         if(admin ==null){
             return "login";
         }
@@ -191,7 +191,7 @@ public class PurchaseItemController {
 			@RequestParam(value = "id") Integer id,
 			HttpSession session, 
 			Model model) {
-        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
         if(admin ==null){
             return "login";
         }

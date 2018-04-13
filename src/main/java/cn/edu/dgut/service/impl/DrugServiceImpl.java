@@ -8,11 +8,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.edu.dgut.mapper.TbAdminMapper;
+import cn.edu.dgut.mapper.TbDrugAdminMapper;
 import cn.edu.dgut.mapper.TbDrugMapper;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
-import cn.edu.dgut.pojo.TbAdminExample;
+import cn.edu.dgut.pojo.TbDrugAdmin;
+import cn.edu.dgut.pojo.TbDrugAdminExample;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.service.DrugService;
 
@@ -27,7 +27,7 @@ public class DrugServiceImpl implements DrugService {
 	private TbDrugMapper drugMapper;
 	
 	@Autowired
-	private TbAdminMapper adminMapper;
+	private TbDrugAdminMapper drugAdminMapper;
 	
 	/**
 	 * 获取tb_drug中最后一条记录
@@ -141,10 +141,10 @@ public class DrugServiceImpl implements DrugService {
 	@Override
 	public boolean isSimpleLoginName(String username) {
 		//根据loginName条件查询
-		TbAdminExample example = new TbAdminExample();
+		TbDrugAdminExample example = new TbDrugAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
-		List<TbAdmin> adminList = adminMapper.selectByExample(example);
-		if(adminList != null){
+		List<TbDrugAdmin> drugAdminList = drugAdminMapper.selectByExample(example);
+		if(drugAdminList != null){
 			return true;
 		}
 		return false;

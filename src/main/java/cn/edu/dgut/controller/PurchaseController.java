@@ -18,7 +18,7 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrugAdmin;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.pojo.TbPurchase;
@@ -56,7 +56,7 @@ public class PurchaseController {
 	 */
 	@RequestMapping("/skipToAdd")
 	public String skipToAdd(HttpSession session, Model model) {
-        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
         if(admin ==null){
             return "login";
         }

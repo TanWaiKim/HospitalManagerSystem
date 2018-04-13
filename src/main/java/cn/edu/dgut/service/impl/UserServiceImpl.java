@@ -15,8 +15,8 @@ import cn.edu.dgut.mapper.TDoctorMapper;
 
 import cn.edu.dgut.pojo.TDoctor;
 import cn.edu.dgut.pojo.TDoctorExample;
-import cn.edu.dgut.pojo.TbAdmin;
-import cn.edu.dgut.service.AdminService;
+import cn.edu.dgut.pojo.TbDrugAdmin;
+import cn.edu.dgut.service.DrugAdminService;
 import cn.edu.dgut.service.UserService;
 /*
  * service层实现业务逻辑
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 	private TDoctorMapper doctorMapper;
 	
 	@Autowired
-	private AdminService adminService;
+	private DrugAdminService drugAdminService;
 	
 	
 	public HmsResult login(String username, String password, String postOffice, HttpServletRequest request, HttpSession session) {
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 				//对输入的密码进行验证
 				if(doctorList.get(0).getLoginPassword().equals(password)){
 					//密码相同
-					TbAdmin admin = new TbAdmin();
+					TbDrugAdmin admin = new TbDrugAdmin();
 					admin.setUsername(doctorList.get(0).getName());
 					session.setAttribute(Const.CURRENT_USER, admin);
 					request.getSession().setAttribute("doctorInfo", doctorList.get(0));
@@ -58,10 +58,10 @@ public class UserServiceImpl implements UserService {
 			return HmsResult.build(500, "账号错误！");
 		} else if(postOffice.equals("药品员")){
 			//条件查询  通过用户名查询记录 
-			TbAdmin admin = adminService.login(username, password);
+			TbDrugAdmin drugAdmin = drugAdminService.login(username, password);
 			//验证密码
-			if(admin != null){
-				session.setAttribute(Const.CURRENT_USER, admin);
+			if(drugAdmin != null){
+				session.setAttribute(Const.CURRENT_USER, drugAdmin);
 				return HmsResult.build(200, "药品员登录成功");		
 			}
 			//账号不一致

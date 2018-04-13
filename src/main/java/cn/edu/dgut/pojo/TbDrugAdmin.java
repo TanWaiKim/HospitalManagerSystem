@@ -2,7 +2,7 @@ package cn.edu.dgut.pojo;
 
 import java.util.Date;
 
-public class TbAdmin {
+public class TbDrugAdmin {
     private Integer id;
 
     private String username;

@@ -8,11 +8,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.edu.dgut.mapper.TbAdminMapper;
+import cn.edu.dgut.mapper.TbDrugAdminMapper;
 import cn.edu.dgut.mapper.TbProviderMapper;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
-import cn.edu.dgut.pojo.TbAdminExample;
+import cn.edu.dgut.pojo.TbDrugAdmin;
+import cn.edu.dgut.pojo.TbDrugAdminExample;
 import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.pojo.TbProviderExample;
 import cn.edu.dgut.service.ProviderService;
@@ -28,7 +28,7 @@ public class ProviderServiceImpl implements ProviderService {
 	private TbProviderMapper providerMapper;
 	
 	@Autowired
-	private TbAdminMapper adminMapper;
+	private TbDrugAdminMapper adminMapper;
 	
 	/**
 	 * 首次进入到供药商列表页面
@@ -137,9 +137,9 @@ public class ProviderServiceImpl implements ProviderService {
 	@Override
 	public boolean isSimpleLoginName(String username) {
 		//根据loginName条件查询
-		TbAdminExample example = new TbAdminExample();
+		TbDrugAdminExample example = new TbDrugAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
-		List<TbAdmin> adminList = adminMapper.selectByExample(example);
+		List<TbDrugAdmin> adminList = adminMapper.selectByExample(example);
 		if(adminList != null){
 			return true;
 		}

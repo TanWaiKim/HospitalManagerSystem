@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.edu.dgut.common.util.IDUtils;
-import cn.edu.dgut.mapper.TbAdminMapper;
+import cn.edu.dgut.mapper.TbDrugAdminMapper;
 import cn.edu.dgut.mapper.TbWarehouseMapper;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
-import cn.edu.dgut.pojo.TbAdminExample;
+import cn.edu.dgut.pojo.TbDrugAdmin;
+import cn.edu.dgut.pojo.TbDrugAdminExample;
 import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.pojo.TbWarehouseExample;
 import cn.edu.dgut.service.WarehouseService;
@@ -30,7 +30,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 	TbWarehouseMapper warehouseMapper;
 	
 	@Autowired
-	TbAdminMapper adminMapper;
+	TbDrugAdminMapper adminMapper;
 	
 	/**
 	 * 首次进入列表页面
@@ -172,9 +172,9 @@ public class WarehouseServiceImpl implements WarehouseService {
 	@Override
 	public boolean isSimpleLoginName(String username) {
 		//根据loginName条件查询
-		TbAdminExample example = new TbAdminExample();
+		TbDrugAdminExample example = new TbDrugAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
-		List<TbAdmin> adminList = adminMapper.selectByExample(example);
+		List<TbDrugAdmin> adminList = adminMapper.selectByExample(example);
 		if(adminList != null){
 			return true;
 		}

@@ -45,7 +45,7 @@
 		</div>
 
 		<h2>
-			<span class="icon-user"></span>基础信息管理
+			<span class="icon-cog"></span>基础信息管理
 		</h2>
 		
 		<ul style="display: none">
@@ -292,7 +292,7 @@
 		</ul>
 
 		<h2>
-			<span class="icon-cog"></span>系统设置
+			<span class="icon-user"></span>用户信息管理
 		</h2>
 		
 		<ul style="display: none">
