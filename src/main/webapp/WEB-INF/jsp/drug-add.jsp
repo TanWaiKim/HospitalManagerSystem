@@ -62,11 +62,13 @@
 					<div class="label">
 						<label>功能主治：</label>
 					</div>
+					
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="purpose" data-validate="required:请输入功能主治" />
+						
+						<textarea rows="2" class="input" name="purpose"  data-validate="required:请输入功能主治"></textarea>
 						<div class="tips"></div>
 					</div>
+					
 				</div>
 
 				<div class="form-group">
@@ -106,9 +108,10 @@
 					<div class="label">
 						<label>用法用量：</label>
 					</div>
+
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="howuse" data-validate="required:请输入用法用量" />
+						
+						<textarea rows="2" class="input" name="howuse"  data-validate="required:请输入用法用量"></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>	
@@ -128,9 +131,10 @@
 					<div class="label">
 						<label>不良反应：</label>
 					</div>
+
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="uneffect" data-validate="required:请输入不良反应" />
+						
+						<textarea rows="2" class="input" name="uneffect"  data-validate="required:请输入不良反应"></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>		

@@ -88,27 +88,27 @@ public class BackController {
 	public HmsResult addBackByTbBack(HttpSession session, Model model, TbBack back) {
 		try {
 			
-			if (back.getBackObject() == null) {
+			if (back.getBackObject() == null || back.getBackObject().equals("")) {
 				return HmsResult.build(505, "退药对象不能为空！");
 			}	        
 	        
-			if (back.getBackType() == null) {
+			if (back.getBackType() == null || back.getBackType().equals("")) {
 				return HmsResult.build(505, "退药类型不能为空！");
 			}
 			
-			if (back.getDrugId() == null) {
+			if (back.getDrugId() == null || back.getDrugId().equals("")) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
-			if (back.getBatchNo() == null) {
+			if (back.getBatchNo() == null || back.getBatchNo().equals("")) {
 				return HmsResult.build(505, "药品批次不能为空！");
 			}
 			
-			if (back.getBackSum() == null) {
+			if (back.getBackSum() == null || back.getBackSum() == 0) {
 				return HmsResult.build(505, "退药数量不能为空！");
 			}
 			
-			if (back.getBackReason() == null) {
+			if (back.getBackReason() == null || back.getBackReason().equals("")) {
 				return HmsResult.build(505, "退药原因不能为空！");
 			}		
 			

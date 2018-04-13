@@ -62,9 +62,15 @@
 					<div class="label">
 						<label>功能主治：</label>
 					</div>
+					
 					<div class="field">
-						<input type="text" class="input w50" value="${drug.purpose }"
-							name="purpose" data-validate="required:请输入功能主治" />
+						<textarea id="purpose"  rows="2" class="input" name="purpose"  data-validate="required:请输入功能主治">
+						
+						</textarea>
+						
+						<script>  
+       						document.getElementById("purpose").value="${drug.purpose }"  
+   						</script>  
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -106,9 +112,15 @@
 					<div class="label">
 						<label>用法用量：</label>
 					</div>
+
 					<div class="field">
-						<input type="text" class="input w50" value="${drug.howuse }"
-							name="howuse" data-validate="required:请输入用法用量" />
+						<textarea id="howuse"  rows="2" class="input" name="howuse"  data-validate="required:请输入用法用量">
+						
+						</textarea>
+						
+						<script>  
+       						document.getElementById("howuse").value="${drug.howuse }"  
+   						</script>  
 						<div class="tips"></div>
 					</div>
 				</div>		
@@ -128,9 +140,15 @@
 					<div class="label">
 						<label>不良反应：</label>
 					</div>
+
 					<div class="field">
-						<input type="text" class="input w50" value="${drug.uneffect }"
-							name="uneffect" data-validate="required:请输入不良反应" />
+						<textarea id="uneffect"  rows="2" class="input" name="uneffect"  data-validate="required:请输入不良反应">
+						
+						</textarea>
+						
+						<script>  
+       						document.getElementById("uneffect").value="${drug.uneffect }"  
+   						</script>  
 						<div class="tips"></div>
 					</div>
 				</div>

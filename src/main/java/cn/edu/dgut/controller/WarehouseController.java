@@ -116,7 +116,7 @@ public class WarehouseController {
 			// 更新前后warehouse_id都不会变
 			TbWarehouse warehouse1 = warehouseService.getWarehouseById(warehouse.getId());
 			TbWarehouse warehouse2 = warehouseService.getWarehouseByPhone(warehouse.getPhone());
-			if (warehouse.getPhone() == null) {
+			if (warehouse.getPhone() == null || warehouse.getPhone().equals("")) {
 				return HmsResult.build(505, "手机号码不能为空！");
 			}
 			if (warehouse.getPhone() != null && warehouse.getPhone().length() != 11) {
@@ -156,16 +156,16 @@ public class WarehouseController {
 	@ResponseBody()
 	public HmsResult addWarehouseByTbWarehouse(TbWarehouse warehouse, Model model) {
 		try {
-			if (warehouse.getPhone() == null) {
+			if (warehouse.getPhone() == null || warehouse.getPhone().equals("")) {
 				return HmsResult.build(505, "手机号码不能为空！");
 			}
-			if (warehouse.getWarehouseName() == null) {
+			if (warehouse.getWarehouseName() == null || warehouse.getWarehouseName().equals("")) {
 				return HmsResult.build(505, "仓库名称不能为空！");
 			}
-			if (warehouse.getLocation() == null) {
+			if (warehouse.getLocation() == null || warehouse.getLocation().equals("")) {
 				return HmsResult.build(505, "仓库所在位置不能为空！");
 			}	
-			if (warehouse.getManager() == null) {
+			if (warehouse.getManager() == null || warehouse.getManager().equals("")) {
 				return HmsResult.build(505, "管理员不能为空！");
 			}
 			if (warehouse.getPhone() != null && warehouse.getPhone().length() != 11) {

@@ -91,7 +91,7 @@ public class SalesItemController {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
-			if (salesDto.getQuantity() == null) {
+			if (salesDto.getQuantity() == null || salesDto.getQuantity() == 0) {
 				return HmsResult.build(505, "销药数量不能为空！");
 			}
 			
@@ -218,12 +218,12 @@ public class SalesItemController {
 			SalesDto salesDto) {
 		try {
 			
-			if (salesDto.getDrugId() == null) {
+			if (salesDto.getDrugId() == null || salesDto.getDrugId() == 0) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
 			
-			if (salesDto.getQuantity() == null) {
+			if (salesDto.getQuantity() == null || salesDto.getQuantity() == 0) {
 				return HmsResult.build(505, "销药数量不能为空！");
 			}
 			

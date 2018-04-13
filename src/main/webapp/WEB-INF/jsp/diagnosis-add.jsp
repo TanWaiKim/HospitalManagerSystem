@@ -50,7 +50,7 @@
 					</div>
 					<div class="field">
 						
-						<textarea rows="5" class="input" name="symptom" style="height:200px; data-validate="required:请输入病人症状""></textarea>
+						<textarea rows="5" class="input" name="symptom" style="height:200px;" data-validate="required:请输入病人症状"></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>

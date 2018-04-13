@@ -56,45 +56,37 @@ public class DrugController {
 	@ResponseBody()
 	public HmsResult addDrugByTbDrug(TbDrug drug, Model model) {
 		try {
-			if (drug.getDrugtypeId() == null) {
+			if (drug.getDrugtypeId() == null || drug.getDrugtypeId() == 0) {
 				return HmsResult.build(505, "医药种类不能为空！");
 			}
 			
-			if (drug.getDrugName() == null) {
+			if (drug.getDrugName() == null || drug.getDrugName().equals("")) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
-			if (drug.getPurpose() == null) {
+			if (drug.getPurpose() == null || drug.getPurpose().equals("")) {
 				return HmsResult.build(505, "功能主治不能为空！");
 			}
 			
-			if (drug.getUnit() == null) {
+			if (drug.getUnit() == null || drug.getUnit().equals("")) {
 				return HmsResult.build(505, "单位不能为空！");
 			}
 			
-			if (drug.getSpec() == null) {
+			if (drug.getSpec() == null || drug.getSpec().equals("")) {
 				return HmsResult.build(505, "规格不能为空！");
 			}
 			
-			if (drug.getHowuse() == null) {
+			if (drug.getHowuse() == null || drug.getHowuse().equals("")) {
 				return HmsResult.build(505, "用法用量不能为空！");
 			}
 			
-			if (drug.getDrugNo() == null) {
+			if (drug.getDrugNo() == null || drug.getDrugNo().equals("")) {
 				return HmsResult.build(505, "批准文号不能为空！");
 			}
 			
-			if (drug.getUneffect() == null) {
+			if (drug.getUneffect() == null || drug.getUneffect().equals("")) {
 				return HmsResult.build(505, "不良反应不能为空！");
 			}
-			
-//			if (drug.getProducedTime() == null) {
-//				return HmsResult.build(505, "生产日期不能为空！");
-//			}
-//
-//			if (drug.getValidTime() == null) {
-//				return HmsResult.build(505, "有效期至不能为空！");
-//			}
 			
 			if (drugService.addDrugByTbDrug(drug) > 0) {
 				return HmsResult.ok();

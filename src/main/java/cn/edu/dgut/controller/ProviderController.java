@@ -48,13 +48,13 @@ public class ProviderController {
 	@ResponseBody()
 	public HmsResult addProviderByTbProvider(TbProvider provider, Model model) {
 		try {
-			if (provider.getProviderName() == null) {
+			if (provider.getProviderName() == null || provider.getProviderName().equals("")) {
 				return HmsResult.build(505, "供药商名称不能为空！");
 			}
-			if (provider.getAddress() == null) {
+			if (provider.getAddress() == null || provider.getAddress().equals("")) {
 				return HmsResult.build(505, "供药商地址不能为空！");
 			}
-			if (provider.getContact() == null) {
+			if (provider.getContact() == null || provider.getContact().equals("")) {
 				return HmsResult.build(505, "联系人不能为空！");
 			}
 			if (provider.getPhone() != null && provider.getPhone().length() != 11) {
@@ -157,13 +157,13 @@ public class ProviderController {
 			TbProvider provider1 = providerService.getProviderById(provider.getId());
 			TbProvider provider2 = providerService.getProviderByPhone(provider.getPhone());
 			
-			if (provider.getProviderName() == null) {
+			if (provider.getProviderName() == null || provider.getProviderName().equals("")) {
 				return HmsResult.build(505, "供药商名称不能为空！");
 			}
-			if (provider.getAddress() == null) {
+			if (provider.getAddress() == null || provider.getAddress().equals("")) {
 				return HmsResult.build(505, "供药商地址不能为空！");
 			}
-			if (provider.getContact() == null) {
+			if (provider.getContact() == null || provider.getContact().equals("")) {
 				return HmsResult.build(505, "联系人不能为空！");
 			}
 			if (provider.getPhone() != null && provider.getPhone().length() != 11) {

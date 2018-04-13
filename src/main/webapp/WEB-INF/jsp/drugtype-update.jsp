@@ -44,8 +44,16 @@
 					<div class="label">
 						<label>医药种类简介：</label>
 					</div>
+
 					<div class="field">
-						<input type="text" class="input w60" value="${drugtype.remarks}" name="remarks" data-validate="required:请输入医药种类简介"/>
+						<textarea id="remarks" rows="5" class="input" name="remarks" style="height:200px;" data-validate="required:请输入医药种类简介">
+							
+						</textarea>
+						
+						<script>  
+       						document.getElementById("remarks").value="${drugtype.remarks}"  
+   						</script>  
+						
 						<div class="tips"></div>
 					</div>
 				</div>

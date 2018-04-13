@@ -93,11 +93,11 @@ public class PurchaseItemController {
 	public HmsResult addPurchaseByPurchaseNo(HttpSession session, Model model, PurchaseDto purchaseDto) {
 		try {
 			
-			if (purchaseDto.getWarehouseNo() == null) {
+			if (purchaseDto.getWarehouseNo() == null || purchaseDto.getWarehouseNo().equals("")) {
 				return HmsResult.build(505, "仓库不能为空！");
 			}
 			
-			if (purchaseDto.getDrugId() == null) {
+			if (purchaseDto.getDrugId() == null || purchaseDto.getDrugId() == 0) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
@@ -110,7 +110,7 @@ public class PurchaseItemController {
 			}
 			
 			
-			if (purchaseDto.getQuantity() == null) {
+			if (purchaseDto.getQuantity() == null || purchaseDto.getQuantity() == 0) {
 				return HmsResult.build(505, "进药数量不能为空！");
 			}
 			
@@ -122,7 +122,7 @@ public class PurchaseItemController {
 				return HmsResult.build(505, "有效日期至不能为空！");
 			}
 			
-			if (purchaseDto.getBatchNo() == null) {
+			if (purchaseDto.getBatchNo() == null || purchaseDto.getBatchNo().equals("")) {
 				return HmsResult.build(505, "产品批号不能为空！");
 			}	
 			
@@ -235,7 +235,7 @@ public class PurchaseItemController {
 	public HmsResult updatePurchaseItemByPurchaseItemId(HttpSession session, Model model, PurchaseDto purchaseDto) {
 		try {
 			
-			if (purchaseDto.getDrugId() == null) {
+			if (purchaseDto.getDrugId() == null || purchaseDto.getDrugId() == 0) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
@@ -248,7 +248,7 @@ public class PurchaseItemController {
 			}
 			
 			
-			if (purchaseDto.getQuantity() == null) {
+			if (purchaseDto.getQuantity() == null || purchaseDto.getQuantity() == 0) {
 				return HmsResult.build(505, "进药数量不能为空！");
 			}
 			
@@ -260,7 +260,7 @@ public class PurchaseItemController {
 				return HmsResult.build(505, "有效日期至不能为空！");
 			}
 			
-			if (purchaseDto.getBatchNo() == null) {
+			if (purchaseDto.getBatchNo() == null || purchaseDto.getBatchNo().equals("")) {
 				return HmsResult.build(505, "产品批号不能为空！");
 			}	
 			

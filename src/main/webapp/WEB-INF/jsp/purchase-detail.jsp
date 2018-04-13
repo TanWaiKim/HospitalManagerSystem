@@ -202,21 +202,17 @@
 		}
 		
 		function putInStock(id) {
-			
-			if (confirm("确定要入库id为" + id + "的记录吗？")) {
-				var params = {"id":id};
-				$.post("${pageContext.request.contextPath }/stock/add",params ,function(data){
-        			if(data.status == 200){
-        				alert('入库成功!');
-        				location.href = "${pageContext.request.contextPath }/purchase/findByPurchaseNo?purchaseNo=${purchase.purchaseNo }";
-        			}
-        			if(data.status == 500){
-        				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/purchase/findByPurchaseNo?purchaseNo=${purchase.purchaseNo }";
-        			}
-        		});
-				//window.location.href = "${pageContext.request.contextPath }/patient/deleteOne?id="+ id;
-			}
+			var params = {"id":id};
+			$.post("${pageContext.request.contextPath }/stock/add",params ,function(data){
+    			if(data.status == 200){
+    				alert('入库成功!');
+    				location.href = "${pageContext.request.contextPath }/purchase/findByPurchaseNo?purchaseNo=${purchase.purchaseNo }";
+    			}
+    			if(data.status == 500){
+    				alert(data.msg);
+    				location.href = "${pageContext.request.contextPath }/purchase/findByPurchaseNo?purchaseNo=${purchase.purchaseNo }";
+    			}
+    		});
 		}
 
 		//搜索
