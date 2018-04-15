@@ -142,6 +142,13 @@ public class DrugtypeControlller {
 	@ResponseBody()
 	public HmsResult updateDrugtypeByTbDrugtype(TbDrugtype drugtype, Model model) {
 		try {
+			if (drugtype.getDrugtypeName() == null || drugtype.getDrugtypeName().equals("")) {
+				return HmsResult.build(505, "医药种类名称不能为空！");
+			}
+			if (drugtype.getRemarks() == null || drugtype.getRemarks().equals("")) {
+				return HmsResult.build(505, "医药种类简介不能为空！");
+			}
+			
 			if (drugtypeService.updateDrugtypeByTbDrugtype(drugtype) > 0) {
 				return HmsResult.ok();
 			}

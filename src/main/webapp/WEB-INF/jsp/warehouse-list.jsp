@@ -22,6 +22,10 @@
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
 <script src="${pageContext.request.contextPath }/js/list.js"></script>
 <script src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
+<script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
 </head>
 <body>
 	<form method="post"
@@ -154,21 +158,50 @@
 	    }
 	 	
 		function judgeDelete(id) {
-			
-			if (confirm("确定要删除id为" + id + "的记录吗？")) {
-				var params = {"id":id};
-				$.post("${pageContext.request.contextPath }/warehouse/deleteOne",params ,function(data){
-        			if(data.status == 200){
-        				alert('删除成功!');
-        				location.href = "${pageContext.request.contextPath }/warehouse/list";
-        			}
-        			if(data.status == 500){
-        				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/warehouse/list";
-        			}
-        		});
-				//window.location.href = "${pageContext.request.contextPath }/patient/deleteOne?id="+ id;
-			}
+			var d = dialog({
+				title: '温馨提示',
+				content: '确定要删除该条记录吗？',
+				okValue: '确定',
+				ok: function () {
+					var params = {"id":id};
+					$.post("${pageContext.request.contextPath }/warehouse/deleteOne",params ,function(data){
+	        			if(data.status == 200){
+							var d1 = dialog({
+								okValue: '确定',
+								title: '温馨提示',
+								content: '恭喜您，删除成功!',
+
+								width: 200,
+								height: 50,
+								ok: function () {
+									location.href = "${pageContext.request.contextPath }/warehouse/list";
+								}
+							});
+							d1.showModal();
+	        			}
+	        			if(data.status == 500){
+	        				
+							var d1 = dialog({
+								okValue: '确定',
+								title: '温馨提示',
+								content: data.msg,
+
+								width: 200,
+								height: 50,
+								ok: function () {
+									location.href = "${pageContext.request.contextPath }/warehouse/list";
+								}
+							});
+							d1.showModal();
+	        			}
+	        		});
+				},
+				cancelValue: '取消',
+				cancel: function () {
+					location.href = "${pageContext.request.contextPath }/warehouse/list";
+				}
+			});
+			d.showModal();
 		}
 
 		//搜索
@@ -197,26 +230,64 @@
 				}
 			});
 			if (Checkbox) {
-				var t = confirm("您确认要删除选中的内容吗？");
-				if (t == false){
-					return false;
-				}
-				var ids = getSelectionsIds();
-				var params = {"ids":ids};
-				$.post("${pageContext.request.contextPath }/warehouse/deleteBatch",params ,function(data){
-        			if(data.status == 200){
-        				alert('删除医药种类成功!');
-        				location.href = "${pageContext.request.contextPath }/warehouse/list";
-        			}
-        			if(data.status == 500){
-        				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/warehouse/list";
-        			}
-        		});
-				//$('#listform').attr("action","${pageContext.request.contextPath }/patient/deleteBatch");
-				//$("#listform").submit();
+				var d = dialog({
+					title: '温馨提示',
+					content: '确定要删除该批记录吗？',
+					okValue: '确定',
+					ok: function () {
+						var ids = getSelectionsIds();
+						var params = {"ids":ids};
+						$.post("${pageContext.request.contextPath }/warehouse/deleteBatch",params ,function(data){
+		        			if(data.status == 200){
+								var d1 = dialog({
+									okValue: '确定',
+									title: '温馨提示',
+									content: '恭喜您，删除成功!',
+
+									width: 200,
+									height: 50,
+									ok: function () {
+										location.href = "${pageContext.request.contextPath }/warehouse/list";
+									}
+								});
+								d1.showModal();
+		        			}
+		        			if(data.status == 500){
+		        				
+								var d1 = dialog({
+									okValue: '确定',
+									title: '温馨提示',
+									content: data.msg,
+
+									width: 200,
+									height: 50,
+									ok: function () {
+										location.href = "${pageContext.request.contextPath }/warehouse/list";
+									}
+								});
+								d1.showModal();
+		        			}
+		        		});
+					},
+					cancelValue: '取消',
+					cancel: function () {
+						location.href = "${pageContext.request.contextPath }/warehouse/list";
+					}
+				});
+				d.showModal();
 			} else {
-				alert("请选择您要删除的内容!");
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '请选择您要删除的内容！',
+
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
 				return false;
 			}
 		}

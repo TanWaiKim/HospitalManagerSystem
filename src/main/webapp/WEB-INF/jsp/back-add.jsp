@@ -18,8 +18,10 @@
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
 <script src="${pageContext.request.contextPath }/js/My97DatePicker/WdatePicker.js"></script> 
-  </head>  
 
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
+<script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -172,12 +174,44 @@
 							$("#backAddForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
-									alert("添加成功!");
-									location.href = "${pageContext.request.contextPath }/back/listPatientBack";
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: '恭喜您，添加成功!',
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											location.href = "${pageContext.request.contextPath }/back/listPatientBack";
+										}
+									});
+									d.showModal();
 								} else if (data.status == 500) {
-									alert("添加失败!");
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: '很抱歉，添加失败!',
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											
+										}
+									});
+									d.showModal();
 								} else if (data.status == 505) {
-									alert(data.msg);
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: data.msg,
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											
+										}
+									});
+									d.showModal();
 								}
 							});
 		}

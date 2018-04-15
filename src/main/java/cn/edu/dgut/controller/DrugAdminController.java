@@ -158,6 +158,33 @@ public class DrugAdminController {
 	@ResponseBody()
 	public HmsResult updateDrugAdminByTbDrugAdmin(TbDrugAdmin drugAdmin, Model model) {
 		try {
+			if (drugAdmin.getUsername() == null || drugAdmin.getUsername().equals("")) {
+				return HmsResult.build(505, "用户名不能为空！");
+			}
+			
+			if (drugAdmin.getPassword() == null || drugAdmin.getPassword().equals("")) {
+				return HmsResult.build(505, "密码不能为空！");
+			}
+			
+			if (drugAdmin.getSex() == null || drugAdmin.getSex().equals("")) {
+				return HmsResult.build(505, "性别不能为空！");
+			}
+			
+			if (drugAdmin.getEmail() == null || drugAdmin.getEmail().equals("")) {
+				return HmsResult.build(505, "邮箱不能为空！");
+			}
+			
+			if (drugAdmin.getPhone() == null || drugAdmin.getPhone().equals("")) {
+				return HmsResult.build(505, "手机号码不能为空！");
+			}
+			
+			if (drugAdmin.getAddress() == null || drugAdmin.getAddress().equals("")) {
+				return HmsResult.build(505, "住址不能为空！");
+			}
+			
+			if (drugAdmin.getIntro() == null || drugAdmin.getIntro().equals("")) {
+				return HmsResult.build(505, "自我简介不能为空！");
+			}
 			if (drugAdminService.updateDrugAdminByTbDrugAdmin(drugAdmin) > 0) {
 				return HmsResult.ok();
 			}
