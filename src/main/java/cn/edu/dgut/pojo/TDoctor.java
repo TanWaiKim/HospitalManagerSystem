@@ -9,25 +9,17 @@ public class TDoctor {
 
     private String name;
 
-    private Long postId;
-
-    private String post;
-
     private String sex;
 
-    private Date birthday;
+    private Integer age;
 
-    private String memo;
-
-    private Long mcId;
+    private String phone;
 
     private String mcName;
 
     private String loginName;
 
     private String loginPassword;
-
-    private Integer isActive;
 
     private Date created;
 
@@ -57,22 +49,6 @@ public class TDoctor {
         this.name = name == null ? null : name.trim();
     }
 
-    public Long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
-    public String getPost() {
-        return post;
-    }
-
-    public void setPost(String post) {
-        this.post = post == null ? null : post.trim();
-    }
-
     public String getSex() {
         return sex;
     }
@@ -81,28 +57,20 @@ public class TDoctor {
         this.sex = sex == null ? null : sex.trim();
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
-    public String getMemo() {
-        return memo;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo == null ? null : memo.trim();
-    }
-
-    public Long getMcId() {
-        return mcId;
-    }
-
-    public void setMcId(Long mcId) {
-        this.mcId = mcId;
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
     }
 
     public String getMcName() {
@@ -129,14 +97,6 @@ public class TDoctor {
         this.loginPassword = loginPassword == null ? null : loginPassword.trim();
     }
 
-    public Integer getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Integer isActive) {
-        this.isActive = isActive;
-    }
-
     public Date getCreated() {
         return created;
     }
@@ -152,4 +112,13 @@ public class TDoctor {
     public void setUpdated(Date updated) {
         this.updated = updated;
     }
+
+	@Override
+	public String toString() {
+		return "TDoctor [id=" + id + ", doctorId=" + doctorId + ", name=" + name + ", sex=" + sex + ", age=" + age
+				+ ", phone=" + phone + ", mcName=" + mcName + ", loginName=" + loginName + ", loginPassword="
+				+ loginPassword + ", created=" + created + ", updated=" + updated + "]";
+	}
+    
+    
 }

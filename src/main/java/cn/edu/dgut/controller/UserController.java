@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.dgut.common.result.HmsResult;
+import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.service.UserService;
 
 @Controller
@@ -25,7 +26,12 @@ public class UserController {
 	@RequestMapping("/login")
 	@ResponseBody()
 	public HmsResult login(String username, String password, String postOffice,HttpServletRequest request, HttpSession session){
-		//System.out.println("username:"+username+"\n password:"+password+"\n postOffice:"+postOffice);
-		return userService.login(username, password, postOffice, request, session);
+		try{
+			return userService.login(username, password, postOffice, request, session);
+		}catch(Exception e){
+			ExceptionUtil.getStackTrace(e);
+			return HmsResult.build(505, "系统错误");
+		}
 	}
+	
 }

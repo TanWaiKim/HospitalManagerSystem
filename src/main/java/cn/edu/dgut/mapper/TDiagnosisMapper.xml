@@ -324,4 +324,6 @@
 		</where>
 		order by d.diagnosis_id limit #{pageIndex} ,#{pageSize}
 	</select>
+	
+	
 </mapper>

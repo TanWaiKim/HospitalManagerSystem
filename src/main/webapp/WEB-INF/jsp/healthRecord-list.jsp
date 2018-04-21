@@ -73,7 +73,7 @@
 						
 						<td><div class="button-group">
 								<a class="button border-main"
-									href="${pageContext.request.contextPath }/healthRecord/findById/${diagnosis.patient.patientId }"><span
+									href="${pageContext.request.contextPath }/healthRecord/findById/${diagnosis.diagnosisId }"><span
 									class="icon-edit"></span> 详情</a>
 							</div></td>
 					</tr>

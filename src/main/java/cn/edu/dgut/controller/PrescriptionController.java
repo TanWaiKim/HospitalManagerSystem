@@ -56,7 +56,8 @@ public class PrescriptionController {
 			model.addAttribute("prescriptionList", prescriptionList);
 			model.addAttribute("page", page);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getStackTrace());
+			return "error";
 		}
 		return "prescription-list";
 	}
@@ -76,7 +77,7 @@ public class PrescriptionController {
 			} else {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
-			List<TPrescription> prescriptionList = prescriptionService.pageByCondition(prescriptionId,patientName, page);
+			List<TPrescription> prescriptionList = prescriptionService.pageByCondition(prescriptionId,null,patientName, page);
 			//用于存放自定义处方数据返回到jsp中
 			if(prescriptionList.size()>0){
 				for (TPrescription prescription : prescriptionList) {
@@ -94,7 +95,8 @@ public class PrescriptionController {
 			model.addAttribute("patientName", patientName);
 		
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getStackTrace());
+			return "error";
 		}
 		return "prescription-list";
 	}
@@ -113,6 +115,7 @@ public class PrescriptionController {
 		return "prescription-add";
 	}
 	
+	//添加处方接口
 	@RequestMapping("/add/{patientId}")
 	@ResponseBody
 	public HmsResult addPrescription(@PathVariable("patientId")String patientId, String paramData, HttpServletRequest request){
@@ -137,8 +140,8 @@ public class PrescriptionController {
 			}
 
 		} catch (Exception e) {
-			e.getStackTrace();
-			return HmsResult.build(500, "添加失败！");
+			System.out.println(e.getStackTrace());
+			return HmsResult.build(500, "系统错误，添加失败！");
 		}
 		return HmsResult.build(500, "添加失败！");
 	}
@@ -189,8 +192,8 @@ public class PrescriptionController {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
-			e.getStackTrace();
-			return HmsResult.build(500, "修改失败！");
+			System.out.println(e.getStackTrace());
+			return HmsResult.build(500, "系统错误，修改失败！");
 		}
 		return HmsResult.build(500, "修改失败！");
 	}
@@ -204,7 +207,7 @@ public class PrescriptionController {
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除失败！");
+			return HmsResult.build(500, "系统错误，删除失败！");
 		}
 		
 		return HmsResult.build(500, "删除失败！");
@@ -222,10 +225,11 @@ public class PrescriptionController {
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除失败！");
+			return HmsResult.build(500, "系统错误，删除失败！");
 		}
 		return HmsResult.build(500, "删除失败！");
 	}
+	
 	
 	@RequestMapping(value = "/auto")
 	@ResponseBody
@@ -234,9 +238,92 @@ public class PrescriptionController {
 		try {
 			dNs = prescriptionService.autoDrugName(term,response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getStackTrace());
 		}
 		return dNs;
+	}
+	
+	/**
+	 * 处分信息（用于销售）
+	 * @param currentPage
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/list-data")
+	public String getAllPrescriptionData(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model,HttpServletRequest request) {
+		try {
+			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+1);
+			page.setCurrentPage(currentPage);
+			List<TPrescription> prescriptionList = prescriptionService.getAllPrescription(page);
+			//用于存放自定义处方数据返回到jsp中
+			if(prescriptionList.size()>0){
+				for (TPrescription prescription : prescriptionList) {
+					List<DrugData> drugDataList = JsonUtils.jsonToList(prescription.getDrugData(), DrugData.class);
+					StringBuilder sb = new StringBuilder();
+					for (DrugData drugData : drugDataList) {
+						sb.append("药品名称："+drugData.getDrugName()+"，数量："+drugData.getDrugNum()+"; ");
+					}
+					prescription.setDrugData(new String(sb));
+				}
+			}
+			model.addAttribute("prescriptionList", prescriptionList);
+			model.addAttribute("page", page);
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+			return "error";
+		}
+		return "prescription-data";
+	}
+	
+	/**
+	 * 处分信息（用于销售）
+	 * @param prescriptionId
+	 * @param patientName
+	 * @param currentPage
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/dataPageByCondition")
+	public String getPrescriptionDataByPage(
+			@RequestParam(value = "prescriptionId", defaultValue = "") String prescriptionId,
+			@RequestParam(value = "patientId", defaultValue = "") String patientId,
+			@RequestParam(value = "patientName", defaultValue = "") String patientName,
+			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
+		try {
+
+			// 创建分页对象
+			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+1);
+			Pattern pattern = Pattern.compile("[0-9]{1,9}");
+			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
+				page.setCurrentPage(1);
+			} else {
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+			List<TPrescription> prescriptionList = prescriptionService.pageByCondition(prescriptionId,patientId,patientName, page);
+			//用于存放自定义处方数据返回到jsp中
+			if(prescriptionList.size()>0){
+				for (TPrescription prescription : prescriptionList) {
+					List<DrugData> drugDataList = JsonUtils.jsonToList(prescription.getDrugData(), DrugData.class);
+					StringBuilder sb = new StringBuilder();
+					for (DrugData drugData : drugDataList) {
+						sb.append("药品名称："+drugData.getDrugName()+"，数量："+drugData.getDrugNum()+";");
+					}
+					prescription.setDrugData(new String(sb));
+				}
+			}
+			model.addAttribute("prescriptionList", prescriptionList);
+			model.addAttribute("page", page);
+			model.addAttribute("prescriptionId", prescriptionId);
+			model.addAttribute("patientName", patientName);
+		
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+			return "error";
+		}
+		return "prescription-data";
 	}
 
 }

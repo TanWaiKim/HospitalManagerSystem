@@ -22,6 +22,16 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
+	<!-- 拦截器配置 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 拦截用户登录验证 -->
+			<mvc:mapping path="/mainDoctor/**"/>
+			<mvc:mapping path="/mainAdmin/**"/>
+			<bean class="cn.edu.dgut.common.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 	<!-- 定义文件上传解析器 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

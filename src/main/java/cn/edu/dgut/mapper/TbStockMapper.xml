@@ -477,7 +477,7 @@
   
 
   <sql id="Base_Column_List1" >
-    s.id as id, warehouse_no, s.batch_no as batch_no, s.drug_id as drug_id, stock_quantity,  
+    s.id as id, s.warehouse_no as warehouse_no, s.batch_no as batch_no, s.drug_id as drug_id, stock_quantity,  
     min_quantity, max_quantity, operator, s.create_time as create_time, s.update_time as update_time, waring, valid_waring, purchase_price, sale_price, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time
   </sql>
   

@@ -18,7 +18,7 @@
 <div class="panel admin-panel">
   <div class="panel-head"><strong><span class="icon-key"></span> 修改密码</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="">
+    <form method="post" class="form-x" onsubmit="return false;" id="passlist">
       <div class="form-group">
         <div class="label">
           <label for="sitename">管理员帐号：</label>
@@ -59,10 +59,30 @@
           <label></label>
         </div>
         <div class="field">
-          <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>   
+          <button class="button bg-main icon-check-square-o" onclick="updatePass()" > 提交</button>   
         </div>
       </div>      
     </form>
   </div>
 </div>
+<script type="text/javascript">
+		function updatePass() {
+			//ajax的post方式提交表单
+			//$("#passlist").serialize()将表单序列号为key-value形式的字符串
+			$
+					.post(
+							"${pageContext.request.contextPath }/resetPass",
+							$("#passlist").serialize(),
+							function(data) {
+								if (data.status == 200) {
+									alert("修改成功!");
+									location.href = "${pageContext.request.contextPath }/wel.jsp";
+								} else if (data.status == 500) {
+									alert(data.msg);
+								} else if (data.status == 505) {
+									alert(data.msg);
+								}
+							});
+		}
+	</script>
 </body></html>

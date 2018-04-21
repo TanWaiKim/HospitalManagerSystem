@@ -19,9 +19,12 @@ import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrug;
+import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbSales;
 import cn.edu.dgut.pojo.TbSalesItem;
-import cn.edu.dgut.service.PatientService;
+import cn.edu.dgut.service.DrugService;
+import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.SalesItemService;
 import cn.edu.dgut.service.SalesService;
 
@@ -38,8 +41,9 @@ public class SalesItemController {
 	@Autowired
 	private SalesItemService salesItemService;
 	@Autowired
-	private PatientService patientService;
-	
+	private DrugService drugService;
+	@Autowired
+	private PurchaseItemService purchaseItemService;
 	
 	/**
 	 * 返回添加销药单项目页面
@@ -65,7 +69,6 @@ public class SalesItemController {
 		salesDto.setTotalQuantity(sales.getTotalQuantity());
 		salesDto.setTotalPrice(sales.getTotalPrice());
 		salesDto.setOperator(sales.getOperator());
-		salesDto.setRemarks(sales.getRemarks());
 		
 		model.addAttribute("salesDto", salesDto); 
 		
@@ -129,6 +132,20 @@ public class SalesItemController {
 			TbSales sales = salesService.getSalesBySalesNo(salesNo);
 			model.addAttribute("sales", sales);
 			List<TbSalesItem> salesItemList = salesItemService.getAllSalesItem(salesNo, page);
+			
+			TbDrug drug = new TbDrug();
+			TbPurchaseItem purchaseItem = new TbPurchaseItem();
+			
+			for (int i = 0; i < salesItemList.size(); i++) {
+				drug = drugService.getDrugById(salesItemList.get(i).getDrugId());
+				purchaseItem.setBatchNo(salesItemList.get(i).getBatchNo());
+				purchaseItem.setDrugId(salesItemList.get(i).getDrugId());
+				purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+				drug.setPurpose(purchaseItem.getProduceTime());
+				drug.setSpec(purchaseItem.getValidTime());
+				salesItemList.get(i).setDrug(drug);
+			}
+			
 			model.addAttribute("salesItemList", salesItemList);
 			model.addAttribute("page", page);
 			
@@ -166,7 +183,6 @@ public class SalesItemController {
 		salesDto.setTotalQuantity(sales.getTotalQuantity());
 		salesDto.setTotalPrice(sales.getTotalPrice());
 		salesDto.setOperator(sales.getOperator());
-		salesDto.setRemarks(sales.getRemarks());
 		
 		
 		// 根据销售详细单id获取销售详细信息

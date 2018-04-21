@@ -42,7 +42,6 @@
 						<th width="100" >总价格</th>					
 						<th width="150" >创建时间</th>
 						<th width="80" >操作员</th>
-						<th width="150" >备注</th>
 					</tr>
 					<tr>
 						<td>
@@ -63,22 +62,9 @@
 						<td>
 							${sales.operator }
 						</td>
-						<td>
-							${sales.remarks }
-						</td>
 					</tr>
 				</table>	
-				<br/>
-
-				<br/>
-				<ul class="search" style="padding-left: 10px;">
-					<li>
-						<a class="button border-main icon-plus-square-o" href="${pageContext.request.contextPath }/salesItem/skipToAdd?salesNo=${sales.salesNo }">
-							添加药品项目
-						</a>
-					</li>
-				</ul>			
-
+				<br/>		
 			</div>
 			
 
@@ -92,12 +78,13 @@
 					<th width="125" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="200" >医药名称</th>
 					<th width="150" >产品批号</th>
-					<th width="100" >销药单价</th>			
+					<th width="100" >销药单价</th>		
+					<th width="100" >单位</th>	
 					<th width="100" >数量</th>
 					<th width="100" >总价</th>
-					<th width="200" >创建时间</th>
-					<th width="200" >更新时间</th>
-					<th width=500" >操作</th>
+					<th width="200" >生产时间</th>
+					<th width="200" >有效期至</th>
+					<th width="400" >操作</th>
 				</tr>
 				<c:forEach items="${salesItemList}" var="salesItem"  varStatus="status">
 					<tr>
@@ -111,10 +98,11 @@
 						<td>${salesItem.drugName }</td>
 						<td>${salesItem.batchNo }</td>
 						<td>${salesItem.salePrice }</td>
+						<td>${salesItem.drug.unit }</td>
 						<td>${salesItem.quantity }</td>
 						<td>${salesItem.saleTotalPrice }</td>
-						<td><fmt:formatDate type="date" value="${salesItem.createTime }"/></td>
-						<td><fmt:formatDate type="date" value="${salesItem.updateTime }"/></td>
+						<td>${salesItem.drug.purpose }</td>
+						<td>${salesItem.drug.spec }</td>
 						
 						<td><div class="button-group">
 								<a class="button border-main"

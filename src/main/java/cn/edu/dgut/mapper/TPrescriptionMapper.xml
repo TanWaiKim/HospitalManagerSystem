@@ -264,6 +264,9 @@
 			<if test="prescriptionId!=null and !&quot;&quot;.equals(prescriptionId.trim())">
 				and pr.prescription_id like '%' #{prescriptionId} '%'
 			</if>
+			<if test="patientId!=null and !&quot;&quot;.equals(patientId.trim())">
+				and pr.patient_id like '%' #{patientId} '%'
+			</if>
 			and pr.patient_id = p.patient_id
 		</where>
 	</select>
@@ -276,6 +279,9 @@
 			</if>
 			<if test="prescriptionId!=null and !&quot;&quot;.equals(prescriptionId.trim())">
 				and pr.prescription_id like '%' #{prescriptionId} '%'
+			</if>
+			<if test="patientId!=null and !&quot;&quot;.equals(patientId.trim())">
+				and pr.patient_id like '%' #{patientId} '%'
 			</if>
 			and pr.patient_id = p.patient_id
 		</where>

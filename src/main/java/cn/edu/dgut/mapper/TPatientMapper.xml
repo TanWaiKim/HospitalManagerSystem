@@ -351,6 +351,7 @@
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <!-- 条件查询总记录数 -->
   <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
   	select count(*) from t_patient p
   		<where>
@@ -371,6 +372,7 @@
   			</if>
   		</where>
   </select>
+  <!-- 多条件查询所有病人记录 -->
    <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
   	select * from t_patient p
   		<where>
@@ -435,5 +437,35 @@
   				and p.created <![CDATA[>=]]> #{beginTime} and p.created <![CDATA[<=]]> #{endTime}
   			</if>
   		</where>
+  </select>
+  <select id="countByPersonType" parameterType="java.util.Map"
+		resultType="int">
+		select count(*) from t_patient p
+		<where>
+			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+				and p.name = #{name}
+			</if>
+			and p.person_type != #{personType}
+			order by id
+		</where>
+	</select>
+	
+	<select id="pageByPersonType" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select * from t_patient p
+		<where>
+			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+				and p.name = #{name}
+			</if>
+			and p.person_type != #{personType}
+		</where>
+		order by id limit #{pageIndex} ,#{pageSize}
+	</select>
+  
+   <!-- 根据输入字符自动模糊匹配病人id记录 -->
+  <select id="selectPatientByAutoComplete" parameterType="string" resultMap="BaseResultMap">
+  	select patient_id 
+  	from  t_patient
+  	where patient_id like '%' #{parameter} '%'
   </select>
 </mapper>

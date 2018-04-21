@@ -16,8 +16,6 @@ public class TbSales {
 
     private String operator;
 
-    private String remarks;
-
     private Date createTime;
 
     private Date updateTime;
@@ -72,14 +70,6 @@ public class TbSales {
 
     public void setOperator(String operator) {
         this.operator = operator == null ? null : operator.trim();
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
     }
 
     public Date getCreateTime() {

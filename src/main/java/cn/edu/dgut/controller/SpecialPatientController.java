@@ -1,6 +1,5 @@
 package cn.edu.dgut.controller;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TDiagnosis;
 import cn.edu.dgut.pojo.TPatient;
-import cn.edu.dgut.service.DiagnosisService;
 import cn.edu.dgut.service.PatientService;
 
 /**
@@ -25,8 +22,6 @@ import cn.edu.dgut.service.PatientService;
 @RequestMapping("/specialPatient")
 public class SpecialPatientController {
 
-	@Autowired
-	private DiagnosisService diagnosisService;
 
 	@Autowired
 	private PatientService patientService;
@@ -35,7 +30,7 @@ public class SpecialPatientController {
 		try {
 			Page page = new Page();
 			page.setCurrentPage(currentPage);
-			model.addAttribute("diagnosisList", diagnosisService.getDiagnosisByPersonType(page));
+			model.addAttribute("patientList", patientService.getPatientByPersonType(page));
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,8 +52,8 @@ public class SpecialPatientController {
 			} else {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
-			List<TDiagnosis> diagnosisList = diagnosisService.pageByPatientNameAndPersonType(patientName, page);
-			model.addAttribute("diagnosisList", diagnosisList);
+
+			model.addAttribute("patientList", model.addAttribute("patientList", patientService.pageByPatientNameAndPersonType(patientName, page)));
 			model.addAttribute("page", page);
 			model.addAttribute("patientName", patientName);
 		} catch (Exception e) {
@@ -70,7 +65,7 @@ public class SpecialPatientController {
 	
 	@RequestMapping("/findById/{patientId}")
 	public String getHealthRecordByPatientId(@PathVariable("patientId") String patientId, Model model) {
-		TPatient patient = patientService.getHealthRecordByPId(patientId);
+		TPatient patient = patientService.getSpecialHealthRecordByPId(patientId);
 		model.addAttribute("patient", patient);
 		return "specialPatient-detail";
 	}

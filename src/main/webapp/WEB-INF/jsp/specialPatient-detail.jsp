@@ -68,6 +68,14 @@
 					<td style="height:50px;border:1px solid cadetblue;">${patient.diagnosis.bodyStatus }</td>
 				</tr>
 				
+				 <tr>
+                    <td style="border:1px solid cadetblue;">入院时间：</td>
+                    <td style="border:1px solid cadetblue;"><fmt:formatDate type="date" value="${patient.stayHospital.created }"/></td>
+                </tr>
+                  <tr>
+                    <td style="border:1px solid cadetblue;">住院病床号：</td>
+                    <td style="border:1px solid cadetblue;">${patient.stayHospital.sickbedId }</td>
+                </tr>
 			</tbody>
 		</table>
 	</div>

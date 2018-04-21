@@ -25,7 +25,7 @@
 </head>
 <body>
 	<form method="post"
-		action="${pageContext.request.contextPath }/notice/pageByCondition"
+		action="${pageContext.request.contextPath }/notice/pageByConditionForAdmin"
 		id="listform">
 		<input type="hidden" id="currentPage" name="currentPage"
 			value="${page.currentPage }" />
@@ -143,11 +143,11 @@
 				$.post("${pageContext.request.contextPath }/notice/deleteOne",params ,function(data){
         			if(data.status == 200){
         				alert('删除成功!');
-        				location.href = "${pageContext.request.contextPath }/notice/list";
+        				location.href = "${pageContext.request.contextPath }/notice/alist";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/notice/list";
+        				location.href = "${pageContext.request.contextPath }/notice/alist";
         			}
         		});
 				//window.location.href = "${pageContext.request.contextPath }/patient/deleteOne?id="+ id;
@@ -189,11 +189,11 @@
 				$.post("${pageContext.request.contextPath }/notice/deleteBatch",params ,function(data){
         			if(data.status == 200){
         				alert('删除成功!');
-        				location.href = "${pageContext.request.contextPath }/notice/list";
+        				location.href = "${pageContext.request.contextPath }/notice/alist";
         			}
         			if(data.status == 500){
         				alert(data.msg);
-        				location.href = "${pageContext.request.contextPath }/notice/list";
+        				location.href = "${pageContext.request.contextPath }/notice/alist";
         			}
         		});
 				//$('#listform').attr("action","${pageContext.request.contextPath }/patient/deleteBatch");

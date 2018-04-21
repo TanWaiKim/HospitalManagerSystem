@@ -34,7 +34,7 @@ body {
 				<td colspan="5" class="title-name"><span>医院管理系统</span></td>
 			</tr>
 			<tr>
-				<td><img src="images/login/login_02.jpg" width="331" height="80"></td>
+				<td><img src="${pageContext.request.contextPath }/images/login/login_02.jpg" width="331" height="80"></td>
 				<td width="432" bgcolor="#000000">
 					<table width="100%" border="0" cellspacing="0" cellpadding="5">
 						<tr>
@@ -53,17 +53,18 @@ body {
 						<tr>
 							<td align="right" class="white">登录类型:</td>
 							<td class="white">
-							<input type="radio" name="postOffice"value="医生" checked="checked">医生 
-							<input type="radio" name="postOffice" value="护士">护士 
-							<input type="radio" name="postOffice" value="医药管理员">医药管理员</td>
+								<input type="radio" name="postOffice"value="医生" checked="checked">医生 
+								<input type="radio" name="postOffice" value="药品员">药品员
+								<input type="radio" name="postOffice" value="管理员">管理员
+							</td>
 						</tr>
 					</table>
 				</td>
-				<td><img src="images/login/login_04.jpg" width="237" height="80"
+				<td><img src="${pageContext.request.contextPath }/images/login/login_04.jpg" width="237" height="80"
 					alt=""></td>
 			</tr>
 			<tr>
-				<td colspan="5"><img src="images/login/login_05.jpg" width="1000"
+				<td colspan="5"><img src="${pageContext.request.contextPath }/images/login/login_05.jpg" width="1000"
 					height="200" alt=""></td>
 			</tr>
 		</table>

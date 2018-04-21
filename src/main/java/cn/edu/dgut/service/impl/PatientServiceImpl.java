@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -25,6 +27,7 @@ import cn.edu.dgut.common.util.IDUtils;
 import cn.edu.dgut.mapper.TDiagnosisMapper;
 import cn.edu.dgut.mapper.TPatientMapper;
 import cn.edu.dgut.mapper.TPrescriptionMapper;
+import cn.edu.dgut.mapper.TSickbedMapper;
 import cn.edu.dgut.mapper.TStayHospitalMapper;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TDiagnosis;
@@ -32,10 +35,11 @@ import cn.edu.dgut.pojo.TDiagnosisExample;
 import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.pojo.TPatientExample;
 import cn.edu.dgut.pojo.TPrescriptionExample;
+import cn.edu.dgut.pojo.TSickbed;
+import cn.edu.dgut.pojo.TSickbedExample;
 import cn.edu.dgut.pojo.TStayHospital;
 import cn.edu.dgut.pojo.TStayHospitalExample;
 import cn.edu.dgut.pojo.TbDrug;
-import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.service.PatientService;
 
 @Service
@@ -169,6 +173,7 @@ public class PatientServiceImpl implements PatientService {
 		TStayHospitalExample dExample = new TStayHospitalExample();
 		dExample.createCriteria().andPatientIdEqualTo(patientId);
 		stayHospitalMapper.deleteByExample(dExample);
+
 	}
 
 	// 批量删除记录
@@ -177,7 +182,7 @@ public class PatientServiceImpl implements PatientService {
 		for (String id : ids) {
 			// 通过id查询patient获取patientId
 			String patientId = patientMapper.selectByPrimaryKey(Long.valueOf(id).longValue()).getPatientId();
-			//该方法删除与病人相关的诊断，处方，住院等信息
+			// 该方法删除与病人相关的诊断，处方，住院等信息
 			deleteRelaByPatientId(patientId);
 			list.add(Long.valueOf(id).longValue());
 		}
@@ -332,9 +337,9 @@ public class PatientServiceImpl implements PatientService {
 						row.createCell((short) 10).setCellValue(patient.getLoginName());
 						row.createCell((short) 11).setCellValue(patient.getLoginPassword());
 						row.createCell((short) 12)
-						.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getCreated()));
-				row.createCell((short) 13)
-						.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getUpdated()));
+								.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getCreated()));
+						row.createCell((short) 13)
+								.setCellValue(new SimpleDateFormat("yyyy-mm-dd").format(patient.getUpdated()));
 					}
 				}
 				FileOutputStream fout = new FileOutputStream(filename);
@@ -447,12 +452,10 @@ public class PatientServiceImpl implements PatientService {
 		}
 		return null;
 	}
-	
-	
 
 	// 查询健康档案
 	@Override
-	public TPatient getHealthRecordByPId(String patientId) {
+	public TPatient getSpecialHealthRecordByPId(String patientId) {
 		// 通过patientId查询病人记录
 		TPatientExample example0 = new TPatientExample();
 		example0.createCriteria().andPatientIdEqualTo(patientId);
@@ -467,9 +470,9 @@ public class PatientServiceImpl implements PatientService {
 				// 通过patientId查询病人住院记录
 				TDiagnosis diagnosis = diagnosisList.get(diagnosisList.size() - 1);
 				patient.setDiagnosis(diagnosis);
-				TStayHospitalExample example1 = new TStayHospitalExample();
-				example1.createCriteria().andPatientIdEqualTo(patientId);
-				List<TStayHospital> stayHospitalList = stayHospitalMapper.selectByExample(example1);
+				TStayHospitalExample sHExample = new TStayHospitalExample();
+				sHExample.createCriteria().andPatientIdEqualTo(patientId);
+				List<TStayHospital> stayHospitalList = stayHospitalMapper.selectByExample(sHExample);
 				if (stayHospitalList.size() > 0) {
 					TStayHospital stayHospital = stayHospitalList.get(stayHospitalList.size() - 1);
 					patient.setStayHospital(stayHospital);
@@ -487,11 +490,11 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<TPatient> selectAllPatient() {
 		List<TPatient> patients = patientMapper.selectAllPatient();
-		
+
 		if (patients != null) {
 			return patients;
 		}
-		
+
 		return null;
 	}
 
@@ -501,16 +504,82 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public List<TPatient> selectAllPatientByCondition(String beginTime, String endTime) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		map.put("beginTime", beginTime);
 		map.put("endTime", endTime);
-		
+
 		List<TPatient> patientList = patientMapper.selectAllPatientByCondition(map);
-		
+
 		if (patientList.size() > 0) {
 			return patientList;
 		}
 		return null;
+	}
+
+	// 通过病人人群类型分页查询病人及诊断信息
+	@Override
+	public List<TPatient> getPatientByPersonType(Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("personType", "正常");
+		// 根据条件查询总数
+		int totalNum = patientMapper.countByPersonType(map);
+		System.out.println("totalNum=" + totalNum);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		return patientMapper.pageByPersonType(map);
+	}
+
+	// 通过病人姓名和人群类型分页查询病人及诊断信息
+	@Override
+	public List<TPatient> pageByPatientNameAndPersonType(String patientName, Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", patientName);
+		map.put("personType", "正常");
+		// 根据条件查询总数
+		int totalNum = patientMapper.countByPersonType(map);
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+
+		return patientMapper.pageByPersonType(map);
+
+	}
+
+	@Override
+	public List<String> getAllPatientId() {
+		List<TPatient> patientList = patientMapper.selectAllPatient();
+		List<String> patientIdList = new ArrayList<String>();
+		if(patientList.size()>0){
+			for (TPatient patient : patientList) {
+				patientIdList.add(patient.getPatientId());
+			}
+		}
+		return patientIdList;
+	}
+
+	//自动搜索匹配patientId
+	@Override
+	public String autoPatientId(String term, HttpServletResponse response) {
+		response.setContentType("text/html;charset=utf-8");//解决乱码  
+		StringBuffer sb = new StringBuffer("[");
+		//通过输入的字符查询病人记录
+		List<TPatient> pIsStrList = patientMapper.selectPatientByAutoComplete(term);
+		 for(int i=0;i<pIsStrList.size();i++){  
+             if(i==pIsStrList.size()-1){  
+                 //注意在拼接的时候，要用双引号，单引号我试过，不起作用好像是,至少key必须是双引号，最好都写成双引号  
+                 /*  
+                  * 其中label属性用于显示在autocomplete弹出菜单，而value属性则是选中后给文本框赋的值。如果没有指定其中一个属性  
+                  * 则用另一个属性替代(即value和label值一样)，如果label和value都没有指定，则无法用于autocomplete的提示。    
+                  */  
+                 sb.append("{\"lable\":\""+pIsStrList.get(i).getPatientId()+"\",\"value\":\""+pIsStrList.get(i).getPatientId()+"\"}]");  
+             }else{  
+                 sb.append("{\"lable\":\""+pIsStrList.get(i).getPatientId()+"\",\"value\":\""+pIsStrList.get(i).getPatientId()+"\"},");  
+             }  
+         }  
+         return sb.toString();
 	}
 
 }

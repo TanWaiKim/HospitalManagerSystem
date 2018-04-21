@@ -36,9 +36,6 @@
 			<div class="padding border-bottom">
 
 				<ul class="search" style="padding-left: 10px;">
-					<li><a class="button border-main icon-plus-square-o"
-						href="${pageContext.request.contextPath }/sales/skipToAdd">
-							添加销药单</a></li>
 					<li>搜索：</li>
 					<li>
 						销药单编号
@@ -48,10 +45,16 @@
 						病人名称
 						<select name="patientId" class="input" 
 							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<option value="${patientCondition.patientId }">${patientCondition.name }</option>
+							<c:if test="${patientCondition.patientId != null}">
+								<option value="${patientCondition.patientId }" selected="selected">${patientCondition.name }</option>
+							</c:if>
+							
+							<option value="">未选择</option>
 							<c:forEach
 							items="${patientList}" var="patient" >
-							<option value="${patient.patientId }">${patient.name }</option>
+							<c:if test="${patientCondition.patientId != patient.patientId}">
+								<option value="${patient.patientId }">${patient.name }</option>
+							</c:if>
 							</c:forEach>
 						</select>
 					</li>
@@ -71,15 +74,15 @@
 			</div>
 			<table class="table table-hover text-center table-bordered">
 				<tr>
-					<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
-					<th width="200" >销药单编号</th>
-					<th width="200" >病人名称</th>
+					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
+					<th width="150" >销药单编号</th>
+					<th width="100" >病人名称</th>
+					<th width="150" >病人编号</th>
 					<th width="100" >总数量</th>
 					<th width="100" >总价格</th>
-					<th width="90" >操作员</th>
-					<th width="100" >备注</th>
 					<th width="150" >创建时间</th>
 					<th width="150" >更新时间</th>
+					<th width="90" >操作员</th>
 					<th width="300" >操作</th>
 				</tr>
 				<c:forEach items="${salesList}" var="sales"  varStatus="status">
@@ -93,13 +96,12 @@
 
 						<td>${sales.salesNo }</td>
 						<td>${sales.patient.name }</td>
+						<td>${sales.patient.patientId }</td>
 						<td>${sales.totalQuantity }</td>
 						<td>${sales.totalPrice }</td>
-						<td>${sales.operator }</td>
-						<td>${sales.remarks }</td>
 						<td><fmt:formatDate type="date" value="${sales.createTime }"/></td>
 						<td><fmt:formatDate type="date" value="${sales.updateTime }"/></td>
-						
+						<td>${sales.operator }</td>
 						<td>
 							<div class="button-group">
 								<a class="button border-main"

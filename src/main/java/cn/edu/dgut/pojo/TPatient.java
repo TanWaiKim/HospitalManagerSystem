@@ -36,6 +36,7 @@ public class TPatient {
     
     private TStayHospital stayHospital;
     
+    private TSickbed sickbed;
 	public TDiagnosis getDiagnosis() {
 		return diagnosis;
 	}
@@ -164,13 +165,24 @@ public class TPatient {
         this.updated = updated;
     }
 
+    
+	public TSickbed getSickbed() {
+		return sickbed;
+	}
+
+	public void setSickbed(TSickbed sickbed) {
+		this.sickbed = sickbed;
+	}
+
 	@Override
 	public String toString() {
 		return "TPatient [id=" + id + ", patientId=" + patientId + ", name=" + name + ", sex=" + sex + ", address="
 				+ address + ", age=" + age + ", isFinished=" + isFinished + ", mcName=" + mcName + ", personType="
 				+ personType + ", phone=" + phone + ", loginName=" + loginName + ", loginPassword=" + loginPassword
 				+ ", created=" + created + ", updated=" + updated + ", diagnosis=" + diagnosis + ", stayHospital="
-				+ stayHospital + "]";
+				+ stayHospital + ", sickbed=" + sickbed + "]";
 	}
+
+	
 
 }

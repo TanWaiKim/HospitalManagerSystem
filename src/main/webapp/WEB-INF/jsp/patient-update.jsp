@@ -23,7 +23,7 @@ $(function()  {
 		var reg = /^[0-9]+.?[0-9]*$/;
 		var a = document.getElementById("age");
 		if (!reg.test(a.value)) {
-			alert("请输入0-150之间的数字!");
+			alert("年龄必须为0-150之间的整数!");
 		}
 		else if(a.value < 0 || a.value > 150){
 			alert("年龄必须为0-150之间的整数!");
@@ -59,7 +59,7 @@ $(function()  {
 						<label>病人ID：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${patient.patientId }"
+						<input type="text" class="input w50" value="${patient.patientId }" readonly="readonly"
 							name="patientId" data-validate="required:请输入病人编号" />
 						<div class="tips"></div>
 					</div>
@@ -156,20 +156,14 @@ $(function()  {
 					<div class="field">
 						<select name="mcName" class="input" id="mcname"
 							style="width: 95px; line-height: 17px; display: inline-block">
-							<option value=""
-								<c:if test="${patient.mcName == ''}">selected="selected"</c:if>>选择</option>
-							<option value="大内科"
-								<c:if test="${patient.mcName == '大内科'}">selected="selected"</c:if>>大内科</option>
-							<option value="大外科"
-								<c:if test="${patient.mcName == '大外科'}">selected="selected"</c:if>>大外科</option>
-							<option value="妇儿科室"
-								<c:if test="${patient.mcName == '妇儿科室'}">selected="selected"</c:if>>妇儿科室</option>
-							<option value="五官科室"
-								<c:if test="${patient.mcName == '五官科室'}">selected="selected"</c:if>>五官科室</option>
-							<option value="急诊科"
-								<c:if test="${patient.mcName == '急诊科'}">selected="selected"</c:if>>急诊科</option>
-							<option value="病案、中医"
-								<c:if test="${patient.mcName == '病案、中医'}">selected="selected"</c:if>>病案、中医</option>
+							
+							<option value="">未选择</option>
+							
+							<c:forEach
+								items="${medicalcoursesNameList}" var="medicalcoursesName" >
+									<option value="${medicalcoursesName}"
+									<c:if test="${patient.mcName == medicalcoursesName}">selected="selected"</c:if>>${medicalcoursesName}</option>
+							</c:forEach>
 
 						</select>
 					</div>
@@ -181,8 +175,8 @@ $(function()  {
 					<div class="field">
 						<select name="isFinished" class="input"
 							style="width: 85px; line-height: 17px; display: inline-block">
-							<c:if test="${patient.isFinished == ''}">selected="selected"</c:if>>选择
-							</option>
+							<option value="选择"
+							<c:if test="${patient.isFinished == ''}">>selected="selected"</c:if>>选择</option>
 							<option value="是"
 								<c:if test="${patient.isFinished == '是'}">selected="selected"</c:if>>是</option>
 							<option value="否"
@@ -237,7 +231,7 @@ $(function()  {
 									alert("修改成功!");
 									location.href = "${pageContext.request.contextPath }/patient/list";
 								} else if (data.status == 500) {
-									alert("修改失败!");
+									alert(data.msg);
 								} else if (data.status == 505) {
 									alert(data.msg);
 								}

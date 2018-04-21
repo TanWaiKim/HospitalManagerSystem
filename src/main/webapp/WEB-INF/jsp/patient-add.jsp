@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -22,7 +23,7 @@
 			var reg = /^[0-9]+.?[0-9]*$/;
 			var a = document.getElementById("age");
 			if (!reg.test(a.value)) {
-				alert("请输入0-150之间的数字!");
+				alert("年龄必须为0-150之间的整数!");
 			}
 			else if(a.value < 0 || a.value > 150){
 				alert("年龄必须为0-150之间的整数!");
@@ -121,13 +122,14 @@
 					<div class="field">
 						<select name="mcName" class="input"
 							style="width: 95px; line-height: 17px; display: inline-block">
-							<option value="">选择</option>
-							<option value="大内科">大内科</option>
-							<option value="大外科">大外科</option>
-							<option value="妇儿科室">妇儿科室</option>
-							<option value="五官科室">五官科室</option>
-							<option value="急诊科">急诊科</option>
-							<option value="病案、中医">病案、中医</option>
+						
+							<option value="">未选择</option>
+							
+							<c:forEach
+								items="${medicalcoursesNameList}" var="medicalcoursesName" >
+									<option value="${medicalcoursesName}">${medicalcoursesName}</option>
+							</c:forEach>
+						
 						</select>
 					</div>
 				</div>
@@ -160,8 +162,8 @@
 						<label>病人登录密码：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="loginPassword"
-							data-validate="required:请输入病人登录密码" />
+						<input type="text" class="input w50" value="" name="loginPassword" 
+							 />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -190,7 +192,7 @@
 									alert("添加成功!");
 									location.href = "${pageContext.request.contextPath }/patient/list";
 								} else if (data.status == 500) {
-									alert("添加失败!");
+									alert(data.msg);
 								} else if (data.status == 505) {
 									alert(data.msg);
 								}

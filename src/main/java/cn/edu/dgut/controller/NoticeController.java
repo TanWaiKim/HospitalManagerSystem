@@ -18,6 +18,7 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TDiagnosis;
+import cn.edu.dgut.pojo.TDoctor;
 import cn.edu.dgut.pojo.TNotice;
 import cn.edu.dgut.service.NoticeService;
 
@@ -42,14 +43,17 @@ public class NoticeController {
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
-		return "notice-list";
+		
+		return "notice-dlist";
+		
 	}
 	
 	@RequestMapping("/pageByCondition")
 	public String getNoticesByPage(
 			@RequestParam(value = "title", defaultValue = "") String title,
-			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
+			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model,HttpServletRequest request) {
 		try {
 
 			// 创建分页对象
@@ -67,8 +71,56 @@ public class NoticeController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
-		return "notice-list";
+		
+		return "notice-dlist";
+		
+	}
+	
+	
+	@RequestMapping("/alist")
+	public String getAllNoticesForAdmin(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model,HttpServletRequest request) {
+		try {
+			Page page = new Page();
+			page.setCurrentPage(currentPage);
+			model.addAttribute("noticeList", noticeService.getAllNotices(page));
+			model.addAttribute("page", page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		
+		return "notice-alist";
+		
+	}
+	
+	@RequestMapping("/pageByConditionForAdmin")
+	public String getNoticesByPageForAdmin(
+			@RequestParam(value = "title", defaultValue = "") String title,
+			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model,HttpServletRequest request) {
+		try {
+
+			// 创建分页对象
+			Page page = new Page();
+			Pattern pattern = Pattern.compile("[0-9]{1,9}");
+			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
+				page.setCurrentPage(1);
+			} else {
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+			List<TNotice> noticeList = noticeService.pageByCondition(title, page);
+			model.addAttribute("noticeList", noticeList);
+			model.addAttribute("page", page);
+			model.addAttribute("title", title);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		
+		return "notice-alist";
+		
 	}
 	
 	//跳转到公告添加界面
@@ -87,8 +139,8 @@ public class NoticeController {
 			}
 			
 		}catch(Exception e){
-			e.getStackTrace();
-			return HmsResult.build(500, "添加失败！");
+			System.out.println(e.getStackTrace());
+			return HmsResult.build(500, "系统错误，添加失败！");
 		}
 		return HmsResult.build(500, "添加失败！");
 	}
@@ -102,7 +154,7 @@ public class NoticeController {
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除失败！");
+			return HmsResult.build(500, "系统错误，删除失败！");
 		}
 		
 		return HmsResult.build(500, "删除失败！");
@@ -120,7 +172,7 @@ public class NoticeController {
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除失败！");
+			return HmsResult.build(500, "系统错误，删除失败！");
 		}
 		return HmsResult.build(500, "删除失败！");
 	}
@@ -141,7 +193,7 @@ public class NoticeController {
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
-			return HmsResult.build(500, "修改失败！");
+			return HmsResult.build(500, "系统错误，修改失败！");
 		}
 		return HmsResult.build(500, "修改失败！");
 	}

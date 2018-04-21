@@ -17,6 +17,8 @@ public class TbPurchaseItem {
     private BigDecimal salePrice;
 
     private Integer quantity;
+    
+    private String warehouseNo;
 
     private BigDecimal purchaseTotalPrice;
 
@@ -142,5 +144,13 @@ public class TbPurchaseItem {
 
 	public void setValidTime(String validTime) {
 		this.validTime = validTime;
+	}
+
+	public String getWarehouseNo() {
+		return warehouseNo;
+	}
+
+	public void setWarehouseNo(String warehouseNo) {
+		this.warehouseNo = warehouseNo;
 	}
 }

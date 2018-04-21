@@ -2,6 +2,8 @@ package cn.edu.dgut.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.edu.dgut.pojo.Page;
@@ -20,8 +22,12 @@ public interface PatientService {
 	void export(String[] idArray);
 	void importExcelInfo(MultipartFile file) throws Exception;
 	List<String> selectAllPatientIds();
-	TPatient getHealthRecordByPId(String patientId);
+	TPatient getSpecialHealthRecordByPId(String patientId);
 	
 	List<TPatient> selectAllPatient();
 	List<TPatient> selectAllPatientByCondition(String beginTime, String endTime);
+	List<TPatient> getPatientByPersonType(Page page);
+	List<TPatient> pageByPatientNameAndPersonType(String patientName, Page page);
+	List<String> getAllPatientId();
+	String autoPatientId(String term, HttpServletResponse response);
 }

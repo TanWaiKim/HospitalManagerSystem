@@ -17,12 +17,20 @@ import cn.edu.dgut.common.dto.SalesDto;
 import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
+import cn.edu.dgut.common.util.JsonUtils;
+import cn.edu.dgut.pojo.DrugData;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
+import cn.edu.dgut.pojo.TPrescription;
 import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrug;
+import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbSales;
 import cn.edu.dgut.pojo.TbSalesItem;
+import cn.edu.dgut.service.DrugService;
 import cn.edu.dgut.service.PatientService;
+import cn.edu.dgut.service.PrescriptionService;
+import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.SalesItemService;
 import cn.edu.dgut.service.SalesService;
 
@@ -40,7 +48,12 @@ public class SalesController {
 	private SalesService salesService;
 	@Autowired
 	private SalesItemService salesItemService;
-	
+	@Autowired
+	private PrescriptionService prescriptionService;
+	@Autowired
+	private DrugService drugService;
+	@Autowired
+	private PurchaseItemService purchaseItemService;
 	
 	/**
 	 * 返回添加销药单页面
@@ -71,23 +84,26 @@ public class SalesController {
 	 */
 	@RequestMapping("/add")
 	@ResponseBody()
-	public HmsResult addSalesByTbSales(HttpSession session, Model model, SalesDto salesDto) {
+	public HmsResult addSalesByTbSales(HttpSession session, Integer id, String isDeal) {
 		try {
 			
-			if (salesDto.getDrugName() == null) {
-				return HmsResult.build(505, "医药名称不能为空！");
-			}	        
-	        
-			if (salesDto.getPatientId() == null) {
-				return HmsResult.build(505, "病人名称不能为空！");
+			if (isDeal != null && isDeal.equals("已处理")) {
+				return HmsResult.build(505, "该处方已被处理，不能重复提交！");
 			}
 			
-			if (salesDto.getQuantity() == null) {
-				return HmsResult.build(505, "数量不能为空！");
-			}
+			SalesDto salesDto = new SalesDto();
+			TPrescription prescription = prescriptionService.getPrescriptionById(id);
+			String drugData = prescription.getDrugData();
+			List<DrugData> drugDataList = JsonUtils.jsonToList(drugData, DrugData.class);
 			
+			TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+			salesDto.setOperator(admin.getUsername());
+			salesDto.setPatientId(prescription.getPatientId());
+			salesDto.setDrugDataList(drugDataList);
 			
 			if (salesService.addSalesByTbSales(salesDto) > 0) {
+				prescription.setIsDeal("已处理");
+				prescriptionService.updatePrescription(prescription);
 				return HmsResult.ok();
 			} else {
 				return HmsResult.build(505, "该医药不存在或库存不足，请补充库存！");
@@ -95,6 +111,7 @@ public class SalesController {
 
 		} catch (Exception e) {
 			e.getStackTrace();
+			
 			return HmsResult.build(500, "数据库异常，添加医药信息失败！");
 		}
 	}
@@ -171,6 +188,20 @@ public class SalesController {
 		TbSales sales = salesService.getSalesBySalesNo(salesNo);
 		model.addAttribute("sales", sales);
 		List<TbSalesItem> salesItemList = salesItemService.getAllSalesItem(salesNo, page);
+		
+		TbDrug drug = new TbDrug();
+		TbPurchaseItem purchaseItem = new TbPurchaseItem();
+		
+		for (int i = 0; i < salesItemList.size(); i++) {
+			drug = drugService.getDrugById(salesItemList.get(i).getDrugId());
+			purchaseItem.setBatchNo(salesItemList.get(i).getBatchNo());
+			purchaseItem.setDrugId(salesItemList.get(i).getDrugId());
+			purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+			drug.setPurpose(purchaseItem.getProduceTime());
+			drug.setSpec(purchaseItem.getValidTime());
+			salesItemList.get(i).setDrug(drug);
+		}
+		
 		model.addAttribute("salesItemList", salesItemList);
 		model.addAttribute("page", page);
 		return "sale-detail";
@@ -208,7 +239,7 @@ public class SalesController {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
-			System.out.println(ExceptionUtil.getStackTrace(e));
+			System.out.println("异常信息："+ExceptionUtil.getStackTrace(e));
 			return HmsResult.build(500, "删除销药单失败！");
 		}
 		return HmsResult.build(500, "删除销药单失败！");

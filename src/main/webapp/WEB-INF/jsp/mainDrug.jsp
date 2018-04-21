@@ -25,7 +25,7 @@
 			<a class="button button-little bg-green" href="" target="_blank"><span
 				class="icon-home"></span> 登录用户：${currentUser.username }</a> &nbsp;&nbsp;<a href="##"
 				class="button button-little bg-blue"><span class="icon-user"></span>
-				用户角色:药品管理员</a> &nbsp;&nbsp;<a class="button button-little bg-red"
+				用户角色:药品员</a> &nbsp;&nbsp;<a class="button button-little bg-red"
 				href="login.html"><span class="icon-power-off"></span> 退出登录</a>
 		</div>
 	</div>
@@ -219,7 +219,7 @@
 		
 				<ul style="display: none">
 					<li>
-						<a href="${pageContext.request.contextPath }/sales/skipToAdd" target="right">
+						<a href="prescription/list-data" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>处方药品
 						</a>

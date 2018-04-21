@@ -55,26 +55,26 @@
 					<th width="120" >病人编号</th>
 					<th width="120" >病人姓名</th>
 					<th width="120" >病人性别</th>
-					<th width="200" >病人症状</th>
+					<th width="200" >联系方式</th>
 					<th width="200" >人群类型</th>
 					<th width="270">操作</th>
 				</tr>
 				 <c:forEach
-					items="${diagnosisList}" var="diagnosis" varStatus="status">
+					items="${patientList}" var="patient" varStatus="status">
 					<tr>
 						<td style="text-align: left; padding-left: 20px;"><span>${(page.currentPage-1)*3+status.count}</span>
 						</td>
 						
-						<td>${diagnosis.patient.patientId}</td>
-						<td>${diagnosis.patient.name }</td>
-						<td>${diagnosis.patient.sex }</td>
-						<td>${diagnosis.symptom }</td>
-						<td>${diagnosis.patient.personType }</td>
+						<td>${patient.patientId}</td>
+						<td>${patient.name }</td>
+						<td>${patient.sex }</td>
+						<td>${patient.phone }</td>
+						<td>${patient.personType }</td>
 						
 						
 						<td><div class="button-group">
 								<a class="button border-main"
-									href="${pageContext.request.contextPath }/specialPatient/findById/${diagnosis.patient.patientId }"><span
+									href="${pageContext.request.contextPath }/specialPatient/findById/${patient.patientId }"><span
 									class="icon-edit"></span> 详情</a>
 							</div></td>
 					</tr>

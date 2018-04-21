@@ -10,15 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.edu.dgut.common.util.IDUtils;
 import cn.edu.dgut.mapper.TDiagnosisMapper;
+import cn.edu.dgut.mapper.TPatientMapper;
+import cn.edu.dgut.mapper.TStayHospitalMapper;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TDiagnosis;
+import cn.edu.dgut.pojo.TDiagnosisExample;
+import cn.edu.dgut.pojo.TPatient;
+import cn.edu.dgut.pojo.TPatientExample;
+import cn.edu.dgut.pojo.TStayHospital;
+import cn.edu.dgut.pojo.TStayHospitalExample;
 import cn.edu.dgut.service.DiagnosisService;
 @Service
 public class DiagnosisServiceImpl implements DiagnosisService {
 
 	@Autowired
 	private TDiagnosisMapper diagnosisMapper;
+	
+	@Autowired
+	private TPatientMapper patientMapper;
+	
+	@Autowired
+	private TStayHospitalMapper stayHospitalMapper;
 	
 	//分页查询
 	public List<TDiagnosis> getAllDiagnosis(Page page) {
@@ -61,7 +75,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
 	//增加诊断信息
 	public int addDiagnosisByTDiagnosis(TDiagnosis diagnosis) {
-		diagnosis.setPatientId(diagnosis.getPatient().getPatientId());
+		diagnosis.setPatientId(diagnosis.getPatientId());
 		Date date = new Date();
 		diagnosis.setCreated(date);
 		diagnosis.setUpdated(date);
@@ -95,33 +109,30 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 		return diagnosisMapper.pageByCondition(map);
 	}
 
-	//通过病人人群类型分页查询诊断信息
-	public List<TDiagnosis> getDiagnosisByPersonType(Page page) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("personType", "正常");
-		// 根据条件查询总数
-		int totalNum = diagnosisMapper.countByPersonType(map);
-		System.out.println("totalNum="+totalNum);
-		page.setTotalNumber(totalNum);
-		// 组织分页查询总数
-		map.put("pageIndex", page.getDbIndex());
-		map.put("pageSize", page.getDbNumber());
-		
-		return diagnosisMapper.pageByPersonType(map);
+	// 通过diagnosisId获取健康档案
+	@Override
+	public TDiagnosis getHealthByDId(long diagnosisId) {
+		// 通过patientId查询病人诊断记录
+		TDiagnosisExample example = new TDiagnosisExample();
+		example.createCriteria().andDiagnosisIdEqualTo(diagnosisId);
+		List<TDiagnosis> diagnosisList = diagnosisMapper.selectByExample(example);
+		if (diagnosisList.size() > 0) {
+			TPatientExample pExample = new TPatientExample();
+			pExample.createCriteria().andPatientIdEqualTo(diagnosisList.get(0).getPatientId());
+			List<TPatient> patientList = patientMapper.selectByExample(pExample);
+			if(patientList.size()>0){
+				diagnosisList.get(0).setPatient(patientList.get(0));
+				TStayHospitalExample sHExample = new TStayHospitalExample();
+				sHExample.createCriteria().andPatientIdEqualTo(patientList.get(0).getPatientId());
+				List<TStayHospital> stayHospitalList = stayHospitalMapper.selectByExample(sHExample);
+				if (stayHospitalList.size() > 0) {
+					TStayHospital stayHospital = stayHospitalList.get(stayHospitalList.size() - 1);
+					diagnosisList.get(0).getPatient().setStayHospital(stayHospital);
+				}
+			}
+			
+		}
+		System.out.println("diagnosisList.get(0)="+diagnosisList.get(0).toString());
+		return diagnosisList.get(0);
 	}
-
-	//通过病人姓名和人群类型分页查询诊断信息
-	public List<TDiagnosis> pageByPatientNameAndPersonType(String patientName, Page page) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", patientName);
-		map.put("personType", "正常");
-		// 根据条件查询总数
-		int totalNum = diagnosisMapper.countByPersonType(map);
-		page.setTotalNumber(totalNum);
-		// 组织分页查询总数数
-		map.put("pageIndex", page.getDbIndex());
-		map.put("pageSize", page.getDbNumber());
-		return diagnosisMapper.pageByPersonType(map);
-	}
-	
 }

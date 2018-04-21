@@ -5,16 +5,12 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="doctor_id" property="doctorId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="post_id" property="postId" jdbcType="BIGINT" />
-    <result column="post" property="post" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="VARCHAR" />
-    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
-    <result column="memo" property="memo" jdbcType="VARCHAR" />
-    <result column="mc_id" property="mcId" jdbcType="BIGINT" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="mc_name" property="mcName" jdbcType="VARCHAR" />
     <result column="login_name" property="loginName" jdbcType="VARCHAR" />
     <result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
-    <result column="is_active" property="isActive" jdbcType="INTEGER" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="updated" property="updated" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -77,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, doctor_id, name, post_id, post, sex, birthday, memo, mc_id, mc_name, login_name, 
-    login_password, is_active, created, updated
+    id, doctor_id, name, sex, age, phone, mc_name, login_name, login_password, created, 
+    updated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TDoctorExample" >
     select
@@ -112,15 +108,13 @@
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TDoctor" >
     insert into t_doctor (id, doctor_id, name, 
-      post_id, post, sex, birthday, 
-      memo, mc_id, mc_name, 
-      login_name, login_password, is_active, 
-      created, updated)
+      sex, age, phone, mc_name, 
+      login_name, login_password, created, 
+      updated)
     values (#{id,jdbcType=BIGINT}, #{doctorId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{postId,jdbcType=BIGINT}, #{post,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
-      #{memo,jdbcType=VARCHAR}, #{mcId,jdbcType=BIGINT}, #{mcName,jdbcType=VARCHAR}, 
-      #{loginName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR}, #{isActive,jdbcType=INTEGER}, 
-      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
+      #{sex,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{mcName,jdbcType=VARCHAR}, 
+      #{loginName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TDoctor" >
     insert into t_doctor
@@ -134,23 +128,14 @@
       <if test="name != null" >
         name,
       </if>
-      <if test="postId != null" >
-        post_id,
-      </if>
-      <if test="post != null" >
-        post,
-      </if>
       <if test="sex != null" >
         sex,
       </if>
-      <if test="birthday != null" >
-        birthday,
+      <if test="age != null" >
+        age,
       </if>
-      <if test="memo != null" >
-        memo,
-      </if>
-      <if test="mcId != null" >
-        mc_id,
+      <if test="phone != null" >
+        phone,
       </if>
       <if test="mcName != null" >
         mc_name,
@@ -160,9 +145,6 @@
       </if>
       <if test="loginPassword != null" >
         login_password,
-      </if>
-      <if test="isActive != null" >
-        is_active,
       </if>
       <if test="created != null" >
         created,
@@ -181,23 +163,14 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="postId != null" >
-        #{postId,jdbcType=BIGINT},
-      </if>
-      <if test="post != null" >
-        #{post,jdbcType=VARCHAR},
-      </if>
       <if test="sex != null" >
         #{sex,jdbcType=VARCHAR},
       </if>
-      <if test="birthday != null" >
-        #{birthday,jdbcType=TIMESTAMP},
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
       </if>
-      <if test="memo != null" >
-        #{memo,jdbcType=VARCHAR},
-      </if>
-      <if test="mcId != null" >
-        #{mcId,jdbcType=BIGINT},
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
       </if>
       <if test="mcName != null" >
         #{mcName,jdbcType=VARCHAR},
@@ -207,9 +180,6 @@
       </if>
       <if test="loginPassword != null" >
         #{loginPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="isActive != null" >
-        #{isActive,jdbcType=INTEGER},
       </if>
       <if test="created != null" >
         #{created,jdbcType=TIMESTAMP},
@@ -237,23 +207,14 @@
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.postId != null" >
-        post_id = #{record.postId,jdbcType=BIGINT},
-      </if>
-      <if test="record.post != null" >
-        post = #{record.post,jdbcType=VARCHAR},
-      </if>
       <if test="record.sex != null" >
         sex = #{record.sex,jdbcType=VARCHAR},
       </if>
-      <if test="record.birthday != null" >
-        birthday = #{record.birthday,jdbcType=TIMESTAMP},
+      <if test="record.age != null" >
+        age = #{record.age,jdbcType=INTEGER},
       </if>
-      <if test="record.memo != null" >
-        memo = #{record.memo,jdbcType=VARCHAR},
-      </if>
-      <if test="record.mcId != null" >
-        mc_id = #{record.mcId,jdbcType=BIGINT},
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
       </if>
       <if test="record.mcName != null" >
         mc_name = #{record.mcName,jdbcType=VARCHAR},
@@ -263,9 +224,6 @@
       </if>
       <if test="record.loginPassword != null" >
         login_password = #{record.loginPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isActive != null" >
-        is_active = #{record.isActive,jdbcType=INTEGER},
       </if>
       <if test="record.created != null" >
         created = #{record.created,jdbcType=TIMESTAMP},
@@ -283,16 +241,12 @@
     set id = #{record.id,jdbcType=BIGINT},
       doctor_id = #{record.doctorId,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
-      post_id = #{record.postId,jdbcType=BIGINT},
-      post = #{record.post,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=VARCHAR},
-      birthday = #{record.birthday,jdbcType=TIMESTAMP},
-      memo = #{record.memo,jdbcType=VARCHAR},
-      mc_id = #{record.mcId,jdbcType=BIGINT},
+      age = #{record.age,jdbcType=INTEGER},
+      phone = #{record.phone,jdbcType=VARCHAR},
       mc_name = #{record.mcName,jdbcType=VARCHAR},
       login_name = #{record.loginName,jdbcType=VARCHAR},
       login_password = #{record.loginPassword,jdbcType=VARCHAR},
-      is_active = #{record.isActive,jdbcType=INTEGER},
       created = #{record.created,jdbcType=TIMESTAMP},
       updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -308,23 +262,14 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="postId != null" >
-        post_id = #{postId,jdbcType=BIGINT},
-      </if>
-      <if test="post != null" >
-        post = #{post,jdbcType=VARCHAR},
-      </if>
       <if test="sex != null" >
         sex = #{sex,jdbcType=VARCHAR},
       </if>
-      <if test="birthday != null" >
-        birthday = #{birthday,jdbcType=TIMESTAMP},
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
       </if>
-      <if test="memo != null" >
-        memo = #{memo,jdbcType=VARCHAR},
-      </if>
-      <if test="mcId != null" >
-        mc_id = #{mcId,jdbcType=BIGINT},
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
       </if>
       <if test="mcName != null" >
         mc_name = #{mcName,jdbcType=VARCHAR},
@@ -334,9 +279,6 @@
       </if>
       <if test="loginPassword != null" >
         login_password = #{loginPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="isActive != null" >
-        is_active = #{isActive,jdbcType=INTEGER},
       </if>
       <if test="created != null" >
         created = #{created,jdbcType=TIMESTAMP},
@@ -351,18 +293,80 @@
     update t_doctor
     set doctor_id = #{doctorId,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      post_id = #{postId,jdbcType=BIGINT},
-      post = #{post,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
-      birthday = #{birthday,jdbcType=TIMESTAMP},
-      memo = #{memo,jdbcType=VARCHAR},
-      mc_id = #{mcId,jdbcType=BIGINT},
+      age = #{age,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
       mc_name = #{mcName,jdbcType=VARCHAR},
       login_name = #{loginName,jdbcType=VARCHAR},
       login_password = #{loginPassword,jdbcType=VARCHAR},
-      is_active = #{isActive,jdbcType=INTEGER},
       created = #{created,jdbcType=TIMESTAMP},
       updated = #{updated,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByloginNameAndloginPassword" parameterType="map" resultMap="BaseResultMap" >
+    select * from t_doctor
+    where login_name = #{loginName} and login_password = #{mpass}
+  </select>
+  
+   <update id="updateById" parameterType="map" >
+    update t_doctor
+    set login_password = #{newpass}
+    where id = #{id}
+  </update>
+  
+  <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from t_doctor
+  		<where>
+  			<if test="doctorId!=null and !&quot;&quot;.equals(doctorId.trim())">
+  				and doctor_id like '%' #{doctorId} '%'
+  			</if>
+  			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+  				and name like '%' #{name} '%'
+  			</if>
+  			<if test="mcName!=null and !&quot;&quot;.equals(mcName.trim())">
+  				and mc_name = #{mcName} 
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				or phone like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  </select>
+   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select * from t_doctor
+  		<where>
+  			<if test="doctorId!=null and !&quot;&quot;.equals(doctorId.trim())">
+  				and doctor_id like '%' #{doctorId} '%'
+  			</if>
+  			<if test="name!=null and !&quot;&quot;.equals(name.trim())">
+  				and name like '%' #{name} '%'
+  			</if>
+  			<if test="mcName!=null and !&quot;&quot;.equals(mcName.trim())">
+  				and mc_name = #{mcName} 
+  			</if>
+  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
+  				or phone like '%' #{keywords} '%'
+  			</if>
+  		</where>
+  		order by id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteBatch" parameterType="list">
+		delete from t_doctor where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
+  
+  <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap">
+  	select * from  t_doctor order by id desc limit 1
+  </select>
+  
+  <!-- 通过loginName查询记录 -->
+  <select id="selectByLoginName"  resultMap="BaseResultMap">
+  	select * from  t_doctor where login_name = #{loginName}
+  </select>
+  
 </mapper>

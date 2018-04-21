@@ -3,23 +3,25 @@ package cn.edu.dgut.pojo;
 import java.util.Date;
 
 public class TStayHospital {
-    private Integer id;
+    private Long id;
 
     private String patientId;
 
-    private String sickbedId;
-
-    private Date time;
+    private Long sickbedId;
 
     private Date created;
 
     private Date updated;
+    
+    private TPatient patient;
+    
+    private TSickbed sickbed;
 
-    public Integer getId() {
+	public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,20 +33,12 @@ public class TStayHospital {
         this.patientId = patientId == null ? null : patientId.trim();
     }
 
-    public String getSickbedId() {
+    public Long getSickbedId() {
         return sickbedId;
     }
 
-    public void setSickbedId(String sickbedId) {
-        this.sickbedId = sickbedId == null ? null : sickbedId.trim();
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
+    public void setSickbedId(Long sickbedId) {
+        this.sickbedId = sickbedId;
     }
 
     public Date getCreated() {
@@ -63,11 +57,28 @@ public class TStayHospital {
         this.updated = updated;
     }
 
+	public TPatient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(TPatient patient) {
+		this.patient = patient;
+	}
+
+	public TSickbed getSickbed() {
+		return sickbed;
+	}
+
+	public void setSickbed(TSickbed sickbed) {
+		this.sickbed = sickbed;
+	}
+
 	@Override
 	public String toString() {
-		return "TStayHospital [id=" + id + ", patientId=" + patientId + ", sickbedId=" + sickbedId + ", time=" + time
-				+ ", created=" + created + ", updated=" + updated + "]";
+		return "TStayHospital [id=" + id + ", patientId=" + patientId + ", sickbedId=" + sickbedId + ", created="
+				+ created + ", updated=" + updated + ", patient=" + patient + ", sickbed=" + sickbed + "]";
 	}
-    
+
+
     
 }

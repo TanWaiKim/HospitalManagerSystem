@@ -25,8 +25,6 @@ public class HealthRecordController {
 	@Autowired
 	private DiagnosisService diagnosisService;
 
-	@Autowired
-	private PatientService patientService;
 	@RequestMapping("/list")
 	public String getDiagnosis(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
 		try {
@@ -36,6 +34,7 @@ public class HealthRecordController {
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
 		return "healthRecord-list";
 	}
@@ -60,15 +59,22 @@ public class HealthRecordController {
 			model.addAttribute("patientName", patientName);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
 		return "healthRecord-list";
 	}
 	
 	
-	@RequestMapping("/findById/{patientId}")
-	public String getHealthRecordByPatientId(@PathVariable("patientId") String patientId, Model model) {
-		TPatient patient = patientService.getHealthRecordByPId(patientId);
-		model.addAttribute("patient", patient);
+	@RequestMapping("/findById/{diagnosisId}")
+	public String getHealthRecordByPatientId(@PathVariable("diagnosisId") long diagnosisId, Model model) {
+		try{
+			TDiagnosis diagnosis = diagnosisService.getHealthByDId(diagnosisId);
+			model.addAttribute("diagnosis", diagnosis);
+		}catch(Exception e){
+			System.out.println(e.getStackTrace());
+			return "error";
+		}
+		
 		return "healthRecord-detail";
 	}
 }

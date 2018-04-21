@@ -26,7 +26,7 @@
 				class="icon-home"></span> 登录用户：${doctorInfo.name }</a> &nbsp;&nbsp;<a href="##"
 				class="button button-little bg-blue"><span class="icon-user"></span>
 				用户角色:${postOffice }</a> &nbsp;&nbsp;<a class="button button-little bg-red"
-				href="${pageContext.request.contextPath }/"><span class="icon-power-off"></span> 退出登录</a>
+				href="${pageContext.request.contextPath }/dLogout"><span class="icon-power-off"></span> 退出登录</a>
 		</div>
 	</div>
 	<div class="leftnav " style="overflow:scroll;">
@@ -75,7 +75,7 @@
 					class="icon-caret-right"></span>健康档案信息</a></li>
 		</ul>
 		<h2>
-			<span class="icon-wheelchair"></span>特殊病人管理
+			<span class="icon-wheelchair"></span>特殊病人查询
 		</h2>
 		
 		<ul style="display: none">
@@ -102,7 +102,8 @@
 		<ul style="display: none">
 			<li><a href="${pageContext.request.contextPath }/dPassReset" target="right"><span
 					class="icon-caret-right"></span>修改密码</a></li>	
-
+			<li><a href="${pageContext.request.contextPath }/personalInfo" target="right"><span
+					class="icon-caret-right"></span>查看个人信息</a></li>	
 		</ul>
 		
 		<h2>
@@ -110,11 +111,9 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/list" target="right"><span
-					class="icon-caret-right"></span>医生所属科别管理</a></li>	
-			<li><a href="${pageContext.request.contextPath }/list" target="right"><span
+			<li><a href="${pageContext.request.contextPath }/sickbed/list" target="right"><span
 					class="icon-caret-right"></span>病床管理</a></li>	
-			<li><a href="${pageContext.request.contextPath }/list" target="right"><span
+			<li><a href="${pageContext.request.contextPath }/stayHospital/list" target="right"><span
 					class="icon-caret-right"></span>住院信息管理</a></li>
 		</ul>
 		
@@ -123,21 +122,9 @@
 		</h2>
 	
 		<ul style="display: none">
-			<li><a href="${pageContext.request.contextPath }/notice/skipToAdd" target="right"><span
-					class="icon-caret-right"></span>添加公告</a></li>
 			<li><a href="${pageContext.request.contextPath }/notice/list" target="right"><span
-					class="icon-caret-right"></span>管理公告</a></li>
+					class="icon-caret-right"></span>查看公告</a></li>
 		</ul>
-		<h2>
-			<span class="icon-wrench"></span>系统管理
-		</h2>
-		
-		<ul style="display: none">
-			<li><a href="info.html" target="right"><span
-					class="icon-caret-right"></span>系统用户管理</a></li>
-		</ul>
-		
-		
 	</div>
 	<script type="text/javascript">
 		$(function() {

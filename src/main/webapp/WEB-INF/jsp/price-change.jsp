@@ -51,11 +51,8 @@
 					</li>
 					<li>
 						结束日期
-						<c:if test="${endTime == null}">
+						<c:if test="${endTime != null}">
 							<c:set var='endTime' value="<%=str_date%>" scope="page"></c:set>
-							<span>
-								<%=str_date%>
-							</span>
 						</c:if>
 						<input type="text" class="Wdate" value="${endTime }" name="endTime"  
 								 placeholder="请输入结束时间"

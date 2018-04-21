@@ -60,7 +60,6 @@
 							style="width: 95px; line-height: 17px; display: inline-block">
 							<option value="">选择</option>
 							<option value="管理员">管理员</option>
-							<option value="医生">医生</option>
 						</select>
 						<div class="tips"></div>
 					</div>
@@ -87,9 +86,9 @@
 							function(data) {
 								if (data.status == 200) {
 									alert("添加成功!");
-									location.href = "${pageContext.request.contextPath }/notice/list";
+									location.href = "${pageContext.request.contextPath }/notice/alist";
 								} else if (data.status == 500) {
-									alert("添加失败!");
+									alert(data.msg);
 								} 
 							});
 		}

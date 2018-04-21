@@ -64,8 +64,6 @@
 							<c:if test="${notice.addPerson == ''}">selected="selected"</c:if>>选择</option>
 							<option value="管理员"
 							<c:if test="${notice.addPerson == '管理员'}">selected="selected"</c:if>>管理员</option>
-							<option value="医生"
-							<c:if test="${notice.addPerson == '医生'}">selected="selected"</c:if>>医生</option>
 						</select>
 						<div class="tips"></div>
 					</div>
@@ -92,9 +90,9 @@
 							function(data) {
 								if (data.status == 200) {
 									alert("修改成功!");
-									location.href = "${pageContext.request.contextPath }/notice/list";
+									location.href = "${pageContext.request.contextPath }/notice/alist";
 								} else if (data.status == 500) {
-									alert("修改失败!");
+									alert(data.msg);
 								} 
 							});
 		}

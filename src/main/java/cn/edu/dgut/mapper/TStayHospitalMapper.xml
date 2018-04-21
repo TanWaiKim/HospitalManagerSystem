@@ -2,12 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.dgut.mapper.TStayHospitalMapper" >
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TStayHospital" >
-    <result column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="BIGINT" />
     <result column="patient_id" property="patientId" jdbcType="VARCHAR" />
-    <result column="sickbed_id" property="sickbedId" jdbcType="VARCHAR" />
-    <result column="time" property="time" jdbcType="DATE" />
+    <result column="sickbed_id" property="sickbedId" jdbcType="BIGINT" />
     <result column="created" property="created" jdbcType="TIMESTAMP" />
     <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+    
+     <!-- 嵌套结果 -->
+	<association property="patient" column="patient_id" resultMap="cn.edu.dgut.mapper.TPatientMapper.BaseResultMap" />
+  	<association property="sickbed" column="sickbed_id" resultMap="cn.edu.dgut.mapper.TSickbedMapper.BaseResultMap" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, patient_id, sickbed_id, time, created, updated
+    id, patient_id, sickbed_id, created, updated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TStayHospitalExample" >
     select
@@ -84,6 +87,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_stay_hospital
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_stay_hospital
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <delete id="deleteByExample" parameterType="cn.edu.dgut.pojo.TStayHospitalExample" >
     delete from t_stay_hospital
     <if test="_parameter != null" >
@@ -92,11 +105,9 @@
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TStayHospital" >
     insert into t_stay_hospital (id, patient_id, sickbed_id, 
-      time, created, updated
-      )
-    values (#{id,jdbcType=INTEGER}, #{patientId,jdbcType=VARCHAR}, #{sickbedId,jdbcType=VARCHAR}, 
-      #{time,jdbcType=DATE}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
-      )
+      created, updated)
+    values (#{id,jdbcType=BIGINT}, #{patientId,jdbcType=VARCHAR}, #{sickbedId,jdbcType=BIGINT}, 
+      #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TStayHospital" >
     insert into t_stay_hospital
@@ -110,9 +121,6 @@
       <if test="sickbedId != null" >
         sickbed_id,
       </if>
-      <if test="time != null" >
-        time,
-      </if>
       <if test="created != null" >
         created,
       </if>
@@ -122,16 +130,13 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="patientId != null" >
         #{patientId,jdbcType=VARCHAR},
       </if>
       <if test="sickbedId != null" >
-        #{sickbedId,jdbcType=VARCHAR},
-      </if>
-      <if test="time != null" >
-        #{time,jdbcType=DATE},
+        #{sickbedId,jdbcType=BIGINT},
       </if>
       <if test="created != null" >
         #{created,jdbcType=TIMESTAMP},
@@ -151,16 +156,13 @@
     update t_stay_hospital
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.patientId != null" >
         patient_id = #{record.patientId,jdbcType=VARCHAR},
       </if>
       <if test="record.sickbedId != null" >
-        sickbed_id = #{record.sickbedId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.time != null" >
-        time = #{record.time,jdbcType=DATE},
+        sickbed_id = #{record.sickbedId,jdbcType=BIGINT},
       </if>
       <if test="record.created != null" >
         created = #{record.created,jdbcType=TIMESTAMP},
@@ -175,14 +177,85 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update t_stay_hospital
-    set id = #{record.id,jdbcType=INTEGER},
+    set id = #{record.id,jdbcType=BIGINT},
       patient_id = #{record.patientId,jdbcType=VARCHAR},
-      sickbed_id = #{record.sickbedId,jdbcType=VARCHAR},
-      time = #{record.time,jdbcType=DATE},
+      sickbed_id = #{record.sickbedId,jdbcType=BIGINT},
       created = #{record.created,jdbcType=TIMESTAMP},
       updated = #{record.updated,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.dgut.pojo.TStayHospital" >
+    update t_stay_hospital
+    <set >
+      <if test="patientId != null" >
+        patient_id = #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="sickbedId != null" >
+        sickbed_id = #{sickbedId,jdbcType=BIGINT},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null" >
+        updated = #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TStayHospital" >
+    update t_stay_hospital
+    set patient_id = #{patientId,jdbcType=VARCHAR},
+      sickbed_id = #{sickbedId,jdbcType=BIGINT},
+      created = #{created,jdbcType=TIMESTAMP},
+      updated = #{updated,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+   <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from t_stay_hospital sh, t_patient p,t_sickbed s
+  		<where>
+  			<if test="sickbedId!=null and !&quot;&quot;.equals(sickbedId.trim())">
+  				and s.id like '%' #{sickbedId} '%'
+  			</if>
+  			<if test="patientName!=null and !&quot;&quot;.equals(patientName.trim())">
+  				and p.name like '%' #{patientName} '%'
+  			</if>
+  			and sh.patient_id = p.patient_id
+  			and sh.sickbed_id = s.id
+  		</where>
+
+  </select>
+   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select sh.*,p.*,s.* from t_stay_hospital sh, t_patient p,t_sickbed s
+  		<where>
+  			<if test="sickbedId!=null and !&quot;&quot;.equals(sickbedId.trim())">
+  				and s.id like '%' #{sickbedId} '%'
+  			</if>
+  			<if test="patientName!=null and !&quot;&quot;.equals(patientName.trim())">
+  				and p.name like '%' #{patientName} '%'
+  			</if>
+  				and sh.patient_id = p.patient_id
+  				and sh.sickbed_id = s.id
+  		</where>
+  		order by sh.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  <!-- 批量删除 (通过id)-->
+  <delete id="deleteBatch" parameterType="list">
+		delete from t_stay_hospital where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
+  
+   <!-- 批量删除 (通过sickbed_id)-->
+  <delete id="deleteBatchBySickIds" parameterType="list">
+		delete from t_stay_hospital where sickbed_id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+  </delete>
 </mapper>

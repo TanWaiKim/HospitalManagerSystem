@@ -17,6 +17,6 @@ public interface DiagnosisService {
 	int deleteDiagnosisByDId(long diagnosisId);
 	int deleteDiagnosisByDIds(String[] dIds);
 	List<TDiagnosis> pageByPatientName(String patientName, Page page);
-	List<TDiagnosis> getDiagnosisByPersonType(Page page);
-	List<TDiagnosis> pageByPatientNameAndPersonType(String patientName, Page page);
+	
+	TDiagnosis getHealthByDId(long diagnosisId);
 }

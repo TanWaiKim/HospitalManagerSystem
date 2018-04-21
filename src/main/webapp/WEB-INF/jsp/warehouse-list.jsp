@@ -71,9 +71,9 @@
 					<th width="90" >仓库名称</th>
 					<th width="100" >仓库位置</th>
 					<th width="100" >仓库管理员</th>
-					<th width="100">管理员手机号码</th>
-					<th width="150">创建时间</th>
-					<th width="150">更新时间</th>
+					<th width="120">管理员手机号码</th>
+					<th width="140">创建时间</th>
+					<th width="140">更新时间</th>
 					<th width="300">操作</th>
 				</tr>
 				<c:forEach items="${warehouseList}" var="warehouse"  varStatus="status">

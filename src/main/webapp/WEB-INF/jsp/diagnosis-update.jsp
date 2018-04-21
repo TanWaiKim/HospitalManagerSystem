@@ -95,7 +95,7 @@
 									alert("修改成功!");
 									location.href = "${pageContext.request.contextPath }/diagnosis/list";
 								} else if (data.status == 500) {
-									alert("修改失败!");
+									alert(data.msg);
 								} 
 							});
 		}

@@ -15,6 +15,7 @@ import cn.edu.dgut.common.dto.SalesDto;
 import cn.edu.dgut.common.util.BigDecimalUtil;
 import cn.edu.dgut.common.util.IDUtils;
 import cn.edu.dgut.mapper.TbSalesMapper;
+import cn.edu.dgut.pojo.DrugData;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.pojo.TbDrug;
@@ -210,6 +211,8 @@ public class SalesServiceImpl implements SalesService {
 	public int addSalesByTbSales(SalesDto salesDto) {
 		TbSales lastSales = this.getLastRecord();
 		TbSales sales = new TbSales();
+		int count = 0;
+		
 		if(lastSales!=null){
 			sales.setId(lastSales.getId()+1);
 		}else{
@@ -219,48 +222,58 @@ public class SalesServiceImpl implements SalesService {
 		String salesNo = "XSYY"+IDUtils.getId() + "";
 		sales.setSalesNo(salesNo);
 		sales.setOperator(salesDto.getOperator());
-		sales.setRemarks(salesDto.getRemarks());
 		sales.setPatientId(salesDto.getPatientId());
 		
-		TbDrug drug = drugService.getDrugByName(salesDto.getDrugName());
-		
-		if (drug == null) {
-			return 0;
-		}
-		
-		int count = stockService.countStockQuantityByDrugId(drug.getId());
-		// 判断库存数量是否足够
-		if (salesDto.getQuantity() > count) {
-			return 0;
-		}
-		
-		Map<String, TbStock> map = this.getSalesStock(salesDto,drug.getId());
-		
-		TbSalesItem salesItem = new TbSalesItem();
-		salesItem.setSalesNo(sales.getSalesNo());
-		salesItem.setDrugId(drug.getId());
-		salesItem.setDrugName(drug.getDrugName());
-		
-		// 设置该批次的信息
-		for (Map.Entry<String, TbStock> entry : map.entrySet()) {
-			TbPurchaseItem purchaseItem = new TbPurchaseItem();
-			purchaseItem.setBatchNo(entry.getKey());
-			purchaseItem.setDrugId(drug.getId());
-			purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-			salesItem.setBatchNo(entry.getKey());
-			salesItem.setQuantity(entry.getValue().getStockQuantity());
-			salesItem.setSalePrice(purchaseItem.getSalePrice());
-			salesItem.setSaleTotalPrice(this.getOrderItemTotalPrice(salesItem.getQuantity(),salesItem.getSalePrice()));
+		for (int i = 0; i < salesDto.getDrugDataList().size(); i++) {
+			DrugData drugData2 = salesDto.getDrugDataList().get(i);
+			String drugName = drugData2.getDrugName();
+			String dN = drugData2.getDrugNum();
+			Integer drugNum = Integer.parseInt(dN.substring(0, dN.length()-1));
 			
-			TbStock stock = new TbStock();
-			stock.setBatchNo(entry.getKey());
-			stock.setDrugId(drug.getId());
+			salesDto.setDrugName(drugName);
+			salesDto.setQuantity(drugNum);
 			
-			if (salesItemService.addSalesItemByTbSalesItem(salesItem) > 0) {
-				stock.setStockQuantity(salesItem.getQuantity());
-				stockService.updateByStockSelective(stock);
-				}
+			TbDrug drug = drugService.getDrugByName(salesDto.getDrugName());
+			
+			if (drug == null) {
+				return 0;
+			}
+			
+			count = stockService.countStockQuantityByDrugId(drug.getId());
+			// 判断库存数量是否足够
+			if (salesDto.getQuantity() > count) {
+				return 0;
+			}
+			
+			Map<String, TbStock> map = this.getSalesStock(salesDto,drug.getId());
+			
+			TbSalesItem salesItem = new TbSalesItem();
+			salesItem.setSalesNo(sales.getSalesNo());
+			salesItem.setDrugId(drug.getId());
+			salesItem.setDrugName(drug.getDrugName());
+			
+			// 设置该批次的信息
+			for (Map.Entry<String, TbStock> entry : map.entrySet()) {
+				TbPurchaseItem purchaseItem = new TbPurchaseItem();
+				purchaseItem.setBatchNo(entry.getKey());
+				purchaseItem.setDrugId(drug.getId());
+				purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+				salesItem.setBatchNo(entry.getKey());
+				salesItem.setQuantity(entry.getValue().getStockQuantity());
+				salesItem.setSalePrice(purchaseItem.getSalePrice());
+				salesItem.setSaleTotalPrice(this.getOrderItemTotalPrice(salesItem.getQuantity(),salesItem.getSalePrice()));
+				
+				TbStock stock = new TbStock();
+				stock.setBatchNo(entry.getKey());
+				stock.setDrugId(drug.getId());
+				
+				if (salesItemService.addSalesItemByTbSalesItem(salesItem) > 0) {
+					stock.setStockQuantity(salesItem.getQuantity());
+					stockService.updateByStockSelective(stock);
+					}
+			}
 		}
+		
 		
 		List<TbSalesItem> salesItems = salesItemService.selectAllSalesItem(sales.getSalesNo());
 		

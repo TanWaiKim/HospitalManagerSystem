@@ -99,4 +99,5 @@ public class TDiagnosis {
 				+ ", patientId=" + patientId + ", disease=" + disease + ", bodyStatus=" + bodyStatus + ", created="
 				+ created + ", updated=" + updated + ", patient=" + patient + "]";
 	}
+    
 }

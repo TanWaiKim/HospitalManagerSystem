@@ -8,7 +8,7 @@ import cn.edu.dgut.pojo.TPrescription;
 
 public interface PrescriptionService {
 	List<TPrescription> getAllPrescription(Page page);
-	List<TPrescription> pageByCondition(String prescriptionId,String name, Page page);
+	List<TPrescription> pageByCondition(String prescriptionId,String patientId,String name, Page page);
 	TPrescription getPrescriptionById(Integer id);
 	int deletePrescriptionById(Integer id);
 	int deletePrescriptionByIds(String[] ids);

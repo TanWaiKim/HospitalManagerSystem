@@ -26,7 +26,7 @@
 <body>
 	<form method="post"
 		action="${pageContext.request.contextPath }/patient/pageByCondition"
-		id="listform">
+		id="listform" >
 		<input type="hidden" id="currentPage" name="currentPage"
 			value="${page.currentPage }" />
 		<div class="panel admin-panel">
@@ -35,7 +35,6 @@
 					style="float: right; display: none;">添加字段</a>
 			</div>
 			<div class="padding border-bottom">
-
 				<ul class="search" style="padding-left: 10px;">
 					<li><a class="button border-main icon-plus-square-o"
 						href="${pageContext.request.contextPath }/patient/skipToAdd">
@@ -46,21 +45,15 @@
 						name="patientName" value="${patientName }" /> &nbsp;&nbsp; 所属科别 <select
 						name="mcName" class="input" id="mcname"
 						style="width: 95px; line-height: 17px; display: inline-block">
-							<option value=""
-								<c:if test="${mcName == ''}">selected="selected"</c:if>>选择</option>
-							<option value="大内科"
-								<c:if test="${mcName == '大内科'}">selected="selected"</c:if>>大内科</option>
-							<option value="大外科"
-								<c:if test="${mcName == '大外科'}">selected="selected"</c:if>>大外科</option>
-							<option value="妇儿科室"
-								<c:if test="${mcName == '妇儿科室'}">selected="selected"</c:if>>妇儿科室</option>
-							<option value="五官科室"
-								<c:if test="${mcName == '五官科室'}">selected="selected"</c:if>>五官科室</option>
-							<option value="急诊科"
-								<c:if test="${mcName == '急诊科'}">selected="selected"</c:if>>急诊科</option>
-							<option value="病案、中医"
-								<c:if test="${mcName == '病案、中医'}">selected="selected"</c:if>>病案、中医</option>
-
+							
+							<option value="">未选择</option>
+							
+							<c:forEach
+								items="${medicalcoursesNameList}" var="medicalcoursesName" >
+									<option value="${medicalcoursesName}"
+									<c:if test="${mcName == medicalcoursesName}">selected="selected"</c:if>>${medicalcoursesName}</option>
+							</c:forEach>
+							
 					</select>
 					</li>
 
@@ -76,10 +69,11 @@
 			<table class="table table-hover text-center table-bordered">
 				<tr>
 					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
+					<th width="60" >病人编号</th>
 					<th width="60" >姓名</th>
 					<th width="60" >性别</th>
 					<th width="60" >年龄</th>
-					<th width="250" >住址</th>
+					<th width="150" >住址</th>
 					<th width="90" >人群类型</th>
 					<th width="30" >联系方式</th>
 					<th>所属科别</th>
@@ -94,7 +88,7 @@
 						<td style="text-align: left; padding-left: 20px;"><input
 							type="checkbox" name="id[]" value="${patient.id}" /><span>${(page.currentPage-1)*3+status.count}</span>
 						</td>
-
+						<td>${patient.patientId }</td>
 						<td>${patient.name }</td>
 						<td>${patient.sex }</td>
 						<td>${patient.age }</td>

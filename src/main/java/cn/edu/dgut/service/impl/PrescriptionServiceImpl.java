@@ -51,9 +51,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 	//按条件分页查询
 	@Override
-	public List<TPrescription> pageByCondition(String prescriptionId,String name, Page page) {
+	public List<TPrescription> pageByCondition(String prescriptionId,String patientId,String name, Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("prescriptionId", prescriptionId);
+		map.put("patientId", patientId);
 		map.put("name", name);
 		// 根据条件查询总数
 		int totalNum = prescriptionMapper.countByCondition(map);
@@ -99,7 +100,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 	//修改处方记录
 	@Override
 	public int updatePrescription(TPrescription prescription) {
-		return prescriptionMapper.updateByPrimaryKey(prescription);
+		// 改为有选择地修改
+		return prescriptionMapper.updateByPrimaryKeySelective(prescription);
 	}
 
 	//根据输入的字符自动模糊匹配数据库中已有的药品名

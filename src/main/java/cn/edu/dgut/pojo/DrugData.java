@@ -1,5 +1,6 @@
 package cn.edu.dgut.pojo;
 
+//药品数据处理类
 public class DrugData {
 	private String drugName;
 	private String drugNum;

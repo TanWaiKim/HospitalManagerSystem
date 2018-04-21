@@ -17,6 +17,10 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -26,22 +30,16 @@
 		<div class="body-content">
 			<form method="post" class="form-x" id="diagnosisAddForm"
 				onsubmit="return false;">
-				
+
 				<div class="form-group">
 					<div class="label">
 						<label>病人编号：</label>
 					</div>
-					
-							<div class="field">
-								<select name="patient.patientId" id="patientId" class="input"
-									style="width: 155px; line-height: 17px; display: inline-block">
-									<option value="">选择</option>
-									<c:forEach items="${patientIds}" var="patientId">
-										<option value="${patientId }">${patientId }</option>
-									</c:forEach>
-								</select>
-							</div>
-						
+					<div class="field">
+						<input type="text" class="input w50" name="patientId"
+							id="patientId" data-validate="required:请输入病人id" />
+						<div class="tips"></div>
+					</div>
 				</div>
 
 				<div class="form-group">
@@ -49,8 +47,9 @@
 						<label>病人症状：</label>
 					</div>
 					<div class="field">
-						
-						<textarea rows="5" class="input" name="symptom" style="height:200px; data-validate="required:请输入病人症状""></textarea>
+
+						<textarea rows="5" class="input" name="symptom"
+							style="height: 200px;"required:请输入病人症状""></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -89,6 +88,11 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+		$("#patientId").autocomplete({
+			source : "<c:url value="/diagnosis/auto"/>",
+			minLength : 1
+		});
+
 		function addForm() {
 			//ajax的post方式提交表单
 			//$("#diagnosisAddForm").serialize()将表单序列号为key-value形式的字符串
@@ -99,13 +103,13 @@
 							function(data) {
 								if (data.status == 200) {
 									alert("添加成功!");
-									var pId = document.getElementById('patientId').value;
-									location.href = "${pageContext.request.contextPath }/prescription/skipToAdd1/"+pId;
+									var pId = document
+											.getElementById('patientId').value;
+									location.href = "${pageContext.request.contextPath }/prescription/skipToAdd1/"
+											+ pId;
 								} else if (data.status == 500) {
-									alert("添加失败!");
-								} else if (data.status == 505) {
 									alert(data.msg);
-								}
+								} 
 							});
 		}
 	</script>

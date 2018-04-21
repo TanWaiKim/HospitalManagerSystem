@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,7 @@ public class DiagnosisController {
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
 		return "diagnosis-list";
 	}
@@ -67,6 +69,7 @@ public class DiagnosisController {
 			model.addAttribute("symptom", symptom);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
 		return "diagnosis-list";
 	}
@@ -87,17 +90,26 @@ public class DiagnosisController {
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
-			return HmsResult.build(500, "修改失败！");
+			return HmsResult.build(500, "系统错误，修改失败！");
 		}
 		return HmsResult.build(500, "修改失败！");
 	}
 
 	@RequestMapping("/skipToAdd")
 	public String skipToAdd(Model model) {
-		//跳转到添加诊断信息界面并查询所有记录的病人编号
-		List<String> patientIds = patientService.selectAllPatientIds();
-		model.addAttribute("patientIds", patientIds);
 		return "diagnosis-add";
+	}
+	
+	@RequestMapping(value = "/auto")
+	@ResponseBody
+	public String autoPatientIds(@RequestParam("term") String term, HttpServletResponse response){
+		String pIds = null;
+		try {
+			pIds = patientService.autoPatientId(term,response);
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+		}
+		return pIds;
 	}
 
 	@RequestMapping("/add")
@@ -106,13 +118,14 @@ public class DiagnosisController {
 		try {
 			TDoctor doctor = (TDoctor) request.getSession().getAttribute("doctorInfo");
 			diagnosis.setDoctorId(doctor.getDoctorId());
+			System.out.println("diagnosis="+diagnosis.toString());
 			if (diagnosisService.addDiagnosisByTDiagnosis(diagnosis) > 0) {
 				return HmsResult.ok();
 			}
-
+			
 		} catch (Exception e) {
-			e.getStackTrace();
-			return HmsResult.build(500, "添加失败！");
+			System.out.println(ExceptionUtil.getStackTrace(e));
+			return HmsResult.build(500, "系统错误，添加失败！");
 		}
 		return HmsResult.build(500, "添加失败！");
 	}
@@ -126,7 +139,7 @@ public class DiagnosisController {
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除失败！");
+			return HmsResult.build(500, "系统错误，删除失败！");
 		}
 		
 		return HmsResult.build(500, "删除失败！");
@@ -144,7 +157,7 @@ public class DiagnosisController {
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除失败！");
+			return HmsResult.build(500, "系统错误，删除失败！");
 		}
 		return HmsResult.build(500, "删除失败！");
 		

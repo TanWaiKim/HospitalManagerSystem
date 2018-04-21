@@ -22,9 +22,11 @@ import cn.edu.dgut.pojo.TbAdmin;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseItem;
+import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.service.DrugService;
 import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.PurchaseService;
+import cn.edu.dgut.service.WarehouseService;
 
 /**
  * @author TanWaiKim
@@ -40,6 +42,8 @@ public class PurchaseItemController {
 	private PurchaseItemService purchaseItemService;
 	@Autowired
 	private DrugService drugService;
+	@Autowired
+	private WarehouseService warehouseService;
 	
 	
 	/**
@@ -64,11 +68,13 @@ public class PurchaseItemController {
 		PurchaseDto purchaseDto = new PurchaseDto();
 		purchaseDto.setPurchaseNo(purchase.getPurchaseNo());
 		purchaseDto.setProviderId(purchase.getProviderId());
-		purchaseDto.setWarehouseNo(purchase.getWarehouseNo());
 		purchaseDto.setTotalQuantity(purchase.getTotalQuantity());
 		purchaseDto.setTotalPrice(purchase.getTotalPrice());
 		purchaseDto.setOperator(purchase.getOperator());
 		purchaseDto.setRemarks(purchase.getRemarks());
+		List<TbWarehouse> warehouseList = warehouseService.selectAllWarehouse();
+		model.addAttribute("warehouseList", warehouseList); 
+		
 		
 		model.addAttribute("purchaseDto", purchaseDto); 
 		
@@ -86,6 +92,10 @@ public class PurchaseItemController {
 	@ResponseBody()
 	public HmsResult addPurchaseByPurchaseNo(HttpSession session, Model model, PurchaseDto purchaseDto) {
 		try {
+			
+			if (purchaseDto.getWarehouseNo() == null) {
+				return HmsResult.build(505, "仓库不能为空！");
+			}
 			
 			if (purchaseDto.getDrugId() == null) {
 				return HmsResult.build(505, "医药名称不能为空！");
@@ -152,6 +162,15 @@ public class PurchaseItemController {
 			TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseNo);
 			model.addAttribute("purchase", purchase);
 			List<TbPurchaseItem> purchaseItemList = purchaseItemService.getAllPurchaseItem(purchaseNo, page);
+			
+			TbWarehouse warehouse = new TbWarehouse();
+			
+			for (int i = 0; i < purchaseItemList.size(); i++) {
+				warehouse.setWarehouseNo(purchaseItemList.get(i).getWarehouseNo());
+				warehouse = warehouseService.getWarehouseByNo(warehouse.getWarehouseNo());
+				purchaseItemList.get(i).setWarehouseNo(warehouse.getWarehouseName());
+			}
+						
 			model.addAttribute("purchaseItemList", purchaseItemList);
 			model.addAttribute("page", page);
 			
@@ -181,7 +200,6 @@ public class PurchaseItemController {
 		PurchaseDto purchaseDto = new PurchaseDto();
 		purchaseDto.setPurchaseNo(purchase.getPurchaseNo());
 		purchaseDto.setProviderId(purchase.getProviderId());
-		purchaseDto.setWarehouseNo(purchase.getWarehouseNo());
 		purchaseDto.setTotalQuantity(purchase.getTotalQuantity());
 		purchaseDto.setTotalPrice(purchase.getTotalPrice());
 		purchaseDto.setOperator(purchase.getOperator());

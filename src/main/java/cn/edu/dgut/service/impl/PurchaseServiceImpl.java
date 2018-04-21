@@ -20,13 +20,11 @@ import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbStock;
-import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.service.DrugService;
 import cn.edu.dgut.service.ProviderService;
 import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.PurchaseService;
 import cn.edu.dgut.service.StockService;
-import cn.edu.dgut.service.WarehouseService;
 
 /**
  * @author TanWaiKim
@@ -43,8 +41,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private DrugService drugService;
 	@Autowired
 	private ProviderService providerService;
-	@Autowired
-	private WarehouseService warehouseService;
 	@Autowired
 	private StockService stockService;
 	
@@ -69,9 +65,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		
 		for (TbPurchase tbPurchase : purchaseList) {
 			TbProvider provider = providerService.getProviderById(tbPurchase.getProviderId());
-			TbWarehouse warehouse = warehouseService.getWarehouseByNo(tbPurchase.getWarehouseNo());
 			tbPurchase.setProvider(provider);
-			tbPurchase.setWarehouse(warehouse);
 		}
 		
 		return purchaseList;
@@ -81,11 +75,10 @@ public class PurchaseServiceImpl implements PurchaseService {
 	 * 分页条件查询
 	 */
 	@Override
-	public List<TbPurchase> pageByCondition(String purchaseNo, Integer providerId, String warehouseNo, Page page) {
+	public List<TbPurchase> pageByCondition(String purchaseNo, Integer providerId, Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("providerId", providerId);
 		map.put("purchaseNo", purchaseNo);
-		map.put("warehouseNo", warehouseNo);
 		// 根据条件查询总数
 		int totalNum = purchaseMapper.countByCondition(map);
 		page.setTotalNumber(totalNum);
@@ -97,9 +90,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		
 		for (TbPurchase tbPurchase : purchaseList) {
 			TbProvider provider = providerService.getProviderById(tbPurchase.getProviderId());
-			TbWarehouse warehouse = warehouseService.getWarehouseByNo(tbPurchase.getWarehouseNo());
 			tbPurchase.setProvider(provider);
-			tbPurchase.setWarehouse(warehouse);
 		}
 		
 		return purchaseList;
@@ -127,9 +118,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		TbPurchase purchase = purchaseMapper.selectByPurchaseNo(purchaseNo);
 		if (purchase != null) {
 			TbProvider provider = providerService.getProviderById(purchase.getProviderId());
-			TbWarehouse warehouse = warehouseService.getWarehouseByNo(purchase.getWarehouseNo());
-			purchase.setProvider(provider);
-			purchase.setWarehouse(warehouse);		
+			purchase.setProvider(provider);	
 			return purchase;
 		}
 		return null;
@@ -201,7 +190,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 	
 		String purchaseNo = "CGYY"+IDUtils.getId() + "";
 		purchase.setPurchaseNo(purchaseNo);	
-		purchase.setWarehouseNo(purchaseDto.getWarehouseNo());
 		purchase.setProviderId(purchaseDto.getProviderId());
 		purchase.setOperator(purchaseDto.getOperator());
 		purchase.setRemarks(purchaseDto.getRemarks());
@@ -223,6 +211,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseItem.setBatchNo(purchaseDto.getBatchNo());
 		purchaseItem.setProduceTime(purchaseDto.getProduceTime());
 		purchaseItem.setValidTime(purchaseDto.getValidTime());
+		purchaseItem.setWarehouseNo(purchaseDto.getWarehouseNo());
 		
 		TbPurchaseItem purchaseItem2 = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
 		
@@ -249,31 +238,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 		
 		// 添加采药单
 		int count = purchaseMapper.insert(purchase);
-		
-		
-//		TbStock stock = new TbStock();
-//		stock.setWarehouseNo(purchaseDto.getWarehouseNo());
-//		stock.setDrugId(purchaseItem.getDrugId());
-//		stock.setDrugName(purchaseItem.getDrugName());
-//		stock.setStockQuantity(purchaseItem.getQuantity());
-//		stock.setPurchasePrice(purchaseItem.getPurchasePrice());
-//		stock.setSalePrice(purchaseItem.getSalePrice());
-//		stock.setProducedTime(new DateTimeUtil().strToDate(drug.getProducedTime(), "yyyy-MM-dd"));
-//		stock.setValidTime(new DateTimeUtil().strToDate(drug.getValidTime(), "yyyy-MM-dd"));
-//		stock.setOperator(purchaseDto.getOperator());
-//		
-//		
-//		TbStock stock2 = stockService.getStockByDrug(purchaseDto.getDrugId());
-//		
-//		if (stock2 != null) {
-//			BigDecimal stockQuantity = BigDecimalUtil.add(purchaseItem.getQuantity().doubleValue(),
-//					stock2.getStockQuantity().doubleValue());
-//			stock.setStockQuantity(stockQuantity.intValue());
-//			stockService.updateStockBySelective(stock);
-//		} else {
-//			// 添加库存
-//			stockService.addStockByTbStock(stock);	
-//		}
 		
 		return count;
 	}
@@ -309,6 +273,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseItem.setBatchNo(purchaseDto.getBatchNo());
 		purchaseItem.setProduceTime(purchaseDto.getProduceTime());
 		purchaseItem.setValidTime(purchaseDto.getValidTime());
+		purchaseItem.setWarehouseNo(purchaseDto.getWarehouseNo());
 		
 		TbPurchaseItem purchaseItem2 = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
 		
@@ -322,33 +287,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 		}
 		
 		// 设置药品的进药单价、销药单价
-//		drug.setPurchasePrice(purchaseDto.getPurchasePrice());
 		drug.setSalePrice(purchaseDto.getSalePrice());
 		drugService.updateDrugByTbDrug(drug);
 		
-//		
-//		TbStock stock = new TbStock();
-//		stock.setWarehouseNo(purchaseDto.getWarehouseNo());
-//		stock.setDrugId(purchaseItem.getDrugId());
-//		stock.setDrugName(purchaseItem.getDrugName());
-//		stock.setStockQuantity(purchaseItem.getQuantity());
-//		stock.setPurchasePrice(purchaseItem.getPurchasePrice());
-//		stock.setSalePrice(purchaseItem.getSalePrice());
-//		stock.setProducedTime(new DateTimeUtil().strToDate(drug.getProducedTime(), "yyyy-MM-dd"));
-//		stock.setValidTime(new DateTimeUtil().strToDate(drug.getValidTime(), "yyyy-MM-dd"));
-//		stock.setOperator(purchaseDto.getOperator());
-//		
-//		TbStock stock2 = stockService.getStockByDrug(purchaseDto.getDrugId());
-//		
-//		if (stock2 != null) {
-//			BigDecimal stockQuantity = BigDecimalUtil.add(purchaseItem.getQuantity().doubleValue(),
-//					stock2.getStockQuantity().doubleValue());
-//			stock.setStockQuantity(stockQuantity.intValue());
-//			stockService.updateStockBySelective(stock);
-//		} else {
-//			// 添加库存
-//			stockService.addStockByTbStock(stock);	
-//		}
 		
 		
 		return count;

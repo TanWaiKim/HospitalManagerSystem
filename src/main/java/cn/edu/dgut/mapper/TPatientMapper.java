@@ -45,4 +45,10 @@ public interface TPatientMapper {
 	TPatient getHealthRecordByPId(String patientId);
 
 	List<TPatient> selectAllPatientByCondition(Map<String, Object> map);
+
+	int countByPersonType(Map<String, Object> map);
+
+	List<TPatient> pageByPersonType(Map<String, Object> map);
+
+	List<TPatient> selectPatientByAutoComplete(String term);
 }

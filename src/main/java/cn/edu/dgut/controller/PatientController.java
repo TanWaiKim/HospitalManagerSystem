@@ -18,6 +18,7 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
+import cn.edu.dgut.service.MedicalcoursesService;
 import cn.edu.dgut.service.PatientService;
 
 @Controller
@@ -26,6 +27,9 @@ public class PatientController {
 
 	@Autowired
 	private PatientService patientService;
+	
+	@Autowired
+	private MedicalcoursesService medicalcoursesService;
 
 	@RequestMapping("/list")
 	public String getAllPatient(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
@@ -33,9 +37,12 @@ public class PatientController {
 			Page page = new Page();
 			page.setCurrentPage(currentPage);
 			model.addAttribute("patientList", patientService.getAllPatient(page));
+			model.addAttribute("medicalcoursesNameList", medicalcoursesService.getAllMedicalcoursesName());
+			model.addAttribute("mcName", "");
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
 		return "patient-list";
 	}
@@ -58,6 +65,7 @@ public class PatientController {
 			}
 			List<TPatient> patientList = patientService.pageByCondition(patientId, patientName, mcName, keywords, page);
 			model.addAttribute("patientList", patientList);
+			model.addAttribute("medicalcoursesNameList", medicalcoursesService.getAllMedicalcoursesName());
 			model.addAttribute("page", page);
 			model.addAttribute("keywords", keywords);
 			model.addAttribute("patientId", patientId);
@@ -66,14 +74,22 @@ public class PatientController {
 			model.addAttribute("keywords", keywords);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error";
 		}
 		return "patient-list";
 	}
 
 	@RequestMapping("/findById")
 	public String getPatientById(@RequestParam(value = "patientId") String patientId, Model model) {
-		TPatient patient = patientService.getPatientById(patientId);
-		model.addAttribute("patient", patient);
+		try{
+			TPatient patient = patientService.getPatientById(patientId);
+			model.addAttribute("patient", patient);
+			model.addAttribute("medicalcoursesNameList", medicalcoursesService.getAllMedicalcoursesName());
+		}catch(Exception e){
+			e.printStackTrace();
+			return "error";
+		}
+
 		return "patient-update";
 	}
 
@@ -83,26 +99,28 @@ public class PatientController {
 		try {
 			// 先通过patient_id获取更新之前的数据，为了与后面的phone对比
 			// 更新前后patient_id都不会变
-			TPatient patient1 = patientService.getPatientById(patient.getPatientId());
-			TPatient patient2 = patientService.getPatientByPhone(patient.getPhone());
-			
-			if (patient2 != null) {
-				if (!patient2.getPhone().equals(patient1.getPhone())) {
+			TPatient patient1 = patientService.getPatientByPhone(patient.getPhone());
+			if (patient1 != null) {
+				if (patient1.getId() != patient.getId()) {
 					return HmsResult.build(505, "手机号码已存在！");
 				}
+			}
+			if(patient.getLoginPassword().length()<5){
+				return HmsResult.build(505, "登录密码必须为5位以上！");
 			}
 			if (patientService.updatePatientByTPatient(patient) > 0) {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
-			return HmsResult.build(500, "修改失败！");
+			return HmsResult.build(500, "系统错误,修改失败！");
 		}
 		return HmsResult.build(500, "修改失败！");
 	}
 
 	@RequestMapping("/skipToAdd")
-	public String skipToAdd() {
+	public String skipToAdd(Model model) {
+		model.addAttribute("medicalcoursesNameList", medicalcoursesService.getAllMedicalcoursesName());
 		return "patient-add";
 	}
 
@@ -110,13 +128,24 @@ public class PatientController {
 	@ResponseBody()
 	public HmsResult addPatientByTPatient(TPatient patient, Model model) {
 		try {
-			
+			if(patient.getName()==null ||patient.getName().equals("")){
+				return HmsResult.build(505, "病人姓名不能为空！");
+			}
 			if (patientService.getPatientByPhone(patient.getPhone()) != null) {
 				return HmsResult.build(505, "手机号码已存在！");
 			}
-
+			if(patient.getLoginName()==null ||patient.getLoginName().equals("")){
+				return HmsResult.build(505, "病人登录账号不能为空!");
+			}
+			if(patient.getLoginPassword()== null||patient.getLoginPassword().equals("")){
+				patient.setLoginPassword("12345");
+			}
+			
 			if (patientService.isSimpleLoginName(patient.getLoginName())) {
 				return HmsResult.build(505, "病人登录账号已存在,请重新输入!");
+			}
+			if(patient.getLoginPassword().length()<5){
+				return HmsResult.build(505, "登录密码必须为5位以上！");
 			}
 			if (patientService.addPatientByTPatient(patient) > 0) {
 				return HmsResult.ok();
@@ -124,7 +153,7 @@ public class PatientController {
 
 		} catch (Exception e) {
 			e.getStackTrace();
-			return HmsResult.build(500, "添加失败！");
+			return HmsResult.build(500, "系统错误,添加失败！");
 		}
 		return HmsResult.build(500, "添加失败！");
 	}
@@ -134,12 +163,11 @@ public class PatientController {
 	public HmsResult deletePatientById(String id) {
 		try {
 			if (patientService.deletePatientById(Long.valueOf(id).longValue()) > 0) {
-
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除失败！");
+			return HmsResult.build(500, "系统错误，删除失败！");
 		}
 		
 		return HmsResult.build(500, "删除失败！");
@@ -157,7 +185,7 @@ public class PatientController {
 			}
 		} catch (Exception e) {
 			System.out.println(ExceptionUtil.getStackTrace(e));
-			return HmsResult.build(500, "删除病人记录失败！");
+			return HmsResult.build(500, "系统错误，删除病人记录失败！");
 		}
 		return HmsResult.build(500, "删除病人记录失败！");
 		

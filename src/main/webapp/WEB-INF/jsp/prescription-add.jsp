@@ -17,10 +17,12 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
- <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="http://jqueryui.com/resources/demos/style.css">
 
 </head>
 <body>
@@ -38,22 +40,16 @@
 					<c:choose>
 						<c:when test="${pId != null}">
 							<div class="field">
-								<select name="patientId" class="input"
-									style="width: 155px; line-height: 17px; display: inline-block">
-									<option value="${pId }">${pId }</option>
-
-								</select>
+								<input type="text" class="input w50" name="patientId" value=${pId }
+									id="patientId" data-validate="required:请输入病人id" />
+								<div class="tips"></div>
 							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="field">
-								<select name="patientId" class="input"
-									style="width: 155px; line-height: 17px; display: inline-block">
-									<option value="">选择</option>
-									<c:forEach items="${patientIds}" var="patientId">
-										<option value="${patientId }">${patientId }</option>
-									</c:forEach>
-								</select>
+								<input type="text" class="input w50" name="patientId"
+									id="patientId" data-validate="required:请输入病人id" />
+								<div class="tips"></div>
 							</div>
 						</c:otherwise>
 					</c:choose>
@@ -68,8 +64,8 @@
 					<ul>
 						<div name="drug-name-div"
 							style="margin-left: 87px; margin-top: 10px;">
-							药品名：<input type="text" name="drug-name" id="drug-name" class="drug-name"
-								style="width: 400px; height: 35px;">
+							药品名：<input type="text" name="drug-name" id="drug-name"
+								class="drug-name" style="width: 400px; height: 35px;">
 						</div>
 						<div name="drug-num-div"
 							style="margin-left: 100px; margin-top: 10px;">
@@ -114,30 +110,31 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		           	
-		$("#drug-name").autocomplete({
-						source:"<c:url value="/prescription/auto"/>",  
-	       		 		minLength:1
-	           			});
-		
-		$(".addGroup").click(function() {
-				var temple = $(".prescriptionAddForm ul").eq(0).clone();
-				temple.find("input").val("");
-				temple.find("input[name=drug-name]").autocomplete({
-					source:"<c:url value="/prescription/auto"/>",  
-       		 		minLength:1
-       			});
-				$(this).parent().append(temple);
-				
-				
-				temple.find(".delParam").css("visibility", "visible");
-				temple.find(".delParam").click(function() {
-					$(this).parent().remove();
-				});
+		$("#patientId").autocomplete({
+			source : "<c:url value="/diagnosis/auto"/>",
+			minLength : 1
 		});
-			         		
-		
-							
+	
+		$("#drug-name").autocomplete({
+			source : "<c:url value="/prescription/auto"/>",
+			minLength : 1
+		});
+
+		$(".addGroup").click(function() {
+			var temple = $(".prescriptionAddForm ul").eq(0).clone();
+			temple.find("input").val("");
+			temple.find("input[name=drug-name]").autocomplete({
+				source : "<c:url value="/prescription/auto"/>",
+				minLength : 1
+			});
+			$(this).parent().append(temple);
+
+			temple.find(".delParam").css("visibility", "visible");
+			temple.find(".delParam").click(function() {
+				$(this).parent().remove();
+			});
+		});
+
 		function addForm() {
 			var drugnames = document.getElementsByName("drug-name");
 			var drugnums = document.getElementsByName("drug-num");
@@ -178,7 +175,7 @@
 									alert("添加成功!");
 									location.href = "${pageContext.request.contextPath }/prescription/list";
 								} else if (data.status == 500) {
-									alert("添加失败!");
+									alert(data.msg);
 								} else if (data.status == 505) {
 									alert(data.msg);
 								}
