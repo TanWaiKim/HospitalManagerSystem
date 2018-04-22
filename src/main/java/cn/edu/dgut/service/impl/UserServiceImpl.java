@@ -35,10 +35,10 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private TAdminMapper adminMapper;
 
-
-	public HmsResult login(String username, String password, String postOffice, HttpServletRequest request, HttpSession session) {
-		if(postOffice.equals("医生")){
-			//条件查询  通过用户名查询记录 
+	public HmsResult login(String username, String password, String postOffice, HttpServletRequest request,
+			HttpSession session) {
+		if (postOffice.equals("医生")) {
+			// 条件查询 通过用户名查询记录
 			TDoctorExample example = new TDoctorExample();
 			example.createCriteria().andLoginNameEqualTo(username);
 			List<TDoctor> doctorList = doctorMapper.selectByExample(example);
@@ -47,14 +47,6 @@ public class UserServiceImpl implements UserService {
 				// 对输入的密码进行验证
 				if (doctorList.get(0).getLoginPassword().equals(password)) {
 					// 密码相同
-			//验证密码
-			if(doctorList.size()>0){
-				//对输入的密码进行验证
-				if(doctorList.get(0).getLoginPassword().equals(password)){
-					//密码相同
-					TbDrugAdmin admin = new TbDrugAdmin();
-					admin.setUsername(doctorList.get(0).getName());
-					session.setAttribute(Const.CURRENT_USER, admin);
 					request.getSession().setAttribute("doctorInfo", doctorList.get(0));
 					request.getSession().setAttribute("postOffice", postOffice);
 					return HmsResult.build(200, "医生登录成功");
@@ -65,52 +57,39 @@ public class UserServiceImpl implements UserService {
 			}
 			// 账号不一致
 			return HmsResult.build(500, "账号错误！");
-		} else if(postOffice.equals("药品员")){
-			//条件查询  通过用户名查询记录 
-			TbDrugAdmin drugAdmin = drugAdminService.login(username, password);
-			//验证密码
-			if(drugAdmin != null){
-				session.setAttribute(Const.CURRENT_USER, drugAdmin);
-				return HmsResult.build(200, "药品员登录成功");		
-			}
-			//账号不一致
-			return HmsResult.build(500, "账号或密码错误！");
-		}
-		} else if(postOffice.equals("药品员")){
-			//条件查询  通过用户名查询记录 
-			TbDrugAdmin drugAdmin = drugAdminService.login(username, password);
-			//验证密码
-			if(drugAdmin != null){
-				session.setAttribute(Const.CURRENT_USER, drugAdmin);
-				return HmsResult.build(200, "药品员登录成功");		
-			}
-			//账号不一致
-			return HmsResult.build(500, "账号或密码错误！");
-		}
-		} else if (postOffice.equals("管理员")) {
-			System.out.println("username="+username+",password="+password+",postOffice="+"postOffice");
+		} else if (postOffice.equals("药品员")) {
 			// 条件查询 通过用户名查询记录
-			TAdminExample example = new TAdminExample();
-			example.createCriteria().andUsernameEqualTo(username);
-			List<TAdmin> adminList = adminMapper.selectByExample(example);
+			TbDrugAdmin drugAdmin = drugAdminService.login(username, password);
 			// 验证密码
-			if (adminList.size() > 0) {
-				// 对输入的密码进行验证
-				if (adminList.get(0).getPassword().equals(password)) {
-					// 密码相同
-					request.getSession().setAttribute("adminInfo", adminList.get(0));
-					request.getSession().setAttribute("postOffice", postOffice);
-					return HmsResult.build(200, "管理员登录成功");
-				} else {
-					// 密码不相等
-					return HmsResult.build(500, "密码错误！");
-				}
+			if (drugAdmin != null) {
+				session.setAttribute(Const.CURRENT_USER, drugAdmin);
+				return HmsResult.build(200, "药品员登录成功");
 			}
 			// 账号不一致
-			return HmsResult.build(500, "账号错误！");
+			return HmsResult.build(500, "账号或密码错误！");
 		}
-		return HmsResult.build(500, "登录类型错误！");
+
+		// 管理员登录
+		System.out.println("username=" + username + ",password=" + password + ",postOffice=" + postOffice);
+		// 条件查询 通过用户名查询记录
+		TAdminExample example = new TAdminExample();
+		example.createCriteria().andUsernameEqualTo(username);
+		List<TAdmin> adminList = adminMapper.selectByExample(example);
+		// 验证密码
+		if (adminList.size() > 0) {
+			// 对输入的密码进行验证
+			if (adminList.get(0).getPassword().equals(password)) {
+				// 密码相同
+				request.getSession().setAttribute("adminInfo", adminList.get(0));
+				request.getSession().setAttribute("postOffice", postOffice);
+				return HmsResult.build(200, "管理员登录成功");
+			} else {
+				// 密码不相等
+				return HmsResult.build(500, "密码错误！");
+			}
+		}
+		// 账号不一致
+		return HmsResult.build(500, "账号错误！");
 	}
 
 }
-

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.pojo.TAdmin;
 import cn.edu.dgut.pojo.TDoctor;
 
@@ -39,13 +40,17 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;  
         }  
         //获取Session  
-       
-        if(request.getSession().getAttribute("doctorInfo") != null ){  
+        
+        if(request.getSession().getAttribute("doctorInfo") != null && request.getSession().getAttribute("doctorInfo") !=""){  
             return true;  
         }  
         
         
-        if(request.getSession().getAttribute("adminInfo") != null ){  
+        if(request.getSession().getAttribute("adminInfo") != null && request.getSession().getAttribute("adminInfo") !=""){  
+            return true;  
+        }  
+        
+        if(request.getSession().getAttribute(Const.CURRENT_USER) != null && request.getSession().getAttribute(Const.CURRENT_USER) !=""){  
             return true;  
         }  
         //不符合条件的，跳转到登录界面  

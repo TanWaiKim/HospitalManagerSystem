@@ -26,7 +26,7 @@
 				class="icon-home"></span> 登录用户：${adminInfo.name }</a> &nbsp;&nbsp;<a href="##"
 				class="button button-little bg-blue"><span class="icon-user"></span>
 				用户角色:${postOffice }</a> &nbsp;&nbsp;<a class="button button-little bg-red"
-				href="${pageContext.request.contextPath }/aLogout"><span class="icon-power-off"></span> 退出登录</a>
+				href="${pageContext.request.contextPath }/alogout"><span class="icon-power-off"></span> 退出登录</a>
 		</div>
 	</div>
 	<div class="leftnav " style="overflow:scroll;">
