@@ -18,7 +18,7 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrugAdmin;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.pojo.TbPurchase;
@@ -56,7 +56,7 @@ public class PurchaseController {
 	 */
 	@RequestMapping("/skipToAdd")
 	public String skipToAdd(HttpSession session, Model model) {
-        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
         if(admin ==null){
             return "login";
         }
@@ -87,15 +87,15 @@ public class PurchaseController {
 	public HmsResult addPurchaseByTbPurchase(HttpSession session, Model model, PurchaseDto purchaseDto) {
 		try {
 			
-			if (purchaseDto.getProviderId() == null) {
+			if (purchaseDto.getProviderId() == null || purchaseDto.getProviderId() == 0) {
 				return HmsResult.build(505, "供药商不能为空！");
 			}	        
 	        
-			if (purchaseDto.getWarehouseNo() == null) {
+			if (purchaseDto.getWarehouseNo() == null || purchaseDto.getWarehouseNo().equals("")) {
 				return HmsResult.build(505, "仓库不能为空！");
 			}
 			
-			if (purchaseDto.getDrugId() == null) {
+			if (purchaseDto.getDrugId() == null || purchaseDto.getDrugId() == 0) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
@@ -103,7 +103,7 @@ public class PurchaseController {
 				return HmsResult.build(505, "进药价格不能为空！");
 			}
 			
-			if (purchaseDto.getQuantity() == null) {
+			if (purchaseDto.getQuantity() == null || purchaseDto.getQuantity() == 0) {
 				return HmsResult.build(505, "进药数量不能为空！");
 			}
 			
@@ -119,7 +119,7 @@ public class PurchaseController {
 				return HmsResult.build(505, "有效日期至不能为空！");
 			}
 			
-			if (purchaseDto.getBatchNo() == null) {
+			if (purchaseDto.getBatchNo() == null || purchaseDto.getBatchNo().equals("")) {
 				return HmsResult.build(505, "产品批号不能为空！");
 			}			
 			

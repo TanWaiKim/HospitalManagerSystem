@@ -18,8 +18,10 @@
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
 <script src="${pageContext.request.contextPath }/js/My97DatePicker/WdatePicker.js"></script>  
-  </head>  
 
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
+<script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -62,11 +64,13 @@
 					<div class="label">
 						<label>功能主治：</label>
 					</div>
+					
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="purpose" data-validate="required:请输入功能主治" />
+						
+						<textarea rows="2" class="input" name="purpose"  data-validate="required:请输入功能主治"></textarea>
 						<div class="tips"></div>
 					</div>
+					
 				</div>
 
 				<div class="form-group">
@@ -106,9 +110,10 @@
 					<div class="label">
 						<label>用法用量：</label>
 					</div>
+
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="howuse" data-validate="required:请输入用法用量" />
+						
+						<textarea rows="2" class="input" name="howuse"  data-validate="required:请输入用法用量"></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>	
@@ -128,9 +133,10 @@
 					<div class="label">
 						<label>不良反应：</label>
 					</div>
+
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="uneffect" data-validate="required:请输入不良反应" />
+						
+						<textarea rows="2" class="input" name="uneffect"  data-validate="required:请输入不良反应"></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>		
@@ -155,12 +161,44 @@
 							$("#drugAddForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
-									alert("添加成功!");
-									location.href = "${pageContext.request.contextPath }/drug/list";
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: '恭喜您，添加成功!',
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											location.href = "${pageContext.request.contextPath }/drug/list";
+										}
+									});
+									d.showModal();
 								} else if (data.status == 500) {
-									alert("添加失败!");
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: '很抱歉，添加失败!',
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											
+										}
+									});
+									d.showModal();
 								} else if (data.status == 505) {
-									alert(data.msg);
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: data.msg,
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											
+										}
+									});
+									d.showModal();
 								}
 							});
 		}

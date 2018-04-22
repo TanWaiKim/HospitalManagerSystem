@@ -654,63 +654,63 @@ public class TbStockExample {
             addCriterion("update_time not between", value1, value2, "updateTime");
             return (Criteria) this;
         }
-        public Criteria andWaringNoIsNull() {
-            addCriterion("waring is null");
+        public Criteria andQuantityWaringNoIsNull() {
+            addCriterion("quantity_waring is null");
             return (Criteria) this;
         }
 
-        public Criteria andWaringNoIsNotNull() {
-            addCriterion("waring is not null");
+        public Criteria andQuantityWaringNoIsNotNull() {
+            addCriterion("quantity_waring is not null");
             return (Criteria) this;
         }
 
-        public Criteria andWaringEqualTo(String value) {
-            addCriterion("waring =", value, "waring");
+        public Criteria andQuantityWaringEqualTo(String value) {
+            addCriterion("quantity_waring =", value, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringNotEqualTo(String value) {
-            addCriterion("waring <>", value, "waring");
+        public Criteria andQuantityWaringNotEqualTo(String value) {
+            addCriterion("quantity_waring <>", value, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringGreaterThan(String value) {
-            addCriterion("waring >", value, "waring");
+        public Criteria andQuantityWaringGreaterThan(String value) {
+            addCriterion("quantity_waring >", value, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringGreaterThanOrEqualTo(String value) {
-            addCriterion("waring >=", value, "waring");
+        public Criteria andQuantityWaringGreaterThanOrEqualTo(String value) {
+            addCriterion("quantity_waring >=", value, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringLessThan(String value) {
-            addCriterion("waring <", value, "waring");
+        public Criteria andQuantityWaringLessThan(String value) {
+            addCriterion("quantity_waring <", value, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringLessThanOrEqualTo(String value) {
-            addCriterion("waring <=", value, "waring");
+        public Criteria andQuantityWaringLessThanOrEqualTo(String value) {
+            addCriterion("quantity_waring <=", value, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringIn(List<String> values) {
-            addCriterion("waring in", values, "waring");
+        public Criteria andQuantityWaringIn(List<String> values) {
+            addCriterion("quantity_waring in", values, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringNotIn(List<String> values) {
-            addCriterion("waring not in", values, "waring");
+        public Criteria andQuantityWaringNotIn(List<String> values) {
+            addCriterion("quantity_waring not in", values, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringBetween(String value1, String value2) {
-            addCriterion("waring between", value1, value2, "waring");
+        public Criteria andQuantityWaringBetween(String value1, String value2) {
+            addCriterion("quantity_waring between", value1, value2, "quantity_waring");
             return (Criteria) this;
         }
 
-        public Criteria andWaringNotBetween(String value1, String value2) {
-            addCriterion("waring not between", value1, value2, "waring");
+        public Criteria andQuantityWaringNotBetween(String value1, String value2) {
+            addCriterion("quantity_waring not between", value1, value2, "quantity_waring");
             return (Criteria) this;
         }
         

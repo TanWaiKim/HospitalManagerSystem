@@ -59,13 +59,13 @@
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
 							<td>${stock.maxQuantity }</td>
-							<td>${stock.waring }</td>
+							<td>${stock.quantityWaring }</td>
 							<td>
 								<div class="button-group">
 									<a class="button border-main"
 										href="${pageContext.request.contextPath }/purchase/skipToAdd"><span
 										class="icon-plus"></span>采药</a> <a class="button border-red"
-										href="#"><span
+										href="${pageContext.request.contextPath }/back/skipToAdd?type=1"><span
 										class="icon-minus"></span> 退药</a>
 								</div>
 							</td>

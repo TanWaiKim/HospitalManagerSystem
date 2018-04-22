@@ -17,6 +17,10 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
+<script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -94,12 +98,44 @@
 							$("#warehouseUpdateForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
-									alert("修改成功!");
-									location.href = "${pageContext.request.contextPath }/warehouse/list";
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: '恭喜您，修改成功!',
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											location.href = "${pageContext.request.contextPath }/warehouse/list";
+										}
+									});
+									d.showModal();
 								} else if (data.status == 500) {
-									alert("修改失败!");
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: '很抱歉，修改失败!',
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											
+										}
+									});
+									d.showModal();
 								} else if (data.status == 505) {
-									alert(data.msg);
+									var d = dialog({
+										okValue: '确定',
+										title: '温馨提示',
+										content: data.msg,
+
+										width: 200,
+										height: 50,
+										ok: function () {
+											
+										}
+									});
+									d.showModal();
 								}
 							});
 		}

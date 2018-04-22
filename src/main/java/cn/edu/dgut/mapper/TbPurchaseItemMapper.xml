@@ -107,6 +107,7 @@
     <include refid="Base_Column_List" />
     from tb_purchase_item
     where drug_id = #{drugId,jdbcType=INTEGER} and batch_no = #{batchNo,jdbcType=VARCHAR}
+    order by id desc limit 1
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -407,6 +408,14 @@
   	<include refid="Base_Column_List"></include>
   	from  tb_purchase_item where purchase_no = #{purchaseNo}
   </select>  
+  
+ 
+   <!-- 查询所有记录 -->
+  <select id="selectAllPurchaseItemByDrugId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"></include>
+  	from  tb_purchase_item where drug_id = #{drugId}
+  </select> 
 
  
   <!-- 统计记录数 -->

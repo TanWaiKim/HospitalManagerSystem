@@ -152,4 +152,16 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 		return true;
 	}
 
+	//通过药品名查询药品记录
+	@Override
+	public List<TbDrug> findByDrugName(String drugName) {
+		TbDrugExample example = new TbDrugExample();
+		example.createCriteria().andDrugNameEqualTo(drugName);
+		List<TbDrug> drugList = drugMapper.selectByExample(example);
+		if(drugList.size()>0){
+			return drugList;
+		}
+		return null;
+	}
+
 }

@@ -245,6 +245,7 @@ public class SalesServiceImpl implements SalesService {
 				return 0;
 			}
 			
+			// 获得到将被销售的药品，key为批号，value为药品信息
 			Map<String, TbStock> map = this.getSalesStock(salesDto,drug.getId());
 			
 			TbSalesItem salesItem = new TbSalesItem();
@@ -445,6 +446,38 @@ public class SalesServiceImpl implements SalesService {
 	@Override
 	public int updateSales(TbSales sales) {
 		return salesMapper.updateBySalesNoSelective(sales);
+	}
+
+	/**
+	 * 销售条件统计，根据名称、编号等查询某一种药品的销售情况
+	 */
+	@Override
+	public List<TbSalesItem> saleByCondition(String drugName, String drugNo, String beginTime, String endTime) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		TbDrug drug = new TbDrug();
+		if (!drugName.equals("") || !drugNo.equals("")) {
+			drug.setDrugName(drugName);
+			drug.setDrugNo(drugNo);
+			drug.setId(0);
+			drug = drugService.getDrugBySelective(drug);
+		} else if (drugName.equals("") && drugNo.equals("")) {
+			drug = null;
+		} 
+		
+		if (drug == null) {
+			return null;
+		}
+		
+		map.put("drugId", drug.getId());
+		map.put("beginTime", beginTime);
+		map.put("endTime", endTime);
+		
+		List<TbSalesItem> salesItemList = salesItemService.selectAllSale(map);
+		
+		if (salesItemList != null) {
+			return salesItemList;
+		}
+		return null;
 	}
 
 }

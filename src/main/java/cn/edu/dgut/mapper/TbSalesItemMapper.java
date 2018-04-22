@@ -46,5 +46,7 @@ public interface TbSalesItemMapper {
 	int deleteBatch(List<Long> list);
 	
 	List<TbSalesItem> selectAllSalesItem1();
+	
+	List<TbSalesItem> analysisByCondition(Map<String, Object> map);
     
 }

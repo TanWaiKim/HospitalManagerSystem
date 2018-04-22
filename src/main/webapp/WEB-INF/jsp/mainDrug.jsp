@@ -22,11 +22,21 @@
 			</h1>
 		</div>
 		<div class="head-l">
-			<a class="button button-little bg-green" href="" target="_blank"><span
-				class="icon-home"></span> 登录用户：${currentUser.username }</a> &nbsp;&nbsp;<a href="##"
-				class="button button-little bg-blue"><span class="icon-user"></span>
-				用户角色:药品员</a> &nbsp;&nbsp;<a class="button button-little bg-red"
-				href="login.html"><span class="icon-power-off"></span> 退出登录</a>
+			<a class="button button-little bg-green" href="" target="_blank">
+				<span class="icon-home"></span> 
+				登录用户：${currentUser.username }
+			</a> 
+			&nbsp;&nbsp;
+			
+			<a href="##" class="button button-little bg-blue">
+				<span class="icon-user"></span>
+				用户角色:药品员
+			</a> 
+			&nbsp;&nbsp;
+			
+			<a class="button button-little bg-red" href="${pageContext.request.contextPath }/logout">
+				<span class="icon-power-off"></span> 退出登录
+			</a>
 		</div>
 	</div>
 	<div class="leftnav " style="overflow:scroll;">
@@ -35,7 +45,7 @@
 		</div>
 
 		<h2>
-			<span class="icon-user"></span>基础信息管理
+			<span class="icon-cog"></span>基础信息管理
 		</h2>
 		
 		<ul style="display: none">
@@ -161,18 +171,18 @@
 					
 			<li>
 				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>进药退回
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>药商退药
 				</h5>
 		
 				<ul style="display: none">
 					<li>
-						<a href="${pageContext.request.contextPath }/drug/skipToAdd" target="right">
+						<a href="${pageContext.request.contextPath }/back/skipToAdd?type=1" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>添加退药单
 						</a>
 					</li>
 					<li>
-						<a href="drug/list" target="right">
+						<a href="back/list" target="right">
 							&nbsp;&nbsp;
 							<span class="icon-caret-right"></span>管理退药单
 						</a>
@@ -234,11 +244,25 @@
 			</li>
 					
 			<li>
-				<a href="info.html" target="right">
-					<span class="icon-caret-right"></span>销药退出
-				</a>
-			</li>
-					
+				<h5>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>病人退药
+				</h5>
+		
+				<ul style="display: none">
+					<li>
+						<a href="${pageContext.request.contextPath }/back/skipToAdd?type=2" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>添加退药单
+						</a>
+					</li>
+					<li>
+						<a href="back/list" target="right">
+							&nbsp;&nbsp;
+							<span class="icon-caret-right"></span>管理退药单
+						</a>
+					</li>
+				</ul>
+			</li>	
 		</ul>
 		<h2>
 			<span class="icon-mobile"></span>统计分析
@@ -261,14 +285,14 @@
 				</a>
 			</li>
 			<li>
-				<a href="info.html" target="right">
+				<a href="statistics/sale" target="right">
 					<span class="icon-caret-right"></span>销药分析
 				</a>
 			</li>					
 		</ul>
 
 		<h2>
-			<span class="icon-cog"></span>系统设置
+			<span class="icon-user"></span>用户信息管理
 		</h2>
 		
 		<ul style="display: none">

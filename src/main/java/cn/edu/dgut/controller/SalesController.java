@@ -22,7 +22,7 @@ import cn.edu.dgut.pojo.DrugData;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.pojo.TPrescription;
-import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrugAdmin;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbSales;
@@ -61,7 +61,7 @@ public class SalesController {
 	 */
 	@RequestMapping("/skipToAdd")
 	public String skipToAdd(HttpSession session, Model model) {
-        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
         if(admin ==null){
             return "login";
         }
@@ -96,7 +96,7 @@ public class SalesController {
 			String drugData = prescription.getDrugData();
 			List<DrugData> drugDataList = JsonUtils.jsonToList(drugData, DrugData.class);
 			
-			TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+			TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
 			salesDto.setOperator(admin.getUsername());
 			salesDto.setPatientId(prescription.getPatientId());
 			salesDto.setDrugDataList(drugDataList);

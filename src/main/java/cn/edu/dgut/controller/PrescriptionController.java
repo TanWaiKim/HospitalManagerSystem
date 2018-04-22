@@ -24,6 +24,7 @@ import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TDiagnosis;
 import cn.edu.dgut.pojo.TDoctor;
 import cn.edu.dgut.pojo.TPrescription;
+import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.service.PatientService;
 import cn.edu.dgut.service.PrescriptionService;
 
@@ -120,11 +121,17 @@ public class PrescriptionController {
 	@ResponseBody
 	public HmsResult addPrescription(@PathVariable("patientId")String patientId, String paramData, HttpServletRequest request){
 		try {
+			
+			
 			//查询药品所在库存记录，并判断库存是否满足处方药品数量
 			List<DrugData> drugDataList = JsonUtils.jsonToList(paramData, DrugData.class);
 			for (DrugData drugData : drugDataList) {
 				String drugName = drugData.getDrugName();
 				String drugNum = drugData.getDrugNum();
+				List<TbDrug> prescriptionList = prescriptionService.findByDrugName(drugName);
+				if(prescriptionList == null){
+					return HmsResult.build(505, drugName+"在库存中不存在！");
+				}
 				if(prescriptionService.isEnoughDrug(drugName,drugNum.substring(0, drugNum.length()-1)) != true){
 					return HmsResult.build(505, drugName+"在库存中不足！");
 				}
@@ -140,7 +147,7 @@ public class PrescriptionController {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e.getStackTrace());
+			System.out.println(ExceptionUtil.getStackTrace(e));
 			return HmsResult.build(500, "系统错误，添加失败！");
 		}
 		return HmsResult.build(500, "添加失败！");

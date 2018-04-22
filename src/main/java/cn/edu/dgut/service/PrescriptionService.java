@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPrescription;
+import cn.edu.dgut.pojo.TbDrug;
 
 
 public interface PrescriptionService {
@@ -16,4 +17,5 @@ public interface PrescriptionService {
 	int updatePrescription(TPrescription prescription);
 	String autoDrugName(String term, HttpServletResponse response) throws Exception;
 	boolean isEnoughDrug(String drugName, String drugNum);
+	List<TbDrug> findByDrugName(String drugName);
 }

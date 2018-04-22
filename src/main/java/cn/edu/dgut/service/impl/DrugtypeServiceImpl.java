@@ -8,11 +8,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.edu.dgut.mapper.TbAdminMapper;
+import cn.edu.dgut.mapper.TbDrugAdminMapper;
 import cn.edu.dgut.mapper.TbDrugtypeMapper;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
-import cn.edu.dgut.pojo.TbAdminExample;
+import cn.edu.dgut.pojo.TbDrugAdmin;
+import cn.edu.dgut.pojo.TbDrugAdminExample;
 import cn.edu.dgut.pojo.TbDrugtype;
 import cn.edu.dgut.service.DrugtypeService;
 
@@ -28,7 +28,7 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	private TbDrugtypeMapper drugtypeMapper;
 	
 	@Autowired
-	private TbAdminMapper adminMapper;
+	private TbDrugAdminMapper adminMapper;
 	
 	
 	/**
@@ -117,9 +117,6 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	 */
 	@Override
 	public int deleteDrugtypeById(Integer id) {
-		
-		
-		
 		return drugtypeMapper.deleteByPrimaryKey(id);
 	}
 
@@ -143,9 +140,9 @@ public class DrugtypeServiceImpl implements DrugtypeService {
 	@Override
 	public boolean isSimpleLoginName(String username) {
 		//根据loginName条件查询
-		TbAdminExample example = new TbAdminExample();
+		TbDrugAdminExample example = new TbDrugAdminExample();
 		example.createCriteria().andUsernameEqualTo(username);
-		List<TbAdmin> adminList = adminMapper.selectByExample(example);
+		List<TbDrugAdmin> adminList = adminMapper.selectByExample(example);
 		if(adminList != null){
 			return true;
 		}

@@ -61,7 +61,7 @@
 							<td>
 								<div class="button-group">
 									<a class="button border-red"
-										href="#"><span
+										href="${pageContext.request.contextPath }/back/skipToAdd?type=1"><span
 										class="icon-minus"></span> 退药</a>
 								</div>
 							</td>

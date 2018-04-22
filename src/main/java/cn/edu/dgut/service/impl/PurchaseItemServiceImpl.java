@@ -243,4 +243,16 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
 		}
 		return null;
 	}
+
+	
+	@Override
+	public List<TbPurchaseItem> selectAllPurchaseItemByDrugId(Integer drugId) {
+		List<TbPurchaseItem> purchaseItems = purchaseItemMapper.selectAllPurchaseItemByDrugId(drugId);
+		
+		if (purchaseItems != null) {
+			return purchaseItems;
+		}
+		
+		return null;
+	}
 }

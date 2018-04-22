@@ -20,7 +20,7 @@ import cn.edu.dgut.common.util.BigDecimalUtil;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrugAdmin;
 import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbStock;
 import cn.edu.dgut.pojo.TbWarehouse;
@@ -58,7 +58,7 @@ public class StockController {
 				return HmsResult.build(500, "该记录处于已入库状态，不可再次入库！");
 			}
 			
-	        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+	        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
 	        
 			TbStock stock = new TbStock();
 			stock.setWarehouseNo(purchaseItem.getWarehouseNo());
@@ -414,10 +414,21 @@ public class StockController {
 		
 		TbStock stock = stockList.get(0);
 		
+		List<TbPurchaseItem> purchaseItemList = purchaseItemService.selectAllPurchaseItemByDrugId(stock.getDrugId());
+		BigDecimal purchasePrice = new BigDecimal("0");
+		
+		// 计算平均进价
+		for(TbPurchaseItem tbPurchaseItem1 : purchaseItemList) {
+			purchasePrice = BigDecimalUtil.add(purchasePrice.doubleValue(), 
+					tbPurchaseItem1.getPurchasePrice().doubleValue());
+		}
+		purchasePrice = BigDecimalUtil.div(purchasePrice.doubleValue(), purchaseItemList.size());
+		
 		TbPurchaseItem purchaseItem = new TbPurchaseItem();
 		purchaseItem.setBatchNo(stock.getBatchNo());
 		purchaseItem.setDrugId(stock.getDrugId());
 		purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
+		purchaseItem.setPurchasePrice(purchasePrice);
 		
 		stock.setPurchaseItem(purchaseItem);
 		stock.setStockQuantity(totalQuantity);

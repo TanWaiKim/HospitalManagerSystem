@@ -38,6 +38,8 @@ public interface TbPurchaseItemMapper {
     
 	List<TbPurchaseItem> selectAllPurchaseItem(String purchaseNo);
 	
+	List<TbPurchaseItem> selectAllPurchaseItemByDrugId(Integer drugId);
+	
 	int countByCondition(Map<String, Object> map);
 
 	List<TbPurchaseItem> pageByCondition(Map<String, Object> map);

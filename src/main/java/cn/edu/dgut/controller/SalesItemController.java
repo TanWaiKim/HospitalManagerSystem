@@ -18,7 +18,7 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbAdmin;
+import cn.edu.dgut.pojo.TbDrugAdmin;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbSales;
@@ -57,7 +57,7 @@ public class SalesItemController {
 			@RequestParam(value = "salesNo", defaultValue = "") String salesNo,
 			HttpSession session, 
 			Model model) {
-        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
         if(admin ==null){
             return "login";
         }
@@ -91,7 +91,7 @@ public class SalesItemController {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
-			if (salesDto.getQuantity() == null) {
+			if (salesDto.getQuantity() == null || salesDto.getQuantity() == 0) {
 				return HmsResult.build(505, "销药数量不能为空！");
 			}
 			
@@ -169,7 +169,7 @@ public class SalesItemController {
 			@RequestParam(value = "id") Integer id,
 			HttpSession session, 
 			Model model) {
-        TbAdmin admin = (TbAdmin)session.getAttribute(Const.CURRENT_USER);
+        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
         if(admin ==null){
             return "login";
         }
@@ -218,12 +218,12 @@ public class SalesItemController {
 			SalesDto salesDto) {
 		try {
 			
-			if (salesDto.getDrugId() == null) {
+			if (salesDto.getDrugId() == null || salesDto.getDrugId() == 0) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
 			
-			if (salesDto.getQuantity() == null) {
+			if (salesDto.getQuantity() == null || salesDto.getQuantity() == 0) {
 				return HmsResult.build(505, "销药数量不能为空！");
 			}
 			
