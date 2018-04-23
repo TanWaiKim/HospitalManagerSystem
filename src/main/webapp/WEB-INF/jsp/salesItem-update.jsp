@@ -97,6 +97,7 @@
 										}
 									});
 									d.showModal();
+								} else if (data.status == 500) {
 									var d = dialog({
 										okValue: '确定',
 										title: '温馨提示',
