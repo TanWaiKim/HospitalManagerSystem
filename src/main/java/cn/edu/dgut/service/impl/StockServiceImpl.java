@@ -80,13 +80,15 @@ public class StockServiceImpl implements StockService {
 		map.put("warehouseNo", warehouseNo);
 		map.put("operator", operator);
 		
-		// 根据药名获得医药
-		TbDrug drug = drugService.getDrugByName(drugName);
-		
-		if (drug != null) {
-			map.put("drugId", drug.getId());
-		} else {
-			map.put("drugId", null);
+		if (!drugName.equals("")) {
+			// 根据药名获得医药
+			TbDrug drug = drugService.getDrugByName(drugName);
+			
+			if (drug != null) {
+				map.put("drugId", drug.getId());
+			} else {
+				map.put("drugId", 0);
+			}
 		}
 		
 		if (!drugNo.equals("")) {
@@ -95,7 +97,7 @@ public class StockServiceImpl implements StockService {
 			if (drug1 != null) {
 				map.put("drugId", drug1.getId());
 			} else {
-				map.put("drugId", null);
+				map.put("drugId", 0);
 			}
 		}
 		

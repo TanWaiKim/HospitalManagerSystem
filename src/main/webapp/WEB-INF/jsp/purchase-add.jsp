@@ -22,6 +22,93 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
+
+<script type="text/javascript">
+
+	$(function()  {
+		$("#purchasePrice").blur(function() {
+			var reg = /^[0-9]+([.]{1}[0-9]+){0,1}$/;
+			var purchasePrice = document.getElementById("purchasePrice");
+			if (!reg.test(purchasePrice.value)) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '采药价格必须为数值类型!',
+	
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+	
+	$(function()  {
+		$("#salePrice").blur(function() {
+			var reg = /^[0-9]+([.]{1}[0-9]+){0,1}$/;
+			var salePrice = document.getElementById("salePrice");
+			if (!reg.test(salePrice.value)) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '销药价格必须为数值类型!',
+	
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+	
+	$(function()  {
+		$("#batchNo").blur(function() {
+			var reg = /^[0-9]+.?[0-9]*$/;
+			var batchNo = document.getElementById("batchNo");
+			if (!reg.test(batchNo.value) || batchNo.value.toString().length != 8) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '产品批号必须为8位数字!',
+
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+
+	$(function()  {
+		$("#quantity").blur(function() {
+			var reg = /^[0-9]+.?[0-9]*$/;
+			var quantity = document.getElementById("quantity");
+			if (!reg.test(quantity.value)) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '数量必须为整数类型!',
+
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+</script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -88,8 +175,8 @@
 						<label>进药价格：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="purchasePrice" data-validate="required:请输入进药价格" />元
+						<input type="text" class="input w50" value="" id="purchasePrice"
+							name="purchasePrice" data-validate="required:请输入进药价格(数值类型)" />元
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -99,8 +186,8 @@
 						<label>销药价格：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="salePrice" data-validate="required:请输入销药价格" />元
+						<input type="text" class="input w50" value="" id="salePrice"
+							name="salePrice" data-validate="required:请输入销药价格(数值类型)" />元
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -135,8 +222,8 @@
 						<label>产品批号：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="batchNo" data-validate="required:请输入产品批号" />
+						<input type="text" class="input w50" value="" id="batchNo"
+							name="batchNo" data-validate="required:请输入产品批号(6位数字)" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -146,8 +233,8 @@
 						<label>数量：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="quantity" data-validate="required:请输入数量" />
+						<input type="text" class="input w50" value="" id="quantity"
+							name="quantity" data-validate="required:请输入数量(整数类型)" />
 						<div class="tips"></div>
 					</div>
 				</div>

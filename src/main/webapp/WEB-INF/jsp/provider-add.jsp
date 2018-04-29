@@ -18,6 +18,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
+
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -62,7 +63,7 @@
 						<label>联络人电话：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="phone" data-validate="required:请输入联络电话"/>
+						<input type="text" class="input w50" value="" name="phone" data-validate="required:请输入联系电话(11位阿拉伯数字)"/>
 						<div class="tips"></div>
 					</div>
 				</div>

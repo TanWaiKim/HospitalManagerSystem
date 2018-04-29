@@ -23,6 +23,7 @@ import cn.edu.dgut.service.DrugAdminService;
  * @version 1.0
  */
 @Controller
+@RequestMapping("drugAdmin")
 public class DrugAdminController {
 	@Autowired
 	private DrugAdminService drugAdminService;
@@ -194,6 +195,78 @@ public class DrugAdminController {
 		}
 		return HmsResult.build(500, "修改药品员信息失败！");
 	}	
+	
+	/**
+	 * 返回修改密码页面
+	 * @return
+	 */
+	@RequestMapping("/resetDrugPass")
+	public String toPassReset(){ 
+		return "drugAdmin-pass-reset";
+	}
+	
+	/**
+	 * 修改密码
+	 * @param id
+	 * @param oldPassword
+	 * @param newPassword
+	 * @param rwPassword
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/updatePassword")
+	@ResponseBody()
+	public HmsResult updatePassword(Integer id, String oldPassword,
+			String newPassword,String rePassword,Model model) {
+		try {
+			
+			if (oldPassword == null || oldPassword.equals("")) {
+				return HmsResult.build(505, "请输入原始密码！");
+			}
+			
+			if (newPassword == null || newPassword.equals("")) {
+				return HmsResult.build(505, "请输入新密码！");
+			}
+			
+			if (rePassword == null || rePassword.equals("")) {
+				return HmsResult.build(505, "请输入确认密码！");
+			}
+			
+			if (newPassword.length() < 6) {
+				return HmsResult.build(505, "新密码长度不能小于6！");
+			}
+			
+			if (!oldPassword.equals(drugAdminService.getDrugAdminById(id).getPassword())) {
+				return HmsResult.build(505, "原始密码不正确，请重新输入！");
+			}
+			
+			if (!newPassword.equals(rePassword)) {
+				return HmsResult.build(505, "新密码和确认密码不一致，请重新输入！");
+			}			
+			
+			TbDrugAdmin drugAdmin = new TbDrugAdmin();
+			drugAdmin.setId(id);
+			drugAdmin.setPassword(newPassword);
+			if (drugAdminService.updateDrugAdminByTbDrugAdmin(drugAdmin) > 0) {
+				return HmsResult.ok();
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			return HmsResult.build(500, "修改密码失败！");
+		}
+		return HmsResult.build(500, "修改密码失败！");
+	}
+	
+	/**
+	 * 返回个人信息页面
+	 * @return
+	 */
+	@RequestMapping("/detail")
+	public String DrugAdminDetail(){ 
+		return "drugAdmin-detail";
+	}
+	
+	
 	
 	/**
 	 * 删除单条药品员信息

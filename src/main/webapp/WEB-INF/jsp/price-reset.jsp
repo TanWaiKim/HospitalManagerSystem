@@ -21,6 +21,30 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
+
+<script type="text/javascript">
+	
+	$(function()  {
+		$("#salePrice").blur(function() {
+			var reg = /^[0-9]+([.]{1}[0-9]+){0,1}$/;
+			var salePrice = document.getElementById("salePrice");
+			if (!reg.test(salePrice.value)) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '销药价格必须为数值类型!',
+	
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+</script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -76,7 +100,7 @@
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${stock.purchaseItem.salePrice }"
-							name="salePrice" data-validate="required:请输入当前售价" />
+						 	id="salePrice" name="salePrice" data-validate="required:请输入当前售价" />
 						<div class="tips"></div>
 					</div>
 				</div>

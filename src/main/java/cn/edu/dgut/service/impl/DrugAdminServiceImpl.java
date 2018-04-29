@@ -81,7 +81,7 @@ public class DrugAdminServiceImpl implements DrugAdminService {
 	 */
 	@Override
 	public int updateDrugAdminByTbDrugAdmin(TbDrugAdmin drugAdmin) {
-		int count = drugAdminMapper.updateByPrimaryKey(drugAdmin);
+		int count = drugAdminMapper.updateByPrimaryKeySelective(drugAdmin);
 		return count;
 	}
 

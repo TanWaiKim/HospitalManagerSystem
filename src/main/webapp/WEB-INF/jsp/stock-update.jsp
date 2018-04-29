@@ -20,6 +20,49 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
+
+<script type="text/javascript">
+$(function()  {
+	$("#minQuantity").blur(function() {
+		var reg = /^[0-9]+.?[0-9]*$/;
+		var minQuantity = document.getElementById("minQuantity");
+		if (!reg.test(minQuantity.value)) {
+			var d = dialog({
+				okValue: '确定',
+				title: '温馨提示',
+				content: '数量必须为整数类型!',
+
+				width: 200,
+				height: 50,
+				ok: function () {
+					
+				}
+			});
+			d.showModal();
+		}
+	})
+});
+$(function()  {
+		$("#maxQuantity").blur(function() {
+			var reg = /^[0-9]+.?[0-9]*$/;
+			var maxQuantity = document.getElementById("maxQuantity");
+			if (!reg.test(maxQuantity.value)) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '数量必须为整数类型!',
+
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+</script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -66,7 +109,7 @@
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${stock.minQuantity }"
-							name="minQuantity" data-validate="required:请输入库存下限" />
+							id="minQuantity" name="minQuantity" data-validate="required:请输入库存下限" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -77,7 +120,7 @@
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${stock.maxQuantity }"
-							name="maxQuantity" data-validate="required:请输入库存上限" />
+							id="maxQuantity" name="maxQuantity" data-validate="required:请输入库存上限" />
 						<div class="tips"></div>
 					</div>
 				</div>

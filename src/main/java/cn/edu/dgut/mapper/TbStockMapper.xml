@@ -492,7 +492,7 @@
   			<if test="warehouseNo!=null and !&quot;&quot;.equals(warehouseNo.trim())">
   				and s.warehouse_no like '%' #{warehouseNo} '%'
   			</if>
-  			<if test="drugId !=null and drugId != ''">
+  			<if test="drugId !=null">
   				and s.drug_id = #{drugId}
   			</if>
   			<if test="operator!=null and !&quot;&quot;.equals(operator.trim())">

@@ -30,7 +30,7 @@ public class UserController {
 		try{
 			return userService.login(username, password, postOffice, request, session);
 		}catch(Exception e){
-			ExceptionUtil.getStackTrace(e);
+			System.out.println(ExceptionUtil.getStackTrace(e));
 			return HmsResult.build(505, "系统错误");
 		}
 	}

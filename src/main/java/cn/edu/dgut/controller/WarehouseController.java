@@ -1,6 +1,7 @@
 package cn.edu.dgut.controller;
 
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +132,15 @@ public class WarehouseController {
 			if (warehouse.getPhone() != null && warehouse.getPhone().length() != 11) {
 				return HmsResult.build(505, "手机号码格式错误！(只能为11位数字)");
 			}
+			
+			String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+			Pattern p = Pattern.compile(regExp);  
+			Matcher m = p.matcher(warehouse.getPhone()); 
+			
+			if (!m.find()) {
+				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
+			}
+			
 			if (warehouse2 != null) {
 				if (!warehouse2.getPhone().equals(warehouse1.getPhone())) {
 					return HmsResult.build(505, "手机号码已存在！");
@@ -165,9 +175,6 @@ public class WarehouseController {
 	@ResponseBody()
 	public HmsResult addWarehouseByTbWarehouse(TbWarehouse warehouse, Model model) {
 		try {
-			if (warehouse.getPhone() == null || warehouse.getPhone().equals("")) {
-				return HmsResult.build(505, "手机号码不能为空！");
-			}
 			if (warehouse.getWarehouseName() == null || warehouse.getWarehouseName().equals("")) {
 				return HmsResult.build(505, "仓库名称不能为空！");
 			}
@@ -177,9 +184,21 @@ public class WarehouseController {
 			if (warehouse.getManager() == null || warehouse.getManager().equals("")) {
 				return HmsResult.build(505, "管理员不能为空！");
 			}
+			if (warehouse.getPhone() == null || warehouse.getPhone().equals("")) {
+				return HmsResult.build(505, "手机号码不能为空！");
+			}
 			if (warehouse.getPhone() != null && warehouse.getPhone().length() != 11) {
 				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
 			}
+			
+			String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+			Pattern p = Pattern.compile(regExp);  
+			Matcher m = p.matcher(warehouse.getPhone()); 
+			
+			if (!m.find()) {
+				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
+			}
+			
 			if (warehouseService.getWarehouseByPhone(warehouse.getPhone()) != null) {
 				return HmsResult.build(505, "手机号码已存在！");
 			}

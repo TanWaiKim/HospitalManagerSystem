@@ -101,27 +101,27 @@ public class PurchaseController {
 			
 			if (purchaseDto.getPurchasePrice() == null) {
 				return HmsResult.build(505, "进药价格不能为空！");
-			}
-			
-			if (purchaseDto.getQuantity() == null || purchaseDto.getQuantity() == 0) {
-				return HmsResult.build(505, "进药数量不能为空！");
-			}
+			}		
 			
 			if (purchaseDto.getSalePrice() == null) {
 				return HmsResult.build(505, "销药价格不能为空！");
-			}
+			}	
 			
 			if (purchaseDto.getProduceTime() == null) {
 				return HmsResult.build(505, "生产日期不能为空！");
 			}
 			
 			if (purchaseDto.getValidTime() == null) {
-				return HmsResult.build(505, "有效日期至不能为空！");
+				return HmsResult.build(505, "有效期至不能为空！");
 			}
 			
 			if (purchaseDto.getBatchNo() == null || purchaseDto.getBatchNo().equals("")) {
 				return HmsResult.build(505, "产品批号不能为空！");
-			}			
+			}		
+			
+			if (purchaseDto.getQuantity() == null || purchaseDto.getQuantity() == 0) {
+				return HmsResult.build(505, "进药数量不能为空！");
+			}
 			
 			if (purchaseService.addPurchaseByTbPurchase(purchaseDto) > 0) {
 				return HmsResult.ok();

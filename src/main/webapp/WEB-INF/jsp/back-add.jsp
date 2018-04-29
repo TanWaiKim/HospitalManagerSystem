@@ -22,6 +22,51 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
+
+<script type="text/javascript">
+
+	$(function()  {
+		$("#batchNo").blur(function() {
+			var reg = /^[0-9]+.?[0-9]*$/;
+			var batchNo = document.getElementById("batchNo");
+			if (!reg.test(batchNo.value) || batchNo.value.toString().length != 8) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '产品批号必须为8位数字!',
+
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+
+	$(function()  {
+		$("#backSum").blur(function() {
+			var reg = /^[0-9]+.?[0-9]*$/;
+			var backSum = document.getElementById("backSum");
+			if (!reg.test(backSum.value)) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '数量必须为整数类型!',
+
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+</script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -115,7 +160,7 @@
 						<label>产品批号：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
+						<input type="text" class="input w50" id="batchNo" value=""
 							name="batchNo" data-validate="required:请输入产品批号" />
 						<div class="tips"></div>
 					</div>
@@ -126,7 +171,7 @@
 						<label>数量：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
+						<input type="text" class="input w50" id="backSum" value=""
 							name="backSum" data-validate="required:请输入数量" />
 						<div class="tips"></div>
 					</div>

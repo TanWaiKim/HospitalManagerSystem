@@ -22,6 +22,29 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
+
+<script type="text/javascript">
+	$(function()  {
+		$("#quantity").blur(function() {
+			var reg = /^[0-9]+.?[0-9]*$/;
+			var quantity = document.getElementById("quantity");
+			if (!reg.test(quantity.value)) {
+				var d = dialog({
+					okValue: '确定',
+					title: '温馨提示',
+					content: '数量必须为整数类型!',
+
+					width: 200,
+					height: 50,
+					ok: function () {
+						
+					}
+				});
+				d.showModal();
+			}
+		})
+	});
+</script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -60,7 +83,7 @@
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${salesDto.quantity }"
-							name="quantity" data-validate="required:请输入数量" />
+							id="quantity" name="quantity" data-validate="required:请输入数量" />
 						<div class="tips"></div>
 					</div>
 				</div>

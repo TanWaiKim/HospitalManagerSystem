@@ -1,14 +1,34 @@
 var LOGIN = {
 			checkInput:function() {
 				if ($("#username").val() == "") {
-					
-					alert("用户名不能为空");
-					$("#username").focus();
+					var d = dialog({
+						okValue: '确定',
+						title: '温馨提示',
+						content: '用户名不能为空！',
+
+						width: 200,
+						height: 50,
+						ok: function () {
+							
+						}
+					});
+					d.showModal();
+					$("#username").focus();	
 					return false;
 				}
 				if ($("#password").val() == "") {
-					
-					alert("密码不能为空");
+					var d = dialog({
+						okValue: '确定',
+						title: '温馨提示',
+						content: '密码不能为空！',
+
+						width: 200,
+						height: 50,
+						ok: function () {
+							
+						}
+					});
+					d.showModal();
 					$("#password").focus();
 					return false;
 				}
@@ -28,10 +48,32 @@ var LOGIN = {
 						}
 						
 					}if(data.status == 500){ 
-						alert(data.msg);
+						var d = dialog({
+							okValue: '确定',
+							title: '温馨提示',
+							content: data.msg,
+
+							width: 200,
+							height: 50,
+							ok: function () {
+								
+							}
+						});
+						d.showModal();
 					}
 					if(data.status == 505){
-						alert(data.msg);
+						var d = dialog({
+							okValue: '确定',
+							title: '温馨提示',
+							content: data.msg,
+
+							width: 200,
+							height: 50,
+							ok: function () {
+								
+							}
+						});
+						d.showModal();
 					} 
 				});
 			},

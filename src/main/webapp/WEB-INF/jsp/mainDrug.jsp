@@ -296,12 +296,20 @@
 		</h2>
 		
 		<ul style="display: none">
-			<li><a href="doctor-pass-reset.jsp" target="right"><span
+			<li><a href="${pageContext.request.contextPath }/drugAdmin/resetDrugPass" target="right"><span
 					class="icon-caret-right"></span>修改密码</a></li>	
-			<li><a href="doctor-pass-reset.jsp" target="right"><span
+			<li><a href="${pageContext.request.contextPath }/drugAdmin/detail" target="right"><span
 					class="icon-caret-right"></span>个人基本信息管理</a></li>	
 		</ul>
 		
+		<h2>
+			<span class="icon-rss-square"></span>系统公告
+		</h2>
+	
+		<ul style="display: none">
+			<li><a href="${pageContext.request.contextPath }/notice/list" target="right"><span
+					class="icon-caret-right"></span>查看公告</a></li>
+		</ul>
 	</div>
 	<script type="text/javascript">
 		$(function() {

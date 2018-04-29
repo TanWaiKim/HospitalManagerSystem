@@ -1,6 +1,7 @@
 package cn.edu.dgut.controller;
 
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class ProviderController {
 				return HmsResult.build(505, "供药商名称不能为空！");
 			}
 			if (provider.getAddress() == null || provider.getAddress().equals("")) {
-				return HmsResult.build(505, "供药商地址不能为空！");
+				return HmsResult.build(505, "公司地址不能为空！");
 			}
 			if (provider.getContact() == null || provider.getContact().equals("")) {
 				return HmsResult.build(505, "联系人不能为空！");
@@ -60,6 +61,15 @@ public class ProviderController {
 			if (provider.getPhone() != null && provider.getPhone().length() != 11) {
 				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
 			}
+			
+			String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+			Pattern p = Pattern.compile(regExp);  
+			Matcher m = p.matcher(provider.getPhone()); 
+			
+			if (!m.find()) {
+				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
+			}
+			
 			if (providerService.getProviderByPhone(provider.getPhone()) != null) {
 				return HmsResult.build(505, "手机号码已存在！");
 			}
@@ -169,6 +179,15 @@ public class ProviderController {
 			if (provider.getPhone() != null && provider.getPhone().length() != 11) {
 				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
 			}
+			
+			String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+			Pattern p = Pattern.compile(regExp);  
+			Matcher m = p.matcher(provider.getPhone()); 
+			
+			if (!m.find()) {
+				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
+			}
+			
 			if (provider2 != null) {
 				if (!provider2.getPhone().equals(provider1.getPhone())) {
 					return HmsResult.build(505, "手机号码已存在！");

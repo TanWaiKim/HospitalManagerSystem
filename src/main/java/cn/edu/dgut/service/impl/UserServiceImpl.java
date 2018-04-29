@@ -12,12 +12,13 @@ import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.mapper.TAdminMapper;
 import cn.edu.dgut.mapper.TDoctorMapper;
+import cn.edu.dgut.mapper.TbDrugAdminMapper;
 import cn.edu.dgut.pojo.TAdmin;
 import cn.edu.dgut.pojo.TAdminExample;
 import cn.edu.dgut.pojo.TDoctor;
 import cn.edu.dgut.pojo.TDoctorExample;
 import cn.edu.dgut.pojo.TbDrugAdmin;
-import cn.edu.dgut.service.DrugAdminService;
+import cn.edu.dgut.pojo.TbDrugAdminExample;
 import cn.edu.dgut.service.UserService;
 
 /*
@@ -28,9 +29,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private TDoctorMapper doctorMapper;
-
+	
 	@Autowired
-	private DrugAdminService drugAdminService;
+	private TbDrugAdminMapper drugAdminMapper;
 
 	@Autowired
 	private TAdminMapper adminMapper;
@@ -59,14 +60,25 @@ public class UserServiceImpl implements UserService {
 			return HmsResult.build(500, "账号错误！");
 		} else if (postOffice.equals("药品员")) {
 			// 条件查询 通过用户名查询记录
-			TbDrugAdmin drugAdmin = drugAdminService.login(username, password);
+			TbDrugAdminExample example = new TbDrugAdminExample();
+			example.createCriteria().andUsernameEqualTo(username);
+			List<TbDrugAdmin> drugAdminList = drugAdminMapper.selectByExample(example);
+			
 			// 验证密码
-			if (drugAdmin != null) {
-				session.setAttribute(Const.CURRENT_USER, drugAdmin);
-				return HmsResult.build(200, "药品员登录成功");
+			if (drugAdminList.size() > 0) {
+				// 对输入的密码进行验证
+				if (drugAdminList.get(0).getPassword().equals(password)) {
+					// 密码相同
+					request.getSession().setAttribute(Const.CURRENT_USER, drugAdminList.get(0));
+					request.getSession().setAttribute("postOffice", postOffice);
+					return HmsResult.build(200, "药品员登录成功");
+				} else {
+					// 密码不相等
+					return HmsResult.build(500, "密码错误！");
+				}
 			}
 			// 账号不一致
-			return HmsResult.build(500, "账号或密码错误！");
+			return HmsResult.build(500, "账号错误！");
 		}
 
 		// 管理员登录

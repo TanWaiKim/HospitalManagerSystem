@@ -9,6 +9,9 @@
 <link href="${pageContext.request.contextPath }/css/login.css"
 	rel="stylesheet" type="text/css">
 	<script src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
+<script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/login.js"></script>
 <style type="text/css">
 body {
