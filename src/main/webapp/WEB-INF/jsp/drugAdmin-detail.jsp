@@ -49,7 +49,6 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		
-			&nbsp;&nbsp;	
 			
 			<a class="bg-blue-light"
 				href="${pageContext.request.contextPath }/drugAdmin/findById?id=${drugAdmin.id }"><span
