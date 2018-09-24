@@ -19,6 +19,12 @@
 	href="${pageContext.request.contextPath }/css/all.css">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/jquery-1.8.1.min.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="http://jqueryui.com/resources/demos/style.css">
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
 <script src="${pageContext.request.contextPath }/js/list.js"></script>
 <script src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
@@ -54,18 +60,12 @@
 							</c:forEach>
 						</select>
 					</li>
+
 					<li>
 						医药名称
-						<input type="text" placeholder="请输入医药名称" name="drugName" value="${drugName }" />  
+						<input type="text" placeholder="请输入医药名称" id="drugName" name="drugname" value="${drugname }" />  
 					</li>
-					<li>
-						批准文号
-						<input type="text" placeholder="请输入批准文号" name="drugNo" value="${drugNo }" />  
-					</li>	
-					<li>
-						操作员
-						<input type="text" placeholder="请输入操作员" name="operator" value="${operator }" />  
-					</li>			
+			
 					<li>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="javascript:void(0)" class="button border-main icon-search" name="keySearch" onclick="changesearch()"> 
@@ -78,52 +78,46 @@
 			<div class="text-little">
 				<table class="table table-hover text-center table-bordered">
 					<tr>
-						<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
-						<th width="50" >所属仓库</th>
+						<th width="70" style="text-align: left; padding-left: 20px;">序号</th>
+						<th width="70" >存储仓库</th>
 						<th width="90" >医药种类</th>
 						<th width="90" >医药名称</th>
 						<th width="90" >产品批号</th>
-						<th width="50" >规格</th>
-						<th width="50" >单位</th>
 						<th width="100" >生产日期</th>
 						<th width="100" >有效期至</th>
-						<th width="50">采药单价</th>
-						<th width="50">销药单价</th>
-						<th width="50">当前库存</th>
-						<th width="50">库存下限</th>
-						<th width="50">库存上限</th>
-						<th width="100">创建时间</th>
+						<th width="70">采药单价（元）</th>
+						<th width="70">销药单价（元）</th>
+						<th width="70">当前库存</th>
+						<th width="50" >单位</th>
+						<th width="50" >规格</th>
+						<th width="100">入库时间</th>
 						<th width="100">更新时间</th>
-						<th width="80">操作人</th>
 					</tr>
 					<c:forEach items="${stockList}" var="stock"  varStatus="status">
 						<tr>
 							<td style="text-align: left; padding-left: 20px;">
 								<span>
-									&nbsp;&nbsp;${(page.currentPage-1)*4+status.count}
+									&nbsp;&nbsp;${(page.currentPage-1)*5+status.count}
 								</span>
 							</td>
 							<td>${stock.warehouse.warehouseName }</td>
 							<td>${stock.drug.drugtype.drugtypeName }</td>
 							<td>${stock.drug.drugName }</td>
-							<td>${stock.batchNo }</td>
-							<td>${stock.drug.spec }</td>
-							<td>${stock.drug.unit }</td>
-							<td>${stock.purchaseItem.produceTime }</td>
-							<td>${stock.purchaseItem.validTime }</td>
-							<td>${stock.purchaseItem.purchasePrice }</td>
-							<td>${stock.purchaseItem.salePrice }</td>
+							<td>${stock.drug.drugNo }</td>
+							<td>${stock.drug.produceTime }</td>
+							<td>${stock.drug.validTime }</td>
+							<td>${stock.drug.purchasePrice }</td>
+							<td>${stock.drug.salePrice }</td>
 							<td>${stock.stockQuantity }</td>
-							<td>${stock.minQuantity }</td>
-							<td>${stock.maxQuantity }</td>
+							<td>${stock.drug.unit }</td>
+							<td>${stock.drug.spec }</td>
 							<td><fmt:formatDate type="date" value="${stock.createTime }"/></td>
 							<td><fmt:formatDate type="date" value="${stock.updateTime }"/></td>
-							<td>${stock.operator }</td>
 							
 						</tr>
 					</c:forEach>
 					<tr>
-						<td colspan="16" style="border-style:none;">
+						<td colspan="13" style="border-style:none;">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">
@@ -160,6 +154,11 @@
 		</div>
 	</form>
 	<script type="text/javascript">
+		$("#drugName").autocomplete({
+			source : "<c:url value="/drug/auto"/>",
+			minLength : 1
+		});
+	
 		//搜索
 		function changesearch() {
 			$('#currentPage').val('1');

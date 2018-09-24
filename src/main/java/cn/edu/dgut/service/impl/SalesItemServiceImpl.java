@@ -106,9 +106,10 @@ public class SalesItemServiceImpl implements SalesItemService {
 		// 根据id获取销药详细单
 		TbSalesItem salesItem = salesItemMapper.selectByPrimaryKey(id);
 		// 根据销药号获取销药单
-		TbSales sales = salesService.getSalesBySalesNo(salesItem.getSalesNo());
+//		TbSales sales = salesService.getSalesBySalesNo(salesItem.getSalesNo());
+		TbSales sales = new TbSales();
 		// 删除后的销药单总数量
-		sales.setTotalQuantity(sales.getTotalQuantity() - salesItem.getQuantity());
+	//	sales.setTotalQuantity(sales.getTotalQuantity() - salesItem.getQuantity());
 		BigDecimal payment = BigDecimalUtil.mul(salesItem.getQuantity().doubleValue(),salesItem.getSalePrice().doubleValue());
 		// 删除后的销药单总价格
 		sales.setTotalPrice(BigDecimalUtil.sub(sales.getTotalPrice().doubleValue(), payment.doubleValue()));
@@ -124,9 +125,10 @@ public class SalesItemServiceImpl implements SalesItemService {
 			// 根据id获取销药详细单
 			TbSalesItem salesItem = salesItemMapper.selectByPrimaryKey(Integer.valueOf(id).intValue());
 			// 根据采药号获取销药单
-			TbSales sales = salesService.getSalesBySalesNo(salesItem.getSalesNo());
+//			TbSales sales = salesService.getSalesBySalesNo(salesItem.getSalesNo());
+			TbSales sales = new TbSales();
 			// 删除后的销药单总数量
-			sales.setTotalQuantity(sales.getTotalQuantity() - salesItem.getQuantity());
+		//	sales.setTotalQuantity(sales.getTotalQuantity() - salesItem.getQuantity());
 			BigDecimal payment = BigDecimalUtil.mul(salesItem.getQuantity().doubleValue(),salesItem.getSalePrice().doubleValue());
 			// 删除后的销药单总价格
 			sales.setTotalPrice(BigDecimalUtil.sub(sales.getTotalPrice().doubleValue(), payment.doubleValue()));

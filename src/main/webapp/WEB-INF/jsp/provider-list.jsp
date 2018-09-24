@@ -51,15 +51,12 @@
 					</li>
 					<li>
 						联络人
-						<input type="text" placeholder="请输入联络人" name="contact" value="${contact }" />  
+						<input type="text" placeholder="请输入联系人" name="contact" value="${contact }" />  
 					</li>
 
 					<li>
-						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
-						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+
 						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-						<input type="text" placeholder="请输入搜索关键字" name="keywords" class="input" value="${keywords }"
-							style="width: 180px; line-height: 17px; display: inline-block" />
 						<a href="javascript:void(0)" class="button border-main icon-search" name="keySearch" onclick="changesearch()"> 
 							搜索
 						</a>
@@ -72,8 +69,8 @@
 					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="200" >供药商名称</th>
 					<th width="200" >公司地址</th>
-					<th width="100" >联络人</th>
-					<th width="150" >联络人电话</th>
+					<th width="100" >联系人</th>
+					<th width="150" >联系人电话</th>
 					<th width="200">备注</th>
 					<th width="150">创建时间</th>
 					<th width="150">更新时间</th>
@@ -115,7 +112,7 @@
 
 				</tr>
 				<tr>
-					<td colspan="6" style="border-style:none;">
+					<td colspan="7" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

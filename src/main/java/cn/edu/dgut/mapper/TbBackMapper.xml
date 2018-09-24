@@ -3,14 +3,12 @@
 <mapper namespace="cn.edu.dgut.mapper.TbBackMapper" >
   <resultMap id="BaseResultMap" type="cn.edu.dgut.pojo.TbBack" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="back_type" property="backType" jdbcType="VARCHAR" />
-    <result column="back_object" property="backObject" jdbcType="VARCHAR" />
+    <result column="back_no" property="backNo" jdbcType="VARCHAR" />
+    <result column="provider_id" property="providerId" jdbcType="INTEGER" />
     <result column="drug_id" property="drugId" jdbcType="INTEGER" />
-    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
-    <result column="back_sum" property="backSum" jdbcType="INTEGER" />
-    <result column="back_total_price" property="backTotalPrice" jdbcType="DECIMAL" />
-    <result column="back_reason" property="backReason" jdbcType="VARCHAR" />
-    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -73,8 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, back_type, back_object, drug_id, batch_no, back_sum, back_total_price, back_reason, 
-    operator, create_time, update_time
+    id, back_no, provider_id, drug_id, quantity, total_price, reason, create_time, update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbBackExample" >
     select
@@ -107,14 +104,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbBack" >
-    insert into tb_back (id, back_type, back_object, 
-      drug_id, batch_no, back_sum, 
-      back_total_price, back_reason, operator, 
-      create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{backType,jdbcType=VARCHAR}, #{backObject,jdbcType=VARCHAR}, 
-      #{drugId,jdbcType=INTEGER}, #{batchNo,jdbcType=VARCHAR}, #{backSum,jdbcType=INTEGER}, 
-      #{backTotalPrice,jdbcType=DECIMAL}, #{backReason,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
-      now(), now())
+    insert into tb_back (id, back_no, provider_id, 
+      drug_id, quantity, total_price, 
+      reason, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{backNo,jdbcType=VARCHAR}, #{providerId,jdbcType=INTEGER}, 
+      #{drugId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{reason,jdbcType=VARCHAR}, now(), now()
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbBack" >
     insert into tb_back
@@ -122,69 +119,57 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="backType != null" >
-        back_type,
+      <if test="backNo != null" >
+        back_no,
       </if>
-      <if test="backObject != null" >
-        back_object,
+      <if test="providerId != null" >
+        provider_id,
       </if>
       <if test="drugId != null" >
         drug_id,
       </if>
-      <if test="batchNo != null" >
-        batch_no,
+      <if test="quantity != null" >
+        quantity,
       </if>
-      <if test="backSum != null" >
-        back_sum,
+      <if test="totalPrice != null" >
+        total_price,
       </if>
-      <if test="backTotalPrice != null" >
-        back_total_price,
+      <if test="reason != null" >
+        reason,
       </if>
-      <if test="backReason != null" >
-        back_reason,
+      <if test="createTime == null" >
+        now(),
       </if>
-      <if test="operator != null" >
-        operator,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
+      <if test="updateTime == null" >
+        now(),
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="backType != null" >
-        #{backType,jdbcType=VARCHAR},
+      <if test="backNo != null" >
+        #{backNo,jdbcType=VARCHAR},
       </if>
-      <if test="backObject != null" >
-        #{backObject,jdbcType=VARCHAR},
+      <if test="providerId != null" >
+        #{providerId,jdbcType=INTEGER},
       </if>
       <if test="drugId != null" >
         #{drugId,jdbcType=INTEGER},
       </if>
-      <if test="batchNo != null" >
-        #{batchNo,jdbcType=VARCHAR},
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
       </if>
-      <if test="backSum != null" >
-        #{backSum,jdbcType=INTEGER},
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="backTotalPrice != null" >
-        #{backTotalPrice,jdbcType=DECIMAL},
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
       </if>
-      <if test="backReason != null" >
-        #{backReason,jdbcType=VARCHAR},
-      </if>
-      <if test="operator != null" >
-        #{operator,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
+      <if test="createTime == null" >
         now(),
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime == null" >
         now(),
       </if>
     </trim>
@@ -201,29 +186,23 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.backType != null" >
-        back_type = #{record.backType,jdbcType=VARCHAR},
+      <if test="record.backNo != null" >
+        back_no = #{record.backNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.backObject != null" >
-        back_object = #{record.backObject,jdbcType=VARCHAR},
+      <if test="record.providerId != null" >
+        provider_id = #{record.providerId,jdbcType=INTEGER},
       </if>
       <if test="record.drugId != null" >
         drug_id = #{record.drugId,jdbcType=INTEGER},
       </if>
-      <if test="record.batchNo != null" >
-        batch_no = #{record.batchNo,jdbcType=VARCHAR},
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
       </if>
-      <if test="record.backSum != null" >
-        back_sum = #{record.backSum,jdbcType=INTEGER},
+      <if test="record.totalPrice != null" >
+        total_price = #{record.totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.backTotalPrice != null" >
-        back_total_price = #{record.backTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.backReason != null" >
-        back_reason = #{record.backReason,jdbcType=VARCHAR},
-      </if>
-      <if test="record.operator != null" >
-        operator = #{record.operator,jdbcType=VARCHAR},
+      <if test="record.reason != null" >
+        reason = #{record.reason,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -239,14 +218,12 @@
   <update id="updateByExample" parameterType="map" >
     update tb_back
     set id = #{record.id,jdbcType=INTEGER},
-      back_type = #{record.backType,jdbcType=VARCHAR},
-      back_object = #{record.backObject,jdbcType=VARCHAR},
+      back_no = #{record.backNo,jdbcType=VARCHAR},
+      provider_id = #{record.providerId,jdbcType=INTEGER},
       drug_id = #{record.drugId,jdbcType=INTEGER},
-      batch_no = #{record.batchNo,jdbcType=VARCHAR},
-      back_sum = #{record.backSum,jdbcType=INTEGER},
-      back_total_price = #{record.backTotalPrice,jdbcType=DECIMAL},
-      back_reason = #{record.backReason,jdbcType=VARCHAR},
-      operator = #{record.operator,jdbcType=VARCHAR},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      total_price = #{record.totalPrice,jdbcType=DECIMAL},
+      reason = #{record.reason,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = now()
     <if test="_parameter != null" >
@@ -256,29 +233,23 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.edu.dgut.pojo.TbBack" >
     update tb_back
     <set >
-      <if test="backType != null" >
-        back_type = #{backType,jdbcType=VARCHAR},
+      <if test="backNo != null" >
+        back_no = #{backNo,jdbcType=VARCHAR},
       </if>
-      <if test="backObject != null" >
-        back_object = #{backObject,jdbcType=VARCHAR},
+      <if test="providerId != null" >
+        provider_id = #{providerId,jdbcType=INTEGER},
       </if>
       <if test="drugId != null" >
         drug_id = #{drugId,jdbcType=INTEGER},
       </if>
-      <if test="batchNo != null" >
-        batch_no = #{batchNo,jdbcType=VARCHAR},
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
       </if>
-      <if test="backSum != null" >
-        back_sum = #{backSum,jdbcType=INTEGER},
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="backTotalPrice != null" >
-        back_total_price = #{backTotalPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="backReason != null" >
-        back_reason = #{backReason,jdbcType=VARCHAR},
-      </if>
-      <if test="operator != null" >
-        operator = #{operator,jdbcType=VARCHAR},
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -291,19 +262,17 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbBack" >
     update tb_back
-    set back_type = #{backType,jdbcType=VARCHAR},
-      back_object = #{backObject,jdbcType=VARCHAR},
+    set back_no = #{backNo,jdbcType=VARCHAR},
+      provider_id = #{providerId,jdbcType=INTEGER},
       drug_id = #{drugId,jdbcType=INTEGER},
-      batch_no = #{batchNo,jdbcType=VARCHAR},
-      back_sum = #{backSum,jdbcType=INTEGER},
-      back_total_price = #{backTotalPrice,jdbcType=DECIMAL},
-      back_reason = #{backReason,jdbcType=VARCHAR},
-      operator = #{operator,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      reason = #{reason,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
- 
+  
   <!-- 查询最后一条记录 -->
   <select id="selectLastRecord"  resultMap="BaseResultMap">
   	select * from  tb_back order by id desc limit 1
@@ -311,28 +280,30 @@
  
   <!-- 统计记录数 -->
   <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
-  	select count(*) from tb_back b
+  	select count(distinct back_no) from tb_back b
   		<where>
-  			<if test="backObject != null and !&quot;&quot;.equals(backObject.trim())">
-  				and b.back_object like '%' #{backObject} '%'
+  			<if test="providerId != null">
+  				and b.provider_id = #{providerId}
   			</if>
-  			<if test="backType!=null and !&quot;&quot;.equals(backType.trim())">
-  				and b.back_type like '%' #{backType} '%'
+  			<if test="backNo !=null and !&quot;&quot;.equals(backNo.trim())">
+  				and b.back_no like '%' #{backNo} '%'
   			</if>
   		</where>
   </select> 
   
   <!-- 条件查询 -->
   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
-  	select * from tb_back b
+  	select id,back_no,provider_id,sum(quantity) as quantity,sum(total_price) as total_price,
+  	create_time,update_time from tb_back b
   		<where>
-  			<if test="backObject != null and !&quot;&quot;.equals(backObject.trim())">
-  				and b.back_object like '%' #{backObject} '%'
+  			<if test="providerId != null">
+  				and b.provider_id = #{providerId}
   			</if>
-  			<if test="backType!=null and !&quot;&quot;.equals(backType.trim())">
-  				and b.back_type like '%' #{backType} '%'
+  			<if test="backNo !=null and !&quot;&quot;.equals(backNo.trim())">
+  				and b.back_no like '%' #{backNo} '%'
   			</if>
   		</where>
+  		group by back_no
   		order by b.id limit #{pageIndex} ,#{pageSize}
   </select>
   
@@ -349,4 +320,52 @@
   <select id="selectAllBack"  resultMap="BaseResultMap">
   	select * from  tb_back
   </select>
+  
+  
+  
+  <!-- 统计记录数 -->
+  <select id="countByBackNo"  parameterType="java.util.Map" resultType="int">
+  	select count(*) from tb_back b
+  	where b.back_no = #{backNo}
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="selectByBackNoCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from tb_back b
+	    where b.back_no = #{backNo}
+  		order by b.id limit #{pageIndex} ,#{pageSize}
+  </select>
+  
+    <!-- 根据退药单号查询 -->
+   <select id="selectByBackNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_back
+    where back_no = #{backNo,jdbcType=VARCHAR}
+  </select>
+  
+    <!-- 根据药品ID和退药单编号查找 -->
+  <select id="getBackByBackNoAndDrugId"  parameterType="java.util.Map" resultMap="BaseResultMap">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from tb_back b
+	    where b.back_no = #{backNo} and b.drug_id = #{drugId}
+  </select>
+  
+   <!-- 根据退药单编号删单条记录 -->
+  <delete id="deleteByBackNo" parameterType="java.lang.String">
+  	delete from tb_back where back_no = #{backNo}
+  </delete>
+
+   <!-- 根据退药单编号批量删除 -->
+  <delete id="deleteByBackNoBatch" parameterType="list">
+		delete from tb_back where back_no in
+		<foreach collection="list" item="backNo" open="(" close=")"
+			separator=",">
+			#{backNo}
+		</foreach>
+  </delete>
+  
 </mapper>

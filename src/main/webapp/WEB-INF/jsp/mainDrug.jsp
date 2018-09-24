@@ -28,7 +28,7 @@
 			</a> 
 			&nbsp;&nbsp;
 			
-			<a href="##" class="button button-little bg-blue">
+			<a href="" target="_blank" class="button button-little bg-blue">
 				<span class="icon-user"></span>
 				用户角色:药品员
 			</a> 
@@ -148,46 +148,16 @@
 		
 		<ul style="display: none">
 			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>进药入库
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/purchase/skipToAdd" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加采药单
-						</a>
-					</li>
-					<li>
-						<a href="purchase/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理采药单
-						</a>
-					</li>
-				</ul>
+				<a href="${pageContext.request.contextPath }/purchase/skipToAdd" target="right">
+					&nbsp;&nbsp;
+					<span class="icon-caret-right"></span>添加采药单
+				</a>
 			</li>
-					
-					
 			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>药商退药
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/back/skipToAdd?type=1" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加退药单
-						</a>
-					</li>
-					<li>
-						<a href="back/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理退药单
-						</a>
-					</li>
-				</ul>
+				<a href="purchase/list" target="right">
+					&nbsp;&nbsp;
+					<span class="icon-caret-right"></span>管理采药单
+				</a>
 			</li>
 		</ul>
 		
@@ -223,47 +193,38 @@
 		
 		<ul style="display: none">
 			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>销药出库
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="prescription/list-data" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>处方药品
-						</a>
-					</li>
-					<li>
-						<a href="sales/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理销药单
-						</a>
-					</li>
-				</ul>
+				<a href="prescription/list-data" target="right">
+					&nbsp;&nbsp;
+					<span class="icon-caret-right"></span>处方药品
+				</a>
 			</li>
-					
 			<li>
-				<h5>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-caret-right"></span>病人退药
-				</h5>
-		
-				<ul style="display: none">
-					<li>
-						<a href="${pageContext.request.contextPath }/back/skipToAdd?type=2" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>添加退药单
-						</a>
-					</li>
-					<li>
-						<a href="back/list" target="right">
-							&nbsp;&nbsp;
-							<span class="icon-caret-right"></span>管理退药单
-						</a>
-					</li>
-				</ul>
-			</li>	
+				<a href="sales/list" target="right">
+					&nbsp;&nbsp;
+					<span class="icon-caret-right"></span>管理销药单
+				</a>
+			</li>
 		</ul>
+		
+		<h2>
+			<span class="icon-retweet"></span>退药管理
+		</h2>
+		
+		<ul style="display: none">
+			<li>
+				<a href="${pageContext.request.contextPath }/back/skipToAdd" target="right">
+					&nbsp;&nbsp;
+					<span class="icon-caret-right"></span>添加退药单
+				</a>
+			</li>
+			<li>
+				<a href="back/list" target="right">
+					&nbsp;&nbsp;
+					<span class="icon-caret-right"></span>管理退药单
+				</a>
+			</li>
+		</ul>
+		
 		<h2>
 			<span class="icon-mobile"></span>统计分析
 		</h2>
@@ -275,7 +236,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="statistics/purchase" target="right">
+				<a href="statistics/purchase1" target="right">
 					<span class="icon-caret-right"></span>采药分析
 				</a>
 			</li>
@@ -285,7 +246,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="statistics/sale" target="right">
+				<a href="statistics/sale1" target="right">
 					<span class="icon-caret-right"></span>销药分析
 				</a>
 			</li>					
@@ -298,8 +259,10 @@
 		<ul style="display: none">
 			<li><a href="${pageContext.request.contextPath }/drugAdmin/resetDrugPass" target="right"><span
 					class="icon-caret-right"></span>修改密码</a></li>	
-			<li><a href="${pageContext.request.contextPath }/drugAdmin/detail" target="right"><span
-					class="icon-caret-right"></span>个人基本信息管理</a></li>	
+			<li><a href="${pageContext.request.contextPath }/drugAdmin/findById?id=${currentUser.id }" target="right"><span
+					class="icon-caret-right"></span>修改个人信息</a></li>	
+			<li><a href="${pageContext.request.contextPath }/drugAdmin/detail?id=${currentUser.id }" target="right"><span
+					class="icon-caret-right"></span>查看个人信息</a></li>			
 		</ul>
 		
 		<h2>

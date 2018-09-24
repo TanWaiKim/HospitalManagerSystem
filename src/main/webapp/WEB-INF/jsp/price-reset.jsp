@@ -28,7 +28,7 @@
 		$("#salePrice").blur(function() {
 			var reg = /^[0-9]+([.]{1}[0-9]+){0,1}$/;
 			var salePrice = document.getElementById("salePrice");
-			if (!reg.test(salePrice.value)) {
+			if (!reg.test(salePrice.value) && salePrice.value.toString().length != 0) {
 				var d = dialog({
 					okValue: '确定',
 					title: '温馨提示',
@@ -54,7 +54,6 @@
 		<div class="body-content">
 			<form method="post" id="stockUpdateForm" class="form-x"
 				onsubmit="return false;">
-				<input type="hidden" id="id" name="id" value="${stock.id }" />
 				<input type="hidden" id="drugId" name="drugId" value="${stock.drugId }" />
 				
 				<div class="form-group">
@@ -62,17 +61,8 @@
 						<label>医药名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${stock.drug.drugName }" name="" readonly="readonly"/>
+						<input type="text" class="input w50" value="${stock.drug.drugName }" name="drugName" readonly="readonly"/>
 					</div>	
-				</div>
-				
-				<div class="form-group">
-					<div class="label">
-						<label>批准文号：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value="${stock.drug.drugNo }" name="" readonly="readonly"/>
-					</div>			
 				</div>
 				
 				
@@ -87,20 +77,29 @@
 		
 				<div class="form-group">
 					<div class="label">
-						<label>平均进价：</label>
+						<label>采购均价：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${stock.purchaseItem.purchasePrice }" name="" readonly="readonly"/>
+						<input type="text" class="input w50" value="${stock.drug.purchasePrice }" name="" readonly="readonly"/>
 					</div>
 				</div>
 				
 				<div class="form-group">
 					<div class="label">
-						<label>当前售价：</label>
+						<label>预售均价：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${stock.purchaseItem.salePrice }"
-						 	id="salePrice" name="salePrice" data-validate="required:请输入当前售价" />
+						<input type="text" class="input w50" value="${stock.drug.salePrice }" name="" readonly="readonly"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>调整售价：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value=""
+						 	id="salePrice" name="salePrice" data-validate="required:请输入调整售价" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -121,7 +120,7 @@
 		function updateForm() {
 			//ajax的post方式提交表单
 			//$("#patientUpdateForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/purchaseItem/updatePrice",
+			$.post("${pageContext.request.contextPath }/drug/updatePrice",
 							$("#stockUpdateForm").serialize(),
 							function(data) {
 								if (data.status == 200) {

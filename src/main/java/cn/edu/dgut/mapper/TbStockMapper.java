@@ -27,44 +27,48 @@ public interface TbStockMapper {
     int updateByExample(@Param("record") TbStock record, @Param("example") TbStockExample example);
 
     int updateByPrimaryKeySelective(TbStock record);
-    
-    int updateByDrugSelective(TbStock record);
 
     int updateByPrimaryKey(TbStock record);
     
-    TbStock selectLastRecord();
+    List<TbStock> getStockByDrug(Map<String, Object> map);
+    
+	TbStock selectLastRecord();
     
 	int countByCondition(Map<String, Object> map);
 
 	List<TbStock> pageByCondition(Map<String, Object> map);
 	
+	int updateByDrugSelective(TbStock stock);
+	
 	int countByListCondition(Map<String, Object> map);
-
+	
 	List<TbStock> pageByListCondition(Map<String, Object> map);
 	
-	TbStock selectByDrugIdAndBatchNo(Map<String, Object> map);
+	int updateStockByDrugName(TbStock stock);
 	
 	int countByQuantityWaring(Map<String, Object> map);
-
+	
 	List<TbStock> pageByQuantityWaring(Map<String, Object> map);
 	
 	int countByValidWaring(Map<String, Object> map);
-
+	
 	List<TbStock> pageByValidWaring(Map<String, Object> map);
 	
 	Integer countValidTime(TbStock stock);
 	
-	List<TbStock> selectAllStock();
+	int deleteByDrugId(Integer drugId);
 	
-	List<TbStock> getStockByDrugId(Integer drugId);
+	int deleteBatch(List<Long> list);
 	
-	int updateByDrugId (TbStock record);
+	int countStockQuantityByDrugName(String drugname);
 	
-	int updateWaring (TbStock record);
+	List<TbStock> getStockByDrugName(String drugname);
 	
-	int updateValidWaring (TbStock record);
+	int updateByStockSelective(TbStock record);
 	
 	int countStockQuantityByDrugId(Integer drugId);
 	
-	int updateByStockSelective(TbStock record);
+	List<TbStock> selectAllStock();
+	
+	int countStockQuantityByDrugNameAndDrugNo(Map<String, Object> map);
 }

@@ -19,12 +19,14 @@ import cn.edu.dgut.pojo.DrugData;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TPatient;
 import cn.edu.dgut.pojo.TbDrug;
+import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbSales;
 import cn.edu.dgut.pojo.TbSalesItem;
 import cn.edu.dgut.pojo.TbStock;
 import cn.edu.dgut.service.DrugService;
 import cn.edu.dgut.service.PatientService;
+import cn.edu.dgut.service.PrescriptionService;
 import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.SalesItemService;
 import cn.edu.dgut.service.SalesService;
@@ -40,17 +42,17 @@ public class SalesServiceImpl implements SalesService {
 	@Autowired
 	private TbSalesMapper salesMapper;
 	@Autowired
-	private SalesItemService salesItemService;
+	private StockService stockService;
+	@Autowired
+	private PrescriptionService prescriptionService;
 	@Autowired
 	private DrugService drugService;
 	@Autowired
-	private StockService stockService;
-	@Autowired
-	private PurchaseItemService purchaseItemService;
-	@Autowired
 	private PatientService patientService;
 	
-	
+	/**
+	 * 第一次进入
+	 */
 	@Override
 	public List<TbSales> getAllSale(Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -74,6 +76,9 @@ public class SalesServiceImpl implements SalesService {
 		return salesList;
 	}
 
+	/**
+	 * 条件查询
+	 */
 	@Override
 	public List<TbSales> pageByCondition(String salesNo, String patientId, Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -97,25 +102,41 @@ public class SalesServiceImpl implements SalesService {
 		return salesList;
 	}
 
+	/* (non-Javadoc)
+	 * @see cn.edu.dgut.service.SalesService#getSalesById(java.lang.Integer)
+	 */
 	@Override
 	public TbSales getSalesById(Integer id) {
-		TbSales sales = salesMapper.selectByPrimaryKey(id);
-		if (sales != null) {
-			return sales;
-		}
+		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * 根据销售单号查询
+	 */
 	@Override
-	public TbSales getSalesBySalesNo(String salesNo) {
-		TbSales sales = salesMapper.selectBySalesNo(salesNo);
-		if (sales != null) {
-			TPatient patient = patientService.getPatientById(sales.getPatientId());
-			sales.setPatient(patient);
-			return sales;
+	public List<TbSales> getSalesBySalesNo(String salesNo,Page page) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("salesNo", salesNo);
+		// 根据条件查询总数
+		int totalNum = salesMapper.countBySalesNo(map);
+		
+		page.setTotalNumber(totalNum);
+		// 组织分页查询总数
+		map.put("pageIndex", page.getDbIndex());
+		map.put("pageSize", page.getDbNumber());
+		
+		List<TbSales> sales = salesMapper.selectBySalesNoCondition(map);
+		
+		if (sales == null || sales.size() == 0) {
+			return null;
 		}
 		
-		return null;
+		for(TbSales sales2: sales){
+			TPatient patient = patientService.getPatientById(sales2.getPatientId());
+			sales2.setPatient(patient);
+		}
+		return sales;
 	}
 
 	/**
@@ -130,6 +151,73 @@ public class SalesServiceImpl implements SalesService {
 		return null;
 	}
 	
+	// 添加销药单
+	@Override
+	public int addSalesByTbSales(SalesDto salesDto) {
+		TbSales sales = new TbSales();
+		int count = 0;
+	
+		// 同一处方中的药品属于同一销药单
+		String salesNo = "XSYY"+IDUtils.getId() + "";
+		sales.setSalesNo(salesNo);
+		sales.setPatientId(salesDto.getPatientId());
+		
+		// 依次处理药品
+		for (int i = 0; i < salesDto.getDrugDataList().size(); i++) {
+			DrugData drugData2 = salesDto.getDrugDataList().get(i);
+			String drugName = drugData2.getDrugName();
+			String dN = drugData2.getDrugNum();
+			Integer drugNum = Integer.parseInt(dN.substring(0, dN.length()-1));
+			
+			salesDto.setDrugName(drugName);
+			salesDto.setQuantity(drugNum);
+		
+			List<TbDrug> drugs = drugService.getDrugByName(salesDto.getDrugName());
+			
+			// 判断该药品是否存在，不存在就不处理
+			if (drugs == null || drugs.size() == 0) {
+				return 0;
+			}
+			
+			count = stockService.countStockQuantityByDrugName(drugs.get(0).getDrugName());
+			
+			// 判断库存数量是否足够
+			if (salesDto.getQuantity() > count) {
+				return 0;
+			}
+			
+			// 获得到将待销售的药品，key为药品ID，value为药品信息
+			Map<Integer, TbStock> map = this.getSalesStock(salesDto,drugs.get(0).getDrugName());
+			
+			// 设置该批次的信息，添加销售单记录，同时减少库存
+			for (Map.Entry<Integer, TbStock> entry : map.entrySet()) {
+				TbDrug drug1 = new TbDrug();
+				drug1 = drugService.getDrugById(entry.getKey());
+				sales.setDrugId(entry.getKey());
+				sales.setQuantity(entry.getValue().getStockQuantity());
+				sales.setTotalPrice(this.getOrderItemTotalPrice(sales.getQuantity(),drug1.getSalePrice()));
+				
+				// 因为每条记录的ID是不一样的
+				TbSales lastSales = this.getLastRecord();
+				
+				if(lastSales!=null){
+					sales.setId(lastSales.getId()+1);
+				}else{
+					sales.setId(1);
+				}
+				
+				TbStock stock = new TbStock();
+				stock.setDrugId(drug1.getId());
+				count = salesMapper.insert(sales);
+				if (count > 0) {
+					stock.setStockQuantity(sales.getQuantity());
+					stockService.updateByStockSelective(stock);
+					}
+			}
+		}
+		
+		return count;
+	}
 
 	/**
 	 * 计算销药单详细总价
@@ -142,42 +230,18 @@ public class SalesServiceImpl implements SalesService {
         payment = BigDecimalUtil.mul(quantity.doubleValue(), salePrice.doubleValue());
         return payment;
     }
-    
-	/**
-	 * 计算一条销药单的总价
-	 * @param salesItemList
-	 * @return
-	 */
-    private BigDecimal getOrderTotalPrice(List<TbSalesItem> salesItemList){
-        BigDecimal payment = new BigDecimal("0");
-        for (TbSalesItem salesItem:salesItemList){
-            payment = BigDecimalUtil.add(payment.doubleValue(),salesItem.getSaleTotalPrice().doubleValue());
-        }
-        return payment;
-    }
-    
-	/**
-	 * 计算一条销药单项目的总数量
-	 * @param salesItemList
-	 * @return
-	 */
-    private BigDecimal getOrderTotalCount(List<TbSalesItem> salesItemList){
-        BigDecimal count = new BigDecimal("0");
-        for (TbSalesItem salesItem:salesItemList){
-        	count = BigDecimalUtil.add(count.doubleValue(),salesItem.getQuantity().doubleValue());
-        }
-        return count;
-    }
 	
 	/**
-	 * 根据药品id获取需要的信息
+	 * 根据药品名称获取需要的信息
 	 * @param salesDto
 	 * @param drugId
 	 * @return
 	 */
-	public Map<String, TbStock> getSalesStock(SalesDto salesDto,Integer drugId) {
-		List<TbStock> stockList = stockService.getStockByDrugId(drugId);
-		Map<String, TbStock> map = new LinkedHashMap<String, TbStock>();
+	public Map<Integer, TbStock> getSalesStock(SalesDto salesDto,String drugName) {
+		// 根据药品名称找到相关的药品
+		List<TbStock> stockList = stockService.getStockByDrugName(drugName);
+		// 用来保存待销售的药品
+		Map<Integer, TbStock> map = new LinkedHashMap<Integer, TbStock>();
 		
 		Integer countQuantity = 0;
 		
@@ -190,294 +254,268 @@ public class SalesServiceImpl implements SalesService {
 			countQuantity += stock.getStockQuantity();
 			if (countQuantity <=  salesDto.getQuantity()) {
 				stock2.setDrugId(stock.getDrugId());
-				stock2.setBatchNo(stock.getBatchNo());
 				stock2.setStockQuantity(stock.getStockQuantity());
-				map.put(stock.getBatchNo(), stock2);
+				map.put(stock.getDrugId(), stock2);
 			} else {
 				stock2.setDrugId(stock.getDrugId());
-				stock2.setBatchNo(stock.getBatchNo());
 				stock2.setStockQuantity(salesDto.getQuantity()-countQuantity+stock.getStockQuantity());
-				map.put(stock.getBatchNo(), stock2);
+				map.put(stock.getDrugId(), stock2);
 				break;
 			}
 		}
 		return map;
 	}
 	
+
 	/**
-	 * 添加新的销药单、销药详细单
+	 * 单条删除
 	 */
 	@Override
-	public int addSalesByTbSales(SalesDto salesDto) {
-		TbSales lastSales = this.getLastRecord();
-		TbSales sales = new TbSales();
+	public int deleteSalesById(Integer id) {
+		TbSales sales = salesMapper.selectByPrimaryKey(id);
+		return salesMapper.deleteBySalesNo(sales.getSalesNo());
+	}
+
+
+	/**
+	 * 批量删除
+	 */
+	@Override
+	public int deleteSalesByIds(String[] ids) {
 		int count = 0;
-		
-		if(lastSales!=null){
-			sales.setId(lastSales.getId()+1);
-		}else{
-			sales.setId(1);
-		}
-	
-		String salesNo = "XSYY"+IDUtils.getId() + "";
-		sales.setSalesNo(salesNo);
-		sales.setOperator(salesDto.getOperator());
-		sales.setPatientId(salesDto.getPatientId());
-		
-		for (int i = 0; i < salesDto.getDrugDataList().size(); i++) {
-			DrugData drugData2 = salesDto.getDrugDataList().get(i);
-			String drugName = drugData2.getDrugName();
-			String dN = drugData2.getDrugNum();
-			Integer drugNum = Integer.parseInt(dN.substring(0, dN.length()-1));
-			
-			salesDto.setDrugName(drugName);
-			salesDto.setQuantity(drugNum);
-			
-			TbDrug drug = drugService.getDrugByName(salesDto.getDrugName());
-			
-			if (drug == null) {
-				return 0;
-			}
-			
-			count = stockService.countStockQuantityByDrugId(drug.getId());
-			// 判断库存数量是否足够
-			if (salesDto.getQuantity() > count) {
-				return 0;
-			}
-			
-			// 获得到将被销售的药品，key为批号，value为药品信息
-			Map<String, TbStock> map = this.getSalesStock(salesDto,drug.getId());
-			
-			TbSalesItem salesItem = new TbSalesItem();
-			salesItem.setSalesNo(sales.getSalesNo());
-			salesItem.setDrugId(drug.getId());
-			salesItem.setDrugName(drug.getDrugName());
-			
-			// 设置该批次的信息
-			for (Map.Entry<String, TbStock> entry : map.entrySet()) {
-				TbPurchaseItem purchaseItem = new TbPurchaseItem();
-				purchaseItem.setBatchNo(entry.getKey());
-				purchaseItem.setDrugId(drug.getId());
-				purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-				salesItem.setBatchNo(entry.getKey());
-				salesItem.setQuantity(entry.getValue().getStockQuantity());
-				salesItem.setSalePrice(purchaseItem.getSalePrice());
-				salesItem.setSaleTotalPrice(this.getOrderItemTotalPrice(salesItem.getQuantity(),salesItem.getSalePrice()));
-				
-				TbStock stock = new TbStock();
-				stock.setBatchNo(entry.getKey());
-				stock.setDrugId(drug.getId());
-				
-				if (salesItemService.addSalesItemByTbSalesItem(salesItem) > 0) {
-					stock.setStockQuantity(salesItem.getQuantity());
-					stockService.updateByStockSelective(stock);
-					}
-			}
+		List<Integer> list = new ArrayList<Integer>();
+		for (String id : ids) {
+			list.add(Integer.valueOf(id).intValue());
 		}
 		
-		
-		List<TbSalesItem> salesItems = salesItemService.selectAllSalesItem(sales.getSalesNo());
-		
-		sales.setTotalQuantity(this.getOrderTotalCount(salesItems).intValue());
-		sales.setTotalPrice(this.getOrderTotalPrice(salesItems));
-		
-		count = salesMapper.insert(sales);
-		
+		for (Integer id:list) {
+			TbSales sales = salesMapper.selectByPrimaryKey(id);
+			count = salesMapper.deleteBySalesNo(sales.getSalesNo());
+		}
 		return count;
 	}
 
-	@Override
-	public int deleteSalesById(Integer id) {
-		return salesMapper.deleteByPrimaryKey(id);
-	}
 
+	//根据时间查询销售记录
 	@Override
-	public int deleteSalesByIds(String[] ids) {
-		List<Long> list = new ArrayList<Long>();
-		for (String id : ids) {
-			list.add(Long.valueOf(id).longValue());
-			// 先删除销药详细单
-			TbSales sales = salesMapper.selectByPrimaryKey(Integer.valueOf(id).intValue());
-			String salesNo = sales.getSalesNo();
-			salesItemService.deleteSalesItemBySalesItem(salesNo);
-		}
-		return salesMapper.deleteBatch(list);
-	}
-
-	@Override
-	public List<TbSales> selectAllSales() {
-		List<TbSales> salesList = salesMapper.selectAllSales();
+	public List<TbSales> selectAllSales(String beginTime,String endTime) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("beginTime", beginTime);
+		map.put("endTime", endTime);
+		List<TbSales> salesList = salesMapper.selectAllSales(map);
 		if (salesList != null ) {
 			return salesList;
 		}
 		return null;
 	}
-	
-	// 这里有问题，回头再看看。
+
+	/* (non-Javadoc)
+	 * @see cn.edu.dgut.service.SalesService#updateSalesBySalesNo(cn.edu.dgut.common.dto.SalesDto)
+	 */
 	@Override
 	public int updateSalesBySalesNo(SalesDto salesDto) {
-		
-		TbSales sales = new TbSales();
-		sales.setSalesNo(salesDto.getSalesNo());
-		
-		// 根据药品名称获得药品信息
-		TbDrug drug = drugService.getDrugByName(salesDto.getDrugName());
-		
-		if (drug == null) {
-			return 0;
-		}
-		
-		int count = stockService.countStockQuantityByDrugId(drug.getId());
-		// 判断库存数量是否足够
-		if (salesDto.getQuantity() > count) {
-			return 0;
-		}
-		
-		// 封装需求数据
-		Map<String, TbStock> map = this.getSalesStock(salesDto,drug.getId());
-		
-		TbSalesItem salesItem = new TbSalesItem();
-		salesItem.setSalesNo(sales.getSalesNo());
-		salesItem.setDrugId(drug.getId());
-		salesItem.setDrugName(drug.getDrugName());
-		
-		// 设置该批次的信息
-		for (Map.Entry<String, TbStock> entry : map.entrySet()) {
-			TbPurchaseItem purchaseItem = new TbPurchaseItem();
-			purchaseItem.setBatchNo(entry.getKey());
-			purchaseItem.setDrugId(drug.getId());
-			purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-			salesItem.setBatchNo(entry.getKey());
-			salesItem.setQuantity(entry.getValue().getStockQuantity());
-			salesItem.setSalePrice(purchaseItem.getSalePrice());
-			salesItem.setSaleTotalPrice(this.getOrderItemTotalPrice(salesItem.getQuantity(),salesItem.getSalePrice()));
-			
-			TbStock stock = new TbStock();
-			stock.setBatchNo(entry.getKey());
-			stock.setDrugId(drug.getId());
-			
-			if (salesItemService.addSalesItemByTbSalesItem(salesItem) > 0) {
-				stock.setStockQuantity(salesItem.getQuantity());
-				stockService.updateByStockSelective(stock);
-				}
-		}
-		
-		List<TbSalesItem> salesItems = salesItemService.selectAllSalesItem(sales.getSalesNo());
-		
-		sales.setTotalQuantity(this.getOrderTotalCount(salesItems).intValue());
-		sales.setTotalPrice(this.getOrderTotalPrice(salesItems));
-		
-		// 更新销药单
-		count = salesMapper.updateBySalesNoSelective(sales);
-		
-		return count;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
+
+	/**
+	 * 根据药品ID和销售单编号修改
+	 */
 	@Override
 	public int updateSalesBySalesItemId(SalesDto salesDto) {
-		TbSales sales = new TbSales();
-		sales.setSalesNo(salesDto.getSalesNo());
-		 
-		TbDrug drug = drugService.getDrugById(salesDto.getDrugId());
 		
-		if (drug == null) {
+		TbSales sales = new TbSales();  // 作为销售单修改对象
+		TbDrug drug = new TbDrug();
+		
+		drug = drugService.getDrugById(salesDto.getDrugId());
+		sales.setId(salesDto.getId());
+		sales.setSalesNo(salesDto.getSalesNo());	
+		sales.setPatientId(salesDto.getPatientId());
+		sales.setQuantity(salesDto.getQuantity());
+		sales.setTotalPrice(this.getOrderItemTotalPrice(sales.getQuantity(),drug.getSalePrice()));
+		
+		int count = 0;
+		// 当前库存中该批次的药品数量
+		int oldStock = stockService.countStockQuantityByDrugId(drug.getId());
+		
+		
+		// 判断库存数量是否足够
+		if (oldStock+salesDto.getOldSalesItemQuantity() < salesDto.getQuantity()) {
 			return 0;
 		}
 		
-		// 修改的时候，先恢复之前的库存数量，否则会出错
+		// 修改前，先恢复之前的库存数量，否则会出错
 		TbStock stock1 = new TbStock();
-		stock1.setBatchNo(salesDto.getBatchNo());
-		stock1.setDrugId(drug.getId());
+		stock1.setDrugId(salesDto.getDrugId());
 		stock1.setStockQuantity(-salesDto.getOldSalesItemQuantity());
 		stockService.updateByStockSelective(stock1);
 		
-		int count = stockService.countStockQuantityByDrugId(drug.getId());
-		// 判断库存数量是否足够
-		if (salesDto.getQuantity() > count) {
-			return 0;
+		TbStock stock = new TbStock();
+		stock.setDrugId(drug.getId());
+		stock.setStockQuantity(sales.getQuantity());
+		// 更新库存
+		count = stockService.updateByStockSelective(stock);
+		
+		if (count > 0) {
+			count = salesMapper.updateByPrimaryKeySelective(sales);
 		}
-		
-		Map<String, TbStock> map = this.getSalesStock(salesDto,drug.getId());
-		TbSalesItem salesItem = new TbSalesItem();
-		salesItem.setId(salesDto.getId());
-		salesItem.setSalesNo(sales.getSalesNo());
-		salesItem.setDrugId(drug.getId());
-		salesItem.setDrugName(drug.getDrugName());
-		
-		// 设置该批次的信息
-		for (Map.Entry<String, TbStock> entry : map.entrySet()) {
-			TbPurchaseItem purchaseItem = new TbPurchaseItem();
-			purchaseItem.setBatchNo(entry.getKey());
-			purchaseItem.setDrugId(drug.getId());
-			purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-			salesItem.setBatchNo(entry.getKey());
-			salesItem.setQuantity(entry.getValue().getStockQuantity());
-			salesItem.setSalePrice(purchaseItem.getSalePrice());
-			salesItem.setSaleTotalPrice(this.getOrderItemTotalPrice(salesItem.getQuantity(),salesItem.getSalePrice()));
-			
-			TbStock stock = new TbStock();
-			stock.setBatchNo(entry.getKey());
-			stock.setDrugId(drug.getId());
-			
-			if (salesItemService.getSalesItemById(salesDto.getId()) != null) {
-				if (salesItemService.updateSalesItemByTbSalesItem(salesItem) > 0) {
-					stock.setStockQuantity(salesItem.getQuantity());
-					stockService.updateByStockSelective(stock);
-					}
-			} else {
-				if (salesItemService.addSalesItemByTbSalesItem(salesItem) > 0) {
-					stock.setStockQuantity(salesItem.getQuantity());
-					stockService.updateByStockSelective(stock);
-					}
-			}
-		}
-		
-		List<TbSalesItem> salesItems = salesItemService.selectAllSalesItem(sales.getSalesNo());
-		
-		sales.setTotalQuantity(this.getOrderTotalCount(salesItems).intValue());
-		sales.setTotalPrice(this.getOrderTotalPrice(salesItems));
-		// 更新销药单
-		count = salesMapper.updateBySalesNoSelective(sales);
 		
 		return count;
 	}
 
-	
-	@Override
-	public int updateSales(TbSales sales) {
-		return salesMapper.updateBySalesNoSelective(sales);
-	}
-
-	/**
-	 * 销售条件统计，根据名称、编号等查询某一种药品的销售情况
+	/* (non-Javadoc)
+	 * @see cn.edu.dgut.service.SalesService#updateSales(cn.edu.dgut.pojo.TbSales)
 	 */
 	@Override
-	public List<TbSalesItem> saleByCondition(String drugName, String drugNo, String beginTime, String endTime) {
+	public int updateSales(TbSales sales) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	// 条件统计
+	@Override
+	public List<TbSales> saleByCondition(String drugName, String beginTime, String endTime) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		TbDrug drug = new TbDrug();
-		if (!drugName.equals("") || !drugNo.equals("")) {
-			drug.setDrugName(drugName);
-			drug.setDrugNo(drugNo);
-			drug.setId(0);
-			drug = drugService.getDrugBySelective(drug);
-		} else if (drugName.equals("") && drugNo.equals("")) {
-			drug = null;
-		} 
 		
-		if (drug == null) {
+		List<TbDrug> drugs = drugService.getDrugByName(drugName);
+		List<Integer> ids = new ArrayList<Integer>();
+		
+		if (drugs != null && drugs.size() > 0) {
+			for (TbDrug drug : drugs) {
+				ids.add(drug.getId());
+			}
+		} else {
 			return null;
 		}
 		
-		map.put("drugId", drug.getId());
+		map.put("ids", ids);
 		map.put("beginTime", beginTime);
 		map.put("endTime", endTime);
 		
-		List<TbSalesItem> salesItemList = salesItemService.selectAllSale(map);
+		List<TbSales> salesList = salesMapper.selectAllSales1(map);
 		
-		if (salesItemList != null) {
-			return salesItemList;
+		if (salesList != null && salesList.size() > 0) {
+			
+			for (TbSales sales : salesList) {
+				TbDrug drug = drugService.getDrugById(sales.getDrugId());
+				sales.setDrug(drug);
+			}
+			
+			return salesList;
 		}
 		return null;
 	}
+
+	/* (non-Javadoc)
+	 * @see cn.edu.dgut.service.SalesService#getSalesByPatientId(java.lang.String)
+	 */
+	@Override
+	public List<TbSales> getSalesByPatientId(String patientId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	/**
+	 * 根据销售单编号和药品ID删除销售记录
+	 */
+	@Override
+	public int deleteOneBySalesNoAndDrugId(Integer drugId, String salesNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("drugId", drugId);
+		map.put("salesNo", salesNo);
+		
+		TbSales sales = salesMapper.getSalesBySalesNoAndDrugId(map);
+		
+		// 在删除销售记录之前，需要增加相应的库存数量
+		TbStock stock = new TbStock();
+		stock.setDrugId(sales.getDrugId());
+		stock.setStockQuantity(-sales.getQuantity());
+		stockService.updateByStockSelective(stock);
+		
+		return salesMapper.deleteByPrimaryKey(sales.getId());
+	}
+
+	// 根据药品ID和销售单编号查找
+	@Override
+	public TbSales getSalesBySalesNoAndDrugId(Integer id, String salesNo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("drugId", id);
+		map.put("salesNo", salesNo);
+		return salesMapper.getSalesBySalesNoAndDrugId(map);
+	}
+
+	// 销售药品
+	@Override
+	public int addSalesByDrug(SalesDto salesDto) {
+		TbSales sales = new TbSales();
+		int count = 0;
+		int quantity = 0;
+		sales.setSalesNo(salesDto.getSalesNo());
+		sales.setPatientId(salesDto.getPatientId());
+		
+		// 根据药品名称查看库存中药品的数量
+		quantity = stockService.countStockQuantityByDrugName(salesDto.getDrugName());
+		
+		// 判断库存数量是否足够
+		if (salesDto.getQuantity() > quantity) {
+			return 0;
+		}
+		
+		// 获得到将待销售的药品，key为药品ID，value为药品信息
+		Map<Integer, TbStock> map = this.getSalesStock(salesDto,salesDto.getDrugName());
+		
+		// 设置该批次的信息，添加销售单记录，同时减少库存
+		for (Map.Entry<Integer, TbStock> entry : map.entrySet()) {
+			TbDrug drug1 = new TbDrug();
+			drug1 = drugService.getDrugById(entry.getKey());
+			sales.setDrugId(entry.getKey());
+			sales.setQuantity(entry.getValue().getStockQuantity());
+			sales.setTotalPrice(this.getOrderItemTotalPrice(sales.getQuantity(),drug1.getSalePrice()));
+			
+			// 因为每条记录的ID是不一样的
+			TbSales lastSales = this.getLastRecord();
+			
+			if(lastSales!=null){
+				sales.setId(lastSales.getId()+1);
+			}else{
+				sales.setId(1);
+			}
+	
+			TbStock stock = new TbStock();
+			stock.setDrugId(drug1.getId());
+			stock.setStockQuantity(sales.getQuantity());
+			
+			// 更新库存
+			count = stockService.updateByStockSelective(stock);
+			
+			if (count > 0) {
+				Map<String, Object> map2 = new HashMap<String,Object>();
+				map2.put("salesNo", salesDto.getSalesNo());
+				map2.put("drugId", drug1.getId());
+				TbSales sales2 = salesMapper.getSalesBySalesNoAndDrugId(map2);
+				
+				if (sales2 != null) {
+					sales2.setQuantity(sales2.getQuantity()+sales.getQuantity());
+					sales2.setTotalPrice(BigDecimalUtil.add(sales2.getTotalPrice().doubleValue(), 
+							sales.getTotalPrice().doubleValue()));
+					count = salesMapper.updateByPrimaryKeySelective(sales2);
+				} else {
+					count = salesMapper.insert(sales);
+				}
+			}
+			
+		}
+		
+		return count;
+	}
+
+	// 根据销售单编号查询
+	@Override
+	public List<TbSales> getSalesBySalesNo1(String salesNo) {
+		return salesMapper.selectBySalesNo(salesNo);
+	}
+
 
 }

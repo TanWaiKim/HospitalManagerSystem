@@ -51,13 +51,11 @@ public class WarehouseServiceImpl implements WarehouseService {
 	 * 条件查询
 	 */
 	@Override
-	public List<TbWarehouse> pageByCondition(String warehouseNo, String warehouseName, String manager, String keywords,
-			Page page) {
+	public List<TbWarehouse> pageByCondition(String warehouseNo, String warehouseName, String manager, Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("warehouseNo", warehouseNo);
 		map.put("warehouseName", warehouseName);
 		map.put("manager", manager);
-		map.put("keywords", keywords);
 		// 根据条件查询总数
 		int totalNum = warehouseMapper.countByCondition(map);
 		page.setTotalNumber(totalNum);

@@ -251,7 +251,7 @@ public class PrescriptionController {
 	}
 	
 	/**
-	 * 处分信息（用于销售）
+	 * 处方信息（用于销售）
 	 * @param currentPage
 	 * @param model
 	 * @param request
@@ -324,6 +324,7 @@ public class PrescriptionController {
 			model.addAttribute("prescriptionList", prescriptionList);
 			model.addAttribute("page", page);
 			model.addAttribute("prescriptionId", prescriptionId);
+			model.addAttribute("patientId", patientId);
 			model.addAttribute("patientName", patientName);
 		
 		} catch (Exception e) {

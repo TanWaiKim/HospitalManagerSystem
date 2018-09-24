@@ -49,11 +49,10 @@ public class ProviderServiceImpl implements ProviderService {
 	 * 条件查询
 	 */
 	@Override
-	public List<TbProvider> pageByCondition(String providerName, String contact,String keywords, Page page) {
+	public List<TbProvider> pageByCondition(String providerName, String contact, Page page) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("providerName", providerName);
 		map.put("contact", contact);
-		map.put("keywords", keywords);
 		// 根据条件查询总数
 		int totalNum = providerMapper.countByCondition(map);
 		page.setTotalNumber(totalNum);

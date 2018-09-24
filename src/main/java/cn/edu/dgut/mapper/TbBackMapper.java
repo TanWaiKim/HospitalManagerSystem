@@ -39,4 +39,16 @@ public interface TbBackMapper {
 	int deleteBatch(List<Long> list);
 	
 	List<TbBack> selectAllBack();
+	
+	int countByBackNo(Map<String, Object> map);
+	
+	List<TbBack> selectByBackNoCondition(Map<String, Object> map);
+	
+	List<TbBack> selectByBackNo(String backNo);
+	
+	TbBack getBackByBackNoAndDrugId(Map<String, Object> map);
+	
+	int deleteByBackNo(String backNo);
+	
+	int deleteByBackNoBatch(List<String> list);
 }

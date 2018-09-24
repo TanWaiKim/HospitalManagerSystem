@@ -54,8 +54,8 @@
 						<label>医药名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="drugName" data-validate="required:请输入病医药名称" />
+						<input type="text" placeholder="请输入医药名称" class="input w50" value=""
+							name="drugName" data-validate="required:请输入医药名称" />
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -67,7 +67,7 @@
 					
 					<div class="field">
 						
-						<textarea rows="2" class="input" name="purpose"  data-validate="required:请输入功能主治"></textarea>
+						<textarea rows="2" placeholder="请输入功能主治（不超过50个字）" class="input" name="purpose"  data-validate="required:请输入功能主治"></textarea>
 						<div class="tips"></div>
 					</div>
 					
@@ -87,7 +87,7 @@
 							<option value="瓶">瓶</option>
 							<option value="支">支</option>
 							<option value="片">片</option>
-							<option value="粒">粒</option>
+							<option value="包">包</option>
 							<option value="丸">丸</option>
 							<option value="剂">剂</option>
 						</select>
@@ -100,34 +100,11 @@
 						<label>规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
+						<input type="text" placeholder="请输入规格" class="input w50" value=""
 							name="spec" data-validate="required:请输入规格" />
 						<div class="tips"></div>
 					</div>
 				</div>
-				
-				<div class="form-group">
-					<div class="label">
-						<label>用法用量：</label>
-					</div>
-
-					<div class="field">
-						
-						<textarea rows="2" class="input" name="howuse"  data-validate="required:请输入用法用量"></textarea>
-						<div class="tips"></div>
-					</div>
-				</div>	
-
-				<div class="form-group">
-					<div class="label">
-						<label>批准文号：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="drugNo" data-validate="required:请输入批准文号" />
-						<div class="tips"></div>
-					</div>
-				</div>	
 				
 				<div class="form-group">
 					<div class="label">
@@ -136,7 +113,7 @@
 
 					<div class="field">
 						
-						<textarea rows="2" class="input" name="uneffect"  data-validate="required:请输入不良反应"></textarea>
+						<textarea rows="2" placeholder="请输入不良反应（不超过50个字）" class="input" name="uneffect"  data-validate="required:请输入不良反应"></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>		
@@ -177,7 +154,7 @@
 									var d = dialog({
 										okValue: '确定',
 										title: '温馨提示',
-										content: '很抱歉，添加失败!',
+										content: data.msg,
 
 										width: 200,
 										height: 50,

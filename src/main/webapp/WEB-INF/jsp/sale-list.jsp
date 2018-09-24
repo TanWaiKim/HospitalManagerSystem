@@ -80,13 +80,11 @@
 				<tr>
 					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="150" >销药单编号</th>
-					<th width="100" >病人名称</th>
 					<th width="150" >病人编号</th>
-					<th width="100" >总数量</th>
-					<th width="100" >总价格</th>
+					<th width="100" >病人名称</th>
+					<th width="100" >总价格（元）</th>
 					<th width="150" >创建时间</th>
 					<th width="150" >更新时间</th>
-					<th width="90" >操作员</th>
 					<th width="300" >操作</th>
 				</tr>
 				<c:forEach items="${salesList}" var="sales"  varStatus="status">
@@ -99,13 +97,11 @@
 						</td>
 
 						<td>${sales.salesNo }</td>
-						<td>${sales.patient.name }</td>
 						<td>${sales.patient.patientId }</td>
-						<td>${sales.totalQuantity }</td>
+						<td>${sales.patient.name }</td>
 						<td>${sales.totalPrice }</td>
 						<td><fmt:formatDate type="date" value="${sales.createTime }"/></td>
 						<td><fmt:formatDate type="date" value="${sales.updateTime }"/></td>
-						<td>${sales.operator }</td>
 						<td>
 							<div class="button-group">
 								<a class="button border-main"
@@ -127,7 +123,7 @@
 
 				</tr>
 				<tr>
-					<td colspan="7" style="border-style:none;">
+					<td colspan="6" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">
@@ -147,6 +143,7 @@
 							<a
 								href="javascript:changeCurrentPage($('#currentPageText').val())"
 								class='go'>GO</a>
+								&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 						</div>
 					</td>
 				</tr>

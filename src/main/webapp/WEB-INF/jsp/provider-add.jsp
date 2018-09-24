@@ -32,7 +32,7 @@
 						<label>供药商名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="providerName"
+						<input type="text" placeholder="请输入供药商名称" class="input w50" value="" name="providerName"
 							data-validate="required:请输入供药商名称" />
 						<div class="tips"></div>
 					</div>
@@ -43,27 +43,27 @@
 						<label>公司地址：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="address" data-validate="required:请输入公司地址"/>
+						<input type="text" placeholder="请输入公司地址" class="input w50" value="" name="address" data-validate="required:请输入公司地址"/>
 						<div class="tips"></div>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="label">
-						<label>联络人：</label>
+						<label>联系人：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="contact" data-validate="required:请输入联络人"/>
+						<input type="text" placeholder="请输入联系人" class="input w50" value="" name="contact" data-validate="required:请输入联系人"/>
 						<div class="tips"></div>
 					</div>
 				</div>
 				
 				<div class="form-group">
 					<div class="label">
-						<label>联络人电话：</label>
+						<label>联系人电话：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="phone" data-validate="required:请输入联系电话(11位阿拉伯数字)"/>
+						<input type="text" placeholder="请输入联系人电话" class="input w50" value="" name="phone" data-validate="required:请输入联系电话(11位阿拉伯数字)"/>
 						<div class="tips"></div>
 					</div>
 				</div>
@@ -73,7 +73,7 @@
 						<label>备注：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="remarks" data-validate="required:请输入备注信息"/>
+						<input type="text" placeholder="请输入备注" class="input w50" value="" name="remarks" data-validate="required:请输入备注信息"/>
 						<div class="tips"></div>
 					</div>
 				</div>

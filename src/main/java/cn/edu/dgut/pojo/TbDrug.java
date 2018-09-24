@@ -17,26 +17,22 @@ public class TbDrug {
     private String spec;
 
     private String unit;
-    
-    private String howuse;
 
-//    private String producedTime;
-//
-//    private String validTime;
+    private String uneffect;
+
+    private BigDecimal purchasePrice;
+
+    private BigDecimal salePrice;
+
+    private String produceTime;
+
+    private String validTime;
 
     private Date createTime;
 
     private Date updateTime;
     
     private TbDrugtype drugtype;
-    
-//    private BigDecimal purchasePrice;
-
-    private BigDecimal salePrice;
-    
-    private String remark;
-    
-    private String uneffect;
     
     public Integer getId() {
         return id;
@@ -67,7 +63,7 @@ public class TbDrug {
     }
 
     public void setDrugNo(String drugNo) {
-        this.drugNo = drugNo;
+        this.drugNo = drugNo == null ? null : drugNo.trim();
     }
 
     public String getPurpose() {
@@ -94,29 +90,45 @@ public class TbDrug {
         this.unit = unit == null ? null : unit.trim();
     }
 
-    public String getHowuse() {
-        return howuse;
+    public String getUneffect() {
+        return uneffect;
     }
 
-    public void setHowuse(String howuse) {
-        this.howuse = howuse == null ? null : howuse.trim();
+    public void setUneffect(String uneffect) {
+        this.uneffect = uneffect == null ? null : uneffect.trim();
     }
 
-//    public String getProducedTime() {
-//        return producedTime;
-//    }
-//
-//    public void setProducedTime(String producedTime) {
-//        this.producedTime = producedTime;
-//    }
-//
-//    public String getValidTime() {
-//        return validTime;
-//    }
-//
-//    public void setValidTime(String validTime) {
-//        this.validTime = validTime;
-//    }
+    public BigDecimal getPurchasePrice() {
+        return purchasePrice;
+    }
+
+    public void setPurchasePrice(BigDecimal purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+
+    public BigDecimal getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(BigDecimal salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getProduceTime() {
+        return produceTime;
+    }
+
+    public void setProduceTime(String produceTime) {
+        this.produceTime = produceTime;
+    }
+
+    public String getValidTime() {
+        return validTime;
+    }
+
+    public void setValidTime(String validTime) {
+        this.validTime = validTime;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -140,38 +152,6 @@ public class TbDrug {
 
 	public void setDrugtype(TbDrugtype drugtype) {
 		this.drugtype = drugtype;
-	}
-
-//	public BigDecimal getPurchasePrice() {
-//		return purchasePrice;
-//	}
-//
-//	public void setPurchasePrice(BigDecimal purchasePrice) {
-//		this.purchasePrice = purchasePrice;
-//	}
-
-	public BigDecimal getSalePrice() {
-		return salePrice;
-	}
-
-	public void setSalePrice(BigDecimal salePrice) {
-		this.salePrice = salePrice;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
-	public String getUneffect() {
-		return uneffect;
-	}
-
-	public void setUneffect(String uneffect) {
-		this.uneffect = uneffect;
 	}
 
 }

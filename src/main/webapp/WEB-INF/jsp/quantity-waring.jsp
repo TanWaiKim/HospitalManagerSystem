@@ -31,7 +31,7 @@
 			value="${page.currentPage }" />
 		<div class="panel admin-panel">
 			<div class="panel-head">
-				<strong class="icon-reorder"> 库存上下限预警列表</strong> 
+				<strong class="icon-reorder"> 库存上下限预警信息列表</strong> 
 			</div>
 			<div class="text-little">
 				<table class="table table-hover text-center table-bordered">
@@ -39,10 +39,10 @@
 						<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
 						<th width="100" >医药种类</th>
 						<th width="200" >医药名称</th>
-						<th width="100" >批准文号</th>
 						<th width="100">当前库存数量</th>
 						<th width="100">库存下限</th>
 						<th width="100">库存上限</th>
+						<th width="100" >计量单位</th>
 						<th width="200">预警信息</th>
 						<th width="200">操作</th>
 					</tr>
@@ -55,10 +55,10 @@
 							</td>
 							<td>${stock.drug.drugtype.drugtypeName }</td>
 							<td>${stock.drug.drugName }</td>
-							<td>${stock.drug.drugNo }</td>
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
 							<td>${stock.maxQuantity }</td>
+							<td>${stock.drug.unit }</td>
 							<td>${stock.quantityWaring }</td>
 							<td>
 								<div class="button-group">

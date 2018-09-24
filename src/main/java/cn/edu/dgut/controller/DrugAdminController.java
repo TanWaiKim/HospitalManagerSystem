@@ -1,6 +1,7 @@
 package cn.edu.dgut.controller;
 
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,16 @@ public class DrugAdminController {
 				return HmsResult.build(505, "用户名不能为空！");
 			}
 			
+			if (drugAdminService.getDrugAdminByUsername(drugAdmin.getUsername()) != null) {
+				return HmsResult.build(505, "用户名已存在！");
+			}
+			
 			if (drugAdmin.getPassword() == null || drugAdmin.getPassword().equals("")) {
 				return HmsResult.build(505, "密码不能为空！");
+			}
+			
+			if (drugAdmin.getPassword().length() < 6) {
+				return HmsResult.build(505, "密码长度不能小于6位！");
 			}
 			
 			if (drugAdmin.getSex() == null || drugAdmin.getSex().equals("")) {
@@ -63,8 +72,32 @@ public class DrugAdminController {
 				return HmsResult.build(505, "邮箱不能为空！");
 			}
 			
+			String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";  
+			Pattern q = Pattern.compile(REGEX_EMAIL);  
+			Matcher n = q.matcher(drugAdmin.getEmail()); 
+			
+			if (!n.find()) {
+				return HmsResult.build(505, "邮箱格式错误");
+			}
+			
+			if (drugAdminService.getDrugAdminByEmail(drugAdmin.getEmail()) != null) {
+				return HmsResult.build(505, "邮箱号码已存在！");
+			}
+			
 			if (drugAdmin.getPhone() == null || drugAdmin.getPhone().equals("")) {
 				return HmsResult.build(505, "手机号码不能为空！");
+			}
+			
+			String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+			Pattern p = Pattern.compile(regExp);  
+			Matcher m = p.matcher(drugAdmin.getPhone()); 
+			
+			if (!m.find()) {
+				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
+			}
+			
+			if (drugAdminService.getDrugAdminByPhone(drugAdmin.getPhone()) != null) {
+				return HmsResult.build(505, "手机号码已存在！");
 			}
 			
 			if (drugAdmin.getAddress() == null || drugAdmin.getAddress().equals("")) {
@@ -72,7 +105,7 @@ public class DrugAdminController {
 			}
 			
 			if (drugAdmin.getIntro() == null || drugAdmin.getIntro().equals("")) {
-				return HmsResult.build(505, "自我简介不能为空！");
+				return HmsResult.build(505, "简介不能为空！");
 			}
 			
 			if (drugAdminService.addDrugAdminByTbDrugAdmin(drugAdmin) > 0) {
@@ -82,7 +115,7 @@ public class DrugAdminController {
 			e.getStackTrace();
 			return HmsResult.build(500, "出现异常，添加药品员信息失败！");
 		}
-		return HmsResult.build(500, "不明原因，添加药品员信息失败！");
+		return HmsResult.build(500, "添加药品员信息失败！");
 	}
 	
 	/**
@@ -159,13 +192,10 @@ public class DrugAdminController {
 	@ResponseBody()
 	public HmsResult updateDrugAdminByTbDrugAdmin(TbDrugAdmin drugAdmin, Model model) {
 		try {
-			if (drugAdmin.getUsername() == null || drugAdmin.getUsername().equals("")) {
-				return HmsResult.build(505, "用户名不能为空！");
-			}
+			TbDrugAdmin drugAdmin1 = drugAdminService.getDrugAdminById(drugAdmin.getId());
+			TbDrugAdmin drugAdmin2 = drugAdminService.getDrugAdminByPhone(drugAdmin.getPhone());
+			TbDrugAdmin drugAdmin3 = drugAdminService.getDrugAdminByEmail(drugAdmin.getEmail());
 			
-			if (drugAdmin.getPassword() == null || drugAdmin.getPassword().equals("")) {
-				return HmsResult.build(505, "密码不能为空！");
-			}
 			
 			if (drugAdmin.getSex() == null || drugAdmin.getSex().equals("")) {
 				return HmsResult.build(505, "性别不能为空！");
@@ -175,8 +205,36 @@ public class DrugAdminController {
 				return HmsResult.build(505, "邮箱不能为空！");
 			}
 			
+			String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";  
+			Pattern q = Pattern.compile(REGEX_EMAIL);  
+			Matcher n = q.matcher(drugAdmin.getEmail()); 
+			
+			if (!n.find()) {
+				return HmsResult.build(505, "邮箱格式错误");
+			}
+			
+			if (drugAdmin3 != null) {
+				if (!drugAdmin3.getEmail().equals(drugAdmin1.getEmail())) {
+					return HmsResult.build(505, "邮箱号码已存在！");
+				}
+			}
+			
 			if (drugAdmin.getPhone() == null || drugAdmin.getPhone().equals("")) {
 				return HmsResult.build(505, "手机号码不能为空！");
+			}
+			
+			String regExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+			Pattern p = Pattern.compile(regExp);  
+			Matcher m = p.matcher(drugAdmin.getPhone()); 
+			
+			if (!m.find()) {
+				return HmsResult.build(505, "手机号码格式错误！(11位数字)");
+			}
+			
+			if (drugAdmin2 != null) {
+				if (!drugAdmin2.getPhone().equals(drugAdmin1.getPhone())) {
+					return HmsResult.build(505, "手机号码已存在！");
+				}
 			}
 			
 			if (drugAdmin.getAddress() == null || drugAdmin.getAddress().equals("")) {
@@ -262,7 +320,9 @@ public class DrugAdminController {
 	 * @return
 	 */
 	@RequestMapping("/detail")
-	public String DrugAdminDetail(){ 
+	public String DrugAdminDetail(@RequestParam(value = "id") Integer id, Model model){ 
+		TbDrugAdmin drugAdmin =drugAdminService.getDrugAdminById(id);
+		model.addAttribute("drugAdmin", drugAdmin);
 		return "drugAdmin-detail";
 	}
 	

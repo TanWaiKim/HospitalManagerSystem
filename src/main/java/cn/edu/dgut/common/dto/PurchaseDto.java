@@ -11,14 +11,10 @@ public class PurchaseDto {
 	private Integer id;
 	
 	private String purchaseNo;
-	
-    private String warehouseNo;
 
     private Integer providerId;
-    
-    private String operator;
 
-    private String remarks;
+    private String remark;
     
     private Integer drugId;
 
@@ -30,31 +26,16 @@ public class PurchaseDto {
     
     private Integer quantity;
     
-    private Integer totalQuantity;
-    
-    private Integer oldPurchaseItemQuantity;
-    
-    private BigDecimal totalPrice;
-    
-    private BigDecimal oldTotalQuantity;
-    
-    private Integer purchaseId;
-    
     private String produceTime;
     
     private String validTime;
     
-    private String batchNo;
+    private String drugNo;
     
+    private Integer drugAdminId;
     
+    private Integer isStock;
     
-	public String getWarehouseNo() {
-		return warehouseNo;
-	}
-
-	public void setWarehouseNo(String warehouseNo) {
-		this.warehouseNo = warehouseNo;
-	}
 
 	public Integer getProviderId() {
 		return providerId;
@@ -64,20 +45,12 @@ public class PurchaseDto {
 		this.providerId = providerId;
 	}
 
-	public String getOperator() {
-		return operator;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
-
-	public String getRemarks() {
-		return remarks;
-	}
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public Integer getDrugId() {
@@ -128,52 +101,12 @@ public class PurchaseDto {
 		this.purchaseNo = purchaseNo;
 	}
 
-	public Integer getTotalQuantity() {
-		return totalQuantity;
-	}
-
-	public void setTotalQuantity(Integer totalQuantity) {
-		this.totalQuantity = totalQuantity;
-	}
-
-	public BigDecimal getTotalPrice() {
-		return totalPrice;
-	}
-
-	public void setTotalPrice(BigDecimal totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getOldPurchaseItemQuantity() {
-		return oldPurchaseItemQuantity;
-	}
-
-	public void setOldPurchaseItemQuantity(Integer oldPurchaseItemQuantity) {
-		this.oldPurchaseItemQuantity = oldPurchaseItemQuantity;
-	}
-
-	public BigDecimal getOldTotalQuantity() {
-		return oldTotalQuantity;
-	}
-
-	public void setOldTotalQuantity(BigDecimal oldTotalQuantity) {
-		this.oldTotalQuantity = oldTotalQuantity;
-	}
-
-	public Integer getPurchaseId() {
-		return purchaseId;
-	}
-
-	public void setPurchaseId(Integer purchaseId) {
-		this.purchaseId = purchaseId;
 	}
 
 	public String getProduceTime() {
@@ -192,12 +125,28 @@ public class PurchaseDto {
 		this.validTime = validTime;
 	}
 
-	public String getBatchNo() {
-		return batchNo;
+	public String getDrugNo() {
+		return drugNo;
 	}
 
-	public void setBatchNo(String batchNo) {
-		this.batchNo = batchNo;
+	public void setDrugNo(String drugNo) {
+		this.drugNo = drugNo;
+	}
+
+	public Integer getDrugAdminId() {
+		return drugAdminId;
+	}
+
+	public void setDrugAdminId(Integer drugAdminId) {
+		this.drugAdminId = drugAdminId;
+	}
+
+	public Integer getIsStock() {
+		return isStock;
+	}
+
+	public void setIsStock(Integer isStock) {
+		this.isStock = isStock;
 	}
     
     

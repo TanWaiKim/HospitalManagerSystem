@@ -57,22 +57,22 @@
 
 				<div class="form-group">
 					<div class="label">
-						<label>联络人：</label>
+						<label>联系人：</label>
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${provider.contact}" name="contact"
-							data-validate="required:请输入联络人" />
+							data-validate="required:请输入联系人" />
 						<div class="tips"></div>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="label">
-						<label>联络人电话：</label>
+						<label>联系人电话：</label>
 					</div>
 					<div class="field">
 						<input type="text" class="input w50" value="${provider.phone}" name="phone"
-							data-validate="required:请输入联络人电话" />
+							data-validate="required:请输入联系人 电话" />
 						<div class="tips"></div>
 					</div>
 				</div>

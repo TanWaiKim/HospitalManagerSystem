@@ -9,18 +9,16 @@
     <result column="purpose" property="purpose" jdbcType="VARCHAR" />
     <result column="spec" property="spec" jdbcType="VARCHAR" />
     <result column="unit" property="unit" jdbcType="CHAR" />
-    <result column="howuse" property="howuse" jdbcType="VARCHAR" />
-    <!-- 
-    <result column="produced_time" property="producedTime" jdbcType="TIMESTAMP" />
-    <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
-     -->
+    <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="produce_time" property="produceTime" jdbcType="VARCHAR" />
+    <result column="valid_time" property="validTime" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
-    <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
   </resultMap>
   
-  <resultMap id="BaseResultMap1" type="cn.edu.dgut.pojo.TbDrug" >
+   <resultMap id="BaseResultMap1" type="cn.edu.dgut.pojo.TbDrug" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="drugtype_id" property="drugtypeId" jdbcType="INTEGER" />
     <result column="drug_name" property="drugName" jdbcType="VARCHAR" />
@@ -28,15 +26,13 @@
     <result column="purpose" property="purpose" jdbcType="VARCHAR" />
     <result column="spec" property="spec" jdbcType="VARCHAR" />
     <result column="unit" property="unit" jdbcType="CHAR" />
-    <result column="howuse" property="howuse" jdbcType="VARCHAR" />
-    <!-- 
-    <result column="produced_time" property="producedTime" jdbcType="TIMESTAMP" />
-    <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
-     -->
+    <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
+    <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="produce_time" property="produceTime" jdbcType="VARCHAR" />
+    <result column="valid_time" property="validTime" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
-    <result column="uneffect" property="uneffect" jdbcType="VARCHAR" />
     <association property="drugtype" javaType="cn.edu.dgut.pojo.TbDrugtype">
     	<id property="id" column="id"/>
     	<result property="drugtypeName" column="drugtype_name"/>
@@ -45,7 +41,6 @@
     	<result property="updateTime" column="update_time"/>
     </association>
   </resultMap>
-  
   
   <sql id="Example_Where_Clause" >
     <where >
@@ -106,10 +101,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, create_time, update_time, sale_price,uneffect
+    id, drugtype_id, drug_name, drug_no, purpose, spec, unit, uneffect, purchase_price, 
+    sale_price, date_format(produce_time,"%Y-%m-%d") as produce_time,date_format(valid_time,"%Y-%m-%d") as valid_time, create_time, update_time
   </sql>
-  
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbDrugExample" >
+  <select id="selectByExample" resultMap="BaseResultMap1" parameterType="cn.edu.dgut.pojo.TbDrugExample" >
     select
     <if test="distinct" >
       distinct
@@ -123,49 +118,12 @@
       order by ${orderByClause}
     </if>
   </select>
-  
-  
-  <sql id="Base_Column_List1" >
-    d.id as id , drugtype_id, drug_name, drug_no, purpose, spec, unit, howuse, d.create_time as create_time, d.update_time as update_time, sale_price, uneffect, drugtype_name
-  </sql>
-  
-  <!-- 实现tb_drug和tb_drugtype关联 -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap1" parameterType="java.lang.Integer" >
     select 
-    <include refid="Base_Column_List1" />
-    from tb_drug d,tb_drugtype dt
-    where d.drugtype_id = dt.id and d.id = #{id,jdbcType=INTEGER}
+    <include refid="Base_Column_List" />
+    from tb_drug
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <!-- 实现tb_drug和tb_drugtype关联 -->
-  <select id="selectByDrugNo" resultMap="BaseResultMap1" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List1" />
-    from tb_drug d,tb_drugtype dt
-    where d.drugtype_id = dt.id and d.drug_no = #{drugNo,jdbcType=VARCHAR}
-  </select>
-  <!-- 实现tb_drug和tb_drugtype关联 -->
-  <select id="selectByDrugName" resultMap="BaseResultMap1" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List1" />
-    from tb_drug d,tb_drugtype dt
-    where d.drugtype_id = dt.id and d.drug_name = #{drugName,jdbcType=VARCHAR}
-  </select>
-   <!-- 实现tb_drug和tb_drugtype关联 -->
-  <select id="getDrugBySelective" resultMap="BaseResultMap1" parameterType="cn.edu.dgut.pojo.TbDrug" >
-    select 
-    <include refid="Base_Column_List1" />
-    from tb_drug d,tb_drugtype dt
-		<where>
-			d.drugtype_id = dt.id
-			<if test="drugName!=null and !&quot;&quot;.equals(drugName.trim())">
-				and d.drug_name like '%' #{drugName} '%'
-			</if>
-			<if test="drugNo and !&quot;&quot;.equals(drugNo.trim())">
-				and d.drug_no like '%' #{drugNo} '%'
-			</if>
-		</where>
-  </select>
-  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_drug
     where id = #{id,jdbcType=INTEGER}
@@ -179,13 +137,14 @@
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbDrug" >
     insert into tb_drug (id, drugtype_id, drug_name, 
       drug_no, purpose, spec, 
-      unit, howuse, create_time, update_time, sale_price,uneffect
-      )
+      unit, uneffect, purchase_price, 
+      sale_price, produce_time, valid_time, 
+      create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{drugtypeId,jdbcType=INTEGER}, #{drugName,jdbcType=VARCHAR}, 
       #{drugNo,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=CHAR}, #{howuse,jdbcType=VARCHAR}, now(), now(), #{salePrice,jdbcType=DECIMAL},
-      #{uneffect,jdbcType=VARCHAR}
-      )
+      #{unit,jdbcType=CHAR}, #{uneffect,jdbcType=VARCHAR}, #{purchasePrice,jdbcType=DECIMAL}, 
+      #{salePrice,jdbcType=DECIMAL}, str_to_date(#{produceTime},"%Y-%m-%d"), str_to_date(#{validTime},"%Y-%m-%d"), 
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbDrug" >
     insert into tb_drug
@@ -211,20 +170,26 @@
       <if test="unit != null" >
         unit,
       </if>
-      <if test="howuse != null" >
-        howuse,
+      <if test="uneffect != null" >
+        uneffect,
       </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
+      <if test="purchasePrice != null" >
+        purchase_price,
       </if>
       <if test="salePrice != null" >
         sale_price,
       </if>
-      <if test="uneffect != null" >
-        uneffect,
+      <if test="produceTime != null" >
+        produce_time,
+      </if>
+      <if test="validTime != null" >
+        valid_time,
+      </if>
+      <if test="createTime == null" >
+        create_time,
+      </if>
+      <if test="updateTime == null" >
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -249,20 +214,26 @@
       <if test="unit != null" >
         #{unit,jdbcType=CHAR},
       </if>
-      <if test="howuse != null" >
-        #{howuse,jdbcType=VARCHAR},
+      <if test="uneffect != null" >
+        #{uneffect,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
-        now(),
-      </if>
-      <if test="updateTime != null" >
-        now(),
+      <if test="purchasePrice != null" >
+        #{purchasePrice,jdbcType=DECIMAL},
       </if>
       <if test="salePrice != null" >
         #{salePrice,jdbcType=DECIMAL},
       </if>
-      <if test="uneffect != null" >
-        #{uneffect,jdbcType=VARCHAR},
+      <if test="produceTime != null" >
+        str_to_date(#{produceTime},"%Y-%m-%d"),
+      </if>
+      <if test="validTime != null" >
+        str_to_date(#{validTime},"%Y-%m-%d"),
+      </if>
+      <if test="createTime == null" >
+        now(),
+      </if>
+      <if test="updateTime == null" >
+        now(),
       </if>
     </trim>
   </insert>
@@ -296,20 +267,26 @@
       <if test="record.unit != null" >
         unit = #{record.unit,jdbcType=CHAR},
       </if>
-      <if test="record.howuse != null" >
-        howuse = #{record.howuse,jdbcType=VARCHAR},
+      <if test="record.uneffect != null" >
+        uneffect = #{record.uneffect,jdbcType=VARCHAR},
+      </if>
+      <if test="record.purchasePrice != null" >
+        purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.produceTime != null" >
+        produce_time = str_to_date(#{produceTime},"%Y-%m-%d"),
+      </if>
+      <if test="record.validTime != null" >
+        valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateTime != null" >
         update_time = now(),
-      </if>
-      <if test="record.salePrice != null" >
-        sale_price = #{record.salePrice,jdbcType=DECIMAL},
-      </if>
-      <if test="record.uneffect != null" >
-        uneffect = #{record.uneffect,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -325,11 +302,13 @@
       purpose = #{record.purpose,jdbcType=VARCHAR},
       spec = #{record.spec,jdbcType=VARCHAR},
       unit = #{record.unit,jdbcType=CHAR},
-      howuse = #{record.howuse,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
+      uneffect = #{record.uneffect,jdbcType=VARCHAR},
+      purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
       sale_price = #{record.salePrice,jdbcType=DECIMAL},
-      uneffect = #{record.uneffect,jdbcType=VARCHAR}
+      produce_time = str_to_date(#{produceTime},"%Y-%m-%d"),
+      valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = now()
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -355,20 +334,26 @@
       <if test="unit != null" >
         unit = #{unit,jdbcType=CHAR},
       </if>
-      <if test="howuse != null" >
-        howuse = #{howuse,jdbcType=VARCHAR},
+      <if test="uneffect != null" >
+        uneffect = #{uneffect,jdbcType=VARCHAR},
+      </if>
+      <if test="purchasePrice != null" >
+        purchase_price = #{purchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="produceTime != null" >
+        produce_time = str_to_date(#{produceTime},"%Y-%m-%d"),
+      </if>
+      <if test="validTime != null" >
+        valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
         update_time = now(),
-      </if>
-      <if test="salePrice != null" >
-        sale_price = #{salePrice,jdbcType=DECIMAL},
-      </if>
-      <if test="uneffect != null" >
-        uneffect = #{uneffect,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -381,57 +366,55 @@
       purpose = #{purpose,jdbcType=VARCHAR},
       spec = #{spec,jdbcType=VARCHAR},
       unit = #{unit,jdbcType=CHAR},
-      howuse = #{howuse,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now(),
+      uneffect = #{uneffect,jdbcType=VARCHAR},
+      purchase_price = #{purchasePrice,jdbcType=DECIMAL},
       sale_price = #{salePrice,jdbcType=DECIMAL},
-      uneffect = #{uneffect,jdbcType=VARCHAR}
+      produce_time = str_to_date(#{produceTime},"%Y-%m-%d"),
+      valid_time = str_to_date(#{validTime},"%Y-%m-%d"),
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  
-   <!-- 查询最后一条记录 -->
-  <select id="selectLastRecord"  resultMap="BaseResultMap">
+ 
+   <update id="updateSalePrice" parameterType="cn.edu.dgut.pojo.TbDrug" >
+    update tb_drug
+    set sale_price = #{salePrice,jdbcType=DECIMAL}, update_time = now()
+    where drug_name = #{drugName,jdbcType=VARCHAR}
+  </update>
+ 
+  <!-- 查询最后一条记录 -->
+  <select id="selectLastRecord"  resultMap="BaseResultMap1">
   	select * from  tb_drug order by id desc limit 1
   </select>
- 
- 
+  
   <!-- 统计记录数 -->
   <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
   	select count(*) from tb_drug d
   		<where>
-  			<if test="drugtypeId != null">
-  				and d.drugtype_id =  #{drugtypeId} 
+  			<if test="drugtypeId!=null">
+  				and d.drugtype_id = #{drugtypeId}
   			</if>
   			<if test="drugName!=null and !&quot;&quot;.equals(drugName.trim())">
   				and d.drug_name like '%' #{drugName} '%'
   			</if>
-  			<if test="drugNo and !&quot;&quot;.equals(drugNo.trim())">
+   			<if test="drugNo!=null and !&quot;&quot;.equals(drugNo.trim())">
   				and d.drug_no like '%' #{drugNo} '%'
-  			</if>
-  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				and d.purpose like '%' #{keywords} '%'
   			</if>
   		</where>
   </select>
   
   <!-- 条件查询 -->
   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap1">
-  	select d.id as id,d.drugtype_id as drugtype_id,drug_name, drug_no,purpose,spec,unit,howuse, uneffect, sale_price, drugtype_name 
-  	from tb_drug d,tb_drugtype dt
-  	
+  	select * from tb_drug d
   		<where>
-  			d.drugtype_id = dt.id
-  			<if test="drugtypeId != null">
-  				and d.drugtype_id = #{drugtypeId} 
+  			<if test="drugtypeId!=null">
+  				and d.drugtype_id = #{drugtypeId}
   			</if>
   			<if test="drugName!=null and !&quot;&quot;.equals(drugName.trim())">
   				and d.drug_name like '%' #{drugName} '%'
   			</if>
-  			<if test="drugNo and !&quot;&quot;.equals(drugNo.trim())">
+   			<if test="drugNo!=null and !&quot;&quot;.equals(drugNo.trim())">
   				and d.drug_no like '%' #{drugNo} '%'
-  			</if>
-  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				and d.purpose like '%' #{keywords} '%'
   			</if>
   		</where>
   		order by d.id limit #{pageIndex} ,#{pageSize}
@@ -447,15 +430,34 @@
   </delete>
   
   <!-- 查询所有记录 -->
-  <select id="selectAllDrug"  resultMap="BaseResultMap">
-  	select * from  tb_drug
-  </select>
+  <select id="selectAllDrug"  resultMap="BaseResultMap1">
+  	select id,drug_name from  tb_drug group by drug_name
+  </select> 
   
-   <!-- 根据输入字符自动模糊匹配药品记录 -->
+    <!-- 根据输入字符自动模糊匹配药品记录 -->
   <select id="selectDrugNameByAutoComplete" parameterType="string" resultMap="BaseResultMap">
-  	select drug_name 
+  	select distinct drug_name 
   	from  tb_drug
   	where drug_name like '%' #{parameter} '%'
   </select>
   
+   <!-- 根据药品名称和产品批号查询记录 -->
+  <select id="selectByDrugNameAndDrugNo" parameterType="java.util.Map" resultMap="BaseResultMap1">
+  	select * from  tb_drug d
+  		<where>
+  			<if test="drugName!=null and !&quot;&quot;.equals(drugName.trim())">
+  				and d.drug_name = #{drugName}
+  			</if>
+   			<if test="drugNo!=null and !&quot;&quot;.equals(drugNo.trim())">
+  				and d.drug_no = #{drugNo}
+  			</if>
+  		</where>
+  </select> 
+  
+     <!-- 根据药品名称和空的产品批号查询记录 -->
+  <select id="selectByDrugNameAndDrugNo1" parameterType="java.util.Map" resultMap="BaseResultMap1">
+  	select * from  tb_drug d
+  	where d.drug_name = #{drugName} 
+  	and d.drug_no is null
+  </select> 
 </mapper>

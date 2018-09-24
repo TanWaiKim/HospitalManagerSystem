@@ -272,9 +272,6 @@
   			<if test="contact!=null and !&quot;&quot;.equals(contact.trim())">
   				and p.contact like '%' #{contact} '%'
   			</if>
-  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				and p.remarks like '%' #{keywords} '%'
-  			</if>
   		</where>
   </select>
   
@@ -287,9 +284,6 @@
   			</if>
   			<if test="contact!=null and !&quot;&quot;.equals(contact.trim())">
   				and p.contact like '%' #{contact} '%'
-  			</if>
-  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				and p.remarks like '%' #{keywords} '%'
   			</if>
   		</where>
   		order by p.id limit #{pageIndex} ,#{pageSize}

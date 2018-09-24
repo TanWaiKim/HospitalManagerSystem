@@ -27,8 +27,6 @@ public interface TbSalesMapper {
     int updateByExample(@Param("record") TbSales record, @Param("example") TbSalesExample example);
 
     int updateByPrimaryKeySelective(TbSales record);
-    
-    int updateBySalesNoSelective(TbSales record);
 
     int updateByPrimaryKey(TbSales record);
     
@@ -36,11 +34,24 @@ public interface TbSalesMapper {
     
     int countByCondition(Map<String, Object> map);
     
+    int countBySalesNo(Map<String, Object> map);
+    
     List<TbSales> pageByCondition(Map<String, Object> map);
     
-    TbSales selectBySalesNo(String salesNo);
+    List<TbSales> selectBySalesNoCondition(Map<String, Object> map);
+    
+    List<TbSales> selectBySalesNo(String salesNo);
     
     int deleteBatch(List<Long> list);
     
-    List<TbSales> selectAllSales();
+	int deleteBySalesNo(String salesNo);
+	
+	int deleteBySalesNoBatch(List<String> list);
+	
+	TbSales getSalesBySalesNoAndDrugId(Map<String, Object> map);
+	
+	List<TbSales> selectAllSales(Map<String, Object> map);
+	
+	List<TbSales> selectAllSales1(Map<String, Object> map);
+    
 }

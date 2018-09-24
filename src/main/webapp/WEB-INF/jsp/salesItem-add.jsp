@@ -22,6 +22,29 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
+
+<script type="text/javascript">
+$(function()  {
+	$("#quantity").blur(function() {
+		var reg = /^[0-9]+.?[0-9]*$/;
+		var quantity = document.getElementById("quantity");
+		if (!reg.test(quantity.value)) {
+			var d = dialog({
+				okValue: '确定',
+				title: '温馨提示',
+				content: '数量必须为整数类型!',
+
+				width: 200,
+				height: 50,
+				ok: function () {
+					
+				}
+			});
+			d.showModal();
+		}
+	})
+});
+</script>
 </head>
 <body>
 	<div class="panel admin-panel">
@@ -31,32 +54,33 @@
 		<div class="body-content">
 			<form method="post" class="form-x" id="salesItemAddForm"
 				onsubmit="return false;">
-				<input type="hidden" id="salesNo" name="salesNo" value="${salesDto.salesNo }" />
-				<input type="hidden" id="patientId" name="patientId" value="${salesDto.patientId }" />
-				<input type="hidden" id="totalQuantity" name="totalQuantity" value="${salesDto.totalQuantity }" />
-				<input type="hidden" id="totalPrice" name="totalPrice" value="${salesDto.totalPrice }" />
-				<input type="hidden" id="operator" name="operator" value="${salesDto.operator }" />
-				<input type="hidden" id="remarks" name="remarks" value="${salesDto.remarks }" />
+				<input type="hidden" id="salesNo" name="salesNo" value="${salesNo }" />
+				<input type="hidden" id="patientId" name="patientId" value="${patientId }" />
 
 				<div class="form-group">
 					<div class="label">
 						<label>医药名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="drugName" data-validate="required:请输入医药名称" />
+						<select name="drugName" class="input" 
+							style="width: 155px; line-height: 17px; display: inline-block" data-validate="required:请输入医药名称" >
+							<option value="">选择</option>
+							<c:forEach
+							items="${drugList}" var="drug" >
+							<option value="${drug.drugName }">${drug.drugName }</option>
+							</c:forEach>
+						</select>
 						<div class="tips"></div>
 					</div>
-				</div>			
+				</div>		
 
 				<div class="form-group">
 					<div class="label">
 						<label>数量：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value=""
-							name="quantity" data-validate="required:请输入数量" />
-						<div class="tips"></div>
+						<input type="text" class="input w50" value="" id="quantity"
+							name="quantity" placeholder="请输入数量" />
 					</div>
 				</div>
 				
@@ -76,7 +100,7 @@
 		function addForm() {
 			//ajax的post方式提交表单
 			//$("#patientAddForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/salesItem/add",
+			$.post("${pageContext.request.contextPath }/sales/addDrug",
 							$("#salesItemAddForm").serialize(),
 							function(data) {
 								if (data.status == 200) {
@@ -88,7 +112,7 @@
 										width: 200,
 										height: 50,
 										ok: function () {
-											location.href = "${pageContext.request.contextPath }/sales/findBySalesNo?salesNo=${salesDto.salesNo }";
+											location.href = "${pageContext.request.contextPath }/sales/findBySalesNo?salesNo=${salesNo }";
 										}
 									});
 									d.showModal();
@@ -96,7 +120,7 @@
 									var d = dialog({
 										okValue: '确定',
 										title: '温馨提示',
-										content: '很抱歉，添加失败!',
+										content: data.msg,
 
 										width: 200,
 										height: 50,

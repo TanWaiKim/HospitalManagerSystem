@@ -166,143 +166,133 @@ public class TbBackExample {
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeIsNull() {
-            addCriterion("back_type is null");
+        public Criteria andBackNoIsNull() {
+            addCriterion("back_no is null");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeIsNotNull() {
-            addCriterion("back_type is not null");
+        public Criteria andBackNoIsNotNull() {
+            addCriterion("back_no is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeEqualTo(String value) {
-            addCriterion("back_type =", value, "backType");
+        public Criteria andBackNoEqualTo(String value) {
+            addCriterion("back_no =", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeNotEqualTo(String value) {
-            addCriterion("back_type <>", value, "backType");
+        public Criteria andBackNoNotEqualTo(String value) {
+            addCriterion("back_no <>", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeGreaterThan(String value) {
-            addCriterion("back_type >", value, "backType");
+        public Criteria andBackNoGreaterThan(String value) {
+            addCriterion("back_no >", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("back_type >=", value, "backType");
+        public Criteria andBackNoGreaterThanOrEqualTo(String value) {
+            addCriterion("back_no >=", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeLessThan(String value) {
-            addCriterion("back_type <", value, "backType");
+        public Criteria andBackNoLessThan(String value) {
+            addCriterion("back_no <", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeLessThanOrEqualTo(String value) {
-            addCriterion("back_type <=", value, "backType");
+        public Criteria andBackNoLessThanOrEqualTo(String value) {
+            addCriterion("back_no <=", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeLike(String value) {
-            addCriterion("back_type like", value, "backType");
+        public Criteria andBackNoLike(String value) {
+            addCriterion("back_no like", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeNotLike(String value) {
-            addCriterion("back_type not like", value, "backType");
+        public Criteria andBackNoNotLike(String value) {
+            addCriterion("back_no not like", value, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeIn(List<String> values) {
-            addCriterion("back_type in", values, "backType");
+        public Criteria andBackNoIn(List<String> values) {
+            addCriterion("back_no in", values, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeNotIn(List<String> values) {
-            addCriterion("back_type not in", values, "backType");
+        public Criteria andBackNoNotIn(List<String> values) {
+            addCriterion("back_no not in", values, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeBetween(String value1, String value2) {
-            addCriterion("back_type between", value1, value2, "backType");
+        public Criteria andBackNoBetween(String value1, String value2) {
+            addCriterion("back_no between", value1, value2, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackTypeNotBetween(String value1, String value2) {
-            addCriterion("back_type not between", value1, value2, "backType");
+        public Criteria andBackNoNotBetween(String value1, String value2) {
+            addCriterion("back_no not between", value1, value2, "backNo");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectIsNull() {
-            addCriterion("back_object is null");
+        public Criteria andProviderIdIsNull() {
+            addCriterion("provider_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectIsNotNull() {
-            addCriterion("back_object is not null");
+        public Criteria andProviderIdIsNotNull() {
+            addCriterion("provider_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectEqualTo(String value) {
-            addCriterion("back_object =", value, "backObject");
+        public Criteria andProviderIdEqualTo(Integer value) {
+            addCriterion("provider_id =", value, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectNotEqualTo(String value) {
-            addCriterion("back_object <>", value, "backObject");
+        public Criteria andProviderIdNotEqualTo(Integer value) {
+            addCriterion("provider_id <>", value, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectGreaterThan(String value) {
-            addCriterion("back_object >", value, "backObject");
+        public Criteria andProviderIdGreaterThan(Integer value) {
+            addCriterion("provider_id >", value, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectGreaterThanOrEqualTo(String value) {
-            addCriterion("back_object >=", value, "backObject");
+        public Criteria andProviderIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("provider_id >=", value, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectLessThan(String value) {
-            addCriterion("back_object <", value, "backObject");
+        public Criteria andProviderIdLessThan(Integer value) {
+            addCriterion("provider_id <", value, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectLessThanOrEqualTo(String value) {
-            addCriterion("back_object <=", value, "backObject");
+        public Criteria andProviderIdLessThanOrEqualTo(Integer value) {
+            addCriterion("provider_id <=", value, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectLike(String value) {
-            addCriterion("back_object like", value, "backObject");
+        public Criteria andProviderIdIn(List<Integer> values) {
+            addCriterion("provider_id in", values, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectNotLike(String value) {
-            addCriterion("back_object not like", value, "backObject");
+        public Criteria andProviderIdNotIn(List<Integer> values) {
+            addCriterion("provider_id not in", values, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectIn(List<String> values) {
-            addCriterion("back_object in", values, "backObject");
+        public Criteria andProviderIdBetween(Integer value1, Integer value2) {
+            addCriterion("provider_id between", value1, value2, "providerId");
             return (Criteria) this;
         }
 
-        public Criteria andBackObjectNotIn(List<String> values) {
-            addCriterion("back_object not in", values, "backObject");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackObjectBetween(String value1, String value2) {
-            addCriterion("back_object between", value1, value2, "backObject");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackObjectNotBetween(String value1, String value2) {
-            addCriterion("back_object not between", value1, value2, "backObject");
+        public Criteria andProviderIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("provider_id not between", value1, value2, "providerId");
             return (Criteria) this;
         }
 
@@ -366,333 +356,193 @@ public class TbBackExample {
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoIsNull() {
-            addCriterion("batch_no is null");
+        public Criteria andQuantityIsNull() {
+            addCriterion("quantity is null");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoIsNotNull() {
-            addCriterion("batch_no is not null");
+        public Criteria andQuantityIsNotNull() {
+            addCriterion("quantity is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoEqualTo(String value) {
-            addCriterion("batch_no =", value, "batchNo");
+        public Criteria andQuantityEqualTo(Integer value) {
+            addCriterion("quantity =", value, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoNotEqualTo(String value) {
-            addCriterion("batch_no <>", value, "batchNo");
+        public Criteria andQuantityNotEqualTo(Integer value) {
+            addCriterion("quantity <>", value, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoGreaterThan(String value) {
-            addCriterion("batch_no >", value, "batchNo");
+        public Criteria andQuantityGreaterThan(Integer value) {
+            addCriterion("quantity >", value, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoGreaterThanOrEqualTo(String value) {
-            addCriterion("batch_no >=", value, "batchNo");
+        public Criteria andQuantityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("quantity >=", value, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoLessThan(String value) {
-            addCriterion("batch_no <", value, "batchNo");
+        public Criteria andQuantityLessThan(Integer value) {
+            addCriterion("quantity <", value, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoLessThanOrEqualTo(String value) {
-            addCriterion("batch_no <=", value, "batchNo");
+        public Criteria andQuantityLessThanOrEqualTo(Integer value) {
+            addCriterion("quantity <=", value, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoLike(String value) {
-            addCriterion("batch_no like", value, "batchNo");
+        public Criteria andQuantityIn(List<Integer> values) {
+            addCriterion("quantity in", values, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoNotLike(String value) {
-            addCriterion("batch_no not like", value, "batchNo");
+        public Criteria andQuantityNotIn(List<Integer> values) {
+            addCriterion("quantity not in", values, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoIn(List<String> values) {
-            addCriterion("batch_no in", values, "batchNo");
+        public Criteria andQuantityBetween(Integer value1, Integer value2) {
+            addCriterion("quantity between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoNotIn(List<String> values) {
-            addCriterion("batch_no not in", values, "batchNo");
+        public Criteria andQuantityNotBetween(Integer value1, Integer value2) {
+            addCriterion("quantity not between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoBetween(String value1, String value2) {
-            addCriterion("batch_no between", value1, value2, "batchNo");
+        public Criteria andTotalPriceIsNull() {
+            addCriterion("total_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andBatchNoNotBetween(String value1, String value2) {
-            addCriterion("batch_no not between", value1, value2, "batchNo");
+        public Criteria andTotalPriceIsNotNull() {
+            addCriterion("total_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumIsNull() {
-            addCriterion("back_sum is null");
+        public Criteria andTotalPriceEqualTo(BigDecimal value) {
+            addCriterion("total_price =", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumIsNotNull() {
-            addCriterion("back_sum is not null");
+        public Criteria andTotalPriceNotEqualTo(BigDecimal value) {
+            addCriterion("total_price <>", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumEqualTo(Integer value) {
-            addCriterion("back_sum =", value, "backSum");
+        public Criteria andTotalPriceGreaterThan(BigDecimal value) {
+            addCriterion("total_price >", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumNotEqualTo(Integer value) {
-            addCriterion("back_sum <>", value, "backSum");
+        public Criteria andTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_price >=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumGreaterThan(Integer value) {
-            addCriterion("back_sum >", value, "backSum");
+        public Criteria andTotalPriceLessThan(BigDecimal value) {
+            addCriterion("total_price <", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumGreaterThanOrEqualTo(Integer value) {
-            addCriterion("back_sum >=", value, "backSum");
+        public Criteria andTotalPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_price <=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumLessThan(Integer value) {
-            addCriterion("back_sum <", value, "backSum");
+        public Criteria andTotalPriceIn(List<BigDecimal> values) {
+            addCriterion("total_price in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumLessThanOrEqualTo(Integer value) {
-            addCriterion("back_sum <=", value, "backSum");
+        public Criteria andTotalPriceNotIn(List<BigDecimal> values) {
+            addCriterion("total_price not in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumIn(List<Integer> values) {
-            addCriterion("back_sum in", values, "backSum");
+        public Criteria andTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_price between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumNotIn(List<Integer> values) {
-            addCriterion("back_sum not in", values, "backSum");
+        public Criteria andTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_price not between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumBetween(Integer value1, Integer value2) {
-            addCriterion("back_sum between", value1, value2, "backSum");
+        public Criteria andReasonIsNull() {
+            addCriterion("reason is null");
             return (Criteria) this;
         }
 
-        public Criteria andBackSumNotBetween(Integer value1, Integer value2) {
-            addCriterion("back_sum not between", value1, value2, "backSum");
+        public Criteria andReasonIsNotNull() {
+            addCriterion("reason is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceIsNull() {
-            addCriterion("back_total_price is null");
+        public Criteria andReasonEqualTo(String value) {
+            addCriterion("reason =", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceIsNotNull() {
-            addCriterion("back_total_price is not null");
+        public Criteria andReasonNotEqualTo(String value) {
+            addCriterion("reason <>", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceEqualTo(BigDecimal value) {
-            addCriterion("back_total_price =", value, "backTotalPrice");
+        public Criteria andReasonGreaterThan(String value) {
+            addCriterion("reason >", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceNotEqualTo(BigDecimal value) {
-            addCriterion("back_total_price <>", value, "backTotalPrice");
+        public Criteria andReasonGreaterThanOrEqualTo(String value) {
+            addCriterion("reason >=", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceGreaterThan(BigDecimal value) {
-            addCriterion("back_total_price >", value, "backTotalPrice");
+        public Criteria andReasonLessThan(String value) {
+            addCriterion("reason <", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("back_total_price >=", value, "backTotalPrice");
+        public Criteria andReasonLessThanOrEqualTo(String value) {
+            addCriterion("reason <=", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceLessThan(BigDecimal value) {
-            addCriterion("back_total_price <", value, "backTotalPrice");
+        public Criteria andReasonLike(String value) {
+            addCriterion("reason like", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("back_total_price <=", value, "backTotalPrice");
+        public Criteria andReasonNotLike(String value) {
+            addCriterion("reason not like", value, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceIn(List<BigDecimal> values) {
-            addCriterion("back_total_price in", values, "backTotalPrice");
+        public Criteria andReasonIn(List<String> values) {
+            addCriterion("reason in", values, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceNotIn(List<BigDecimal> values) {
-            addCriterion("back_total_price not in", values, "backTotalPrice");
+        public Criteria andReasonNotIn(List<String> values) {
+            addCriterion("reason not in", values, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("back_total_price between", value1, value2, "backTotalPrice");
+        public Criteria andReasonBetween(String value1, String value2) {
+            addCriterion("reason between", value1, value2, "reason");
             return (Criteria) this;
         }
 
-        public Criteria andBackTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("back_total_price not between", value1, value2, "backTotalPrice");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonIsNull() {
-            addCriterion("back_reason is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonIsNotNull() {
-            addCriterion("back_reason is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonEqualTo(String value) {
-            addCriterion("back_reason =", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonNotEqualTo(String value) {
-            addCriterion("back_reason <>", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonGreaterThan(String value) {
-            addCriterion("back_reason >", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonGreaterThanOrEqualTo(String value) {
-            addCriterion("back_reason >=", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonLessThan(String value) {
-            addCriterion("back_reason <", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonLessThanOrEqualTo(String value) {
-            addCriterion("back_reason <=", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonLike(String value) {
-            addCriterion("back_reason like", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonNotLike(String value) {
-            addCriterion("back_reason not like", value, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonIn(List<String> values) {
-            addCriterion("back_reason in", values, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonNotIn(List<String> values) {
-            addCriterion("back_reason not in", values, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonBetween(String value1, String value2) {
-            addCriterion("back_reason between", value1, value2, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andBackReasonNotBetween(String value1, String value2) {
-            addCriterion("back_reason not between", value1, value2, "backReason");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorIsNull() {
-            addCriterion("operator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorIsNotNull() {
-            addCriterion("operator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorEqualTo(String value) {
-            addCriterion("operator =", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotEqualTo(String value) {
-            addCriterion("operator <>", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorGreaterThan(String value) {
-            addCriterion("operator >", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorGreaterThanOrEqualTo(String value) {
-            addCriterion("operator >=", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorLessThan(String value) {
-            addCriterion("operator <", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorLessThanOrEqualTo(String value) {
-            addCriterion("operator <=", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorLike(String value) {
-            addCriterion("operator like", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotLike(String value) {
-            addCriterion("operator not like", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorIn(List<String> values) {
-            addCriterion("operator in", values, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotIn(List<String> values) {
-            addCriterion("operator not in", values, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorBetween(String value1, String value2) {
-            addCriterion("operator between", value1, value2, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotBetween(String value1, String value2) {
-            addCriterion("operator not between", value1, value2, "operator");
+        public Criteria andReasonNotBetween(String value1, String value2) {
+            addCriterion("reason not between", value1, value2, "reason");
             return (Criteria) this;
         }
 

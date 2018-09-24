@@ -6,27 +6,31 @@ import java.util.Date;
 public class TbBack {
     private Integer id;
 
-    private String backType;
+    private String backNo;
 
-    private String backObject;
+    private Integer providerId;
+    
+//    private String providerName;
 
     private Integer drugId;
+    
+    private String drugNo;
+    
+    private String drugName;
 
-    private String batchNo;
+    private Integer quantity;
 
-    private Integer backSum;
+    private BigDecimal totalPrice;
 
-    private BigDecimal backTotalPrice;
-
-    private String backReason;
-
-    private String operator;
+    private String reason;
 
     private Date createTime;
 
     private Date updateTime;
     
     private TbDrug drug;
+    
+    private TbProvider provider;
 
     public Integer getId() {
         return id;
@@ -36,20 +40,20 @@ public class TbBack {
         this.id = id;
     }
 
-    public String getBackType() {
-        return backType;
+    public String getBackNo() {
+        return backNo;
     }
 
-    public void setBackType(String backType) {
-        this.backType = backType == null ? null : backType.trim();
+    public void setBackNo(String backNo) {
+        this.backNo = backNo == null ? null : backNo.trim();
     }
 
-    public String getBackObject() {
-        return backObject;
+    public Integer getProviderId() {
+        return providerId;
     }
 
-    public void setBackObject(String backObject) {
-        this.backObject = backObject == null ? null : backObject.trim();
+    public void setProviderId(Integer providerId) {
+        this.providerId = providerId;
     }
 
     public Integer getDrugId() {
@@ -60,44 +64,28 @@ public class TbBack {
         this.drugId = drugId;
     }
 
-    public String getBatchNo() {
-        return batchNo;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setBatchNo(String batchNo) {
-        this.batchNo = batchNo == null ? null : batchNo.trim();
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
-    public Integer getBackSum() {
-        return backSum;
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setBackSum(Integer backSum) {
-        this.backSum = backSum;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public BigDecimal getBackTotalPrice() {
-        return backTotalPrice;
+    public String getReason() {
+        return reason;
     }
 
-    public void setBackTotalPrice(BigDecimal backTotalPrice) {
-        this.backTotalPrice = backTotalPrice;
-    }
-
-    public String getBackReason() {
-        return backReason;
-    }
-
-    public void setBackReason(String backReason) {
-        this.backReason = backReason == null ? null : backReason.trim();
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
+    public void setReason(String reason) {
+        this.reason = reason == null ? null : reason.trim();
     }
 
     public Date getCreateTime() {
@@ -123,4 +111,36 @@ public class TbBack {
 	public void setDrug(TbDrug drug) {
 		this.drug = drug;
 	}
+
+	public String getDrugNo() {
+		return drugNo;
+	}
+
+	public void setDrugNo(String drugNo) {
+		this.drugNo = drugNo;
+	}
+
+	public String getDrugName() {
+		return drugName;
+	}
+
+	public void setDrugName(String drugName) {
+		this.drugName = drugName;
+	}
+
+	public TbProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(TbProvider provider) {
+		this.provider = provider;
+	}
+
+//	public String getProviderName() {
+//		return providerName;
+//	}
+//
+//	public void setProviderName(String providerName) {
+//		this.providerName = providerName;
+//	}
 }

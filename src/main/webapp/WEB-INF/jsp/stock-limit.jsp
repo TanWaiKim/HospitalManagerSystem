@@ -22,6 +22,12 @@
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
 <script src="${pageContext.request.contextPath }/js/list.js"></script>
 <script src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="http://jqueryui.com/resources/demos/style.css">
 </head>
 <body>
 	<form method="post"
@@ -39,13 +45,7 @@
 					<li>搜索：</li>
 					<li>
 						医药名称
-						<input type="text" placeholder="请输入医药名称" name="drugName" value="${drugName }" />  
-					</li>
-					<li>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						批准文号
-						<input type="text" placeholder="请输入批准文号" name="drugNo" value="${drugNo }" />  
+						<input type="text" placeholder="请输入医药名称" id="drugName" name="drugName" value="${drugName }" />  
 					</li>	
 		
 					<li>
@@ -70,11 +70,11 @@
 					<tr>
 						<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
 						<th width="300" >医药名称</th>
-						<th width="200" >批准文号</th>
-						<th width="200" >销药单价</th>
+						<th width="200" >计量单位</th>
 						<th width="200">当前库存数量</th>
 						<th width="150">库存下限</th>
 						<th width="150">库存上限</th>
+						<th width="200" >预售均价（元）</th>
 					    <th width="600" >操作</th>
 					</tr>
 					<c:forEach items="${stockList}" var="stock"  varStatus="status">
@@ -85,20 +85,19 @@
 								</span>
 							</td>
 							<td>${stock.drug.drugName }</td>
-							<td>${stock.drug.drugNo }</td>
-							<td>${stock.purchaseItem.salePrice }</td>
+							<td>${stock.drug.unit }</td>
 							<td>${stock.stockQuantity }</td>
 							<td>${stock.minQuantity }</td>
 							<td>${stock.maxQuantity }</td>
-							
+							<td>${stock.drug.salePrice }</td>							
 							<td>
 								<div class="button-group">
-									<a class="button border-main" href="${pageContext.request.contextPath }/stock/findByDrugId?drugId=${stock.drugId }">
+									<a class="button border-main" href="${pageContext.request.contextPath }/stock/findByDrugName?drugname=${stock.drugname }">
 										<span class="icon-edit">设置上下限</span> 
 									</a> 
 								</div>
 								<div class="button-group">
-									<a class="button border-main" href="${pageContext.request.contextPath }/stock/findByDrugId1?drugId=${stock.drugId }">
+									<a class="button border-main" href="${pageContext.request.contextPath }/stock/findByDrugName1?drugname=${stock.drugname }">
 										<span class="icon-edit">调整价格</span> 
 									</a> 
 								</div>
@@ -143,6 +142,11 @@
 		</div>
 	</form>
 	<script type="text/javascript">
+		
+		$("#drugName").autocomplete({
+			source : "<c:url value="/drug/auto"/>",
+			minLength : 1
+		});
 		//搜索
 		function changesearch() {
 			$('#currentPage').val('1');

@@ -26,7 +26,7 @@ $(function()  {
 	$("#minQuantity").blur(function() {
 		var reg = /^[0-9]+.?[0-9]*$/;
 		var minQuantity = document.getElementById("minQuantity");
-		if (!reg.test(minQuantity.value)) {
+		if (!reg.test(minQuantity.value) && minQuantity.value.toString().length() != 0) {
 			var d = dialog({
 				okValue: '确定',
 				title: '温馨提示',
@@ -46,7 +46,7 @@ $(function()  {
 		$("#maxQuantity").blur(function() {
 			var reg = /^[0-9]+.?[0-9]*$/;
 			var maxQuantity = document.getElementById("maxQuantity");
-			if (!reg.test(maxQuantity.value)) {
+			if (!reg.test(maxQuantity.value) && minQuantity.value.toString().length() != 0) {
 				var d = dialog({
 					okValue: '确定',
 					title: '温馨提示',
@@ -74,25 +74,15 @@ $(function()  {
 				onsubmit="return false;">
 				<input type="hidden" id="id" name="id" value="${stock.id }" />
 				<input type="hidden" id="drugId" name="drugId" value="${stock.drugId }" />
-				
 				<div class="form-group">
 					<div class="label">
 						<label>医药名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="${stock.drug.drugName }" name="" readonly="readonly"/>
+						<input type="text" class="input w50" value="${stock.drug.drugName }" name="drugname" readonly="readonly"/>
 					</div>	
 				</div>
-				
-				<div class="form-group">
-					<div class="label">
-						<label>批准文号：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value="${stock.drug.drugNo }" name="" readonly="readonly"/>
-					</div>			
-				</div>
-				
+
 				
 				<div class="form-group">
 					<div class="label">
@@ -148,7 +138,7 @@ $(function()  {
 									var d = dialog({
 										okValue: '确定',
 										title: '温馨提示',
-										content: '恭喜您，修改成功!',
+										content: '恭喜您，设置成功!',
 
 										width: 200,
 										height: 50,
@@ -161,7 +151,7 @@ $(function()  {
 									var d = dialog({
 										okValue: '确定',
 										title: '温馨提示',
-										content: '很抱歉，修改失败!',
+										content: '很抱歉，设置失败!',
 
 										width: 200,
 										height: 50,

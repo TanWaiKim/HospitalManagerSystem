@@ -1,6 +1,7 @@
 package cn.edu.dgut.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,36 +10,29 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.servlet.ServletUtilities;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.edu.dgut.common.util.BigDecimalUtil;
 import cn.edu.dgut.common.util.DateTimeUtil;
+import cn.edu.dgut.common.vo.PriceCount;
+import cn.edu.dgut.common.vo.PurchaseCount;
+import cn.edu.dgut.common.vo.SaleCount;
+import cn.edu.dgut.common.vo.TypeCount;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbDrugtype;
 import cn.edu.dgut.pojo.TbPurchase;
-import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbSales;
-import cn.edu.dgut.pojo.TbSalesItem;
 import cn.edu.dgut.pojo.TbStock;
 import cn.edu.dgut.service.DrugService;
 import cn.edu.dgut.service.DrugtypeService;
-import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.PurchaseService;
 import cn.edu.dgut.service.SalesService;
 import cn.edu.dgut.service.StockService;
@@ -60,8 +54,6 @@ public class StatisticsController {
 	@Autowired
 	private PurchaseService purchaseService;
 	@Autowired
-	private PurchaseItemService purchaseItemService;
-	@Autowired
 	private SalesService salesService;
 	
 	
@@ -74,30 +66,21 @@ public class StatisticsController {
 		// 获取所有库存
 		List<TbStock> stockList = stockService.selectAllStock();
 		
-		// 计算数量
-		for(TbStock stock: stockList) {
-			TbDrug drug = drugService.getDrugById(stock.getDrugId());
-			TbDrugtype drugtype = drugtypeService.getDrugtypeById(drug.getDrugtypeId());
-			if (drugCategory.containsKey(drugtype.getDrugtypeName())) {
-				drugCategory.put(drugtype.getDrugtypeName(), drugCategory.get(drugtype.getDrugtypeName())+stock.getStockQuantity());
-			} else {
-				drugCategory.put(drugtype.getDrugtypeName(), stock.getStockQuantity());
+		if (stockList != null && stockList.size() > 0) {
+			// 计算数量
+			for(TbStock stock: stockList) {
+				TbDrug drug = drugService.getDrugById(stock.getDrugId());
+				TbDrugtype drugtype = drugtypeService.getDrugtypeById(drug.getDrugtypeId());
+				if (drugCategory.containsKey(drugtype.getDrugtypeName())) {
+					drugCategory.put(drugtype.getDrugtypeName(), drugCategory.get(drugtype.getDrugtypeName())+stock.getStockQuantity());
+				} else {
+					drugCategory.put(drugtype.getDrugtypeName(), stock.getStockQuantity());
+				}
 			}
-		}	
+		}
+		
 		return drugCategory;
 	}
-	
-    /**
-     * 组合医药种类数量的数据集对象  
-     * @return
-     */
-    public DefaultPieDataset getDataSet() {  
-    	DefaultPieDataset dataset = new DefaultPieDataset();  
-		 for(Map.Entry<String, Integer> entry : this.countDrugCategory().entrySet()){
-		  dataset.setValue(entry.getKey(),new Double(entry.getValue())); 
-		 }
-        return dataset;  
-    } 
 	
 	/**
 	 * 显示不同种类的医药所占的数量
@@ -109,619 +92,445 @@ public class StatisticsController {
 	 */
     @RequestMapping(value = "/category")  
     public ModelAndView getCategory(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) throws Exception{  
-        //1. 获得数据集合  
-    	DefaultPieDataset dataset = this.getDataSet();  
-    	
-    	//2.创建饼图
-        JFreeChart chart = ChartFactory.createPieChart(
-           "各医药种类所占库存量", // chart title
-           dataset, // data
-           true, // include legend
-           true,
-           false);
-             
-        //3. 将图形转换为图片，传到前台  
-        String fileName = ServletUtilities.saveChartAsJPEG(chart, 1200, 500, null, request.getSession());  
-        String chartURL=request.getContextPath() + "/chart?filename="+fileName;  
-        modelMap.put("chartURL", chartURL);  
         return new ModelAndView("category",modelMap);  
     }  
      
-  
- 	/**
- 	 * 按月份统计采药数量
- 	 * @return
- 	 */
-	public Map<String, Integer> countPurchaseQuantity() {
-		Map<String, Integer> purchaseQuantity = new LinkedHashMap<String, Integer>();
-		// 获取所有库存
-		List<TbPurchase> purchaseList = purchaseService.selectAllPurchase();
-		
-		// 计算数量
-		for(TbPurchase purchase: purchaseList) {
-			String date = DateTimeUtil.dateToStr(purchase.getCreateTime(),"yyyy-MM");
-			if (purchaseQuantity.containsKey(date)) {
-				purchaseQuantity.put(date, purchaseQuantity.get(date)+purchase.getTotalQuantity());
-			} else {
-				purchaseQuantity.put(date, purchase.getTotalQuantity());
-			}
-		}
-		return purchaseQuantity;
-	}  
-    
- 	/**
- 	 * 按月份统计采药金额
- 	 * @return
- 	 */
-	public Map<String, BigDecimal> countPurchasePrice() {
-		Map<String, BigDecimal> purchasePrice = new LinkedHashMap<String, BigDecimal>();
-		// 获取所有库存
-		List<TbPurchase> purchaseList = purchaseService.selectAllPurchase();
-		
-		// 计算数量
-		for(TbPurchase purchase: purchaseList) {
-			String date = DateTimeUtil.dateToStr(purchase.getCreateTime(),"yyyy-MM");
-			if (purchasePrice.containsKey(date)) {
-				purchasePrice.put(date, BigDecimalUtil.add(purchasePrice.get(date).doubleValue(), purchase.getTotalPrice().doubleValue()));
-			} else {
-				Integer init = 0;
-				purchasePrice.put(date, BigDecimalUtil.add(init.doubleValue(), purchase.getTotalPrice().doubleValue()));
-			}
-			
-		}
-		return purchasePrice;
-	} 
     
     /**
-     * 组合按月份统计采药金额的数据集对象  
-     * @return
-     */
-    public CategoryDataset getPurchasePriceDataSet(Map<String, BigDecimal> map) {  
-        DefaultCategoryDataset defaultdataset = new DefaultCategoryDataset();  
-		
-        if (map == null) {
-			return null;
-		}
-        
-        //组合采药数量
-        for(Map.Entry<String, BigDecimal> entry : map.entrySet()){
-		  defaultdataset.addValue(new Double(entry.getValue().doubleValue()), "采药金额", entry.getKey());
-		}
-		
-        return defaultdataset;  
-    }  
-    
-    /**
-     * 组合按月份统计采药数量的数据集对象  
-     * @return
-     */
-    public CategoryDataset getPurchaseQuantityDataSet(Map<String, Integer> map) {  
-        DefaultCategoryDataset defaultdataset = new DefaultCategoryDataset();  
-		
-        if (map == null) {
-			return null;
-		}
-        
-        //组合采药数量
-        for(Map.Entry<String, Integer> entry : map.entrySet()){
-		  defaultdataset.addValue(new Double(entry.getValue()), "采药数量", entry.getKey());
-		}
-		
-        return defaultdataset;  
-    } 
-    
-    /**
-     * 按月份统计采药数量和金额
+     * 显示不同种类的医药所占的数量，返回数据
      * @param request
      * @param response
      * @param modelMap
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/purchase")  
-    public ModelAndView getPurchase(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) throws Exception{  
-        //获取数据集对象  
-        CategoryDataset dataset1 = this.getPurchaseQuantityDataSet(this.countPurchaseQuantity());  
-        CategoryDataset dataset2 = this.getPurchasePriceDataSet(this.countPurchasePrice());   
+    @RequestMapping(value = "/category1") 
+    @ResponseBody
+    public String getCategory1(
+    		HttpServletRequest request,
+    		HttpServletResponse response, 
+    		ModelMap modelMap) throws Exception{  
+    	List<TypeCount> list = new ArrayList<TypeCount>();
+    	Map<String, Integer> typeCount = new LinkedHashMap<String, Integer>();
+    	typeCount = this.countDrugCategory();
     	
-        JFreeChart chart = ChartFactory.createLineChart("采药数量以及金额统计分析", 
-        	    "月份",
-        	    "采药量",
-        	    dataset1,
-        	    PlotOrientation.VERTICAL,
-        	    true,//底部是否显示 GuangZhou、ShangHai 的theme
-        	    false,
-        	    false);
-        	CategoryPlot plot=chart.getCategoryPlot();
-        	//Y2轴的设置
-        	NumberAxis numberaxis2 = new NumberAxis("采药额");
-        	plot.setRangeAxis(1, numberaxis2);
-        	plot.setDataset(1, dataset2);
-        	plot.mapDatasetToRangeAxis(1, 1);
-        	
-        	CategoryItemRenderer renderer2 = new LineAndShapeRenderer();
-        	plot.setRenderer(1, renderer2);
-             
-        //3. 将图形转换为图片，传到前台  
-        String fileName = ServletUtilities.saveChartAsJPEG(chart, 1200, 500, null, request.getSession());  
-        String chartURL=request.getContextPath() + "/chart?filename="+fileName;  
-        modelMap.put("chartURL", chartURL);  
-        return new ModelAndView("purchase",modelMap);  
-    }   
-	
-    
- 	/**
- 	 * 按条件统计采药数量
- 	 * @return
- 	 */
-	public Map<String, Integer> countPurchaseQuantityCondition(String drugName,String drugNo,String beginTime,String endTime) {
-		Map<String, Integer> purchaseQuantity = new LinkedHashMap<String, Integer>();
-		// 获取所有库存
-		List<TbPurchaseItem> purchaseItemList = purchaseService.purchaseByCondition(drugName, drugNo, beginTime, endTime);
-		
-		if (purchaseItemList == null) {
+    	if (typeCount == null || typeCount.size() == 0) {
 			return null;
 		}
-		
-		
-		// 计算数量
-		for(TbPurchaseItem purchaseItem: purchaseItemList) {
-			String date = DateTimeUtil.dateToStr(purchaseItem.getCreateTime(),"yyyy-MM-dd");
-			if (purchaseQuantity.containsKey(date)) {
-				purchaseQuantity.put(date, purchaseQuantity.get(date)+purchaseItem.getQuantity());
-			} else {
-				purchaseQuantity.put(date, purchaseItem.getQuantity());
-			}
-		}
-		return purchaseQuantity;
-	}  
-    
- 	/**
- 	 * 按条件统计采药金额
- 	 * @return
- 	 */
-	public Map<String, BigDecimal> countPurchasePriceCondition(String drugName,String drugNo,String beginTime,String endTime) {
-		Map<String, BigDecimal> purchasePrice = new LinkedHashMap<String, BigDecimal>();
-		// 获取所有库存
-		List<TbPurchaseItem> purchaseItemList = purchaseService.purchaseByCondition(drugName, drugNo, beginTime, endTime);
-		
-		if (purchaseItemList == null) {
-			return null;
-		}
-		
-		// 计算数量
-		for(TbPurchaseItem purchaseItem: purchaseItemList) {
-			String date = DateTimeUtil.dateToStr(purchaseItem.getCreateTime(),"yyyy-MM-dd");
-			if (purchasePrice.containsKey(date)) {
-				purchasePrice.put(date, BigDecimalUtil.add(purchasePrice.get(date).doubleValue(),purchaseItem.getPurchaseTotalPrice().doubleValue()));
-			} else {
-				Integer init = 0;
-				purchasePrice.put(date, BigDecimalUtil.add(init.doubleValue(), purchaseItem.getPurchaseTotalPrice().doubleValue()));
-			}
-			
-		}
-		return purchasePrice;
-	} 
-    
-    
-    /**
-     * 按照分类条件查询
-     * @param drugName
-     * @param drugNo
-     * @param beginTime
-     * @param endTime
-     * @param model
-     * @return
-     */
-	@RequestMapping("/purchaseByCondition")
-	public ModelAndView getPurchaseByCondition(
-			@RequestParam(value = "drugName", defaultValue = "") String drugName,
-			@RequestParam(value = "drugNo", defaultValue = "") String drugNo,
-			@RequestParam(value = "beginTime", defaultValue = "") String beginTime,
-			@RequestParam(value = "endTime", defaultValue = "") String endTime,
-			HttpServletRequest request,
-			HttpServletResponse response, 
-			ModelMap modelMap) {
-		try {
-			// 如果输入搜索条件全为空，则显示所有的记录
-			if (drugName.equals("") && drugNo.equals("") && beginTime.equals("") && endTime.equals("")) {
-				this.getPurchase(request, response, modelMap);
-			} else {
-		        //获取数据集对象  
-		        CategoryDataset dataset1 = this.getPurchaseQuantityDataSet(this.countPurchaseQuantityCondition(drugName,drugNo,beginTime,endTime));  
-		        CategoryDataset dataset2 = this.getPurchasePriceDataSet(this.countPurchasePriceCondition(drugName,drugNo,beginTime,endTime));   
-		        JFreeChart chart = ChartFactory.createLineChart("采药数量以及金额统计分析", 
-		        	    "日期",
-		        	    "采药量",
-		        	    dataset1,
-		        	    PlotOrientation.VERTICAL,
-		        	    true,//底部是否显示 GuangZhou、ShangHai 的theme
-		        	    false,
-		        	    false);
-		        	CategoryPlot plot=chart.getCategoryPlot();
-		        	//Y2轴的设置
-		        	NumberAxis numberaxis2 = new NumberAxis("采药额");
-		        	plot.setRangeAxis(1, numberaxis2);
-		        	plot.setDataset(1, dataset2);
-		        	plot.mapDatasetToRangeAxis(1, 1);
-		        	
-		        	CategoryItemRenderer renderer2 = new LineAndShapeRenderer();
-		        	plot.setRenderer(1, renderer2);
-		             
-		        //3. 将图形转换为图片，传到前台  
-		        String fileName = ServletUtilities.saveChartAsJPEG(chart, 1200, 500, null, request.getSession());  
-		        String chartURL=request.getContextPath() + "/chart?filename="+fileName;  
-		        modelMap.put("chartURL", chartURL);  
-				modelMap.addAttribute("drugName", drugName);
-				modelMap.addAttribute("drugNo", drugNo);
-				modelMap.addAttribute("beginTime", beginTime);
-				modelMap.addAttribute("endTime", endTime);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return new ModelAndView("purchase",modelMap);
-	}
+    	
+   	 	for (Map.Entry<String, Integer> entry : typeCount.entrySet()) {
+   	 		TypeCount typeCount2 = new TypeCount();
+   	 		typeCount2.setValue(entry.getValue());
+   	 		typeCount2.setName(entry.getKey());
+   	 		list.add(typeCount2);
+   	 		}
+   	 	
+   	 	ObjectMapper mapper = new ObjectMapper();    //提供java-json相互转换功能的类
+   	 	
+   	 	String json = mapper.writeValueAsString(list);    //将list中的对象转换为Json格式的数组
+        
+   	 	return json;
+    } 
 	
 
  	/**
- 	 * 首次统计价格变化
+ 	 * 统计价格变化
  	 * @return
  	 */
-	public Map<String, BigDecimal> countPriceChange(String drugName,String drugNo,String beginTime,String endTime) {
+	public Map<String, BigDecimal> countPriceChange(String drugName,String beginTime,String endTime) {
 		Map<String, BigDecimal> priceChange = new LinkedHashMap<String, BigDecimal>();
-		List<TbPurchaseItem> purchaseItemList = null;
+		List<TbPurchase> purchaseList = null;
 		
-		if (drugName.equals("") && drugNo.equals("") && beginTime.equals("") && endTime.equals("")) {
-			// 获取所有库存
-			purchaseItemList = purchaseItemService.selectAllPurchaseItem();
-		} else {
-			purchaseItemList = purchaseItemService.purchaseItemByCondition(drugName,drugNo,beginTime,endTime);
-		}
+		purchaseList = purchaseService.purchaseByCondition(drugName,beginTime,endTime);
 		
-		
-		if (purchaseItemList == null) {
+		if (purchaseList == null || purchaseList.size() == 0) {
 			return null;
 		}
 		
-		TbPurchaseItem purchaseItem = purchaseItemList.get(0);
-		TbDrug drug = drugService.getDrugById(purchaseItem.getDrugId());
-		
-		List<TbPurchaseItem> purchaseItems = purchaseService.purchaseByCondition(drug.getDrugName(), drugNo, beginTime, endTime);
-		
 		// 计算数量
-		for(TbPurchaseItem purchaseItem1: purchaseItems) {
+		for(TbPurchase purchaseItem1: purchaseList) {
 			String date = DateTimeUtil.dateToStr(purchaseItem1.getCreateTime(),"yyyy-MM-dd");
-			priceChange.put(date, purchaseItem1.getPurchasePrice());
+			priceChange.put(date, purchaseItem1.getDrug().getPurchasePrice());
 		}
 		return priceChange;
 	} 
     
-    /**
-     * 组合按月份统计采药金额的数据集对象  
-     * @return
-     */
-    public DefaultCategoryDataset  getPriceChangeDataSet(Map<String, BigDecimal> map, String drugName) {  
-		
-        if (map == null) {
-			return null;
-		}
-        
-        DefaultCategoryDataset dataset=new DefaultCategoryDataset();
-        
-        //组合价格
-        for(Map.Entry<String, BigDecimal> entry : map.entrySet()){
-        	dataset.addValue(entry.getValue().doubleValue(), drugName, entry.getKey());
-		}
-		
-        return dataset; 
-    } 
 	
-	
+	/**
+	 * 价格异动
+	 * @param drugName
+	 * @param beginTime
+	 * @param endTime
+	 * @param request
+	 * @param response
+	 * @param modelMap
+	 * @return
+	 * @throws Exception
+	 */
     @RequestMapping(value = {"/priceChange","/priceChangeByCondition"})  
     public ModelAndView getPriceChange(
 			@RequestParam(value = "drugName", defaultValue = "") String drugName,
-			@RequestParam(value = "drugNo", defaultValue = "") String drugNo,
 			@RequestParam(value = "beginTime", defaultValue = "") String beginTime,
 			@RequestParam(value = "endTime", defaultValue = "") String endTime,
     		HttpServletRequest request,
     		HttpServletResponse response, 
     		ModelMap modelMap) throws Exception{  
-    	
-    	List<TbPurchaseItem> purchaseItemList = null;
-    	
-    	if (drugName.equals("") && drugNo.equals("") && beginTime.equals("") && endTime.equals("")) {
-    		purchaseItemList = purchaseItemService.selectAllPurchaseItem();
-		} else {
-			purchaseItemList = purchaseItemService.purchaseItemByCondition(drugName,drugNo,beginTime,endTime);
-		}
-    	
-		if (purchaseItemList == null) {
-		    JFreeChart lineChart = ChartFactory.createLineChart(
-		    		"",
-		    	    "采购时间",
-		    	    "采药单价（元/单位）",
-		    	    this.getPriceChangeDataSet(this.countPriceChange(drugName,drugNo,beginTime,endTime),""),
-		    	    PlotOrientation.VERTICAL,
-		    	    true,
-		    	    true,
-		    	    false
-		    	    );
-
-	        //3. 将图形转换为图片，传到前台  
-	        String fileName1 = ServletUtilities.saveChartAsJPEG(lineChart, 1200, 500, null, request.getSession());  
-	        String chartURL1 = request.getContextPath() + "/chart?filename="+fileName1;  
-	        modelMap.put("chartURL", chartURL1);  
-			modelMap.addAttribute("drugName", drugName);
-			modelMap.addAttribute("drugNo", drugNo);
-			modelMap.addAttribute("beginTime", beginTime);
-			modelMap.addAttribute("endTime", endTime);
-	        return new ModelAndView("price-change",modelMap);  
-		}
-		
-		TbPurchaseItem purchaseItem = purchaseItemList.get(0);
-		TbDrug drug = drugService.getDrugById(purchaseItem.getDrugId());
-    	
-		
-	    JFreeChart lineChart = ChartFactory.createLineChart(
-	    		drug.getDrugName()+"采购价格异动",
-	    	    "采购时间",
-	    	    "采药单价（元/单位）",
-	    	    this.getPriceChangeDataSet(this.countPriceChange(drugName,drugNo,beginTime,endTime),drug.getDrugName()),
-	    	    PlotOrientation.VERTICAL,
-	    	    true,
-	    	    true,
-	    	    false
-	    	    );
-
-        //3. 将图形转换为图片，传到前台  
-        String fileName = ServletUtilities.saveChartAsJPEG(lineChart, 1200, 500, null, request.getSession());  
-        String chartURL=request.getContextPath() + "/chart?filename="+fileName;  
-        modelMap.put("chartURL", chartURL);  
 		modelMap.addAttribute("drugName", drugName);
-		modelMap.addAttribute("drugNo", drugNo);
 		modelMap.addAttribute("beginTime", beginTime);
 		modelMap.addAttribute("endTime", endTime);
         return new ModelAndView("price-change",modelMap);  
     } 
     
-    
-    
-	/**
- 	 * 按月份统计销药数量
- 	 * @return
- 	 */
-	public Map<String, Integer> countSaleQuantity() {
-		Map<String, Integer> saleQuantity = new LinkedHashMap<String, Integer>();
-		// 获取所有库存
-		List<TbSales> salesList = salesService.selectAllSales();
-		
-		// 计算数量
-		for(TbSales sales: salesList) {
-			String date = DateTimeUtil.dateToStr(sales.getCreateTime(),"yyyy-MM");
-			if (saleQuantity.containsKey(date)) {
-				saleQuantity.put(date, saleQuantity.get(date)+sales.getTotalQuantity());
-			} else {
-				saleQuantity.put(date, sales.getTotalQuantity());
-			}
-		}
-		return saleQuantity;
-	}  
-    
- 	/**
- 	 * 按月份统计销药金额
- 	 * @return
- 	 */
-	public Map<String, BigDecimal> countSalePrice() {
-		Map<String, BigDecimal> salePrice = new LinkedHashMap<String, BigDecimal>();
-		// 获取所有库存
-		List<TbSales > salesList = salesService.selectAllSales();
-		
-		// 计算数量
-		for(TbSales sales: salesList) {
-			String date = DateTimeUtil.dateToStr(sales.getCreateTime(),"yyyy-MM");
-			if (salePrice.containsKey(date)) {
-				salePrice.put(date, BigDecimalUtil.add(salePrice.get(date).doubleValue(), sales.getTotalPrice().doubleValue()));
-			} else {
-				Integer init = 0;
-				salePrice.put(date, BigDecimalUtil.add(init.doubleValue(), sales.getTotalPrice().doubleValue()));
-			}
-			
-		}
-		return salePrice;
-	} 
-    
     /**
-     * 组合按月份统计销药金额的数据集对象  
-     * @return
-     */
-    public CategoryDataset getSalePriceDataSet(Map<String, BigDecimal> map) {  
-        DefaultCategoryDataset defaultdataset = new DefaultCategoryDataset();  
-		
-        if (map == null) {
-			return null;
-		}
-        
-        //组合销药数量
-        for(Map.Entry<String, BigDecimal> entry : map.entrySet()){
-		  defaultdataset.addValue(new Double(entry.getValue().doubleValue()), "销药金额", entry.getKey());
-		}
-		
-        return defaultdataset;  
-    }  
-    
-    /**
-     * 组合按月份统计销药数量的数据集对象  
-     * @return
-     */
-    public CategoryDataset getSaleQuantityDataSet(Map<String, Integer> map) {  
-        DefaultCategoryDataset defaultdataset = new DefaultCategoryDataset();  
-		
-        if (map == null) {
-			return null;
-		}
-        
-        //组合销药数量
-        for(Map.Entry<String, Integer> entry : map.entrySet()){
-		  defaultdataset.addValue(new Double(entry.getValue()), "销药数量", entry.getKey());
-		}
-		
-        return defaultdataset;  
-    } 
-    
-    /**
-     * 按月份统计销药数量和金额
+     * 统计价格异动，返回JSON数据
+     * @param drugName
+     * @param beginTime
+     * @param endTime
      * @param request
      * @param response
      * @param modelMap
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/sale")  
-    public ModelAndView getSale(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) throws Exception{  
-        //获取数据集对象  
-        CategoryDataset dataset1 = this.getSaleQuantityDataSet(this.countSaleQuantity());  
-        CategoryDataset dataset2 = this.getSalePriceDataSet(this.countSalePrice());   
+    @RequestMapping(value = "/priceChange1") 
+    @ResponseBody
+    public String getPriceChange1(
+    		@RequestParam(value = "drugName", defaultValue = "") String drugName,
+    		@RequestParam(value = "beginTime", defaultValue = "") String beginTime,
+    		@RequestParam(value = "endTime", defaultValue = "") String endTime,
+    		HttpServletRequest request,
+    		HttpServletResponse response, 
+    		ModelMap modelMap) throws Exception{  
+    	List<PriceCount> list = new ArrayList<PriceCount>();
+    	Map<String, BigDecimal> countPrice = new LinkedHashMap<String, BigDecimal>();
     	
-        JFreeChart chart = ChartFactory.createLineChart("销药数量以及金额统计分析", 
-        	    "月份",
-        	    "销药量",
-        	    dataset1,
-        	    PlotOrientation.VERTICAL,
-        	    true,//底部是否显示 GuangZhou、ShangHai 的theme
-        	    false,
-        	    false);
-        	CategoryPlot plot=chart.getCategoryPlot();
-        	//Y2轴的设置
-        	NumberAxis numberaxis2 = new NumberAxis("销药额");
-        	plot.setRangeAxis(1, numberaxis2);
-        	plot.setDataset(1, dataset2);
-        	plot.mapDatasetToRangeAxis(1, 1);
-        	
-        	CategoryItemRenderer renderer2 = new LineAndShapeRenderer();
-        	plot.setRenderer(1, renderer2);
-             
-        //3. 将图形转换为图片，传到前台  
-        String fileName = ServletUtilities.saveChartAsJPEG(chart, 1200, 500, null, request.getSession());  
-        String chartURL=request.getContextPath() + "/chart?filename="+fileName;  
-        modelMap.put("chartURL", chartURL);  
-        return new ModelAndView("sale",modelMap);  
-    }   
-	
-    
- 	/**
- 	 * 按条件统计销药数量
- 	 * @return
- 	 */
-	public Map<String, Integer> countSaleQuantityCondition(String drugName,String drugNo,String beginTime,String endTime) {
-		Map<String, Integer> saleQuantity = new LinkedHashMap<String, Integer>();
-		// 获取所有库存
-		List<TbSalesItem> salesItemList = salesService.saleByCondition(drugName, drugNo, beginTime, endTime);
-		
-		if (salesItemList == null) {
+    	if (drugName == null || drugName.equals("")) {
+    		countPrice = this.countPriceChange("null",beginTime,endTime);
+		} else {
+			countPrice = this.countPriceChange(drugName,beginTime,endTime);
+		}
+   	 	
+    	if (countPrice == null || countPrice.size() == 0) {
 			return null;
 		}
-		
-		
-		// 计算数量
-		for(TbSalesItem salesItem: salesItemList) {
-			String date = DateTimeUtil.dateToStr(salesItem.getCreateTime(),"yyyy-MM-dd");
-			if (saleQuantity.containsKey(date)) {
-				saleQuantity.put(date, saleQuantity.get(date)+salesItem.getQuantity());
-			} else {
-				saleQuantity.put(date, salesItem.getQuantity());
-			}
-		}
-		return saleQuantity;
-	}  
+    	
+   	 	for (Map.Entry<String, BigDecimal> entry : countPrice.entrySet()) {
+   	 		PriceCount priceCount = new PriceCount();
+   	 		priceCount.setTime(entry.getKey());
+   	 		priceCount.setPrice(entry.getValue());
+   	 		list.add(priceCount);
+   	 		}
+   	 	
+   	 	ObjectMapper mapper = new ObjectMapper();    //提供java-json相互转换功能的类
+   	 	
+   	 	String json = mapper.writeValueAsString(list);    //将list中的对象转换为Json格式的数组
+        
+   	 	return json;
+    } 
     
- 	/**
- 	 * 按条件统计销药金额
- 	 * @return
- 	 */
-	public Map<String, BigDecimal> countSalePriceCondition(String drugName,String drugNo,String beginTime,String endTime) {
-		Map<String, BigDecimal> salePrice = new LinkedHashMap<String, BigDecimal>();
+  
+	/**
+	 * 按月份统计采购的情况，这只是组织数据而已（升级版）
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public Map<String, PurchaseCount> countPurchase(String beginTime,String endTime) {
+		Map<String, PurchaseCount> purchaseCount = new LinkedHashMap<String, PurchaseCount>();
 		// 获取所有库存
-		List<TbSalesItem> salesItemList = salesService.saleByCondition(drugName, drugNo, beginTime, endTime);
+		List<TbPurchase > purchaseList = purchaseService.selectAllPurchase(beginTime,endTime);
 		
-		if (salesItemList == null) {
+		// 如果库存为空，返回空
+		if (purchaseList == null || purchaseList.size() == 0) {
 			return null;
 		}
 		
 		// 计算数量
-		for(TbSalesItem salesItem: salesItemList) {
-			String date = DateTimeUtil.dateToStr(salesItem.getCreateTime(),"yyyy-MM-dd");
-			if (salePrice.containsKey(date)) {
-				salePrice.put(date, BigDecimalUtil.add(salePrice.get(date).doubleValue(),salesItem.getSaleTotalPrice().doubleValue()));
+		for(TbPurchase purchase: purchaseList) {
+			String date = DateTimeUtil.dateToStr(purchase.getCreateTime(),"yyyy-MM");
+			if (purchaseCount.containsKey(date)) {
+				PurchaseCount purchaseCount2 = new PurchaseCount();
+				purchaseCount2.setTime(date);
+				purchaseCount2.setPrice(BigDecimalUtil.add(purchaseCount.get(date).getPrice().doubleValue(), purchase.getTotalPrice().doubleValue()));
+				purchaseCount2.setNum(purchaseCount.get(date).getNum()+purchase.getQuantity());
+				purchaseCount.put(date,purchaseCount2);
 			} else {
+				PurchaseCount purchaseCount2 = new PurchaseCount();
+				purchaseCount2.setTime(date);
 				Integer init = 0;
-				salePrice.put(date, BigDecimalUtil.add(init.doubleValue(), salesItem.getSaleTotalPrice().doubleValue()));
+				purchaseCount2.setPrice(BigDecimalUtil.add(init.doubleValue(), purchase.getTotalPrice().doubleValue()));
+				purchaseCount2.setNum(purchase.getQuantity());
+				purchaseCount.put(date, purchaseCount2);
 			}
 			
 		}
-		return salePrice;
-	} 
+		return purchaseCount;
+	}
+	
+	/**
+	 * 按药品名称、月份条件统计采购的情况，这只是组织数据而已（升级版）
+	 * @param drugName
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public Map<String, PurchaseCount> countPurchaseCondition(String drugName,String beginTime,String endTime) {
+		Map<String, PurchaseCount> purchaseCount = new LinkedHashMap<String, PurchaseCount>();
+		// 获取所有库存
+		List<TbPurchase> purchaseList = purchaseService.purchaseByCondition(drugName,beginTime, endTime);
+		
+		if (purchaseList == null || purchaseList.size() == 0) {
+			return null;
+		}
+		
+		// 计算数量
+		for(TbPurchase purchase: purchaseList) {
+			String date = DateTimeUtil.dateToStr(purchase.getCreateTime(),"yyyy-MM");
+			if (purchaseCount.containsKey(date)) {
+				PurchaseCount purchaseCount2 = new PurchaseCount();
+				purchaseCount2.setTime(date);
+				purchaseCount2.setPrice(BigDecimalUtil.add(purchaseCount.get(date).getPrice().doubleValue(), purchase.getTotalPrice().doubleValue()));
+				purchaseCount2.setNum(purchaseCount.get(date).getNum()+purchase.getQuantity());
+				purchaseCount.put(date,purchaseCount2);
+			} else {
+				PurchaseCount purchaseCount2 = new PurchaseCount();
+				purchaseCount2.setTime(date);
+				Integer init = 0;
+				purchaseCount2.setPrice(BigDecimalUtil.add(init.doubleValue(), purchase.getTotalPrice().doubleValue()));
+				purchaseCount2.setNum(purchase.getQuantity());
+				purchaseCount.put(date, purchaseCount2);
+			}
+			
+		}
+		return purchaseCount;
+	}  
+	
+	
+    /**
+     * 按月份统计采药数量和金额（升级版），这里返回展示的页面（首次进入）
+     * @param request
+     * @param response
+     * @param modelMap
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/purchase1")  
+    public ModelAndView getPurchase1(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) throws Exception{  
+        return new ModelAndView("purchase",modelMap);  
+    }  
+	
+    /**
+     * 按月份统计采药数量和金额（升级版），返回数据，渲染前端页面
+     * @param request
+     * @param response
+     * @param modelMap
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/purchase2") 
+    @ResponseBody
+    public String getPurchase2(
+    		@RequestParam(value = "drugName", defaultValue = "") String drugName,
+    		@RequestParam(value = "beginTime", defaultValue = "") String beginTime,
+    		@RequestParam(value = "endTime", defaultValue = "") String endTime,
+    		HttpServletRequest request,
+    		HttpServletResponse response, 
+    		ModelMap modelMap) throws Exception{  
+    	List<PurchaseCount> list = new ArrayList<PurchaseCount>();
+    	Map<String, PurchaseCount> countPurchase = new LinkedHashMap<String, PurchaseCount>();
+    	
+    	if (drugName == null  || drugName.equals("")) { // 如果药品名称为空，则不用处理名称
+    		countPurchase = this.countPurchase(beginTime, endTime);
+		}else {
+			countPurchase = this.countPurchaseCondition(drugName, beginTime, endTime);
+		}
+   	 	
+    	if (countPurchase == null || countPurchase.size() == 0) {
+			return null;
+		}
+    	
+   	 	for (Map.Entry<String, PurchaseCount> entry : countPurchase.entrySet()) {
+   	 		PurchaseCount purchaseCount = new PurchaseCount();
+   	 		purchaseCount.setTime(entry.getKey());
+   	 		purchaseCount.setNum(entry.getValue().getNum());
+   	 		purchaseCount.setPrice(entry.getValue().getPrice());
+   	 		list.add(purchaseCount);
+   	 		}
+   	 	
+   	 	ObjectMapper mapper = new ObjectMapper();    //提供java-json相互转换功能的类
+   	 	
+   	 	String json = mapper.writeValueAsString(list);    //将list中的对象转换为Json格式的数组
+        
+   	 	return json;
+    } 
     
     
     /**
-     * 按照分类条件查询
-     * @param drugName
-     * @param drugNo
+     * 按照分类条件查询，返回前端页面
      * @param beginTime
      * @param endTime
      * @param model
      * @return
      */
-	@RequestMapping("/saleByCondition")
-	public ModelAndView getSaleByCondition(
+	@RequestMapping("/purchaseByCondition1")
+	public ModelAndView getPurchaseByCondition1(
 			@RequestParam(value = "drugName", defaultValue = "") String drugName,
-			@RequestParam(value = "drugNo", defaultValue = "") String drugNo,
 			@RequestParam(value = "beginTime", defaultValue = "") String beginTime,
 			@RequestParam(value = "endTime", defaultValue = "") String endTime,
 			HttpServletRequest request,
 			HttpServletResponse response, 
 			ModelMap modelMap) {
-		try {
-			if (drugName.equals("") && drugNo.equals("") && beginTime.equals("") && endTime.equals("")) {
-				this.getPurchase(request, response, modelMap);
-			} else {
-		        //获取数据集对象  
-		        CategoryDataset dataset1 = this.getSaleQuantityDataSet(this.countSaleQuantityCondition(drugName,drugNo,beginTime,endTime));  
-		        CategoryDataset dataset2 = this.getSalePriceDataSet(this.countSalePriceCondition(drugName,drugNo,beginTime,endTime));   
-		        JFreeChart chart = ChartFactory.createLineChart("销药数量以及金额统计分析", 
-		        	    "日期",
-		        	    "销药量",
-		        	    dataset1,
-		        	    PlotOrientation.VERTICAL,
-		        	    true,//底部是否显示 GuangZhou、ShangHai 的theme
-		        	    false,
-		        	    false);
-		        	CategoryPlot plot=chart.getCategoryPlot();
-		        	//Y2轴的设置
-		        	NumberAxis numberaxis2 = new NumberAxis("销药额");
-		        	plot.setRangeAxis(1, numberaxis2);
-		        	plot.setDataset(1, dataset2);
-		        	plot.mapDatasetToRangeAxis(1, 1);
-		        	
-		        	CategoryItemRenderer renderer2 = new LineAndShapeRenderer();
-		        	plot.setRenderer(1, renderer2);
-		             
-		        //3. 将图形转换为图片，传到前台  
-		        String fileName = ServletUtilities.saveChartAsJPEG(chart, 1200, 500, null, request.getSession());  
-		        String chartURL=request.getContextPath() + "/chart?filename="+fileName;  
-		        modelMap.put("chartURL", chartURL);  
-				modelMap.addAttribute("drugName", drugName);
-				modelMap.addAttribute("drugNo", drugNo);
-				modelMap.addAttribute("beginTime", beginTime);
-				modelMap.addAttribute("endTime", endTime);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		modelMap.addAttribute("drugName", drugName);
+		modelMap.addAttribute("beginTime", beginTime);
+		modelMap.addAttribute("endTime", endTime);
+		return new ModelAndView("purchase",modelMap);
+	}  
+    
+    
+	
+	// 按月份统计销售的情况，这只是组织数据而已（升级版）
+	public Map<String, SaleCount> countSale(String beginTime,String endTime) {
+		Map<String, SaleCount> saleCount = new LinkedHashMap<String, SaleCount>();
+		// 获取所有库存
+		List<TbSales > salesList = salesService.selectAllSales(beginTime,endTime);
+		
+		// 如果库存为空，返回空
+		if (salesList == null || salesList.size() == 0) {
+			return null;
 		}
 		
+		// 计算数量
+		for(TbSales sales: salesList) {
+			String date = DateTimeUtil.dateToStr(sales.getCreateTime(),"yyyy-MM");
+			if (saleCount.containsKey(date)) {
+				SaleCount saleCount2 = new SaleCount();
+				saleCount2.setTime(date);
+				saleCount2.setPrice(BigDecimalUtil.add(saleCount.get(date).getPrice().doubleValue(), sales.getTotalPrice().doubleValue()));
+				saleCount2.setNum(saleCount.get(date).getNum()+sales.getQuantity());
+				saleCount.put(date,saleCount2);
+			} else {
+				SaleCount saleCount2 = new SaleCount();
+				saleCount2.setTime(date);
+				Integer init = 0;
+				saleCount2.setPrice(BigDecimalUtil.add(init.doubleValue(), sales.getTotalPrice().doubleValue()));
+				saleCount2.setNum(sales.getQuantity());
+				saleCount.put(date, saleCount2);
+			}
+			
+		}
+		return saleCount;
+	}
+	
+	// 按药品名称、月份条件统计销售的情况，这只是组织数据而已（升级版）
+	public Map<String, SaleCount> countSaleCondition(String drugName,String beginTime,String endTime) {
+		Map<String, SaleCount> saleCount = new LinkedHashMap<String, SaleCount>();
+		// 获取所有库存
+		List<TbSales> salesList = salesService.saleByCondition(drugName,beginTime, endTime);
+		
+		if (salesList == null || salesList.size() == 0) {
+			return null;
+		}
+		
+		// 计算数量
+		for(TbSales sales: salesList) {
+			String date = DateTimeUtil.dateToStr(sales.getCreateTime(),"yyyy-MM");
+			if (saleCount.containsKey(date)) {
+				SaleCount saleCount2 = new SaleCount();
+				saleCount2.setTime(date);
+				saleCount2.setPrice(BigDecimalUtil.add(saleCount.get(date).getPrice().doubleValue(), sales.getTotalPrice().doubleValue()));
+				saleCount2.setNum(saleCount.get(date).getNum()+sales.getQuantity());
+				saleCount.put(date,saleCount2);
+			} else {
+				SaleCount saleCount2 = new SaleCount();
+				saleCount2.setTime(date);
+				Integer init = 0;
+				saleCount2.setPrice(BigDecimalUtil.add(init.doubleValue(), sales.getTotalPrice().doubleValue()));
+				saleCount2.setNum(sales.getQuantity());
+				saleCount.put(date, saleCount2);
+			}
+			
+		}
+		return saleCount;
+	}  
+	
+	
+    /**
+     * 按月份统计销药数量和金额（升级版），这里返回展示的页面（首次进入）
+     * @param request
+     * @param response
+     * @param modelMap
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/sale1")  
+    public ModelAndView getSale1(HttpServletRequest request,HttpServletResponse response, ModelMap modelMap) throws Exception{  
+        return new ModelAndView("sale",modelMap);  
+    }  
+	
+    /**
+     * 按月份统计销药数量和金额（升级版），返回数据，渲染前端页面
+     * @param request
+     * @param response
+     * @param modelMap
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/sale2") 
+    @ResponseBody
+    public String getSale2(
+    		@RequestParam(value = "drugName", defaultValue = "") String drugName,
+    		@RequestParam(value = "beginTime", defaultValue = "") String beginTime,
+    		@RequestParam(value = "endTime", defaultValue = "") String endTime,
+    		HttpServletRequest request,
+    		HttpServletResponse response, 
+    		ModelMap modelMap) throws Exception{  
+    	List<SaleCount> list = new ArrayList<SaleCount>();
+    	Map<String, SaleCount> countSale = new LinkedHashMap<String, SaleCount>();
+    	
+    	if (drugName == null  || drugName.equals("")) { // 如果药品名称为空，则不用处理名称
+    		countSale = this.countSale(beginTime, endTime);
+		}else {
+			countSale = this.countSaleCondition(drugName, beginTime, endTime);
+		}
+   	 	
+    	if (countSale == null || countSale.size() == 0) {
+			return null;
+		}
+    	
+   	 	for (Map.Entry<String, SaleCount> entry : countSale.entrySet()) {
+   	 		SaleCount saleCount = new SaleCount();
+   	 		saleCount.setTime(entry.getKey());
+   	 		saleCount.setNum(entry.getValue().getNum());
+   	 		saleCount.setPrice(entry.getValue().getPrice());
+   	 		list.add(saleCount);
+   	 		}
+   	 	
+   	 	ObjectMapper mapper = new ObjectMapper();    //提供java-json相互转换功能的类
+   	 	
+   	 	String json = mapper.writeValueAsString(list);    //将list中的对象转换为Json格式的数组
+        
+   	 	return json;
+    } 
+    
+    
+    /**
+     * 按照分类条件查询，返回前端页面
+     * @param beginTime
+     * @param endTime
+     * @param model
+     * @return
+     */
+	@RequestMapping("/saleByCondition1")
+	public ModelAndView getSaleByCondition1(
+			@RequestParam(value = "drugName", defaultValue = "") String drugName,
+			@RequestParam(value = "beginTime", defaultValue = "") String beginTime,
+			@RequestParam(value = "endTime", defaultValue = "") String endTime,
+			HttpServletRequest request,
+			HttpServletResponse response, 
+			ModelMap modelMap) {
+		modelMap.addAttribute("drugName", drugName);
+		modelMap.addAttribute("beginTime", beginTime);
+		modelMap.addAttribute("endTime", endTime);
 		return new ModelAndView("sale",modelMap);
 	}  
-
-    
 }

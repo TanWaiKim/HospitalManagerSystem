@@ -139,7 +139,7 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
 		// 根据采药号获取采药单
 		TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseItem.getPurchaseNo());
 		// 删除后的采药单总数量
-		purchase.setTotalQuantity(purchase.getTotalQuantity() - purchaseItem.getQuantity());
+		//purchase.setTotalQuantity(purchase.getTotalQuantity() - purchaseItem.getQuantity());
 		BigDecimal payment = BigDecimalUtil.mul(purchaseItem.getQuantity().doubleValue(),purchaseItem.getPurchasePrice().doubleValue());
 		// 删除后的采药单总价格
 		purchase.setTotalPrice(BigDecimalUtil.sub(purchase.getTotalPrice().doubleValue(), payment.doubleValue()));
@@ -160,7 +160,7 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
 			// 根据采药号获取采药单
 			TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseItem.getPurchaseNo());
 			// 删除后的采药单总数量
-			purchase.setTotalQuantity(purchase.getTotalQuantity() - purchaseItem.getQuantity());
+			//purchase.setTotalQuantity(purchase.getTotalQuantity() - purchaseItem.getQuantity());
 			BigDecimal payment = BigDecimalUtil.mul(purchaseItem.getQuantity().doubleValue(),purchaseItem.getPurchasePrice().doubleValue());
 			// 删除后的采药单总价格
 			purchase.setTotalPrice(BigDecimalUtil.sub(purchase.getTotalPrice().doubleValue(), payment.doubleValue()));

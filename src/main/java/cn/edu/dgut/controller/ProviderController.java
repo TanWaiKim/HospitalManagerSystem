@@ -116,7 +116,6 @@ public class ProviderController {
 	public String getDrugtypeByPage(
 			@RequestParam(value = "providerName", defaultValue = "") String providerName,
 			@RequestParam(value = "contact", defaultValue = "") String contact,
-			@RequestParam(value = "keywords", defaultValue = "") String keywords,
 			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
 		try {
 			// 创建分页对象
@@ -128,12 +127,11 @@ public class ProviderController {
 			} else {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
-			List<TbProvider> providerList = providerService.pageByCondition(providerName, contact, keywords, page);
+			List<TbProvider> providerList = providerService.pageByCondition(providerName, contact,  page);
 			model.addAttribute("providerList", providerList);
 			model.addAttribute("page", page);
 			model.addAttribute("contact", contact);
 			model.addAttribute("providerName", providerName);
-			model.addAttribute("keywords", keywords);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

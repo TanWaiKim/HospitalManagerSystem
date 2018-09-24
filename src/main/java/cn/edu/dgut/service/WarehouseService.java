@@ -12,7 +12,7 @@ import cn.edu.dgut.pojo.TbWarehouse;
  */
 public interface WarehouseService {
 	List<TbWarehouse> getAllWarehouse(Page page);
-	List<TbWarehouse> pageByCondition(String warehouseNo, String warehouseName, String manager, String keywords, Page page);
+	List<TbWarehouse> pageByCondition(String warehouseNo, String warehouseName, String manager, Page page);
 	TbWarehouse getWarehouseById(Integer id);
 	TbWarehouse getWarehouseByNo(String warehouseNo);
 	TbWarehouse getWarehouseByPhone(String phone);

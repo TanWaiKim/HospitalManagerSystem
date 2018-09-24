@@ -281,9 +281,6 @@
   			<if test="manager and !&quot;&quot;.equals(manager.trim())">
   				and w.manager like '%' #{manager} '%'
   			</if>
-  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				and w.location like '%' #{keywords} '%'
-  			</if>
   		</where>
   </select>
   
@@ -300,9 +297,6 @@
   			</if>
   			<if test="manager and !&quot;&quot;.equals(manager.trim())">
   				and w.manager like '%' #{manager} '%'
-  			</if>
-  			<if test="keywords!=null and !&quot;&quot;.equals(keywords.trim())">
-  				and w.location like '%' #{keywords} '%'
   			</if>
   		</where>
   		order by w.id limit #{pageIndex} ,#{pageSize}

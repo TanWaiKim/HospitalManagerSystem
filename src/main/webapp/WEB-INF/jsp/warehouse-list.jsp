@@ -59,8 +59,6 @@
 					</li>
 
 					<li>
-						<input type="text" placeholder="请输入搜索关键字" name="keywords" class="input" value="${keywords }"
-							style="width: 180px; line-height: 17px; display: inline-block" />
 						<a href="javascript:void(0)" class="button border-main icon-search" name="keySearch" onclick="changesearch()"> 
 							搜索
 						</a>

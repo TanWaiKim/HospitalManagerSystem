@@ -79,6 +79,14 @@
 			<li><a href="${pageContext.request.contextPath }/doctor/list" target="right"><span
 					class="icon-caret-right"></span>医生信息管理</a></li>
 		</ul>
+	
+		<h2>
+			<span class="icon-cog"></span>药品员信息管理
+		</h2>
+		<ul style="display: none">
+			<li><a href="${pageContext.request.contextPath }/drugAdmin/list" target="right"><span
+					class="icon-caret-right"></span>管理药品员</a></li>	
+		</ul>
 			
 		<h2>
 			<span class="icon-cog"></span>科别管理

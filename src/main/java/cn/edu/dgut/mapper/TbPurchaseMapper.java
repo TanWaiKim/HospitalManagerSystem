@@ -2,6 +2,8 @@ package cn.edu.dgut.mapper;
 
 import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseExample;
+import cn.edu.dgut.pojo.TbPurchaseItem;
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,21 +29,26 @@ public interface TbPurchaseMapper {
     int updateByExample(@Param("record") TbPurchase record, @Param("example") TbPurchaseExample example);
 
     int updateByPrimaryKeySelective(TbPurchase record);
-    
-    int updateByPurchaseNoSelective(TbPurchase purchase);
 
     int updateByPrimaryKey(TbPurchase record);
     
-    TbPurchase selectLastRecord();
+    int updateByPurchaseNo(TbPurchase record);
     
+    TbPurchase selectLastRecord();
+	
 	int countByCondition(Map<String, Object> map);
 
 	List<TbPurchase> pageByCondition(Map<String, Object> map);
 	
-	TbPurchase selectByPurchaseNo(String purchaseNo);
-	
 	int deleteBatch(List<Long> list);
 	
-	List<TbPurchase> selectAllPurchase();
-    
+	TbPurchase getPurchaseByPurchaseNo(String purchaseNo);
+	
+	TbPurchase getPurchaseByDrugId(Integer drugId);
+	
+	List<TbPurchase> getPurchaseByProviderIdAndDrugId(Map<String, Object> map);
+	
+	List<TbPurchase> selectAllPurchase(Map<String, Object> map);
+	List<TbPurchase> selectAllPurchase1(Map<String, Object> map);
+	
 }

@@ -9,13 +9,13 @@ public class TbStock {
 
     private Integer drugId;
 
+    private String drugname;
+
     private Integer stockQuantity;
 
     private Integer minQuantity;
 
     private Integer maxQuantity;
-
-    private String operator;
 
     private Date createTime;
 
@@ -26,12 +26,6 @@ public class TbStock {
     private TbDrug drug;
     
     private String quantityWaring;
-    
-    private String validWaring;
-    
-    private String batchNo;
-    
-    private TbPurchaseItem purchaseItem;
 
     public Integer getId() {
         return id;
@@ -46,7 +40,7 @@ public class TbStock {
     }
 
     public void setWarehouseNo(String warehouseNo) {
-        this.warehouseNo = warehouseNo;
+        this.warehouseNo = warehouseNo == null ? null : warehouseNo.trim();
     }
 
     public Integer getDrugId() {
@@ -55,6 +49,14 @@ public class TbStock {
 
     public void setDrugId(Integer drugId) {
         this.drugId = drugId;
+    }
+
+    public String getDrugname() {
+        return drugname;
+    }
+
+    public void setDrugname(String drugname) {
+        this.drugname = drugname == null ? null : drugname.trim();
     }
 
     public Integer getStockQuantity() {
@@ -79,14 +81,6 @@ public class TbStock {
 
     public void setMaxQuantity(Integer maxQuantity) {
         this.maxQuantity = maxQuantity;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
     }
 
     public Date getCreateTime() {
@@ -127,29 +121,5 @@ public class TbStock {
 
 	public void setQuantityWaring(String quantityWaring) {
 		this.quantityWaring = quantityWaring;
-	}
-
-	public String getValidWaring() {
-		return validWaring;
-	}
-
-	public void setValidWaring(String validWaring) {
-		this.validWaring = validWaring;
-	}
-
-	public String getBatchNo() {
-		return batchNo;
-	}
-
-	public void setBatchNo(String batchNo) {
-		this.batchNo = batchNo;
-	}
-
-	public TbPurchaseItem getPurchaseItem() {
-		return purchaseItem;
-	}
-
-	public void setPurchaseItem(TbPurchaseItem purchaseItem) {
-		this.purchaseItem = purchaseItem;
 	}
 }

@@ -31,7 +31,7 @@
 						<label>仓库名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="warehouseName"
+						<input type="text" placeholder="请输入仓库名称" class="input w50" value="" name="warehouseName"
 							data-validate="required:请输入仓库名称" />
 						<div class="tips"></div>
 					</div>
@@ -42,7 +42,7 @@
 						<label>仓库位置：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="location"
+						<input type="text" placeholder="请输入仓库位置" class="input w50" value="" name="location"
 							data-validate="required:请输入仓库位置" />
 						<div class="tips"></div>
 					</div>
@@ -53,7 +53,7 @@
 						<label>管理员：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="manager"  
+						<input type="text" placeholder="请输入管理员" class="input w50" value="" name="manager"  
 							data-validate="required:请输入管理员" />
 						<div class="tips"></div>
 					</div>
@@ -63,7 +63,7 @@
 						<label>管理员手机号码：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="phone" 
+						<input type="text" placeholder="请输入管理员手机号码" class="input w50" value="" name="phone" 
 							data-validate="required:请输入管理员手机号码"/>
 						<div class="tips"></div>
 					</div>

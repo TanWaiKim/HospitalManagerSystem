@@ -10,11 +10,11 @@ public class TbSales {
 
     private String patientId;
 
-    private Integer totalQuantity;
+    private Integer drugId;
+
+    private Integer quantity;
 
     private BigDecimal totalPrice;
-
-    private String operator;
 
     private Date createTime;
 
@@ -22,7 +22,7 @@ public class TbSales {
     
     private TPatient patient;
     
-    
+    private TbDrug drug;
 
     public Integer getId() {
         return id;
@@ -37,7 +37,7 @@ public class TbSales {
     }
 
     public void setSalesNo(String salesNo) {
-        this.salesNo = salesNo;
+        this.salesNo = salesNo == null ? null : salesNo.trim();
     }
 
     public String getPatientId() {
@@ -48,12 +48,20 @@ public class TbSales {
         this.patientId = patientId == null ? null : patientId.trim();
     }
 
-    public Integer getTotalQuantity() {
-        return totalQuantity;
+    public Integer getDrugId() {
+        return drugId;
     }
 
-    public void setTotalQuantity(Integer totalQuantity) {
-        this.totalQuantity = totalQuantity;
+    public void setDrugId(Integer drugId) {
+        this.drugId = drugId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public BigDecimal getTotalPrice() {
@@ -62,14 +70,6 @@ public class TbSales {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
     }
 
     public Date getCreateTime() {
@@ -94,5 +94,13 @@ public class TbSales {
 
 	public void setPatient(TPatient patient) {
 		this.patient = patient;
+	}
+
+	public TbDrug getDrug() {
+		return drug;
+	}
+
+	public void setDrug(TbDrug drug) {
+		this.drug = drug;
 	}
 }

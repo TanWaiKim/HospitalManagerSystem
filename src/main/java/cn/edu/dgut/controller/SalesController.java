@@ -1,5 +1,6 @@
 package cn.edu.dgut.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.edu.dgut.common.dto.SalesDto;
 import cn.edu.dgut.common.result.HmsResult;
+import cn.edu.dgut.common.util.BigDecimalUtil;
 import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.common.util.JsonUtils;
@@ -92,8 +94,11 @@ public class SalesController {
 			}
 			
 			SalesDto salesDto = new SalesDto();
+			// 得到处方单信息
 			TPrescription prescription = prescriptionService.getPrescriptionById(id);
+			// 得到处方单中的药品信息
 			String drugData = prescription.getDrugData();
+			// 解析JSON字符串，得到具体的药品信息
 			List<DrugData> drugDataList = JsonUtils.jsonToList(drugData, DrugData.class);
 			
 			TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
@@ -106,7 +111,7 @@ public class SalesController {
 				prescriptionService.updatePrescription(prescription);
 				return HmsResult.ok();
 			} else {
-				return HmsResult.build(505, "该医药不存在或库存不足，请补充库存！");
+				return HmsResult.build(505, "该处方的医药不存在或库存不足，请补充库存！");
 			}
 
 		} catch (Exception e) {
@@ -178,6 +183,7 @@ public class SalesController {
 		return "sale-list";
 	}
 	
+	// 根据销售单编号查看详情
 	@RequestMapping("/findBySalesNo")
 	public String getBySalesNo(
 			@RequestParam(value = "salesNo") String salesNo, 
@@ -185,39 +191,109 @@ public class SalesController {
 			Model model) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
-		TbSales sales = salesService.getSalesBySalesNo(salesNo);
-		model.addAttribute("sales", sales);
-		List<TbSalesItem> salesItemList = salesItemService.getAllSalesItem(salesNo, page);
 		
-		TbDrug drug = new TbDrug();
-		TbPurchaseItem purchaseItem = new TbPurchaseItem();
+		// 分页查询
+		List<TbSales> salesList = salesService.getSalesBySalesNo(salesNo,page);
 		
-		for (int i = 0; i < salesItemList.size(); i++) {
-			drug = drugService.getDrugById(salesItemList.get(i).getDrugId());
-			purchaseItem.setBatchNo(salesItemList.get(i).getBatchNo());
-			purchaseItem.setDrugId(salesItemList.get(i).getDrugId());
-			purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-			drug.setPurpose(purchaseItem.getProduceTime());
-			drug.setSpec(purchaseItem.getValidTime());
-			salesItemList.get(i).setDrug(drug);
+		// 不分页
+		List<TbSales> salesList1 = salesService.getSalesBySalesNo1(salesNo);
+		
+		TbSales sales = new TbSales();
+		Integer quantity = 0;
+		BigDecimal price = new BigDecimal("0");
+		for(TbSales sales1:salesList1) {
+			quantity += sales1.getQuantity();
+			price = BigDecimalUtil.add(price.doubleValue(), sales1.getTotalPrice().doubleValue());
 		}
 		
-		model.addAttribute("salesItemList", salesItemList);
+		sales.setCreateTime(salesList1.get(0).getCreateTime());
+		sales.setQuantity(quantity);
+		sales.setTotalPrice(price);
+		sales.setSalesNo(salesList1.get(0).getSalesNo());
+		
+		TPatient patient =patientService.getPatientById(salesList1.get(0).getPatientId());
+		sales.setPatient(patient);
+		
+		TbDrug drug = new TbDrug();
+		
+		for (TbSales sales2:salesList) {
+			drug = drugService.getDrugById(sales2.getDrugId());
+			sales2.setDrug(drug);
+		}
+		
+		model.addAttribute("sales", sales);
+		model.addAttribute("salesList", salesList);
 		model.addAttribute("page", page);
 		return "sale-detail";
 	}
 	
 	
+	/**
+	 * 分页条件查询
+	 * @param salesNo
+	 * @param currentPage
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/pageByCondition1")
+	public String getSalesByPage(
+			@RequestParam(value = "salesNo", defaultValue = "") String salesNo,
+			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
+		try {
+			// 创建分页对象
+			Page page = new Page();
+			Pattern pattern = Pattern.compile("[0-9]{1,9}");
+			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
+				page.setCurrentPage(1);
+			} else {
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			}
+		
+			// 分页
+			List<TbSales> salesList = salesService.getSalesBySalesNo(salesNo,page);
+			
+			// 不分页
+			List<TbSales> salesList1 = salesService.getSalesBySalesNo1(salesNo);
+			
+			TbSales sales = new TbSales();
+			Integer quantity = 0;
+			BigDecimal price = new BigDecimal("0");
+			for(TbSales sales1:salesList1) {
+				quantity += sales1.getQuantity();
+				price = BigDecimalUtil.add(price.doubleValue(), sales1.getTotalPrice().doubleValue());
+			}
+			
+			sales.setCreateTime(salesList1.get(0).getCreateTime());
+			sales.setQuantity(quantity);
+			sales.setTotalPrice(price);
+			sales.setSalesNo(salesList1.get(0).getSalesNo());
+			
+			TPatient patient =patientService.getPatientById(salesList1.get(0).getPatientId());
+			sales.setPatient(patient);
+			
+			TbDrug drug = new TbDrug();
+			
+			for (TbSales sales2:salesList) {
+				drug = drugService.getDrugById(sales2.getDrugId());
+				sales2.setDrug(drug);
+			}
+			
+			model.addAttribute("sales", sales);
+			model.addAttribute("salesList", salesList);
+			model.addAttribute("page", page);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "sale-detail";
+	}
 	
 	@RequestMapping("/deleteOne")
 	@ResponseBody
 	public HmsResult deleteSalesById(Integer id) {
 		try {
-			TbSales sales = salesService.getSalesById(id);
-			String salesNo = sales.getSalesNo();
+			
 			if ((salesService.deleteSalesById(id) > 0 )) {
-				// 删除采药详细单
-				salesItemService.deleteSalesItemBySalesItem(salesNo);
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
@@ -244,5 +320,134 @@ public class SalesController {
 		}
 		return HmsResult.build(500, "删除销药单失败！");
 		
+	}
+	
+	/**
+	 * 根据销售单编号和药品ID删除销售记录
+	 */
+	@RequestMapping("/deleteOneBySalesNoAndDrugId")
+	@ResponseBody
+	public HmsResult deleteOneBySalesNoAndDrugId(Integer drugId,String salesNo) {
+		try {
+			
+			if ((salesService.deleteOneBySalesNoAndDrugId(drugId,salesNo) > 0 )) {
+				return HmsResult.ok();
+			}
+		} catch (Exception e) {
+			System.out.println(ExceptionUtil.getStackTrace(e));
+			return HmsResult.build(500, "药品销售记录删除失败！");
+		}
+		
+		return HmsResult.build(500, "药品销售记录删除失败！");
+		
+	}
+	
+	
+	/**
+	 * 返回修改销药单详细单页面
+	 * @param salesNo
+	 * @param id
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/updateBySalesNoAndDrugId")
+	public String updateBySalesNoAndDrugId(
+			@RequestParam(value = "drugId") Integer drugId,
+			@RequestParam(value = "salesNo") String salesNo,
+			HttpSession session, 
+			Model model) {
+        
+        // 根据销售单编号和药品ID获取销售信息
+		TbSales sales = salesService.getSalesBySalesNoAndDrugId(drugId,salesNo);
+		TbDrug drug = drugService.getDrugById(sales.getDrugId());
+		
+		SalesDto salesDto = new SalesDto();
+		salesDto.setId(sales.getId());             // 销售单ID
+		salesDto.setSalesNo(sales.getSalesNo());
+		salesDto.setPatientId(sales.getPatientId());
+		salesDto.setDrugId(drug.getId());
+		salesDto.setOldSalesItemQuantity(sales.getQuantity());
+		salesDto.setQuantity(sales.getQuantity());
+		salesDto.setDrugName(drug.getDrugName());
+		salesDto.setBatchNo(drug.getDrugNo());
+		
+		model.addAttribute("salesDto", salesDto); 
+		return "salesItem-update";
+	}	
+	
+	/**
+	 * 根据药品ID和销售单编号修改
+	 * @param session
+	 * @param model
+	 * @param salesDto
+	 * @return
+	 */
+	@RequestMapping("/updateItem")
+	@ResponseBody()
+	public HmsResult updateSalesBySalesNoAndDrugId(
+			HttpSession session, 
+			Model model, 
+			SalesDto salesDto) {
+		try {
+			if (salesDto.getQuantity() == null || salesDto.getQuantity() == 0) {
+				return HmsResult.build(505, "销售药品数量不能为空！");
+			}
+			
+			if (salesService.updateSalesBySalesItemId(salesDto) > 0) {
+				return HmsResult.ok();
+			} else {
+				return HmsResult.build(505, "该批次药品库存不足，请补充库存！");
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			return HmsResult.build(500, "修改药品销售记录失败！");
+		}
+	}	
+	
+	/**
+	 * 返回添加药品页面
+	 * @return
+	 */
+	@RequestMapping("/skipToAddDrug")
+	public String skipToAddDrug(HttpSession session,
+			Model model,
+			@RequestParam(value = "salesNo") String salesNo,
+			@RequestParam(value = "patientId") String patientId) {
+        System.out.println("什么鬼："+patientId);     
+		List<TbDrug> drugList = drugService.selectAllDrug();
+		model.addAttribute("drugList", drugList);
+		model.addAttribute("salesNo", salesNo);
+		model.addAttribute("patientId", patientId);
+		return "salesItem-add";
+	}
+	
+	/**
+	 * 销售药品
+	 * @param session
+	 * @param model
+	 * @param salesDto
+	 * @return
+	 */
+	@RequestMapping("/addDrug")
+	@ResponseBody()
+	public HmsResult addSalesByDrug(HttpSession session, SalesDto salesDto) {
+		try {
+			
+			if (salesDto.getQuantity() == null || salesDto.getQuantity() == 0) {
+				return HmsResult.build(505, "数量不能为空！");
+			}
+			
+			if (salesService.addSalesByDrug(salesDto) > 0) {
+				return HmsResult.ok();
+			} else {
+				return HmsResult.build(505, "该药品不存在或库存不足，请补充库存！");
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+			
+			return HmsResult.build(500, "数据库异常，添加医药信息失败！");
+		}
 	}
 }

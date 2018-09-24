@@ -143,4 +143,46 @@ public class DrugAdminServiceImpl implements DrugAdminService {
 		return null;
 	}
 
+	/**
+	 * 根据手机号码查询
+	 */
+	@Override
+	public TbDrugAdmin getDrugAdminByPhone(String phone) {
+		TbDrugAdminExample example = new TbDrugAdminExample();
+		example.createCriteria().andPhoneEqualTo(phone);
+		List<TbDrugAdmin> drugAdminList = drugAdminMapper.selectByExample(example);
+		if (drugAdminList.size() > 0) {
+			return drugAdminList.get(0);
+		}
+		return null;
+	}
+
+	/**
+	 * 根据邮箱查询
+	 */
+	@Override
+	public TbDrugAdmin getDrugAdminByEmail(String email) {
+		TbDrugAdminExample example = new TbDrugAdminExample();
+		example.createCriteria().andEmailEqualTo(email);
+		List<TbDrugAdmin> drugAdminList = drugAdminMapper.selectByExample(example);
+		if (drugAdminList.size() > 0) {
+			return drugAdminList.get(0);
+		}
+		return null;
+	}
+
+	/**
+	 * 根据用户名查询
+	 */
+	@Override
+	public TbDrugAdmin getDrugAdminByUsername(String username) {
+		TbDrugAdminExample example = new TbDrugAdminExample();
+		example.createCriteria().andUsernameEqualTo(username);
+		List<TbDrugAdmin> drugAdminList = drugAdminMapper.selectByExample(example);
+		if (drugAdminList.size() > 0) {
+			return drugAdminList.get(0);
+		}
+		return null;
+	}
+
 }

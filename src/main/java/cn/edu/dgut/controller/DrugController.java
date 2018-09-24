@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,6 +69,10 @@ public class DrugController {
 				return HmsResult.build(505, "功能主治不能为空！");
 			}
 			
+			if (drug.getPurpose() != null && drug.getPurpose().length() > 50) {
+				return HmsResult.build(505, "功能主治不能超过50个字！");
+			}
+			
 			if (drug.getUnit() == null || drug.getUnit().equals("")) {
 				return HmsResult.build(505, "单位不能为空！");
 			}
@@ -76,27 +81,25 @@ public class DrugController {
 				return HmsResult.build(505, "规格不能为空！");
 			}
 			
-			if (drug.getHowuse() == null || drug.getHowuse().equals("")) {
-				return HmsResult.build(505, "用法用量不能为空！");
-			}
-			
-			if (drug.getDrugNo() == null || drug.getDrugNo().equals("")) {
-				return HmsResult.build(505, "批准文号不能为空！");
-			}
 			
 			if (drug.getUneffect() == null || drug.getUneffect().equals("")) {
 				return HmsResult.build(505, "不良反应不能为空！");
 			}
 			
+			if (drug.getUneffect() != null && drug.getUneffect().length() > 50) {
+				return HmsResult.build(505, "不良反应不能超过50个字！");
+			}
+			
 			if (drugService.addDrugByTbDrug(drug) > 0) {
 				return HmsResult.ok();
+			} else {
+				return HmsResult.build(505, "添加失败，该医药信息已存在！");
 			}
 
 		} catch (Exception e) {
 			e.getStackTrace();
 			return HmsResult.build(500, "数据库异常，添加医药信息失败！");
 		}
-		return HmsResult.build(500, "添加医药信息失败！");
 	}
 	
 	/**
@@ -110,6 +113,7 @@ public class DrugController {
 	public String getAllDrug(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model,HttpServletRequest request) {
 		try {
 			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+1);
 			page.setCurrentPage(currentPage);
 			List<TbDrug> drugList = drugService.getAllDrug(page);
 			model.addAttribute("drugList", drugList);
@@ -129,7 +133,6 @@ public class DrugController {
 	 * @param drugtypeId
 	 * @param drugName
 	 * @param drugNo
-	 * @param keywords
 	 * @param currentPage
 	 * @param model
 	 * @return
@@ -139,18 +142,18 @@ public class DrugController {
 			@RequestParam(value = "drugtypeId", defaultValue = "") Integer drugtypeId,
 			@RequestParam(value = "drugName", defaultValue = "") String drugName,
 			@RequestParam(value = "drugNo", defaultValue = "") String drugNo,
-			@RequestParam(value = "keywords", defaultValue = "") String keywords,
 			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
 		try {
 			// 创建分页对象
 			Page page = new Page();
+			page.setPageNumber(page.getPageNumber()+1);
 			Pattern pattern = Pattern.compile("[0-9]{1,9}");
 			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
 				page.setCurrentPage(1);
 			} else {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
-			List<TbDrug> drugList = drugService.pageByCondition(drugtypeId, drugName, drugNo, keywords, page);
+			List<TbDrug> drugList = drugService.pageByCondition(drugtypeId, drugName, drugNo, page);
 			
 			TbDrugtype drugTypeCondition = drugtypeService.getDrugtypeById(drugtypeId);
 			model.addAttribute("drugTypeCondition", drugTypeCondition);
@@ -160,7 +163,6 @@ public class DrugController {
 			
 			model.addAttribute("drugList", drugList);
 			model.addAttribute("page", page);
-			model.addAttribute("keywords", keywords);
 			model.addAttribute("drugtypeId", drugtypeId);
 			model.addAttribute("drugName", drugName);
 			model.addAttribute("drugNo", drugNo);
@@ -212,6 +214,10 @@ public class DrugController {
 				return HmsResult.build(505, "功能主治不能为空！");
 			}
 			
+			if (drug.getPurpose() != null && drug.getPurpose().length() > 50) {
+				return HmsResult.build(505, "功能主治不能超过50个字！");
+			}
+			
 			if (drug.getUnit() == null || drug.getUnit().equals("")) {
 				return HmsResult.build(505, "单位不能为空！");
 			}
@@ -220,16 +226,13 @@ public class DrugController {
 				return HmsResult.build(505, "规格不能为空！");
 			}
 			
-			if (drug.getHowuse() == null || drug.getHowuse().equals("")) {
-				return HmsResult.build(505, "用法用量不能为空！");
-			}
-			
-			if (drug.getDrugNo() == null || drug.getDrugNo().equals("")) {
-				return HmsResult.build(505, "批准文号不能为空！");
-			}
 			
 			if (drug.getUneffect() == null || drug.getUneffect().equals("")) {
 				return HmsResult.build(505, "不良反应不能为空！");
+			}
+			
+			if (drug.getUneffect() != null && drug.getUneffect().length() > 50) {
+				return HmsResult.build(505, "不良反应不能超过50个字！");
 			}
 			
 			if (drugService.updateDrugByTbDrug(drug) > 0) {
@@ -285,4 +288,48 @@ public class DrugController {
 		return HmsResult.build(500, "删除医药信息失败！");
 		
 	}	
+	
+	/**
+	 * 调整价格
+	 * @param drug
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/updatePrice")
+	@ResponseBody()
+	public HmsResult updatePrice(TbDrug drug, Model model) {
+		
+		try {
+			
+			if (drug.getSalePrice() == null || drug.getSalePrice().equals("0")) {
+				return HmsResult.build(505, "调整价格不能为空！");
+			}
+			
+			if (drugService.updateSalePrice(drug) > 0) {
+				return HmsResult.ok();
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			return HmsResult.build(500, "数据库异常，价格调整失败！");
+		}
+		return HmsResult.build(500, "价格调整失败！");
+	}
+	
+	/**
+	 * 自动匹配药品
+	 * @param term
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/auto")
+	@ResponseBody
+	public String autoDrugName(@RequestParam("term") String term, HttpServletResponse response){
+		String dNs = null;
+		try {
+			dNs = drugService.autoDrugName(term,response);
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+		}
+		return dNs;
+	}
 }

@@ -31,7 +31,7 @@
 						<label>医药种类名称：</label>
 					</div>
 					<div class="field">
-						<input type="text" class="input w50" value="" name="drugtypeName"
+						<input type="text" placeholder="请输入医药种类名称" class="input w50" value="" name="drugtypeName"
 							data-validate="required:请输入医药种类名称" />
 						<div class="tips"></div>
 					</div>
@@ -42,7 +42,7 @@
 						<label>医药种类简介：</label>
 					</div>
 					<div class="field">
-						<textarea rows="5" class="input" name="remarks" style="height:200px;" data-validate="required:请输入医药种类简介"></textarea>
+						<textarea rows="5" placeholder="请输入医药种类简介（不超过80个字）" class="input" name="remarks" style="height:200px;" data-validate="required:请输入医药种类简介"></textarea>
 						<div class="tips"></div>
 					</div>
 				</div>

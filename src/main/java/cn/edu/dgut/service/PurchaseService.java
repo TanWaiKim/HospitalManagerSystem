@@ -14,15 +14,19 @@ import cn.edu.dgut.pojo.TbPurchaseItem;
  */
 public interface PurchaseService {
 	List<TbPurchase> getAllPurchase(Page page);
-	List<TbPurchase> pageByCondition(String purchaseNo, Integer providerId, Page page);
+	List<TbPurchase> pageByCondition(String purchaseNo, Integer providerId, Integer isStock, Page page);
 	TbPurchase getPurchaseById(Integer id);
 	TbPurchase getPurchaseByPurchaseNo(String purchaseNo);
 	int addPurchaseByTbPurchase(PurchaseDto purchaseDto);
+	int updatePurchaseByTbPurchase(PurchaseDto purchaseDto);
 	int deletePurchaseById(Integer id);
 	int deletePurchaseByIds(String[] ids);
-	List<TbPurchase> selectAllPurchase();
+	List<TbPurchase> selectAllPurchase(String beginTime,String endTime);
 	int updatePurchaseByPurchaseNo(PurchaseDto purchaseDto);
 	int updatePurchaseByPurchaseItemId(PurchaseDto purchaseDto);
 	int updatePurchase(TbPurchase purchase);
-	List<TbPurchaseItem> purchaseByCondition(String drugName,String drugNo,String beginTime,String endTime);
+	List<TbPurchase> purchaseByCondition(String drugName,String beginTime,String endTime);
+	TbPurchase getPurchaseByDrugId(Integer drugId);
+	
+	List<TbPurchase> getPurchaseByProviderIdAndDrugId(Integer providerId,Integer drugId);
 }

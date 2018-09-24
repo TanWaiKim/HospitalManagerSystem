@@ -51,8 +51,13 @@ public class DrugtypeControlller {
 			if (drugtype.getDrugtypeName() == null || drugtype.getDrugtypeName().equals("")) {
 				return HmsResult.build(505, "医药种类名称不能为空！");
 			}
+			
 			if (drugtype.getRemarks() == null || drugtype.getRemarks().equals("")) {
 				return HmsResult.build(505, "医药种类简介不能为空！");
+			}
+			
+			if (drugtype.getRemarks() != null && drugtype.getRemarks().length() > 80) {
+				return HmsResult.build(505, "种类简介不能超过80个字！");
 			}
 			
 			if (drugtypeService.addDrugtypeByTbDrugtype(drugtype) > 0) {
@@ -147,6 +152,10 @@ public class DrugtypeControlller {
 			}
 			if (drugtype.getRemarks() == null || drugtype.getRemarks().equals("")) {
 				return HmsResult.build(505, "医药种类简介不能为空！");
+			}
+			
+			if (drugtype.getRemarks() != null && drugtype.getRemarks().length() > 80) {
+				return HmsResult.build(505, "种类简介不能超过80个字！");
 			}
 			
 			if (drugtypeService.updateDrugtypeByTbDrugtype(drugtype) > 0) {

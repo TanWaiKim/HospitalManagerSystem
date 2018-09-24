@@ -10,13 +10,17 @@ public class TbPurchase {
 
     private Integer providerId;
 
-    private Integer totalQuantity;
+    private Integer drugId;
+
+    private Integer quantity;
 
     private BigDecimal totalPrice;
 
-    private String operator;
+    private Integer isStock;
 
-    private String remarks;
+    private Integer drugAdminId;
+
+    private String remark;
 
     private Date createTime;
 
@@ -24,7 +28,9 @@ public class TbPurchase {
     
     private TbProvider provider;
     
-    private TbWarehouse warehouse;
+    private TbDrugAdmin drugAdmin;
+    
+    private TbDrug drug;
 
     public Integer getId() {
         return id;
@@ -39,7 +45,7 @@ public class TbPurchase {
     }
 
     public void setPurchaseNo(String purchaseNo) {
-        this.purchaseNo = purchaseNo;
+        this.purchaseNo = purchaseNo == null ? null : purchaseNo.trim();
     }
 
     public Integer getProviderId() {
@@ -50,12 +56,20 @@ public class TbPurchase {
         this.providerId = providerId;
     }
 
-    public Integer getTotalQuantity() {
-        return totalQuantity;
+    public Integer getDrugId() {
+        return drugId;
     }
 
-    public void setTotalQuantity(Integer totalQuantity) {
-        this.totalQuantity = totalQuantity;
+    public void setDrugId(Integer drugId) {
+        this.drugId = drugId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public BigDecimal getTotalPrice() {
@@ -66,20 +80,28 @@ public class TbPurchase {
         this.totalPrice = totalPrice;
     }
 
-    public String getOperator() {
-        return operator;
+    public Integer getIsStock() {
+        return isStock;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
+    public void setIsStock(Integer isStock) {
+        this.isStock = isStock;
     }
 
-    public String getRemarks() {
-        return remarks;
+    public Integer getDrugAdminId() {
+        return drugAdminId;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
+    public void setDrugAdminId(Integer drugAdminId) {
+        this.drugAdminId = drugAdminId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public Date getCreateTime() {
@@ -106,11 +128,19 @@ public class TbPurchase {
 		this.provider = provider;
 	}
 
-	public TbWarehouse getWarehouse() {
-		return warehouse;
+	public TbDrugAdmin getDrugAdmin() {
+		return drugAdmin;
 	}
 
-	public void setWarehouse(TbWarehouse warehouse) {
-		this.warehouse = warehouse;
+	public void setDrugAdmin(TbDrugAdmin drugAdmin) {
+		this.drugAdmin = drugAdmin;
+	}
+
+	public TbDrug getDrug() {
+		return drug;
+	}
+
+	public void setDrug(TbDrug drug) {
+		this.drug = drug;
 	}
 }

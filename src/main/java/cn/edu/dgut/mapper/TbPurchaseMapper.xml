@@ -5,10 +5,12 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="purchase_no" property="purchaseNo" jdbcType="VARCHAR" />
     <result column="provider_id" property="providerId" jdbcType="INTEGER" />
-    <result column="total_quantity" property="totalQuantity" jdbcType="INTEGER" />
+    <result column="drug_id" property="drugId" jdbcType="INTEGER" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
-    <result column="operator" property="operator" jdbcType="VARCHAR" />
-    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="is_stock" property="isStock" jdbcType="INTEGER" />
+    <result column="drug_admin_id" property="drugAdminId" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -71,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, purchase_no, provider_id, total_quantity, total_price, operator, 
-    remarks, create_time, update_time
+    id, purchase_no, provider_id, drug_id, quantity, total_price, is_stock, drug_admin_id, 
+    remark, create_time, update_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.edu.dgut.pojo.TbPurchaseExample" >
     select
@@ -105,13 +107,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.edu.dgut.pojo.TbPurchase" >
-    insert into tb_purchase (id, purchase_no, 
-      provider_id, total_quantity, total_price, 
-      operator, remarks, create_time, 
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR},
-      #{providerId,jdbcType=INTEGER}, #{totalQuantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
-      #{operator,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, now(), now())
+    insert into tb_purchase (id, purchase_no, provider_id, 
+      drug_id, quantity, total_price, 
+      is_stock, drug_admin_id, remark, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{purchaseNo,jdbcType=VARCHAR}, #{providerId,jdbcType=INTEGER}, 
+      #{drugId,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{isStock,jdbcType=INTEGER}, #{drugAdminId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="cn.edu.dgut.pojo.TbPurchase" >
     insert into tb_purchase
@@ -125,17 +128,23 @@
       <if test="providerId != null" >
         provider_id,
       </if>
-      <if test="totalQuantity != null" >
-        total_quantity,
+      <if test="drugId != null" >
+        drug_id,
+      </if>
+      <if test="quantity != null" >
+        quantity,
       </if>
       <if test="totalPrice != null" >
         total_price,
       </if>
-      <if test="operator != null" >
-        operator,
+      <if test="isStock != null" >
+        is_stock,
       </if>
-      <if test="remarks != null" >
-        remarks,
+      <if test="drugAdminId != null" >
+        drug_admin_id,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -154,17 +163,23 @@
       <if test="providerId != null" >
         #{providerId,jdbcType=INTEGER},
       </if>
-      <if test="totalQuantity != null" >
-        #{totalQuantity,jdbcType=INTEGER},
+      <if test="drugId != null" >
+        #{drugId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
       </if>
       <if test="totalPrice != null" >
         #{totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="operator != null" >
-        #{operator,jdbcType=VARCHAR},
+      <if test="isStock != null" >
+        #{isStock,jdbcType=INTEGER},
       </if>
-      <if test="remarks != null" >
-        #{remarks,jdbcType=VARCHAR},
+      <if test="drugAdminId != null" >
+        #{drugAdminId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         now(),
@@ -192,17 +207,23 @@
       <if test="record.providerId != null" >
         provider_id = #{record.providerId,jdbcType=INTEGER},
       </if>
-      <if test="record.totalQuantity != null" >
-        total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
+      <if test="record.drugId != null" >
+        drug_id = #{record.drugId,jdbcType=INTEGER},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
       </if>
       <if test="record.totalPrice != null" >
         total_price = #{record.totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.operator != null" >
-        operator = #{record.operator,jdbcType=VARCHAR},
+      <if test="record.isStock != null" >
+        is_stock = #{record.isStock,jdbcType=INTEGER},
       </if>
-      <if test="record.remarks != null" >
-        remarks = #{record.remarks,jdbcType=VARCHAR},
+      <if test="record.drugAdminId != null" >
+        drug_admin_id = #{record.drugAdminId,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -220,10 +241,12 @@
     set id = #{record.id,jdbcType=INTEGER},
       purchase_no = #{record.purchaseNo,jdbcType=VARCHAR},
       provider_id = #{record.providerId,jdbcType=INTEGER},
-      total_quantity = #{record.totalQuantity,jdbcType=INTEGER},
+      drug_id = #{record.drugId,jdbcType=INTEGER},
+      quantity = #{record.quantity,jdbcType=INTEGER},
       total_price = #{record.totalPrice,jdbcType=DECIMAL},
-      operator = #{record.operator,jdbcType=VARCHAR},
-      remarks = #{record.remarks,jdbcType=VARCHAR},
+      is_stock = #{record.isStock,jdbcType=INTEGER},
+      drug_admin_id = #{record.drugAdminId,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = now()
     <if test="_parameter != null" >
@@ -239,17 +262,23 @@
       <if test="providerId != null" >
         provider_id = #{providerId,jdbcType=INTEGER},
       </if>
-      <if test="totalQuantity != null" >
-        total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      <if test="drugId != null" >
+        drug_id = #{drugId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
       </if>
       <if test="totalPrice != null" >
         total_price = #{totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="operator != null" >
-        operator = #{operator,jdbcType=VARCHAR},
+      <if test="isStock != null" >
+        is_stock = #{isStock,jdbcType=INTEGER},
       </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="drugAdminId != null" >
+        drug_admin_id = #{drugAdminId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -260,7 +289,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPurchaseNoSelective" parameterType="cn.edu.dgut.pojo.TbPurchase" >
+  
+  <update id="updateByPurchaseNo" parameterType="cn.edu.dgut.pojo.TbPurchase" >
     update tb_purchase
     <set >
       <if test="purchaseNo != null" >
@@ -269,17 +299,23 @@
       <if test="providerId != null" >
         provider_id = #{providerId,jdbcType=INTEGER},
       </if>
-      <if test="totalQuantity != null" >
-        total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      <if test="drugId != null" >
+        drug_id = #{drugId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
       </if>
       <if test="totalPrice != null" >
         total_price = #{totalPrice,jdbcType=DECIMAL},
       </if>
-      <if test="operator != null" >
-        operator = #{operator,jdbcType=VARCHAR},
+      <if test="isStock != null" >
+        is_stock = #{isStock,jdbcType=INTEGER},
       </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="drugAdminId != null" >
+        drug_admin_id = #{drugAdminId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -290,34 +326,39 @@
     </set>
     where purchase_no = #{purchaseNo,jdbcType=VARCHAR}
   </update>
+  
   <update id="updateByPrimaryKey" parameterType="cn.edu.dgut.pojo.TbPurchase" >
     update tb_purchase
     set purchase_no = #{purchaseNo,jdbcType=VARCHAR},
       provider_id = #{providerId,jdbcType=INTEGER},
-      total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      drug_id = #{drugId,jdbcType=INTEGER},
+      quantity = #{quantity,jdbcType=INTEGER},
       total_price = #{totalPrice,jdbcType=DECIMAL},
-      operator = #{operator,jdbcType=VARCHAR},
-      remarks = #{remarks,jdbcType=VARCHAR},
+      is_stock = #{isStock,jdbcType=INTEGER},
+      drug_admin_id = #{drugAdminId,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
- 
-  <!-- 查询最后一条记录 -->
+  
+   <!-- 查询最后一条记录 -->
   <select id="selectLastRecord"  resultMap="BaseResultMap">
   	select * from  tb_purchase order by id desc limit 1
   </select>
- 
- 
+  
   <!-- 统计记录数 -->
   <select id="countByCondition"  parameterType="java.util.Map" resultType="int">
   	select count(*) from tb_purchase p
   		<where>
   			<if test="providerId != null">
-  				and p.provider_id =  #{providerId} 
+  				and p.provider_id = #{providerId}
   			</if>
   			<if test="purchaseNo!=null and !&quot;&quot;.equals(purchaseNo.trim())">
   				and p.purchase_no like '%' #{purchaseNo} '%'
+  			</if>
+   			<if test="isStock !=null ">
+  				and p.is_stock = #{isStock}
   			</if>
   		</where>
   </select>
@@ -325,27 +366,21 @@
   <!-- 条件查询 -->
   <select id="pageByCondition"  parameterType="java.util.Map" resultMap="BaseResultMap">
   	select * from tb_purchase p
-  	
   		<where>
   			<if test="providerId != null">
-  				and p.provider_id =  #{providerId} 
+  				and p.provider_id = #{providerId}
   			</if>
   			<if test="purchaseNo!=null and !&quot;&quot;.equals(purchaseNo.trim())">
   				and p.purchase_no like '%' #{purchaseNo} '%'
+  			</if>
+   			<if test="isStock !=null ">
+  				and p.is_stock = #{isStock} 
   			</if>
   		</where>
   		order by p.id limit #{pageIndex} ,#{pageSize}
   </select>
   
-   <!-- 根据采药单号查询 -->
-   <select id="selectByPurchaseNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from tb_purchase
-    where purchase_no = #{purchaseNo,jdbcType=VARCHAR}
-  </select>
- 
-   <!-- 批量删除 -->
+  <!-- 批量删除 -->
   <delete id="deleteBatch" parameterType="list">
 		delete from tb_purchase where id in
 		<foreach collection="list" item="id" open="(" close=")"
@@ -353,10 +388,62 @@
 			#{id}
 		</foreach>
   </delete>
-
+  
+   <select id="getPurchaseByPurchaseNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_purchase
+    where purchase_no = #{purchaseNo,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getPurchaseByDrugId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_purchase
+    where drug_id = #{drugId,jdbcType=INTEGER}
+  </select>
+ 
+   <select id="getPurchaseByProviderIdAndDrugId" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_purchase
+    where drug_id = #{drugId,jdbcType=INTEGER}
+    and provider_id = #{providerId,jdbcType=INTEGER};
+  </select>
+  
   <!-- 查询所有记录 -->
-  <select id="selectAllPurchase"  resultMap="BaseResultMap">
-  	select * from  tb_purchase
+  <select id="selectAllPurchase1"  resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	select * from  tb_purchase p
+ 	  	<where>
+			<if test="ids != null">
+				and drug_id in 
+				<foreach collection="ids" item="id" open="(" close=")"
+					separator=",">
+					#{id}
+				</foreach>
+			</if>
+ 			<if test="beginTime!=null and !&quot;&quot;.equals(beginTime.trim())">
+ 				and p.create_time <![CDATA[>=]]> #{beginTime} 
+ 			</if>
+ 			<if test="endTime!=null and !&quot;&quot;.equals(endTime.trim())">
+ 				and p.create_time <![CDATA[<=]]> #{endTime}
+ 			</if>
+ 		</where>
   </select>  
   
+    <!-- 查询所有记录 -->
+  <select id="selectAllPurchase"  resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	select * from  tb_purchase p
+ 	  	<where>
+ 			<if test="drugId != null">
+ 				and p.drug_id =  #{drugId} 
+ 			</if>
+ 			<if test="beginTime!=null and !&quot;&quot;.equals(beginTime.trim())">
+ 				and p.create_time <![CDATA[>=]]> #{beginTime} 
+ 			</if>
+ 			<if test="endTime!=null and !&quot;&quot;.equals(endTime.trim())">
+ 				and p.create_time <![CDATA[<=]]> #{endTime}
+ 			</if>
+ 		</where>
+  </select> 
 </mapper>

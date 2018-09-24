@@ -12,7 +12,7 @@ import cn.edu.dgut.pojo.TbProvider;
  */
 public interface ProviderService {
 	List<TbProvider> getAllProvider(Page page);
-	List<TbProvider> pageByCondition(String providerName, String contact, String keywords, Page page);
+	List<TbProvider> pageByCondition(String providerName, String contact, Page page);
 	TbProvider getProviderById(Integer id);
 	TbProvider getProviderByPhone(String phone);
 	int updateProviderByTbProvider(TbProvider provider);

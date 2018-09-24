@@ -22,12 +22,6 @@ public interface TbDrugMapper {
     List<TbDrug> selectByExample(TbDrugExample example);
 
     TbDrug selectByPrimaryKey(Integer id);
-    
-    TbDrug selectByDrugNo(String drugNo);
-    
-    TbDrug selectByDrugName(String drugName);
-    
-    TbDrug getDrugBySelective(TbDrug drug);
 
     int updateByExampleSelective(@Param("record") TbDrug record, @Param("example") TbDrugExample example);
 
@@ -37,7 +31,11 @@ public interface TbDrugMapper {
 
     int updateByPrimaryKey(TbDrug record);
     
-    TbDrug selectLastRecord();
+    int updateSalePrice(TbDrug drug);
+    
+	List<TbDrug> selectDrugNameByAutoComplete(String parameter);
+	
+	TbDrug selectLastRecord();
     
 	int countByCondition(Map<String, Object> map);
 
@@ -46,7 +44,8 @@ public interface TbDrugMapper {
 	int deleteBatch(List<Long> list);
 	
 	List<TbDrug> selectAllDrug();
-
-	List<TbDrug> selectDrugNameByAutoComplete(String parameter);
-    
+	
+	List<TbDrug> selectByDrugNameAndDrugNo(Map<String, Object> map);
+	
+	List<TbDrug> selectByDrugNameAndDrugNo1(Map<String, Object> map);
 }

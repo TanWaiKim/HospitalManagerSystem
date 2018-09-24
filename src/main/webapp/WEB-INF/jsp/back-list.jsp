@@ -35,45 +35,42 @@
 			value="${page.currentPage }" />
 		<div class="panel admin-panel">
 			<div class="panel-head">
-				<strong class="icon-reorder">退药单列表</strong>
+				<strong class="icon-reorder">退药单列表</strong> 
 			</div>
 			<div class="padding border-bottom">
 
 				<ul class="search" style="padding-left: 10px;">
-					<li><a class="button border-main icon-plus-square-o"
-						href="${pageContext.request.contextPath }/back/skipToAdd?type=2">
-							添加退药单</a></li>
 					<li>搜索：</li>
 					<li>
-						退货类型
-						<select name="backType" class="input" 
+						退药单编号
+						<input type="text" placeholder="请输入退药单编号" name="backNo" value="${backNo }" style= "width:120px"/>  
+					</li>
+
+					<li>
+						供药商
+						<select name="providerId" class="input" 
 							style="width: 95px; line-height: 17px; display: inline-block"  >
-							<c:if test="${typeCondition != null and typeCondition != ''}">
-								<option value="${typeCondition }" selected="selected">${typeCondition }</option>
+							<c:if test="${providerCondition.id != null}">
+								<option value="${providerCondition.id }" selected="selected">${providerCondition.providerName }</option>
 							</c:if>
 							
 							<option value="">未选择</option>
-							<c:if test="${typeCondition != '药商退药' }">
-								<option value="药商退药">药商退药</option>
+							
+							<c:forEach
+							items="${providerList}" var="provider" >
+							<c:if test="${providerCondition.id != provider.id}">
+								<option value="${provider.id }">${provider.providerName }</option>
 							</c:if>
-							
-							<c:if test="${typeCondition != '病人退药' }">
-								<option value="病人退药">病人退药</option>
-							</c:if>	
-							
-						</select>	
-						
-					</li>
-					
-					
-					<li>
-						退货对象
-						<input type="text" placeholder="   请输入药商或病人名称" name="backObject" value="${backObject }" style= "width:180px"/>  
+							</c:forEach>
+						</select>
 					</li>
 
 					<li>
 						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
 						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 						<a href="javascript:void(0)" class="button border-main icon-search" name="keySearch" onclick="changesearch()"> 
 							搜索
 						</a>
@@ -83,16 +80,13 @@
 			</div>
 			<table class="table table-hover text-center table-bordered">
 				<tr>
-					<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
-					<th width="100" >退药类型</th>
-					<th width="300" >退药对象</th>
-					<th width="200" >药品名称</th>
-					<th width="100" >生产批号</th>
-					<th width="100" >总数量</th>
-					<th width="100" >总价格</th>
-					<th width="200" >退药原因</th>
-					<th width="90" >操作员</th>
-					<th width="200" >操作</th>
+					<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
+					<th width="150" >退药单编号</th>
+					<th width="100" >供药商名称</th>
+					<th width="100" >总价格（元）</th>
+					<th width="150" >创建时间</th>
+					<th width="150" >更新时间</th>
+					<th width="300" >操作</th>
 				</tr>
 				<c:forEach items="${backList}" var="back"  varStatus="status">
 					<tr>
@@ -103,21 +97,18 @@
 								</span>
 						</td>
 
-						<td>${back.backType }</td>
-						<td>${back.backObject }</td>
-						<td>${back.drug.drugName }</td>
-						<td>${back.batchNo }</td>
-						<td>${back.backSum }</td>
-						<td>${back.backTotalPrice }</td>		
-						<td>${back.backReason }</td>
-						<td>${back.operator }</td>
-	
+						<td>${back.backNo }</td>
+						<td>${back.provider.providerName }</td>
+						<td>${back.totalPrice }</td>
+						<td><fmt:formatDate type="date" value="${back.createTime }"/></td>
+						<td><fmt:formatDate type="date" value="${back.updateTime }"/></td>
 						<td>
 							<div class="button-group">
-								<a class="button border-red"
-										href="javascript:judgeDelete(${back.id })">
-										<span class="icon-trash-o"></span> 删除
-								</a>
+								<a class="button border-main"
+									href="${pageContext.request.contextPath }/back/findByBackNo?backNo=${back.backNo }"><span
+									class="icon-edit"></span> 查看</a> <a class="button border-red"
+									href="javascript:judgeDelete(${back.id })"><span
+									class="icon-trash-o"></span> 删除</a>
 							</div>
 						</td>
 					</tr>
@@ -152,6 +143,7 @@
 							<a
 								href="javascript:changeCurrentPage($('#currentPageText').val())"
 								class='go'>GO</a>
+								&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
 						</div>
 					</td>
 				</tr>
@@ -305,7 +297,7 @@
 				});
 				d.showModal();
 				return false;
-			}			
+			}
 		}
 	</script>
 </body>

@@ -54,7 +54,6 @@ public class WarehouseController {
 	 * @param warehouseNo
 	 * @param warehouseName
 	 * @param manager
-	 * @param keywords
 	 * @param currentPage
 	 * @param model
 	 * @return
@@ -63,7 +62,6 @@ public class WarehouseController {
 	public String getWarehouseyPage(@RequestParam(value = "warehouseNo", defaultValue = "") String warehouseNo,
 			@RequestParam(value = "warehouseName", defaultValue = "") String warehouseName,
 			@RequestParam(value = "manager", defaultValue = "") String manager,
-			@RequestParam(value = "keywords", defaultValue = "") String keywords,
 			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
 		try {
 
@@ -76,14 +74,12 @@ public class WarehouseController {
 			} else {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
-			List<TbWarehouse> warehouseList = warehouseService.pageByCondition(warehouseNo, warehouseName, manager, keywords, page);
+			List<TbWarehouse> warehouseList = warehouseService.pageByCondition(warehouseNo, warehouseName, manager, page);
 			model.addAttribute("warehouseList", warehouseList);
 			model.addAttribute("page", page);
-			model.addAttribute("keywords", keywords);
 			model.addAttribute("warehouseNo", warehouseNo);
 			model.addAttribute("warehouseName", warehouseName);
 			model.addAttribute("manager", manager);
-			model.addAttribute("keywords", keywords);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

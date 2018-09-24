@@ -12,19 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.edu.dgut.common.dto.StockDto;
+import cn.edu.dgut.common.dto.ValidWarningDto;
 import cn.edu.dgut.common.result.HmsResult;
 import cn.edu.dgut.common.util.BigDecimalUtil;
-import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
-import cn.edu.dgut.pojo.TbDrugAdmin;
-import cn.edu.dgut.pojo.TbPurchaseItem;
+import cn.edu.dgut.pojo.TbDrug;
+import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbStock;
 import cn.edu.dgut.pojo.TbWarehouse;
-import cn.edu.dgut.service.PurchaseItemService;
+import cn.edu.dgut.service.DrugService;
+import cn.edu.dgut.service.PurchaseService;
 import cn.edu.dgut.service.StockService;
 import cn.edu.dgut.service.WarehouseService;
 
@@ -37,9 +40,11 @@ import cn.edu.dgut.service.WarehouseService;
 @RequestMapping("/stock")
 public class StockController {
 	@Autowired
-	private PurchaseItemService purchaseItemService;
-	@Autowired
 	private StockService stockService;
+	@Autowired
+	private DrugService drugService;
+	@Autowired
+	private PurchaseService purchaseService;
 	@Autowired
 	private WarehouseService warehouseService;
 	
@@ -50,43 +55,53 @@ public class StockController {
 	 */
 	@RequestMapping("/add")
 	@ResponseBody
-	public HmsResult addStockByTbStock(HttpSession session, Model model,Integer id) {
-		try {
-			TbPurchaseItem purchaseItem = purchaseItemService.getPurchaseItemById(id);
-			
-			if (purchaseItem.getStatus().equals("已入库")) {
-				return HmsResult.build(500, "该记录处于已入库状态，不可再次入库！");
+	public HmsResult addStockByTbStock(HttpSession session, Model model,StockDto stockDto) {
+		try 
+		{
+			if (stockDto.getWarehouseNo() != null && stockDto.getWarehouseNo().equals("") ) {
+				return HmsResult.build(505, "请选择存储仓库！");
 			}
 			
-	        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
+			if (stockDto.getIsStock() == 1) {
+				return HmsResult.build(500, "该记录处于已入库状态，不可再次入库！");
+			}
 	        
+	        // 填充库存信息
 			TbStock stock = new TbStock();
-			stock.setWarehouseNo(purchaseItem.getWarehouseNo());
-			stock.setDrugId(purchaseItem.getDrugId());
-			stock.setStockQuantity(purchaseItem.getQuantity());
-			stock.setOperator(admin.getUsername());
-			stock.setBatchNo(purchaseItem.getBatchNo());
+			stock.setWarehouseNo(stockDto.getWarehouseNo());
+			stock.setDrugId(stockDto.getDrugId());
+			stock.setStockQuantity(stockDto.getQuantity());
+			
+			// 找到医药的信息
+			TbDrug drug = drugService.getDrugById(stockDto.getDrugId());
+			
+			stock.setDrugname(drug.getDrugName());
 			
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("drugId", purchaseItem.getDrugId());
-			map.put("batchNo", purchaseItem.getBatchNo());
+			map.put("drugId", drug.getId());
 			
-			TbStock stock2 = stockService.getStockByDrug(map);
+			// 根据药品id查找药品，判断库存中是否有该药品
+			List<TbStock> stocks = stockService.getStockByDrug(map);
 			
-			if (stock2 != null) {
-				BigDecimal stockQuantity = BigDecimalUtil.add(purchaseItem.getQuantity().doubleValue(),
-						stock2.getStockQuantity().doubleValue());
+			// 如果有，则增加相应的药品数量即可
+			if (stocks != null && stocks.size() > 0) {
+				BigDecimal stockQuantity = BigDecimalUtil.add(stockDto.getQuantity().doubleValue(),
+						stocks.get(0).getStockQuantity().doubleValue());
 				stock.setStockQuantity(stockQuantity.intValue());
 				if (stockService.updateStockBySelective(stock) > 0) {
-			        purchaseItem.setStatus("已入库");
-			        purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
+			        TbPurchase purchase = new TbPurchase();
+			        purchase.setPurchaseNo(stockDto.getPurchaseNo());
+			        purchase.setIsStock(1);
+			        purchaseService.updatePurchase(purchase);
 					return HmsResult.ok();
 				}
 			} else {
 				// 添加库存
 				if (stockService.addStockByTbStock(stock) > 0) {
-			        purchaseItem.setStatus("已入库");
-			        purchaseItemService.updatePurchaseItemByTbPurchaseItem(purchaseItem);
+			        TbPurchase purchase = new TbPurchase();
+			        purchase.setPurchaseNo(stockDto.getPurchaseNo());
+			        purchase.setIsStock(1);
+			        purchaseService.updatePurchase(purchase);
 					return HmsResult.ok();
 				}
 			}
@@ -110,7 +125,7 @@ public class StockController {
 	public String getAllStock(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
 		try {
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+1);
+			page.setPageNumber(page.getPageNumber()+2);
 			page.setCurrentPage(currentPage);
 			model.addAttribute("stockList", stockService.getAllStock(page));
 			model.addAttribute("warehouseList", warehouseService.selectAllWarehouse());
@@ -124,7 +139,6 @@ public class StockController {
 	/**
 	 * 分页条件查询
 	 * @param warehouseNo
-	 * @param operator
 	 * @param drugName
 	 * @param drugNo
 	 * @param currentPage
@@ -134,14 +148,12 @@ public class StockController {
 	@RequestMapping("/pageByCondition")
 	public String getStockByPage(
 			@RequestParam(value = "warehouseNo", defaultValue = "") String warehouseNo,
-			@RequestParam(value = "operator", defaultValue = "") String operator,
-			@RequestParam(value = "drugName", defaultValue = "") String drugName,
-			@RequestParam(value = "drugNo", defaultValue = "") String drugNo,
+			@RequestParam(value = "drugname", defaultValue = "") String drugname,
 			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
 		try {
 			// 创建分页对象
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+1);
+			page.setPageNumber(page.getPageNumber()+2);
 			Pattern pattern = Pattern.compile("[0-9]{1,9}");
 			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
 				page.setCurrentPage(1);
@@ -149,7 +161,7 @@ public class StockController {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
 			
-			List<TbStock> stockList = stockService.pageByCondition(warehouseNo, operator, drugName, drugNo, page);
+			List<TbStock> stockList = stockService.pageByCondition(warehouseNo,  drugname, page);
 			
 			TbWarehouse warehouseCondition = warehouseService.getWarehouseByNo(warehouseNo);
 			model.addAttribute("warehouseCondition", warehouseCondition);
@@ -157,9 +169,8 @@ public class StockController {
 			
 			model.addAttribute("stockList", stockList);
 			model.addAttribute("page", page);
-			model.addAttribute("drugName", drugName);
-			model.addAttribute("drugNo", drugNo);
-			model.addAttribute("operator", operator);
+			model.addAttribute("warehouseNo", warehouseNo);
+			model.addAttribute("drugname", drugname);
 			
 			model.addAttribute("warehouseList", warehouseService.selectAllWarehouse());
 		} catch (Exception e) {
@@ -183,15 +194,6 @@ public class StockController {
 			
 			List<TbStock> stockList = stockService.getAllListStock(page);
 			
-			for(TbStock stock:stockList) {
-				TbPurchaseItem purchaseItem = new TbPurchaseItem();
-				purchaseItem.setBatchNo(stock.getBatchNo());
-				purchaseItem.setDrugId(stock.getDrugId());
-				purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-				
-				stock.setPurchaseItem(purchaseItem);
-			}
-			
 			model.addAttribute("stockList", stockList);
 			model.addAttribute("page", page);
 		} catch (Exception e) {
@@ -211,7 +213,6 @@ public class StockController {
 	@RequestMapping("/limitPageByCondition")
 	public String getStocklistByPage(
 			@RequestParam(value = "drugName", defaultValue = "") String drugName,
-			@RequestParam(value = "drugNo", defaultValue = "") String drugNo,
 			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
 		try {
 			// 创建分页对象
@@ -224,21 +225,12 @@ public class StockController {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
 			
-			List<TbStock> stockList = stockService.pageByListCondition(drugName,drugNo,page);
-			
-			for(TbStock stock:stockList) {
-				TbPurchaseItem purchaseItem = new TbPurchaseItem();
-				purchaseItem.setBatchNo(stock.getBatchNo());
-				purchaseItem.setDrugId(stock.getDrugId());
-				purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-				
-				stock.setPurchaseItem(purchaseItem);
-			}
+			List<TbStock> stockList = stockService.pageByListCondition(drugName,page);
+		
 			
 			model.addAttribute("stockList", stockList);
 			model.addAttribute("page", page);
 			model.addAttribute("drugName", drugName);
-			model.addAttribute("drugNo", drugNo);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -309,9 +301,9 @@ public class StockController {
 	public String getValidWaring(@RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
 		try {
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+4);
+			page.setPageNumber(page.getPageNumber()+3);
 			page.setCurrentPage(currentPage);
-			model.addAttribute("stockList", stockService.getAllStockByValidWaring(page));
+			model.addAttribute("validWaringList", stockService.getAllStockByValidWaring(page));
 			model.addAttribute("page", page);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -330,7 +322,7 @@ public class StockController {
 		try {
 			// 创建分页对象
 			Page page = new Page();
-			page.setPageNumber(page.getPageNumber()+4);
+			page.setPageNumber(page.getPageNumber()+3);
 			Pattern pattern = Pattern.compile("[0-9]{1,9}");
 			if (currentPage == null || !pattern.matcher(currentPage).matches()) {
 				page.setCurrentPage(1);
@@ -338,10 +330,10 @@ public class StockController {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
 			
-			List<TbStock> stockList = stockService.pageByValidWaring(page);
+			List<ValidWarningDto> validList = stockService.pageByValidWaring(page);
 			
 			
-			model.addAttribute("stockList", stockList);
+			model.addAttribute("validWaringList", validList);
 			model.addAttribute("page", page);
 			
 		} catch (Exception e) {
@@ -353,14 +345,16 @@ public class StockController {
 	
 	
 	/**
-	 * 根据id查询库存信息，返回设置库存上下限页面
+	 * 根据药品名称查询库存信息，返回设置库存上下限页面
 	 * @param id
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/findByDrugId")
-	public String getStockByDrugId(@RequestParam(value = "drugId") Integer drugId, Model model) {
-		List<TbStock> stockList = stockService.getStockByDrugId(drugId);
+	@RequestMapping("/findByDrugName")
+	public String getStockByDrugName(@RequestParam(value = "drugname") String drugname, Model model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("drugname", drugname);
+		List<TbStock> stockList = stockService.getStockByDrug(map);
 		
 		Integer totalQuantity = 0;
 		
@@ -386,7 +380,19 @@ public class StockController {
 	public HmsResult updateStockByTbStock(TbStock stock, Model model) {
 		
 		try {
-			if (stockService.updateStockByDrugId(stock) > 0) {
+			if (stock.getMinQuantity() == null || stock.getMinQuantity() == 0) {
+				return HmsResult.build(505, "最小库存不能为空！");
+			}
+			
+			if (stock.getMaxQuantity() == null || stock.getMaxQuantity() == 0) {
+				return HmsResult.build(505, "最大库存不能为空！");
+			}
+			
+			if (stock.getMaxQuantity() < stock.getMinQuantity()) {
+				return HmsResult.build(505, "最小库存不能大于最大库存！");
+			}
+			
+			if (stockService.updateStockByDrugName(stock) > 0) {
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
@@ -402,9 +408,11 @@ public class StockController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/findByDrugId1")
-	public String getStockByDrugId1(@RequestParam(value = "drugId") Integer drugId, Model model) {
-		List<TbStock> stockList = stockService.getStockByDrugId(drugId);
+	@RequestMapping("/findByDrugName1")
+	public String getStockByDrugId1(@RequestParam(value = "drugname") String drugname, Model model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("drugname", drugname);
+		List<TbStock> stockList = stockService.getStockByDrug(map);
 		
 		Integer totalQuantity = 0;
 		
@@ -414,25 +422,75 @@ public class StockController {
 		
 		TbStock stock = stockList.get(0);
 		
-		List<TbPurchaseItem> purchaseItemList = purchaseItemService.selectAllPurchaseItemByDrugId(stock.getDrugId());
-		BigDecimal purchasePrice = new BigDecimal("0");
+		BigDecimal purchasePrice =  new BigDecimal("0");
+		BigDecimal salePrice =  new BigDecimal("0");
+		List<TbDrug> drugs = drugService.getDrugByName(stock.getDrugname());
 		
-		// 计算平均进价
-		for(TbPurchaseItem tbPurchaseItem1 : purchaseItemList) {
-			purchasePrice = BigDecimalUtil.add(purchasePrice.doubleValue(), 
-					tbPurchaseItem1.getPurchasePrice().doubleValue());
+		for(TbDrug drug : drugs) {
+			purchasePrice = BigDecimalUtil.add(purchasePrice.doubleValue(), drug.getPurchasePrice().doubleValue());
 		}
-		purchasePrice = BigDecimalUtil.div(purchasePrice.doubleValue(), purchaseItemList.size());
 		
-		TbPurchaseItem purchaseItem = new TbPurchaseItem();
-		purchaseItem.setBatchNo(stock.getBatchNo());
-		purchaseItem.setDrugId(stock.getDrugId());
-		purchaseItem = purchaseItemService.selectByDrugIdAndBatchNo(purchaseItem);
-		purchaseItem.setPurchasePrice(purchasePrice);
+		purchasePrice = BigDecimalUtil.div(purchasePrice.doubleValue(), drugs.size());
 		
-		stock.setPurchaseItem(purchaseItem);
+		for(TbDrug drug : drugs) {
+			salePrice = BigDecimalUtil.add(salePrice.doubleValue(), drug.getSalePrice().doubleValue());
+		}
+		
+		salePrice = BigDecimalUtil.div(salePrice.doubleValue(), drugs.size());
+		
+		TbDrug drug = new TbDrug();
+		drug.setId(stock.getDrugId());
+		drug.setDrugName(stock.getDrugname());
+		drug.setPurchasePrice(purchasePrice);
+		drug.setSalePrice(salePrice);
+		
+		stock.setDrug(drug);
 		stock.setStockQuantity(totalQuantity);
 		model.addAttribute("stock", stock);
 		return "price-reset";
+	}	
+	
+	/**
+	 * 删除单条库存药品信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/deleteOne")
+	@ResponseBody
+	public HmsResult deleteStockByDrugId(Integer id) {
+		try {
+			if (stockService.deleteStockByDrugId(id) > 0) {
+
+				return HmsResult.ok();
+			}
+		} catch (Exception e) {
+			System.out.println(ExceptionUtil.getStackTrace(e));
+			return HmsResult.build(500, "销毁药品失败！");
+		}
+		
+		return HmsResult.build(500, "销毁药品失败！");
+		
+	}
+
+	/**
+	 * 批量删除库存药品信息
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
+	@ResponseBody
+	public HmsResult deleteStockByDrugIds(String ids) {
+		String[] idArray = ids.split(",");
+
+		try {
+			if (stockService.deleteStockByDrugIds(idArray) > 0) {
+				return HmsResult.ok();
+			}
+		} catch (Exception e) {
+			System.out.println(ExceptionUtil.getStackTrace(e));
+			return HmsResult.build(500, "销毁药品失败！");
+		}
+		return HmsResult.build(500, "销毁药品失败！");
+		
 	}	
 }

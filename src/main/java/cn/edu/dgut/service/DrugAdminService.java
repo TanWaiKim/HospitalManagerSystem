@@ -21,5 +21,8 @@ public interface DrugAdminService {
 	int deleteDrugAdminByIds(String[] ids);
 	boolean isSimpleLoginName(String username);
 	List<TbDrugAdmin> selectAllDrugAdmin();
+	TbDrugAdmin getDrugAdminByPhone(String phone);
+	TbDrugAdmin getDrugAdminByEmail(String email);
+	TbDrugAdmin getDrugAdminByUsername(String username);
 	
 }

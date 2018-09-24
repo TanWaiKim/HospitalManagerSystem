@@ -93,7 +93,7 @@
 							<option value="瓶">瓶</option>
 							<option value="支">支</option>
 							<option value="片">片</option>
-							<option value="粒">粒</option>
+							<option value="包">包</option>
 							<option value="丸">丸</option>
 							<option value="剂">剂</option>
 						</select>
@@ -111,34 +111,6 @@
 						<div class="tips"></div>
 					</div>
 				</div>				
-			
-				<div class="form-group">
-					<div class="label">
-						<label>用法用量：</label>
-					</div>
-
-					<div class="field">
-						<textarea id="howuse"  rows="2" class="input" name="howuse"  data-validate="required:请输入用法用量">
-						
-						</textarea>
-						
-						<script>  
-       						document.getElementById("howuse").value="${drug.howuse }"  
-   						</script>  
-						<div class="tips"></div>
-					</div>
-				</div>		
-				
-				<div class="form-group">
-					<div class="label">
-						<label>批准文号：</label>
-					</div>
-					<div class="field">
-						<input type="text" class="input w50" value="${drug.drugNo }"
-							name="drugNo" data-validate="required:请输入批准文号" />
-						<div class="tips"></div>
-					</div>
-				</div>	
 
 				<div class="form-group">
 					<div class="label">

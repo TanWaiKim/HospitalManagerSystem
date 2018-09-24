@@ -206,6 +206,16 @@ public class TbPurchaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andPurchaseNoLike(String value) {
+            addCriterion("purchase_no like", value, "purchaseNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPurchaseNoNotLike(String value) {
+            addCriterion("purchase_no not like", value, "purchaseNo");
+            return (Criteria) this;
+        }
+
         public Criteria andPurchaseNoIn(List<String> values) {
             addCriterion("purchase_no in", values, "purchaseNo");
             return (Criteria) this;
@@ -223,66 +233,6 @@ public class TbPurchaseExample {
 
         public Criteria andPurchaseNoNotBetween(String value1, String value2) {
             addCriterion("purchase_no not between", value1, value2, "purchaseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoIsNull() {
-            addCriterion("warehouse_no is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoIsNotNull() {
-            addCriterion("warehouse_no is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoEqualTo(String value) {
-            addCriterion("warehouse_no =", value, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoNotEqualTo(String value) {
-            addCriterion("warehouse_no <>", value, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoGreaterThan(String value) {
-            addCriterion("warehouse_no >", value, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoGreaterThanOrEqualTo(String value) {
-            addCriterion("warehouse_no >=", value, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoLessThan(String value) {
-            addCriterion("warehouse_no <", value, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoLessThanOrEqualTo(String value) {
-            addCriterion("warehouse_no <=", value, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoIn(List<String> values) {
-            addCriterion("warehouse_no in", values, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoNotIn(List<String> values) {
-            addCriterion("warehouse_no not in", values, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoBetween(String value1, String value2) {
-            addCriterion("warehouse_no between", value1, value2, "warehouseNo");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarehouseNoNotBetween(String value1, String value2) {
-            addCriterion("warehouse_no not between", value1, value2, "warehouseNo");
             return (Criteria) this;
         }
 
@@ -346,63 +296,123 @@ public class TbPurchaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityIsNull() {
-            addCriterion("total_quantity is null");
+        public Criteria andDrugIdIsNull() {
+            addCriterion("drug_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityIsNotNull() {
-            addCriterion("total_quantity is not null");
+        public Criteria andDrugIdIsNotNull() {
+            addCriterion("drug_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityEqualTo(Integer value) {
-            addCriterion("total_quantity =", value, "totalQuantity");
+        public Criteria andDrugIdEqualTo(Integer value) {
+            addCriterion("drug_id =", value, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityNotEqualTo(Integer value) {
-            addCriterion("total_quantity <>", value, "totalQuantity");
+        public Criteria andDrugIdNotEqualTo(Integer value) {
+            addCriterion("drug_id <>", value, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityGreaterThan(Integer value) {
-            addCriterion("total_quantity >", value, "totalQuantity");
+        public Criteria andDrugIdGreaterThan(Integer value) {
+            addCriterion("drug_id >", value, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityGreaterThanOrEqualTo(Integer value) {
-            addCriterion("total_quantity >=", value, "totalQuantity");
+        public Criteria andDrugIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("drug_id >=", value, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityLessThan(Integer value) {
-            addCriterion("total_quantity <", value, "totalQuantity");
+        public Criteria andDrugIdLessThan(Integer value) {
+            addCriterion("drug_id <", value, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityLessThanOrEqualTo(Integer value) {
-            addCriterion("total_quantity <=", value, "totalQuantity");
+        public Criteria andDrugIdLessThanOrEqualTo(Integer value) {
+            addCriterion("drug_id <=", value, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityIn(List<Integer> values) {
-            addCriterion("total_quantity in", values, "totalQuantity");
+        public Criteria andDrugIdIn(List<Integer> values) {
+            addCriterion("drug_id in", values, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityNotIn(List<Integer> values) {
-            addCriterion("total_quantity not in", values, "totalQuantity");
+        public Criteria andDrugIdNotIn(List<Integer> values) {
+            addCriterion("drug_id not in", values, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityBetween(Integer value1, Integer value2) {
-            addCriterion("total_quantity between", value1, value2, "totalQuantity");
+        public Criteria andDrugIdBetween(Integer value1, Integer value2) {
+            addCriterion("drug_id between", value1, value2, "drugId");
             return (Criteria) this;
         }
 
-        public Criteria andTotalQuantityNotBetween(Integer value1, Integer value2) {
-            addCriterion("total_quantity not between", value1, value2, "totalQuantity");
+        public Criteria andDrugIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("drug_id not between", value1, value2, "drugId");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityIsNull() {
+            addCriterion("quantity is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityIsNotNull() {
+            addCriterion("quantity is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityEqualTo(Integer value) {
+            addCriterion("quantity =", value, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityNotEqualTo(Integer value) {
+            addCriterion("quantity <>", value, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityGreaterThan(Integer value) {
+            addCriterion("quantity >", value, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityGreaterThanOrEqualTo(Integer value) {
+            addCriterion("quantity >=", value, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityLessThan(Integer value) {
+            addCriterion("quantity <", value, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityLessThanOrEqualTo(Integer value) {
+            addCriterion("quantity <=", value, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityIn(List<Integer> values) {
+            addCriterion("quantity in", values, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityNotIn(List<Integer> values) {
+            addCriterion("quantity not in", values, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityBetween(Integer value1, Integer value2) {
+            addCriterion("quantity between", value1, value2, "quantity");
+            return (Criteria) this;
+        }
+
+        public Criteria andQuantityNotBetween(Integer value1, Integer value2) {
+            addCriterion("quantity not between", value1, value2, "quantity");
             return (Criteria) this;
         }
 
@@ -466,143 +476,193 @@ public class TbPurchaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andOperatorIsNull() {
-            addCriterion("operator is null");
+        public Criteria andIsStockIsNull() {
+            addCriterion("is_stock is null");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorIsNotNull() {
-            addCriterion("operator is not null");
+        public Criteria andIsStockIsNotNull() {
+            addCriterion("is_stock is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorEqualTo(String value) {
-            addCriterion("operator =", value, "operator");
+        public Criteria andIsStockEqualTo(Byte value) {
+            addCriterion("is_stock =", value, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorNotEqualTo(String value) {
-            addCriterion("operator <>", value, "operator");
+        public Criteria andIsStockNotEqualTo(Byte value) {
+            addCriterion("is_stock <>", value, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorGreaterThan(String value) {
-            addCriterion("operator >", value, "operator");
+        public Criteria andIsStockGreaterThan(Byte value) {
+            addCriterion("is_stock >", value, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorGreaterThanOrEqualTo(String value) {
-            addCriterion("operator >=", value, "operator");
+        public Criteria andIsStockGreaterThanOrEqualTo(Byte value) {
+            addCriterion("is_stock >=", value, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorLessThan(String value) {
-            addCriterion("operator <", value, "operator");
+        public Criteria andIsStockLessThan(Byte value) {
+            addCriterion("is_stock <", value, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorLessThanOrEqualTo(String value) {
-            addCriterion("operator <=", value, "operator");
+        public Criteria andIsStockLessThanOrEqualTo(Byte value) {
+            addCriterion("is_stock <=", value, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorLike(String value) {
-            addCriterion("operator like", value, "operator");
+        public Criteria andIsStockIn(List<Byte> values) {
+            addCriterion("is_stock in", values, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorNotLike(String value) {
-            addCriterion("operator not like", value, "operator");
+        public Criteria andIsStockNotIn(List<Byte> values) {
+            addCriterion("is_stock not in", values, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorIn(List<String> values) {
-            addCriterion("operator in", values, "operator");
+        public Criteria andIsStockBetween(Byte value1, Byte value2) {
+            addCriterion("is_stock between", value1, value2, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorNotIn(List<String> values) {
-            addCriterion("operator not in", values, "operator");
+        public Criteria andIsStockNotBetween(Byte value1, Byte value2) {
+            addCriterion("is_stock not between", value1, value2, "isStock");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorBetween(String value1, String value2) {
-            addCriterion("operator between", value1, value2, "operator");
+        public Criteria andDrugAdminIdIsNull() {
+            addCriterion("drug_admin_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andOperatorNotBetween(String value1, String value2) {
-            addCriterion("operator not between", value1, value2, "operator");
+        public Criteria andDrugAdminIdIsNotNull() {
+            addCriterion("drug_admin_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksIsNull() {
-            addCriterion("remarks is null");
+        public Criteria andDrugAdminIdEqualTo(Integer value) {
+            addCriterion("drug_admin_id =", value, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksIsNotNull() {
-            addCriterion("remarks is not null");
+        public Criteria andDrugAdminIdNotEqualTo(Integer value) {
+            addCriterion("drug_admin_id <>", value, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksEqualTo(String value) {
-            addCriterion("remarks =", value, "remarks");
+        public Criteria andDrugAdminIdGreaterThan(Integer value) {
+            addCriterion("drug_admin_id >", value, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksNotEqualTo(String value) {
-            addCriterion("remarks <>", value, "remarks");
+        public Criteria andDrugAdminIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("drug_admin_id >=", value, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksGreaterThan(String value) {
-            addCriterion("remarks >", value, "remarks");
+        public Criteria andDrugAdminIdLessThan(Integer value) {
+            addCriterion("drug_admin_id <", value, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksGreaterThanOrEqualTo(String value) {
-            addCriterion("remarks >=", value, "remarks");
+        public Criteria andDrugAdminIdLessThanOrEqualTo(Integer value) {
+            addCriterion("drug_admin_id <=", value, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksLessThan(String value) {
-            addCriterion("remarks <", value, "remarks");
+        public Criteria andDrugAdminIdIn(List<Integer> values) {
+            addCriterion("drug_admin_id in", values, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksLessThanOrEqualTo(String value) {
-            addCriterion("remarks <=", value, "remarks");
+        public Criteria andDrugAdminIdNotIn(List<Integer> values) {
+            addCriterion("drug_admin_id not in", values, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksLike(String value) {
-            addCriterion("remarks like", value, "remarks");
+        public Criteria andDrugAdminIdBetween(Integer value1, Integer value2) {
+            addCriterion("drug_admin_id between", value1, value2, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksNotLike(String value) {
-            addCriterion("remarks not like", value, "remarks");
+        public Criteria andDrugAdminIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("drug_admin_id not between", value1, value2, "drugAdminId");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksIn(List<String> values) {
-            addCriterion("remarks in", values, "remarks");
+        public Criteria andRemarkIsNull() {
+            addCriterion("remark is null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksNotIn(List<String> values) {
-            addCriterion("remarks not in", values, "remarks");
+        public Criteria andRemarkIsNotNull() {
+            addCriterion("remark is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksBetween(String value1, String value2) {
-            addCriterion("remarks between", value1, value2, "remarks");
+        public Criteria andRemarkEqualTo(String value) {
+            addCriterion("remark =", value, "remark");
             return (Criteria) this;
         }
 
-        public Criteria andRemarksNotBetween(String value1, String value2) {
-            addCriterion("remarks not between", value1, value2, "remarks");
+        public Criteria andRemarkNotEqualTo(String value) {
+            addCriterion("remark <>", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            addCriterion("remark >", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("remark >=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            addCriterion("remark <", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            addCriterion("remark <=", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkLike(String value) {
+            addCriterion("remark like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            addCriterion("remark not like", value, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            addCriterion("remark in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            addCriterion("remark not in", values, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            addCriterion("remark between", value1, value2, "remark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
 

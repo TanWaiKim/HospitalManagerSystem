@@ -56,24 +56,25 @@
 				onsubmit="return false;">
 				<input type="hidden" id="id" name="id" value="${salesDto.id }" />
 				<input type="hidden" id="salesNo" name="salesNo" value="${salesDto.salesNo }" />
+				<input type="hidden" id="drugId" name="drugId" value="${salesDto.drugId }" />
 				<input type="hidden" id="patientId" name="patientId" value="${salesDto.patientId }" />
-				<input type="hidden" id="totalQuantity" name="totalQuantity" value="${salesDto.totalQuantity }" />
-				<input type="hidden" id="totalPrice" name="totalPrice" value="${salesDto.totalPrice }" />
-				<input type="hidden" id="operator" name="operator" value="${salesDto.operator }" />
-				<input type="hidden" id="remarks" name="remarks" value="${salesDto.remarks }" />
 				<input type="hidden" id="oldSalesItemQuantity" name="oldSalesItemQuantity" value="${salesDto.oldSalesItemQuantity }" />
-				<input type="hidden" id="salePrice" name="salePrice" value="${salesDto.salePrice }" />
-				<input type="hidden" id="batchNo" name="batchNo" value="${salesDto.batchNo }" />
 				
 				<div class="form-group">
 					<div class="label">
 						<label>医药名称：</label>
 					</div>
 					<div class="field">
-						<select name="drugId" class="input"
-							style="width: 155px; line-height: 17px; display: inline-block" >
-							<option value="${salesDto.drugId }" selected="selected">${salesDto.drugName }</option>
-						</select>
+						<input type="text" class="input w50" value="${salesDto.drugName }" name="drugName" readonly="readonly"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="label">
+						<label>产品批号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${salesDto.batchNo }" name="" readonly="readonly"/>
 					</div>
 				</div>
 				
@@ -104,7 +105,7 @@
 		function updateForm() {
 			//ajax的post方式提交表单
 			//$("#patientUpdateForm").serialize()将表单序列号为key-value形式的字符串
-			$.post("${pageContext.request.contextPath }/salesItem/update",
+			$.post("${pageContext.request.contextPath }/sales/updateItem",
 							$("#salesItemUpdateForm").serialize(),
 							function(data) {
 								if (data.status == 200) {

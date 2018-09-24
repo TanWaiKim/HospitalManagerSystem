@@ -64,8 +64,39 @@
 						</select>
 					</li>
 					<li>
-						采药单编号
-						<input type="text" placeholder="请输入采药单编号" name="purchaseNo" value="${purchaseNo }" style= "width:120px"/>  
+						入库状态
+						<select name="isStock" class="input" 
+							style="width: 95px; line-height: 17px; display: inline-block"  >
+							<c:if test="${isStock != null}">
+								
+							 <c:if test="${isStock == 1}">
+								<option value="1" selected="selected">是</option>
+							</c:if>
+							<c:if test="${isStock == 0}">
+								<option value="0" selected="selected">否</option>
+							</c:if>
+								
+								
+							</c:if>
+							
+							<option value="">未选择</option>
+							<c:if test="${isStock != null}">
+								<c:if test="${isStock == 1}">
+									<option value="0">否</option>
+								</c:if>
+								<c:if test="${isStock == 0}">
+									<option value="1">是</option>
+								</c:if>
+							</c:if>
+							<c:if test="${isStock == null}">
+								<option value="0">否</option>
+								<option value="1">是</option>
+							</c:if>
+						</select>
+					</li>
+					<li>
+						采购单编号
+						<input type="text" placeholder="请输入采购单编号" name="purchaseNo" value="${purchaseNo }" style= "width:120px"/>  
 					</li>
 
 					<li>
@@ -83,14 +114,12 @@
 			</div>
 			<table class="table table-hover text-center table-bordered">
 				<tr>
-					<th width="100" style="text-align: left; padding-left: 20px;">序号</th>
+					<th width="80" style="text-align: left; padding-left: 20px;">序号</th>
 					<th width="200" >采药单编号</th>
-					<th width="200" >供药商名称</th>
-					<th width="100" >总数量</th>
-					<th width="100" >总价格</th>
-					<th width="150" >创建时间</th>
-					<th width="150" >更新时间</th>
+					<th width="250" >供药商名称</th>
+					<th width="100" >总价格（元）</th>
 					<th width="100" >备注</th>
+					<th width="100" >入库状态</th>					
 					<th width="90" >操作员</th>
 					<th width="300" >操作</th>
 				</tr>
@@ -105,20 +134,33 @@
 
 						<td>${purchase.purchaseNo }</td>
 						<td>${purchase.provider.providerName }</td>
-						<td>${purchase.totalQuantity }</td>
 						<td>${purchase.totalPrice }</td>
-						<td><fmt:formatDate type="date" value="${purchase.createTime }"/></td>
-						<td><fmt:formatDate type="date" value="${purchase.updateTime }"/></td>
-						<td>${purchase.remarks }</td>
-						<td>${purchase.operator }</td>
+						<td>${purchase.remark }</td>
+						<td>
+							<c:if test="${purchase.isStock == 1}">
+								已入库
+							</c:if>
+							<c:if test="${purchase.isStock == 0}">
+								未入库
+							</c:if>
+						</td>
+						
+						<td>${purchase.drugAdmin.username }</td>
 						
 						<td>
 							<div class="button-group">
-								<a class="button border-main"
+								<a class="button border-green"
 									href="${pageContext.request.contextPath }/purchase/findByPurchaseNo?purchaseNo=${purchase.purchaseNo }"><span
-									class="icon-edit"></span> 查看</a> <a class="button border-red"
+									class="icon-edit"></span> 查看
+								</a> 
+								<a class="button border-blue"
+									href="${pageContext.request.contextPath }/purchase/updateByPurchaseNo?purchaseNo=${purchase.purchaseNo }">
+									<span class="icon-database"></span> 修改
+								</a>	
+								<a class="button border-red"
 									href="javascript:judgeDelete(${purchase.id })"><span
-									class="icon-trash-o"></span> 删除</a>
+									class="icon-trash-o"></span> 删除
+								</a>
 							</div>
 						</td>
 					</tr>
@@ -133,7 +175,7 @@
 
 				</tr>
 				<tr>
-					<td colspan="7" style="border-style:none;">
+					<td colspan="6" style="border-style:none;">
 						<div class='page fix'>
 							共 <b>${page.totalNumber}</b> 条
 							<c:if test="${page.currentPage != 1}">

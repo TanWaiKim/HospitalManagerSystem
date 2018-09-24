@@ -22,7 +22,12 @@
 <script src="${pageContext.request.contextPath }/js/pintuer.js"></script>
 <script src="${pageContext.request.contextPath }/js/list.js"></script>
 <script src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
-
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="http://jqueryui.com/resources/demos/style.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/js/artDialog-master/css/dialog.css">
 <script src="${pageContext.request.contextPath }/js/artDialog-master/dist/dialog.js"></script>
@@ -66,15 +71,13 @@
 					</li>
 					<li>
 						医药名称
-						<input type="text" placeholder="请输入医药名称" name="drugName" value="${drugName }" />  
+						<input type="text" placeholder="请输入医药名称" id="drugName" name="drugName" value="${drugName }" />  
 					</li>
 					<li>
-						批准文号
-						<input type="text" placeholder="请输入批准文号" name="drugNo" value="${drugNo }" />  
+						产品批号
+						<input type="text" placeholder="请输入产品批号" name="drugNo" value="${drugNo }" />  
 					</li>				
 					<li>
-						<input type="text" placeholder="请输入搜索关键字" name="keywords" class="input" value="${keywords }"
-							style="width: 180px; line-height: 17px; display: inline-block" />
 						<a href="javascript:void(0)" class="button border-main icon-search" name="keySearch" onclick="changesearch()"> 
 							搜索
 						</a>
@@ -85,23 +88,26 @@
 			<div class="text-little">
 				<table class="table table-hover text-center table-bordered">
 					<tr>
-						<th width="90" style="text-align: left; padding-left: 20px;">序号</th>
+						<th width="60" style="text-align: left; padding-left: 20px;">序号</th>
 						<th width="20" >医药种类</th>
 						<th width="20" >医药名称</th>
-						<th width="20" >批准文号</th>
-						<th width="200" >功能主治</th>
+						<th width="20" >产品批号</th>
+						<th width="100" >功能主治</th>
+						<th width="50" >不良反应</th>
 						<th width="10" >规格</th>
 						<th width="10" >单位</th>
-						<th width="100" >用法用量</th>
-						<th width="50" >不良反应</th>
-						<th width="200">操作</th>
+						<th width="60" >采购单价（元）</th>
+						<th width="60" >销售单价（元）</th>
+						<th width="50" >生产日期</th>
+						<th width="50" >有效期至</th>
+						<th width="140">操作</th>
 					</tr>
 					<c:forEach items="${drugList}" var="drug"  varStatus="status">
 						<tr>
 							<td style="text-align: left; padding-left: 20px;">
 								<input type="checkbox" name="id[]" value="${drug.id}" />
 									<span>
-										${(page.currentPage-1)*3+status.count}
+										${(page.currentPage-1)*4+status.count}
 									</span>
 							</td>
 	
@@ -109,10 +115,13 @@
 							<td>${drug.drugName }</td>
 							<td>${drug.drugNo }</td>
 							<td>${drug.purpose }</td>
+							<td>${drug.uneffect }</td>
 							<td>${drug.spec }</td>
 							<td>${drug.unit }</td>
-							<td>${drug.howuse }</td>
-							<td>${drug.uneffect }</td>
+							<td>${drug.purchasePrice }</td>
+							<td>${drug.salePrice }</td>							
+							<td>${drug.produceTime }</td>
+							<td>${drug.validTime }</td>
 							<td><div class="button-group">
 									<a class="button border-main"
 										href="${pageContext.request.contextPath }/drug/findById?id=${drug.id }"><span
@@ -133,7 +142,7 @@
 	
 					</tr>
 					<tr>
-						<td colspan="8" style="border-style:none;">
+						<td colspan="7" style="border-style:none;">
 							<div class='page fix'>
 								共 <b>${page.totalNumber}</b> 条
 								<c:if test="${page.currentPage != 1}">
@@ -161,6 +170,11 @@
 		</div>
 	</form>
 	<script type="text/javascript">
+		$("#drugName").autocomplete({
+			source : "<c:url value="/drug/auto"/>",
+			minLength : 1
+		});
+		
 	 	function getSelectionsIds(){
 	 		var obj=document.getElementsByName('id[]'); //选择所有name="'id[]'"的对象，返回数组 
 	 		//取到对象数组后，我们来循环检测它是不是被选中 

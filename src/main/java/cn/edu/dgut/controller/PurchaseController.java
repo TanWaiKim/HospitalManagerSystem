@@ -19,12 +19,14 @@ import cn.edu.dgut.common.util.Const;
 import cn.edu.dgut.common.util.ExceptionUtil;
 import cn.edu.dgut.pojo.Page;
 import cn.edu.dgut.pojo.TbDrugAdmin;
+import cn.edu.dgut.pojo.TbDrugtype;
 import cn.edu.dgut.pojo.TbDrug;
 import cn.edu.dgut.pojo.TbProvider;
 import cn.edu.dgut.pojo.TbPurchase;
 import cn.edu.dgut.pojo.TbPurchaseItem;
 import cn.edu.dgut.pojo.TbWarehouse;
 import cn.edu.dgut.service.DrugService;
+import cn.edu.dgut.service.DrugtypeService;
 import cn.edu.dgut.service.ProviderService;
 import cn.edu.dgut.service.PurchaseItemService;
 import cn.edu.dgut.service.PurchaseService;
@@ -45,6 +47,8 @@ public class PurchaseController {
 	@Autowired
 	private DrugService drugService;
 	@Autowired
+	private DrugtypeService drugtypeService;
+	@Autowired
 	private PurchaseService purchaseService;
 	@Autowired
 	private PurchaseItemService purchaseItemService;
@@ -56,21 +60,18 @@ public class PurchaseController {
 	 */
 	@RequestMapping("/skipToAdd")
 	public String skipToAdd(HttpSession session, Model model) {
-        TbDrugAdmin admin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
-        if(admin ==null){
+        TbDrugAdmin drugAdmin = (TbDrugAdmin)session.getAttribute(Const.CURRENT_USER);
+        if(drugAdmin ==null){
             return "login";
         }
         
         List<TbProvider> providerList = providerService.selectAllProvider();
         model.addAttribute("providerList", providerList); 
-        
-		List<TbWarehouse> warehouseList = warehouseService.selectAllWarehouse();
-		model.addAttribute("warehouseList", warehouseList);     
-		
+   
 		List<TbDrug> drugList = drugService.selectAllDrug();
 		model.addAttribute("drugList", drugList);     
 		
-		model.addAttribute("operator", admin.getUsername());
+		model.addAttribute("drugAdmin", drugAdmin);
 			
 		return "purchase-add";
 	}
@@ -90,21 +91,17 @@ public class PurchaseController {
 			if (purchaseDto.getProviderId() == null || purchaseDto.getProviderId() == 0) {
 				return HmsResult.build(505, "供药商不能为空！");
 			}	        
-	        
-			if (purchaseDto.getWarehouseNo() == null || purchaseDto.getWarehouseNo().equals("")) {
-				return HmsResult.build(505, "仓库不能为空！");
-			}
 			
-			if (purchaseDto.getDrugId() == null || purchaseDto.getDrugId() == 0) {
+			if (purchaseDto.getDrugName() == null || purchaseDto.getDrugName().equals("")) {
 				return HmsResult.build(505, "医药名称不能为空！");
 			}
 			
 			if (purchaseDto.getPurchasePrice() == null) {
-				return HmsResult.build(505, "进药价格不能为空！");
+				return HmsResult.build(505, "采购单价不能为空！");
 			}		
 			
 			if (purchaseDto.getSalePrice() == null) {
-				return HmsResult.build(505, "销药价格不能为空！");
+				return HmsResult.build(505, "销售单价不能为空！");
 			}	
 			
 			if (purchaseDto.getProduceTime() == null) {
@@ -115,12 +112,16 @@ public class PurchaseController {
 				return HmsResult.build(505, "有效期至不能为空！");
 			}
 			
-			if (purchaseDto.getBatchNo() == null || purchaseDto.getBatchNo().equals("")) {
+			if (purchaseDto.getDrugNo() == null || purchaseDto.getDrugNo().equals("")) {
 				return HmsResult.build(505, "产品批号不能为空！");
 			}		
 			
 			if (purchaseDto.getQuantity() == null || purchaseDto.getQuantity() == 0) {
 				return HmsResult.build(505, "进药数量不能为空！");
+			}
+			
+			if (purchaseDto.getValidTime().compareTo(purchaseDto.getProduceTime()) < 0) {
+				return HmsResult.build(505, "有效期至不能小于生产日期！");
 			}
 			
 			if (purchaseService.addPurchaseByTbPurchase(purchaseDto) > 0) {
@@ -148,7 +149,6 @@ public class PurchaseController {
 			page.setPageNumber(page.getPageNumber()+2);
 			page.setCurrentPage(currentPage);
 			model.addAttribute("providerList", providerService.selectAllProvider());
-			model.addAttribute("warehouseList", warehouseService.selectAllWarehouse());
 			model.addAttribute("purchaseList", purchaseService.getAllPurchase(page));
 			model.addAttribute("page", page);
 		} catch (Exception e) {
@@ -161,7 +161,7 @@ public class PurchaseController {
 	 * 分页条件查询
 	 * @param providerId
 	 * @param purchaseNo
-	 * @param warehouseNo
+	 * @param isStock
 	 * @param currentPage
 	 * @param model
 	 * @return
@@ -170,6 +170,7 @@ public class PurchaseController {
 	public String getPurchaseByPage(
 			@RequestParam(value = "providerId", defaultValue = "") Integer providerId,
 			@RequestParam(value = "purchaseNo", defaultValue = "") String purchaseNo,
+			@RequestParam(value = "isStock", defaultValue = "") Integer isStock,
 			@RequestParam(value = "currentPage", defaultValue = "") String currentPage, Model model) {
 		try {
 			// 创建分页对象
@@ -182,7 +183,8 @@ public class PurchaseController {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			}
 			
-			List<TbPurchase> purchaseList = purchaseService.pageByCondition(purchaseNo, providerId, page);
+			
+			List<TbPurchase> purchaseList = purchaseService.pageByCondition(purchaseNo, providerId, isStock, page);
 			
 			
 			TbProvider providerCondition = providerService.getProviderById(providerId);
@@ -191,6 +193,7 @@ public class PurchaseController {
 			model.addAttribute("purchaseList", purchaseList);
 			model.addAttribute("page", page);
 			model.addAttribute("purchaseNo", purchaseNo);
+			model.addAttribute("isStock", isStock);
 			
 			
 			model.addAttribute("providerList", providerService.selectAllProvider());
@@ -207,24 +210,131 @@ public class PurchaseController {
 	 * @return
 	 */
 	@RequestMapping("/findByPurchaseNo")
-	public String getPurchaseByNo(@RequestParam(value = "purchaseNo") String purchaseNo, @RequestParam(value = "page", defaultValue = "1") Integer currentPage, Model model) {
-		Page page = new Page();
-		page.setCurrentPage(currentPage);
+	public String getPurchaseByNo(@RequestParam(value = "purchaseNo") String purchaseNo, Model model) {
 		TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseNo);
-		model.addAttribute("purchase", purchase);
-		List<TbPurchaseItem> purchaseItemList = purchaseItemService.getAllPurchaseItem(purchaseNo, page);
+		TbDrug drug = new TbDrug();
+		drug = drugService.getDrugById(purchase.getDrugId());
+		TbDrugtype drugtype = new TbDrugtype();
 		
-		TbWarehouse warehouse = new TbWarehouse();
-		
-		for (int i = 0; i < purchaseItemList.size(); i++) {
-			warehouse.setWarehouseNo(purchaseItemList.get(i).getWarehouseNo());
-			warehouse = warehouseService.getWarehouseByNo(warehouse.getWarehouseNo());
-			purchaseItemList.get(i).setWarehouseNo(warehouse.getWarehouseName());
+		if (drug != null) {
+			drugtype = drugtypeService.getDrugtypeById(drug.getDrugtypeId());
+			drug.setDrugtype(drugtype);
 		}
 		
-		model.addAttribute("purchaseItemList", purchaseItemList);
-		model.addAttribute("page", page);
+		purchase.setDrug(drug);
+		model.addAttribute("purchase", purchase);
 		return "purchase-detail";
+	}
+	
+	/**
+	 * 根据id查询采药单信息，然后返回到修改采药单页面
+	 * @param purchaseNo
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/updateByPurchaseNo")
+	public String getPurchaseByPurchaseNo(@RequestParam(value = "purchaseNo") String purchaseNo, Model model) {
+		TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseNo);
+		TbDrug drug = drugService.getDrugById(purchase.getDrugId());
+		
+		PurchaseDto purchaseDto = new PurchaseDto();
+		purchaseDto.setDrugAdminId(purchase.getDrugAdminId());
+		purchaseDto.setDrugId(purchase.getDrugId());
+		purchaseDto.setDrugName(drug.getDrugName());
+		purchaseDto.setDrugNo(drug.getDrugNo());
+		purchaseDto.setId(purchase.getId());
+		purchaseDto.setProduceTime(drug.getProduceTime());
+		purchaseDto.setValidTime(drug.getValidTime());
+		purchaseDto.setPurchaseNo(purchase.getPurchaseNo());
+		purchaseDto.setQuantity(purchase.getQuantity());
+		purchaseDto.setRemark(purchase.getRemark());
+		purchaseDto.setPurchasePrice(drug.getPurchasePrice());
+		purchaseDto.setSalePrice(drug.getSalePrice());
+		purchaseDto.setIsStock(purchase.getIsStock());
+		
+		model.addAttribute("purchaseDto", purchaseDto);
+		
+		return "purchase-update";
+	}
+	
+	/**
+	 * 修改采药单请求
+	 * @param session
+	 * @param model
+	 * @param purchaseDto
+	 * @return
+	 */
+	@RequestMapping("/update")
+	@ResponseBody()
+	public HmsResult updatePurchaseByTbPurchase(HttpSession session, Model model, PurchaseDto purchaseDto) {
+		try {
+			
+			if (purchaseDto.getIsStock() == 1) {
+				return HmsResult.build(505, "该采购单已入库，不可修改！");
+			}
+			
+			if (purchaseDto.getDrugId() == null) {
+				return HmsResult.build(505, "医药名称不能为空！");
+			}
+			
+			if (purchaseDto.getPurchasePrice() == null) {
+				return HmsResult.build(505, "采购单价不能为空！");
+			}		
+			
+			if (purchaseDto.getSalePrice() == null) {
+				return HmsResult.build(505, "销售单价不能为空！");
+			}	
+			
+			if (purchaseDto.getProduceTime() == null) {
+				return HmsResult.build(505, "生产日期不能为空！");
+			}
+			
+			if (purchaseDto.getValidTime() == null) {
+				return HmsResult.build(505, "有效期至不能为空！");
+			}
+			
+			if (purchaseDto.getValidTime().compareTo(purchaseDto.getProduceTime()) < 0) {
+				return HmsResult.build(505, "有效期至不能小于生产日期！");
+			}
+			
+			if (purchaseDto.getDrugNo() == null || purchaseDto.getDrugNo().equals("")) {
+				return HmsResult.build(505, "产品批号不能为空！");
+			}		
+			
+			if (purchaseDto.getQuantity() == null || purchaseDto.getQuantity() == 0) {
+				return HmsResult.build(505, "进药数量不能为空！");
+			}
+			
+			if (purchaseService.updatePurchaseByTbPurchase(purchaseDto) > 0) {
+				return HmsResult.ok();
+			}
+
+		} catch (Exception e) {
+			e.getStackTrace();
+			return HmsResult.build(500, "数据库异常，添加医药信息失败！");
+		}
+		return HmsResult.build(500, "添加医药信息失败！");
+	}	
+	
+	/**
+	 * 返回选择入库页面
+	 * @param purchaseNo
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/stockByPurchaseNo")
+	public String gotoStock(@RequestParam(value = "purchaseNo") String purchaseNo, Model model) {
+
+		TbPurchase purchase = purchaseService.getPurchaseByPurchaseNo(purchaseNo);
+		TbDrug drug = drugService.getDrugById(purchase.getDrugId());
+		purchase.setDrug(drug);
+
+		List<TbWarehouse> warehouses = warehouseService.selectAllWarehouse();
+		
+		model.addAttribute("purchase", purchase);
+		model.addAttribute("warehouses", warehouses);
+
+		return "search-stock";
 	}
 	
 	/**
@@ -236,11 +346,7 @@ public class PurchaseController {
 	@ResponseBody
 	public HmsResult deletePurchaseById(Integer id) {
 		try {
-			TbPurchase purchase = purchaseService.getPurchaseById(id);
-			String purchaseNo = purchase.getPurchaseNo();
 			if ((purchaseService.deletePurchaseById(id) > 0 )) {
-				// 删除采药详细单
-				purchaseItemService.deletePurchaseItemByPurchase(purchaseNo);
 				return HmsResult.ok();
 			}
 		} catch (Exception e) {
